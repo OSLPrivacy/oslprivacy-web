@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — OSL Privacy Docs</title>
+  <meta name="description" content="Frequently asked questions about OSL Privacy.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/download">Download</a></li>
+        <li><a href="/docs/" aria-current="page">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation</summary>
+          <nav aria-label="Documentation">
+            <p class="docs-group-heading">Getting started</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/getting-started">Install OSL</a></li>
+              <li><a href="/docs/how-it-works">How OSL works</a></li>
+            </ul>
+            <p class="docs-group-heading">Reference</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/faq" aria-current="page">FAQ</a></li>
+              <li><a href="/docs/threat-model">Threat model</a></li>
+              <li><a href="/docs/ad-disclosure">Ad disclosure</a></li>
+            </ul>
+            <p class="docs-group-heading">Legal</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/privacy">Privacy policy</a></li>
+              <li><a href="/docs/terms">Terms of service</a></li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
+
+      <article class="docs-content">
+        <h1>Frequently asked questions</h1>
+        <p class="lede">Questions and answers about OSL Privacy, grouped by topic.</p>
+
+        <h2 id="about-osl">About OSL <a class="anchor-link" href="#about-osl" aria-label="Link to this section">#</a></h2>
+
+        <h3>What is OSL?</h3>
+        <p>OSL is a desktop application that wraps the Discord client and adds end-to-end encryption to your messages. You install OSL instead of Discord, log in as normal, and any messages you send to whitelisted friends (who also have OSL) are encrypted before Discord sees them.</p>
+
+        <h3>How is OSL different from Signal?</h3>
+        <p>Signal is its own messaging app — separate identity, separate contacts, separate platform. OSL piggybacks on Discord — same identity, same servers, same conversations, just with end-to-end encryption added. If you want to talk to your existing Discord friends privately, OSL fits. If you want to start over with a separate secure-messaging identity that hides metadata too, Signal is the right tool. See our <a href="/docs/threat-model">threat model</a> for a fuller discussion.</p>
+
+        <h3>Why open source?</h3>
+        <p>You can't trust crypto you can't audit. AGPL-3.0 means anyone can read OSL's code, build it themselves, and verify it does what we say it does. If we're ever compelled to ship a backdoored update, the source tree will show it.</p>
+
+        <h3>Does OSL work on mobile?</h3>
+        <p>Not yet. OSL is desktop-only at launch — Windows specifically. macOS and Linux are planned for later. Mobile (Android/iOS) is on the longer-term roadmap but isn't committed.</p>
+
+        <h2 id="privacy-security">Privacy &amp; Security <a class="anchor-link" href="#privacy-security" aria-label="Link to this section">#</a></h2>
+
+        <h3>What encryption does OSL use?</h3>
+        <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation, Double Ratchet for forward secrecy, and Sender Keys for groups. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
+
+        <h3>Why are forward secrecy and post-quantum important?</h3>
+        <p><strong>Forward secrecy</strong> means that if your encryption keys are stolen tomorrow, the attacker still can't read messages you sent yesterday. Each message uses a fresh key derived from the previous one. <strong>Post-quantum</strong> protects against attacks from future quantum computers. State-level adversaries are recording encrypted traffic now to decrypt later when quantum computers catch up. Post-quantum cryptography defends against that.</p>
+
+        <h3>Can my friends read encrypted messages without OSL?</h3>
+        <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL — your friend, Discord itself, anyone reading the raw Discord database — sees ciphertext only.</p>
+
+        <h3>Can I encrypt voice/video calls?</h3>
+        <p>No. OSL only encrypts text messages and attached images. Voice and video calls still flow through Discord's normal infrastructure with Discord's own encryption.</p>
+
+        <h3>What if I forget my password?</h3>
+        <p>Your encrypted history becomes permanently inaccessible. There is no recovery. The password is what unlocks your keys; without it, your data is just random bytes on disk. Write your password down somewhere safe.</p>
+
+        <h3>What happens to my data if OSL shuts down?</h3>
+        <p>Your data stays on your computer. OSL doesn't host anything — we never had your keys or messages to lose. If we disappear tomorrow, your existing data stays decryptable as long as you have OSL installed and remember your password.</p>
+
+        <h2 id="installing-using">Installing &amp; Using <a class="anchor-link" href="#installing-using" aria-label="Link to this section">#</a></h2>
+
+        <h3>Will OSL get my Discord account banned?</h3>
+        <p>OSL modifies the Discord client locally. Discord's terms of service technically prohibit client modifications. We're not aware of any bans related to OSL specifically, but use it at your own risk. If you have a Discord account you can't afford to lose, weigh the risk.</p>
+
+        <h3>Why is there a Windows security warning?</h3>
+        <p>SmartScreen flags new applications from independent developers until enough users have run them to establish reputation, or until the developer pays for an extended-validation code-signing certificate. We're working on the certificate. See the <a href="/download#smartscreen">explanation on the download page</a> for how to proceed past the warning.</p>
+
+        <h3>Can I use OSL on multiple devices?</h3>
+        <p>Each OSL installation generates its own keys, so different OSL installs see different ciphertext for the same Discord conversation. Multi-device sync is on the roadmap. For now, OSL is best used from a single primary computer.</p>
+
+        <h3>Can I export my encrypted messages?</h3>
+        <p>Not currently. Local export to a portable encrypted archive is on the roadmap.</p>
+
+        <h3>What happens when I uninstall OSL?</h3>
+        <!-- UX-VERIFY: confirm uninstaller flow has "remove all data" option -->
+        <p>OSL leaves your encrypted message store on disk by default — if you reinstall, your history comes back as long as you remember your password. To delete the data entirely, remove the OSL data directory after uninstalling. The installer's uninstall flow has a "remove all data" option.</p>
+
+        <h3>Is there a beta program?</h3>
+        <p>We'll announce a beta program before public launch. Sign up on the <a href="/">landing page</a> to be notified.</p>
+
+        <h2 id="pricing-support">Pricing &amp; Support <a class="anchor-link" href="#pricing-support" aria-label="Link to this section">#</a></h2>
+
+        <h3>Is OSL free?</h3>
+        <p>Yes, with ads. Every 60 minutes of active use, OSL prompts you to watch a 60-second ad break in your browser. The paid tier — $5/month or $50/year — removes ads. See <a href="/pricing">pricing</a> for details.</p>
+
+        <h3>How do I report a bug or request a feature?</h3>
+        <p>Email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> with a description of what you saw and what you expected. Include the OSL version (visible in the about screen) and your OS version. For features, the more context on what problem you're trying to solve, the better.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting started — OSL Privacy Docs</title>
+  <meta name="description" content="Install OSL, set your password, and send your first encrypted message.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/download">Download</a></li>
+        <li><a href="/docs/" aria-current="page">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation</summary>
+          <nav aria-label="Documentation">
+            <p class="docs-group-heading">Getting started</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/getting-started" aria-current="page">Install OSL</a></li>
+              <li><a href="/docs/how-it-works">How OSL works</a></li>
+            </ul>
+            <p class="docs-group-heading">Reference</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/faq">FAQ</a></li>
+              <li><a href="/docs/threat-model">Threat model</a></li>
+              <li><a href="/docs/ad-disclosure">Ad disclosure</a></li>
+            </ul>
+            <p class="docs-group-heading">Legal</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/privacy">Privacy policy</a></li>
+              <li><a href="/docs/terms">Terms of service</a></li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
+
+      <article class="docs-content">
+        <h1>Getting started with OSL</h1>
+        <p class="lede">Install OSL, set your password, and send your first encrypted message.</p>
+
+        <h2 id="install">Install OSL <a class="anchor-link" href="#install" aria-label="Link to this section">#</a></h2>
+        <p>Download OSL from the <a href="/download">download page</a> and run the installer.</p>
+        <p>On first launch, Windows may show a SmartScreen warning that says "Windows protected your PC." This is expected — OSL is a new application from an independent developer. Click "More info" and then "Run anyway." See the <a href="/download#smartscreen">explanation on the download page</a> for the full story.</p>
+        <p>OSL replaces your Discord desktop client. After install, you'll launch OSL instead of Discord, but Discord works the same way inside it.</p>
+
+        <h2 id="set-password">Set your password <a class="anchor-link" href="#set-password" aria-label="Link to this section">#</a></h2>
+        <p>The first time you launch OSL, you'll be prompted to set a password. This password encrypts your keys and message history on your computer.</p>
+        <p>OSL requires at least 6 characters — longer is stronger. There is no password recovery. If you forget your password, all your encrypted history becomes permanently inaccessible.</p>
+        <p>Write your password down somewhere safe. A password manager works. A piece of paper in a drawer works. What doesn't work is "I'll remember it."</p>
+
+        <h2 id="whitelist">Whitelist your first friend <a class="anchor-link" href="#whitelist" aria-label="Link to this section">#</a></h2>
+        <p>Both you and your friend need OSL installed to exchange encrypted messages. After both of you have OSL running, you can whitelist each other.</p>
+        <!-- UX-VERIFY: confirm against V2 — exact menu label "Whitelist for OSL" -->
+        <p>To whitelist someone, click their name in any channel to open their profile, then click "Whitelist for OSL." Once they whitelist you back, encryption is enabled between you.</p>
+        <!-- UX-VERIFY: confirm against V2 — channel header lock-icon right-click menu -->
+        <p>For bulk whitelisting in a server or channel, right-click the channel header's lock icon and choose "Whitelist channel members."</p>
+
+        <h2 id="first-message">Send your first encrypted message <a class="anchor-link" href="#first-message" aria-label="Link to this section">#</a></h2>
+        <!-- UX-VERIFY: confirm against V2 — lock icon color/state semantics -->
+        <p>Type as you normally would in Discord. OSL encrypts the message before sending. The lock icon in the channel header turns green when encryption is active.</p>
+        <p>Your friend, also running OSL, sees your message decrypted automatically. Anyone reading the raw Discord messages — including Discord itself — sees ciphertext only.</p>
+
+        <h2 id="non-osl-friend">What if your friend doesn't have OSL? <a class="anchor-link" href="#non-osl-friend" aria-label="Link to this section">#</a></h2>
+        <p>If you send an encrypted message to someone without OSL, they'll see what looks like random base64 garbage — that's the ciphertext, undecryptable without OSL installed and the right keys.</p>
+        <!-- UX-VERIFY: confirm against V2 — unencrypted send flow -->
+        <p>You have two options: install OSL together with them, or send them an unencrypted message by clicking the lock icon to temporarily disable encryption for that message.</p>
+        <p>You'll get a clear visual indicator before sending an unencrypted message so it doesn't happen by accident.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

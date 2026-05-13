@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
     <a class="topnav-brand" href="/">OSL Privacy</a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
@@ -17,16 +18,16 @@
     </button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/pricing" title="Coming soon">Pricing</a></li>
+        <li><a href="/pricing">Pricing</a></li>
         <li><a href="/download" aria-current="page">Download</a></li>
-        <li><a href="/docs/" title="Coming soon">Docs</a></li>
+        <li><a href="/docs/">Docs</a></li>
         <li><a href="/about" title="Coming soon">About</a></li>
         <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="main">
 
     <section class="section">
       <h1 class="page-heading">Download OSL</h1>
@@ -84,7 +85,7 @@
       </div>
     </section>
 
-    <section class="section section-quiet" aria-labelledby="smartscreen-heading">
+    <section class="section section-quiet" id="smartscreen" aria-labelledby="smartscreen-heading">
       <article class="card">
         <h2 id="smartscreen-heading">About the security warning</h2>
         <p>When you run the OSL installer on Windows, you may see a SmartScreen warning that says "Windows protected your PC" or "Unrecognized publisher." This is expected for new applications from independent developers — Windows shows this warning until enough users have run an application to establish a reputation, or until the developer pays for an extended-validation code-signing certificate.</p>
@@ -111,8 +112,8 @@
       <a href="/pricing">Pricing</a>
       <a href="/download">Download</a>
       <a href="/docs/">Docs</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>

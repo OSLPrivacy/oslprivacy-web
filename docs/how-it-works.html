@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How OSL works — OSL Privacy Docs</title>
+  <meta name="description" content="The cryptography behind OSL, explained without a crypto background. Post-quantum hybrid, forward secrecy, local-only keys.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/download">Download</a></li>
+        <li><a href="/docs/" aria-current="page">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation</summary>
+          <nav aria-label="Documentation">
+            <p class="docs-group-heading">Getting started</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/getting-started">Install OSL</a></li>
+              <li><a href="/docs/how-it-works" aria-current="page">How OSL works</a></li>
+            </ul>
+            <p class="docs-group-heading">Reference</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/faq">FAQ</a></li>
+              <li><a href="/docs/threat-model">Threat model</a></li>
+              <li><a href="/docs/ad-disclosure">Ad disclosure</a></li>
+            </ul>
+            <p class="docs-group-heading">Legal</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/privacy">Privacy policy</a></li>
+              <li><a href="/docs/terms">Terms of service</a></li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
+
+      <article class="docs-content">
+        <h1>How OSL works</h1>
+        <p class="lede">The cryptography behind OSL, explained without needing a crypto background.</p>
+
+        <h2 id="basic-idea">The basic idea <a class="anchor-link" href="#basic-idea" aria-label="Link to this section">#</a></h2>
+        <p>OSL encrypts your messages before Discord ever sees them. When you type a message and hit send, OSL transforms it into ciphertext — random-looking bytes — and only then hands it to Discord to deliver. Discord routes the ciphertext to your recipient. Their copy of OSL transforms it back into the original message.</p>
+        <p>Think of it like sending a sealed letter through the mail. The postal service handles delivery but can't read the contents. Discord plays the postal service role here — they route the envelope, but the inside is just bytes to them.</p>
+
+        <h2 id="cryptography">The cryptography <a class="anchor-link" href="#cryptography" aria-label="Link to this section">#</a></h2>
+        <p>OSL uses end-to-end encryption with a post-quantum hybrid. The building blocks:</p>
+        <ul>
+          <li><strong>X25519</strong> — a modern elliptic-curve key-exchange algorithm. Battle-tested, used by Signal, WireGuard, and most contemporary secure-messaging systems.</li>
+          <li><strong>ML-KEM-768</strong> — a post-quantum key-encapsulation mechanism standardized by NIST in 2024. Designed to resist attacks from quantum computers that don't exist yet but might.</li>
+          <li><strong>Double Ratchet</strong> — the protocol behind Signal's forward secrecy. Each message uses a fresh key derived from the previous one, so compromising your current keys doesn't expose your old messages.</li>
+          <li><strong>Sender Keys</strong> — for group chats. Lets one ciphertext be delivered to multiple recipients efficiently.</li>
+        </ul>
+        <p>X25519 and ML-KEM-768 are combined in a "hybrid" mode — both have to be broken for an attacker to recover your keys. If quantum computers turn out to break X25519 some day, ML-KEM-768 still holds. If a flaw is found in ML-KEM-768, X25519 still holds. You get the benefits of both algorithms and the failure mode of neither.</p>
+
+        <h2 id="where-keys-live">Where your keys live <a class="anchor-link" href="#where-keys-live" aria-label="Link to this section">#</a></h2>
+        <p>Everything cryptographic happens on your computer. Your encryption keys are generated locally and stored locally. They're encrypted at rest with your password — even someone with full access to your filesystem can't read them without it.</p>
+        <p>We never see your keys. We have no copy of them. We can't recover them if you lose them. This is the trade-off for end-to-end encryption: nobody else can read your data, and that includes us.</p>
+
+        <h2 id="what-discord-sees">What Discord sees <a class="anchor-link" href="#what-discord-sees" aria-label="Link to this section">#</a></h2>
+        <p>Discord still routes messages between you and your friends. From their perspective:</p>
+        <ul>
+          <li><strong>They can see:</strong> timestamps, who you're talking to, message sizes, when you're online, which servers you're in.</li>
+          <li><strong>They cannot see:</strong> the contents of your messages, your encryption keys, your OSL whitelist, or the relationships between OSL users.</li>
+        </ul>
+        <p>This is the meaningful limit of OSL. We protect content, not metadata. If you need both, look at <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> — they were designed for that threat model from day one. See our <a href="/docs/threat-model">threat model</a> for a deeper discussion of what's and isn't covered.</p>
+
+        <h2 id="open-source">Open source verification <a class="anchor-link" href="#open-source" aria-label="Link to this section">#</a></h2>
+        <p>All of OSL's cryptographic code is open source under AGPL-3.0 on <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>. You can read it, audit it, build the installer yourself, or trust people who have done so.</p>
+        <p>Open source isn't a guarantee that the code is bug-free. It's a guarantee that you can check.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threat model — OSL Privacy Docs</title>
+  <meta name="description" content="What OSL defends against, and what it doesn't.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/download">Download</a></li>
+        <li><a href="/docs/" aria-current="page">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation</summary>
+          <nav aria-label="Documentation">
+            <p class="docs-group-heading">Getting started</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/getting-started">Install OSL</a></li>
+              <li><a href="/docs/how-it-works">How OSL works</a></li>
+            </ul>
+            <p class="docs-group-heading">Reference</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/faq">FAQ</a></li>
+              <li><a href="/docs/threat-model" aria-current="page">Threat model</a></li>
+              <li><a href="/docs/ad-disclosure">Ad disclosure</a></li>
+            </ul>
+            <p class="docs-group-heading">Legal</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/privacy">Privacy policy</a></li>
+              <li><a href="/docs/terms">Terms of service</a></li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
+
+      <article class="docs-content">
+        <h1>Threat model</h1>
+        <p class="lede">What OSL defends against, and what it doesn't.</p>
+
+        <h2 id="defends-against">What OSL defends against <a class="anchor-link" href="#defends-against" aria-label="Link to this section">#</a></h2>
+        <p>OSL protects the <strong>content</strong> of your messages against the following adversaries:</p>
+        <ul>
+          <li>Discord itself reading your messages. Discord receives ciphertext only.</li>
+          <li>Discord employees with database access. Same as above.</li>
+          <li>Attackers who breach Discord's infrastructure. Same as above.</li>
+          <li>Network eavesdroppers — your ISP, public-wifi snoopers, governments tapping the wire. They see only TLS-encrypted Discord traffic carrying ciphertext.</li>
+          <li>Anyone with subpoena access to Discord's data. Discord can hand over what they have. What they have is ciphertext.</li>
+        </ul>
+
+        <h2 id="doesnt-defend-against">What OSL does NOT defend against <a class="anchor-link" href="#doesnt-defend-against" aria-label="Link to this section">#</a></h2>
+        <p>OSL is not a complete privacy solution. It does not protect against:</p>
+        <ul>
+          <li><strong>Metadata.</strong> Discord can see who you're talking to, when, message frequency, message sizes, and channel membership. OSL hides the contents of conversations, not their existence.</li>
+          <li><strong>A compromised computer.</strong> If malware, a keylogger, or a screen-recorder is running on your device, OSL can't help. Encryption only protects data in transit and at rest — it can't protect data while you're reading or typing it.</li>
+          <li><strong>The other side leaking.</strong> The person you're talking to can screenshot, copy-paste, or otherwise share your messages. Encryption defends against third parties, not against your recipient.</li>
+          <li><strong>Voice and video calls.</strong> Not encrypted by OSL. Discord's normal infrastructure handles those.</li>
+          <li><strong>Server moderation.</strong> If a server admin sees a problem (because they're in the conversation, because someone reports it, or because they have OSL installed and you whitelisted them), they can act on it.</li>
+        </ul>
+
+        <h2 id="specific-concerns">Specific concerns <a class="anchor-link" href="#specific-concerns" aria-label="Link to this section">#</a></h2>
+
+        <h3>Can Discord ban me for using OSL?</h3>
+        <p>Possibly. Discord's terms of service prohibit client modifications. We're not aware of bans specifically related to OSL but use it at your own risk. If you have a Discord account you can't afford to lose, weigh the risk.</p>
+
+        <h3>Can the government compel Discord to read my messages?</h3>
+        <p>Discord can be compelled to hand over what they have. For OSL-encrypted messages, what Discord has is ciphertext — random bytes. Decrypting requires your keys, which Discord doesn't have.</p>
+
+        <h3>Can the government compel ME to hand over my password?</h3>
+        <p>Depending on jurisdiction, possibly. Some legal systems can compel you to disclose passwords; others can't (or it's unsettled law). OSL doesn't protect against legal coercion or physical compulsion. If you're in a high-risk situation, consult a lawyer and consider whether OSL alone is enough.</p>
+
+        <h2 id="right-for-you">Is OSL right for you? <a class="anchor-link" href="#right-for-you" aria-label="Link to this section">#</a></h2>
+        <p>OSL is appropriate for:</p>
+        <ul>
+          <li>Casual privacy. You don't want Discord, your employer, or your ISP reading your group chats.</li>
+          <li>Communities discussing sensitive topics (health, identity, politics, finances) without changing platforms.</li>
+          <li>Anyone who wants end-to-end encryption added to conversations they're already having.</li>
+        </ul>
+        <p>OSL is <strong>not</strong> appropriate for:</p>
+        <ul>
+          <li>Activists, journalists, or dissidents in hostile environments. The metadata Discord sees is enough to map your network. Use <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> instead — they're designed for that threat model.</li>
+          <li>Crime. Don't.</li>
+        </ul>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
