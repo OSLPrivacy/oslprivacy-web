@@ -7,12 +7,16 @@
   <meta name="description" content="OSL Privacy pricing. Free or Paid — same end-to-end encryption either way.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
-    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <a class="topnav-brand" href="/"><svg class="topnav-brand-mark" viewBox="0 0 96 96" width="28" height="28" fill="none" aria-hidden="true" focusable="false"><circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="6"/><path d="M 26 23 H 70 V 52 Q 70 76 48 76 Q 26 76 26 52 Z" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M 62 33 H 35 V 50 H 50 a 9 9 0 1 1 0 18 H 38" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>OSL Privacy</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
       <span></span><span></span><span></span>
     </button>
@@ -133,7 +137,12 @@
       <div class="faq">
         <article class="faq-item">
           <h3>Why charge at all? OSL is open source.</h3>
-          <p>Running OSL needs servers, code-signing certificates, and development time. Paid users keep the project independent. We don't take VC money, so we don't have shareholders demanding we monetize your data.</p>
+          <p>Running OSL needs servers, code-signing certificates, and development time. Paid users keep the project independent.</p>
+        </article>
+        <!-- FUTURE: expand with metadata privacy breakdown - see W6 -->
+        <article class="faq-item">
+          <h3>What payment methods do you accept?</h3>
+          <p>Credit card via Stripe, Bitcoin, and Monero. Crypto payments provide stronger privacy at checkout.</p>
         </article>
         <article class="faq-item">
           <h3>What ads will I see on the Free tier?</h3>
@@ -147,20 +156,12 @@
           <h3>What happens if I cancel my paid subscription?</h3>
           <p>You go back to the Free tier with ad breaks. Your encrypted data, keys, and history stay intact on your computer.</p>
         </article>
-        <article class="faq-item">
-          <h3>What about students or low-income users?</h3>
-          <p>Email us at <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>. We have a no-questions-asked discount for anyone who needs it.</p>
-        </article>
-        <article class="faq-item">
-          <h3>Is there an enterprise plan?</h3>
-          <p>Not at launch. If you need team admin, audit logging, or bulk licensing, email us and we'll talk.</p>
-        </article>
       </div>
     </section>
 
     <section class="section section-cta" id="notify" aria-labelledby="cta-heading">
       <h2 id="cta-heading" class="section-heading">Get notified when subscriptions go live</h2>
-      <p class="section-subhead">Stripe checkout ships at launch. Sign up to be first to know.</p>
+      <p class="section-subhead">Payment processing ships at launch. Stripe, Bitcoin, and Monero supported. Sign up to be first to know.</p>
       <form class="notify-form" id="notify-form" action="#" novalidate>
         <label for="email" class="visually-hidden">Email address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">

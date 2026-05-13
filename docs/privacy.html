@@ -7,12 +7,16 @@
   <meta name="description" content="OSL Privacy's privacy policy. What we collect, what we don't, and what we do with it.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
-    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <a class="topnav-brand" href="/"><svg class="topnav-brand-mark" viewBox="0 0 96 96" width="28" height="28" fill="none" aria-hidden="true" focusable="false"><circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="6"/><path d="M 26 23 H 70 V 52 Q 70 76 48 76 Q 26 76 26 52 Z" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M 62 33 H 35 V 50 H 50 a 9 9 0 1 1 0 18 H 38" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>OSL Privacy</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
       <span></span><span></span><span></span>
     </button>
@@ -68,7 +72,7 @@
           <li><strong>Email address</strong> — if you provide one for launch notifications or paid-tier subscriptions.</li>
           <li><strong>Website analytics</strong> — none. We don't use Google Analytics, Plausible, or any third-party analytics service. We don't set tracking cookies.</li>
           <li><strong>Server logs</strong> — Cloudflare, our CDN, retains standard request logs (IP address, user agent, requested URL, timestamp) for a short period for security and abuse detection.</li>
-          <li><strong>Payment information</strong> — if you subscribe to the paid tier, Stripe processes your payment. Stripe receives your card details; we receive a customer ID and subscription status from Stripe, never the card number itself.</li>
+          <li><strong>Payment information</strong> — if you subscribe to the paid tier via Stripe, Stripe receives your card details; we receive a customer ID and subscription status from Stripe, never the card number itself. If you pay via Bitcoin or Monero, the payment goes directly to an OSL-owned address with no third-party processor in between.</li>
           <li><strong>License validation</strong> — paid subscribers' OSL clients periodically check that their license is still active. These requests include the license key and a timestamp.</li>
         </ul>
 
@@ -85,7 +89,7 @@
         <h2 id="how-we-use-data">How we use what we collect <a class="anchor-link" href="#how-we-use-data" aria-label="Link to this section">#</a></h2>
         <ul>
           <li><strong>Email</strong> — to send the launch notification you signed up for, or service-related notices if you're a paid subscriber. We don't sell, rent, or share your email with third parties. We don't run marketing campaigns to your address.</li>
-          <li><strong>Stripe payment data</strong> — to process your subscription and handle renewals, refunds, and cancellations.</li>
+          <li><strong>Payment data</strong> — to process your subscription and handle renewals, refunds, and cancellations. For Stripe-paid subscriptions this is a Stripe customer ID; for crypto-paid subscriptions this is an on-chain transaction reference and license key only.</li>
           <li><strong>License validation requests</strong> — to verify your paid tier is active. The validation server doesn't track which Discord servers you're in, who you talk to, or anything about your OSL usage beyond "this license is valid."</li>
           <li><strong>Server logs</strong> — for security and abuse detection only. We don't analyze them for marketing or analytics purposes.</li>
         </ul>
@@ -94,7 +98,7 @@
         <p>We use the following third-party services:</p>
         <ul>
           <li><strong>Cloudflare</strong> — CDN and DDoS protection for oslprivacy.com.</li>
-          <li><strong>Stripe</strong> — payment processing for paid subscriptions.</li>
+          <li><strong>Stripe</strong> — card payment processing for paid subscriptions. Bitcoin and Monero payments do not go through Stripe or any other payment processor.</li>
           <li><strong>Ad network</strong> — we'll publish the specific provider before the free tier goes live. Ads run only on oslprivacy.com/watch, never inside OSL itself.</li>
         </ul>
         <p>We do not use Google Analytics, Facebook Pixel, ad-retargeting trackers, or any other cross-site tracking infrastructure.</p>

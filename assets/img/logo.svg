@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 130" fill="none" aria-hidden="true">
+  <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="6"/>
+  <path d="M 26 23 H 70 V 52 Q 70 76 48 76 Q 26 76 26 52 Z"
+        stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M 62 33 H 35 V 50 H 50 a 9 9 0 1 1 0 18 H 38"
+        stroke="currentColor" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="48" y="118" text-anchor="middle" font-size="14" font-weight="600"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        fill="currentColor">OSL Privacy</text>
+</svg>
