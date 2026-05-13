@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download OSL Privacy — End-to-end encryption for Discord</title>
+  <meta name="description" content="Download OSL Privacy for Windows. End-to-end encryption for Discord. Free for personal use.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing" title="Coming soon">Pricing</a></li>
+        <li><a href="/download" aria-current="page">Download</a></li>
+        <li><a href="/docs/" title="Coming soon">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="section">
+      <h1 class="page-heading">Download OSL</h1>
+      <p class="page-lede">End-to-end encryption for Discord. Free for personal use.</p>
+    </section>
+
+    <section class="section" aria-labelledby="platforms-heading">
+      <h2 id="platforms-heading" class="visually-hidden">Platform availability</h2>
+      <div class="grid-3">
+
+        <article class="card card-active platform">
+          <h3>Windows</h3>
+          <p class="platform-version">Windows 10 / 11 (64-bit)</p>
+          <!-- LAUNCH-EDIT: when the installer is signed and hosted, change href to the installer URL and text to "Download for Windows". Then remove the #notify section below. -->
+          <a href="#notify" class="button button-primary platform-cta">Get notified</a>
+          <p class="platform-meta">~XX MB · Signed by [TBD]</p>
+        </article>
+
+        <article class="card platform">
+          <h3>macOS</h3>
+          <p class="platform-version">macOS 13 Ventura or later</p>
+          <button class="button button-secondary platform-cta" type="button" aria-disabled="true" tabindex="-1">Coming soon</button>
+          <p class="platform-meta">Sign up to be notified when macOS support ships.</p>
+        </article>
+
+        <article class="card platform">
+          <h3>Linux</h3>
+          <p class="platform-version">Ubuntu 22.04+, Fedora 38+, Arch</p>
+          <button class="button button-secondary platform-cta" type="button" aria-disabled="true" tabindex="-1">Coming soon</button>
+          <p class="platform-meta">Sign up to be notified when Linux support ships.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- LAUNCH-EDIT: remove this entire section once the Windows installer is live. -->
+    <section class="section section-cta" id="notify" aria-labelledby="notify-heading">
+      <h2 id="notify-heading" class="section-heading">Be the first to know</h2>
+      <p class="section-subhead">We'll email you the moment Windows downloads are ready.</p>
+      <form class="notify-form" id="notify-form" action="#" novalidate>
+        <label for="email" class="visually-hidden">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <button type="submit" class="button button-primary">Notify me</button>
+      </form>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="section" aria-labelledby="install-heading">
+      <h2 id="install-heading" class="section-heading">What you'll be installing</h2>
+      <div class="prose">
+        <p>OSL replaces your Discord desktop client. After install, you'll launch OSL instead of Discord — but Discord works the same way inside it. Your login, friends, servers, settings, everything stays.</p>
+        <p>OSL adds end-to-end encryption on top of Discord's UI. When you send a message to someone who also has OSL installed and you've whitelisted each other, the message gets encrypted before Discord sees it. Anyone reading the raw Discord messages — including Discord itself — only sees ciphertext.</p>
+        <p>OSL doesn't replace voice or video calls. Those still go through Discord's normal infrastructure.</p>
+        <p>You'll be asked to set a password the first time you launch. This password encrypts your keys and message history on your computer. If you forget it, your encrypted data is permanently lost. There is no recovery.</p>
+      </div>
+    </section>
+
+    <section class="section section-quiet" aria-labelledby="smartscreen-heading">
+      <article class="card">
+        <h2 id="smartscreen-heading">About the security warning</h2>
+        <p>When you run the OSL installer on Windows, you may see a SmartScreen warning that says "Windows protected your PC" or "Unrecognized publisher." This is expected for new applications from independent developers — Windows shows this warning until enough users have run an application to establish a reputation, or until the developer pays for an extended-validation code-signing certificate.</p>
+        <p>To run OSL despite the warning, click "More info" on the SmartScreen dialog, then "Run anyway." We're working on getting a code-signing certificate that will remove this warning in a future release.</p>
+        <p>If you'd rather verify OSL yourself, the source code is open source under AGPL-3.0 on <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>. You can audit the code, build the installer yourself, and skip the published binary entirely.</p>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="sysreq-heading">
+      <h2 id="sysreq-heading" class="section-heading">System requirements</h2>
+      <ul class="requirements">
+        <li>Windows 10 (version 1809) or Windows 11, 64-bit</li>
+        <li>200 MB free disk space</li>
+        <li>4 GB RAM (8 GB recommended)</li>
+        <li>Internet connection for messaging</li>
+        <li>A Discord account</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
