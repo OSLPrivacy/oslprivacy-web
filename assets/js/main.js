@@ -23,4 +23,33 @@
       menu.classList.toggle('open');
     });
   }
+
+  const periodInputs = document.querySelectorAll('input[name="period"]');
+  if (periodInputs.length) {
+    const setPeriod = (period) => {
+      document.querySelectorAll('[data-monthly][data-yearly]').forEach((el) => {
+        el.textContent = el.dataset[period];
+      });
+      document.querySelectorAll('[data-monthly-text][data-yearly-text]').forEach((el) => {
+        el.textContent = el.dataset[period + 'Text'];
+      });
+      const url = new URL(window.location);
+      if (period === 'yearly') url.searchParams.set('period', 'yearly');
+      else url.searchParams.delete('period');
+      history.replaceState(null, '', url);
+    };
+
+    const urlPeriod = new URLSearchParams(window.location.search).get('period');
+    if (urlPeriod === 'yearly') {
+      const yearly = document.querySelector('input[name="period"][value="yearly"]');
+      if (yearly) yearly.checked = true;
+      setPeriod('yearly');
+    }
+
+    periodInputs.forEach((input) => {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) setPeriod(e.target.value);
+      });
+    });
+  }
 })();

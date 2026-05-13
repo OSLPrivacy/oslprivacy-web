@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — OSL Privacy</title>
+  <meta name="description" content="OSL Privacy pricing. Free or Paid — same end-to-end encryption either way.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header class="topnav">
+    <a class="topnav-brand" href="/">OSL Privacy</a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/pricing" aria-current="page">Pricing</a></li>
+        <li><a href="/download">Download</a></li>
+        <li><a href="/docs/" title="Coming soon">Docs</a></li>
+        <li><a href="/about" title="Coming soon">About</a></li>
+        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="section">
+      <h1 class="page-heading">Pricing</h1>
+      <p class="page-lede">Two plans. Free or Paid. Same encryption either way.</p>
+    </section>
+
+    <section class="section" aria-labelledby="plans-heading">
+      <h2 id="plans-heading" class="visually-hidden">Plans</h2>
+
+      <fieldset class="period-toggle" aria-label="Billing period">
+        <legend class="visually-hidden">Billing period</legend>
+        <input type="radio" id="period-monthly" name="period" value="monthly" checked>
+        <label for="period-monthly">Monthly</label>
+        <input type="radio" id="period-yearly" name="period" value="yearly">
+        <label for="period-yearly">Yearly <span class="period-savings">save 17%</span></label>
+      </fieldset>
+
+      <p class="encryption-note">Encryption is identical on both tiers. Paid removes the ad breaks.</p>
+
+      <div class="grid-2 plans">
+
+        <article class="card plan">
+          <h3 class="plan-name">Free</h3>
+          <div class="price-tag">
+            <span class="price-amount">$0</span>
+            <span class="price-period">/month</span>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check yes" aria-hidden="true">✓</span> Full end-to-end encryption</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Unlimited messages and peers</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> All UX features (whitelist, burns, server defaults, keybinds)</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Encryption-at-rest on your device</li>
+            <li><span class="check no" aria-hidden="true">—</span> Ad break every 60 minutes (60-second ad in your browser)</li>
+          </ul>
+          <a href="/download" class="button button-secondary plan-cta">Download free</a>
+        </article>
+
+        <article class="card card-active plan">
+          <h3 class="plan-name">Paid</h3>
+          <div class="price-tag" aria-live="polite">
+            <span class="price-amount" data-monthly="$5" data-yearly="$50">$5</span>
+            <span class="price-period" data-monthly="/month" data-yearly="/year">/month</span>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check yes" aria-hidden="true">✓</span> Everything in Free</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> No ads, ever</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Email support</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Supporter badge (cosmetic)</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Cancel anytime</li>
+          </ul>
+          <!-- LAUNCH-EDIT: replace href with Stripe checkout URL when Phase F ships -->
+          <a href="#notify" class="button button-primary plan-cta cta-subscribe" data-monthly-text="Subscribe — $5/month" data-yearly-text="Subscribe — $50/year">Subscribe — $5/month</a>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="free-tier-heading">
+      <h2 id="free-tier-heading" class="section-heading">How the free tier works</h2>
+      <div class="prose">
+        <p>OSL Free is free because of ads. Every 60 minutes of active use, OSL prompts you to take a short break — your browser opens a page on oslprivacy.com, plays a 60-second ad, and sends you back to OSL with another 60 minutes unlocked.</p>
+        <p>Ads only run on our website. We don't embed ad SDKs inside OSL itself — the OSL client never talks to ad networks. This keeps your messaging surface clean and means ad-network tracking can't reach into your conversations.</p>
+        <p>The 60-minute timer only counts active use. If OSL is in the background or minimized, the timer pauses. Light users may never hit the threshold; heavy users see a few ad breaks per day.</p>
+        <p>If you'd rather skip the ad breaks entirely, the Paid tier is $5/month or $50/year and removes them.</p>
+      </div>
+
+      <div class="preview-block">
+        <div class="preview-wrap">
+          <p class="preview-kicker">Preview</p>
+          <div class="timer-mock">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+              <polyline points="12,7 12,12 16,14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>50 min until next ad break</span>
+          </div>
+          <a href="#notify" class="upgrade-link">Upgrade for $5 &rarr;</a>
+        </div>
+        <p class="preview-caption">The timer lives in OSL's UI, not inside your Discord chat.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="never-charge-heading">
+      <h2 id="never-charge-heading" class="section-heading">What we never charge for</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>End-to-end encryption</h3>
+          <p>Every tier gets the same cryptographic protection — Free and Paid users have identical security.</p>
+        </article>
+        <article class="card">
+          <h3>Your data</h3>
+          <p>Your keys and messages live on your computer. We can't read them. There's nothing to sell, even if we wanted to.</p>
+        </article>
+        <article class="card">
+          <h3>Your contact list</h3>
+          <p>OSL never builds a social graph of who talks to whom. Discord sees that metadata, we don't.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pricing-faq-heading">
+      <h2 id="pricing-faq-heading" class="section-heading">Pricing FAQ</h2>
+      <div class="faq">
+        <article class="faq-item">
+          <h3>Why charge at all? OSL is open source.</h3>
+          <p>Running OSL needs servers, code-signing certificates, and development time. Paid users keep the project independent. We don't take VC money, so we don't have shareholders demanding we monetize your data.</p>
+        </article>
+        <article class="faq-item">
+          <h3>What ads will I see on the Free tier?</h3>
+          <p>We'll publish the exact ad provider before the Free tier goes live. Whatever we pick, ads will be contextual to oslprivacy.com, not personalized to you. The ad network sees your IP and browser the same way any website visitor would.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Can I block the ads with uBlock Origin or similar?</h3>
+          <p>Technically yes — they're served from our website. But blocking ads doesn't extend your OSL timer. The unlock comes from completing the ad-watch flow on our server, not from the ad itself loading. If you don't want to see ads, the Paid tier ($5/month) is the supported path.</p>
+        </article>
+        <article class="faq-item">
+          <h3>What happens if I cancel my paid subscription?</h3>
+          <p>You go back to the Free tier with ad breaks. Your encrypted data, keys, and history stay intact on your computer.</p>
+        </article>
+        <article class="faq-item">
+          <h3>What about students or low-income users?</h3>
+          <p>Email us at <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>. We have a no-questions-asked discount for anyone who needs it.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Is there an enterprise plan?</h3>
+          <p>Not at launch. If you need team admin, audit logging, or bulk licensing, email us and we'll talk.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-cta" id="notify" aria-labelledby="cta-heading">
+      <h2 id="cta-heading" class="section-heading">Get notified when subscriptions go live</h2>
+      <p class="section-subhead">Stripe checkout ships at launch. Sign up to be first to know.</p>
+      <form class="notify-form" id="notify-form" action="#" novalidate>
+        <label for="email" class="visually-hidden">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <button type="submit" class="button button-primary">Notify me</button>
+      </form>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/pricing">Pricing</a>
+      <a href="/download">Download</a>
+      <a href="/docs/">Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
