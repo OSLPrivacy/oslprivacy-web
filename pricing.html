@@ -49,7 +49,7 @@
         <label for="period-yearly">Yearly <span class="period-savings">save 17%</span></label>
       </fieldset>
 
-      <p class="encryption-note">Encryption is identical on both tiers. Paid removes the ad breaks.</p>
+      <!-- W6.3: new copy for the tier-comparison note goes here -->
 
       <div class="grid-2 plans">
 
@@ -64,7 +64,6 @@
             <li><span class="check yes" aria-hidden="true">✓</span> Unlimited messages and peers</li>
             <li><span class="check yes" aria-hidden="true">✓</span> All UX features (whitelist, burns, server defaults, keybinds)</li>
             <li><span class="check yes" aria-hidden="true">✓</span> Encryption-at-rest on your device</li>
-            <li><span class="check no" aria-hidden="true">—</span> Ad break every 60 minutes (60-second ad in your browser)</li>
           </ul>
           <a href="/download" class="button button-secondary plan-cta">Download free</a>
         </article>
@@ -77,9 +76,7 @@
           </div>
           <ul class="plan-features">
             <li><span class="check yes" aria-hidden="true">✓</span> Everything in Free</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> No ads, ever</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Email support</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Supporter badge (cosmetic)</li>
+            <!-- W6.3: paid feature bullets go here -->
             <li><span class="check yes" aria-hidden="true">✓</span> Cancel anytime</li>
           </ul>
           <!-- LAUNCH-EDIT: replace href with Stripe checkout URL when Phase F ships -->
@@ -89,30 +86,7 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="free-tier-heading">
-      <h2 id="free-tier-heading" class="section-heading">How the free tier works</h2>
-      <div class="prose">
-        <p>OSL Free is free because of ads. Every 60 minutes of active use, OSL prompts you to take a short break — your browser opens a page on oslprivacy.com, plays a 60-second ad, and sends you back to OSL with another 60 minutes unlocked.</p>
-        <p>Ads only run on our website. We don't embed ad SDKs inside OSL itself — the OSL client never talks to ad networks. This keeps your messaging surface clean and means ad-network tracking can't reach into your conversations.</p>
-        <p>The 60-minute timer only counts active use. If OSL is in the background or minimized, the timer pauses. Light users may never hit the threshold; heavy users see a few ad breaks per day.</p>
-        <p>If you'd rather skip the ad breaks entirely, the Paid tier is $5/month or $50/year and removes them.</p>
-      </div>
-
-      <div class="preview-block">
-        <div class="preview-wrap">
-          <p class="preview-kicker">Preview</p>
-          <div class="timer-mock">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
-              <polyline points="12,7 12,12 16,14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>50 min until next ad break</span>
-          </div>
-          <span class="upgrade-link" aria-hidden="true">Upgrade for $5 &rarr;</span>
-        </div>
-        <p class="preview-caption">The timer lives in OSL's UI, not inside your Discord chat.</p>
-      </div>
-    </section>
+    <!-- W6.3: new copy for the "how the free tier works" section goes here -->
 
     <section class="section" aria-labelledby="never-charge-heading">
       <h2 id="never-charge-heading" class="section-heading">What we never charge for</h2>
@@ -145,16 +119,8 @@
           <p>Credit card via Stripe, Bitcoin, and Monero. Crypto payments provide stronger privacy at checkout.</p>
         </article>
         <article class="faq-item">
-          <h3>What ads will I see on the Free tier?</h3>
-          <p>We'll publish the exact ad provider before the Free tier goes live. Whatever we pick, ads will be contextual to oslprivacy.com, not personalized to you. The ad network sees your IP and browser the same way any website visitor would.</p>
-        </article>
-        <article class="faq-item">
-          <h3>Can I block the ads with uBlock Origin or similar?</h3>
-          <p>Technically yes — they're served from our website. But blocking ads doesn't extend your OSL timer. The unlock comes from completing the ad-watch flow on our server, not from the ad itself loading. If you don't want to see ads, the Paid tier ($5/month) is the supported path.</p>
-        </article>
-        <article class="faq-item">
           <h3>What happens if I cancel my paid subscription?</h3>
-          <p>You go back to the Free tier with ad breaks. Your encrypted data, keys, and history stay intact on your computer.</p>
+          <p>You go back to the free tier — unlimited encrypted text messaging stays available, you just lose the ability to send encrypted attachments and beta channel access until you resubscribe.</p>
         </article>
       </div>
     </section>
