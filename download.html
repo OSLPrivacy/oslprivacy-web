@@ -26,7 +26,7 @@
         <li><a href="/download" aria-current="page">Download</a></li>
         <li><a href="/docs/">Docs</a></li>
         <li><a href="/about" title="Coming soon">About</a></li>
-        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+        <li><a href="/audit">Audit</a></li>
       </ul>
     </nav>
   </header>
@@ -89,12 +89,26 @@
       </div>
     </section>
 
+    <section class="section" aria-labelledby="beta-install-heading">
+      <h2 id="beta-install-heading" class="section-heading">Installing the beta</h2>
+      <div class="prose">
+        <p>OSL is currently in beta and not yet code-signed. When you download and run the installer, Windows will show a SmartScreen warning that says "Windows protected your PC — Microsoft Defender SmartScreen prevented an unrecognized app from starting." This is expected — it happens for every unsigned application, regardless of whether it's safe.</p>
+        <h3>To install:</h3>
+        <ol>
+          <li>Click "More info" on the SmartScreen warning.</li>
+          <li>Click "Run anyway" on the expanded view.</li>
+          <li>Continue through the installer normally.</li>
+        </ol>
+        <p>If you'd like to verify the installer is safe before running it, the cryptographic core of OSL is available for review on the Audit page. Code-signed installers are coming — beta users get to see SmartScreen warnings for now.</p>
+      </div>
+    </section>
+
     <section class="section section-quiet" id="smartscreen" aria-labelledby="smartscreen-heading">
       <article class="card">
         <h2 id="smartscreen-heading">About the security warning</h2>
         <p>When you run the OSL installer on Windows, you may see a SmartScreen warning that says "Windows protected your PC" or "Unrecognized publisher." This is expected for new applications from independent developers — Windows shows this warning until enough users have run an application to establish a reputation, or until the developer pays for an extended-validation code-signing certificate.</p>
         <p>To run OSL despite the warning, click "More info" on the SmartScreen dialog, then "Run anyway." We're working on getting a code-signing certificate that will remove this warning in a future release.</p>
-        <p>If you'd rather verify OSL yourself, the source code is open source under AGPL-3.0 on <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>. You can audit the code, build the installer yourself, and skip the published binary entirely.</p>
+        <p>The cryptographic core is published for audit at /audit. You can verify how encryption works there. The installer itself is built and signed by us.</p>
       </article>
     </section>
 
@@ -120,7 +134,7 @@
       <a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
-      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
     </nav>

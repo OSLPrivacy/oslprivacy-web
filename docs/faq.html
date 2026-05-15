@@ -26,7 +26,7 @@
         <li><a href="/download">Download</a></li>
         <li><a href="/docs/" aria-current="page">Docs</a></li>
         <li><a href="/about" title="Coming soon">About</a></li>
-        <li><a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a></li>
+        <li><a href="/audit">Audit</a></li>
       </ul>
     </nav>
   </header>
@@ -68,8 +68,8 @@
         <h3>How is OSL different from Signal?</h3>
         <p>Signal is its own messaging app — separate identity, separate contacts, separate platform. OSL piggybacks on Discord — same identity, same servers, same conversations, just with end-to-end encryption added. If you want to talk to your existing Discord friends privately, OSL fits. If you want to start over with a separate secure-messaging identity that hides metadata too, Signal is the right tool. See our <a href="/docs/threat-model">threat model</a> for a fuller discussion.</p>
 
-        <h3>Why open source?</h3>
-        <p>You can't trust crypto you can't audit. AGPL-3.0 means anyone can read OSL's code, build it themselves, and verify it does what we say it does. If we're ever compelled to ship a backdoored update, the source tree will show it.</p>
+        <h3>Why publish the crypto code?</h3>
+        <p>Privacy claims are only as good as the code behind them. If the encryption is wrong, no amount of marketing fixes it. So the cryptographic primitives, the ratchet, the key store, and the wire format are published on the Audit page. You can read or download them yourself. The Discord integration and keyserver stay closed because those are the business; the crypto isn't.</p>
 
         <h3>Does OSL work on mobile?</h3>
         <p>Not yet. OSL is desktop-only at launch — Windows specifically. macOS and Linux are planned for later. Mobile (Android/iOS) is on the longer-term roadmap but isn't committed.</p>
@@ -141,7 +141,7 @@
       <a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
-      <a href="https://github.com/OSLPrivacy" rel="noopener">GitHub</a>
+      <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
     </nav>
