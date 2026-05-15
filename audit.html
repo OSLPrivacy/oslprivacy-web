@@ -25,7 +25,6 @@
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/download">Download</a></li>
         <li><a href="/docs/">Docs</a></li>
-        <li><a href="/about" title="Coming soon">About</a></li>
         <li><a href="/audit" aria-current="page">Audit</a></li>
       </ul>
     </nav>
@@ -44,56 +43,56 @@
         <p>These are the parts of OSL that matter for verifying the encryption claims — the cryptographic primitives, the message ratchet, the key store, the steganography for cover envelopes, and the threat model. You can read them in your browser or download a zip for offline review. The code in these files compiles inside the full OSL client; it isn't a stand-alone buildable project.</p>
       </div>
 
-      <div class="grid-2">
+      <div class="audit-files">
 
-        <article class="card">
+        <article class="audit-file">
           <h3>Crypto core (crates/crypto)</h3>
-          <p>Encryption primitives, message ratchet, sender keys, wire format.</p>
+          <p class="audit-file-desc">Encryption primitives, message ratchet, sender keys, wire format.</p>
           <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <p>
+          <div class="audit-file-actions">
             <a href="/audit/files/crypto-core/" class="button button-secondary">View</a>
-            <a href="/audit/files/crypto-core.zip" class="button button-secondary">Download .zip</a>
-          </p>
+            <a href="/audit/files/crypto-core.zip" class="button button-primary">Download .zip</a>
+          </div>
         </article>
 
-        <article class="card">
+        <article class="audit-file">
           <h3>Key store (crates/keystore)</h3>
-          <p>License cache, sealer, identity. The encryption-relevant pieces.</p>
+          <p class="audit-file-desc">License cache, sealer, identity. The encryption-relevant pieces.</p>
           <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <p>
+          <div class="audit-file-actions">
             <a href="/audit/files/keystore/" class="button button-secondary">View</a>
-            <a href="/audit/files/keystore.zip" class="button button-secondary">Download .zip</a>
-          </p>
+            <a href="/audit/files/keystore.zip" class="button button-primary">Download .zip</a>
+          </div>
         </article>
 
-        <article class="card">
+        <article class="audit-file">
           <h3>Steganography (crates/stego)</h3>
-          <p>Cover envelopes for hiding message payloads.</p>
+          <p class="audit-file-desc">Cover envelopes for hiding message payloads.</p>
           <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <p>
+          <div class="audit-file-actions">
             <a href="/audit/files/stego/" class="button button-secondary">View</a>
-            <a href="/audit/files/stego.zip" class="button button-secondary">Download .zip</a>
-          </p>
+            <a href="/audit/files/stego.zip" class="button button-primary">Download .zip</a>
+          </div>
         </article>
 
-        <article class="card">
+        <article class="audit-file">
           <h3>Threat model</h3>
-          <p>What OSL protects against, and what it doesn't.</p>
+          <p class="audit-file-desc">What OSL protects against, and what it doesn't.</p>
           <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <p>
+          <div class="audit-file-actions">
             <a href="/audit/files/threat-model/" class="button button-secondary">View</a>
-            <a href="/audit/files/threat-model.zip" class="button button-secondary">Download .zip</a>
-          </p>
+            <a href="/audit/files/threat-model.zip" class="button button-primary">Download .zip</a>
+          </div>
         </article>
 
-        <article class="card">
+        <article class="audit-file">
           <h3>Wire format spec</h3>
-          <p>How OSL messages are structured on the wire.</p>
+          <p class="audit-file-desc">How OSL messages are structured on the wire.</p>
           <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <p>
+          <div class="audit-file-actions">
             <a href="/audit/files/wire-format/" class="button button-secondary">View</a>
-            <a href="/audit/files/wire-format.zip" class="button button-secondary">Download .zip</a>
-          </p>
+            <a href="/audit/files/wire-format.zip" class="button button-primary">Download .zip</a>
+          </div>
         </article>
 
       </div>
