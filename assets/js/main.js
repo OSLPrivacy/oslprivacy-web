@@ -52,4 +52,47 @@
       });
     });
   }
+
+  const subscribeBtn = document.querySelector('.cta-subscribe');
+  const checkoutStatus = document.getElementById('checkout-status');
+  if (subscribeBtn) {
+    subscribeBtn.addEventListener('click', async () => {
+      const yearly = document.querySelector('input[name="period"][value="yearly"]');
+      const plan = yearly && yearly.checked ? 'yearly' : 'monthly';
+      const label = subscribeBtn.textContent;
+      subscribeBtn.disabled = true;
+      subscribeBtn.textContent = 'Connecting...';
+      if (checkoutStatus) checkoutStatus.textContent = '';
+
+      const fail = (msg) => {
+        if (checkoutStatus) checkoutStatus.textContent = msg;
+        subscribeBtn.disabled = false;
+        subscribeBtn.textContent = label;
+      };
+
+      try {
+        const res = await fetch('https://keyserver.oslprivacy.com/v1/checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.url) {
+            window.location.href = data.url;
+            return;
+          }
+          fail("Couldn't reach the payment server. Try again in a moment, or email OSLPrivacy@gmail.com.");
+          return;
+        }
+        if (res.status === 503) {
+          fail("Subscriptions aren't available right now. Email OSLPrivacy@gmail.com.");
+        } else {
+          fail("Couldn't reach the payment server. Try again in a moment, or email OSLPrivacy@gmail.com.");
+        }
+      } catch (err) {
+        fail("Couldn't reach the payment server. Try again in a moment, or email OSLPrivacy@gmail.com.");
+      }
+    });
+  }
 })();

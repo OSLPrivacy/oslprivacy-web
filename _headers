@@ -4,4 +4,4 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; form-action 'self' mailto:; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; connect-src 'self' https://keyserver.oslprivacy.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; form-action 'self' mailto:; frame-ancestors 'none'

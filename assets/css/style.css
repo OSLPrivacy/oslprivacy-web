@@ -855,7 +855,7 @@ footer {
 
 .alt-payment {
   max-width: 36rem;
-  margin: var(--s-5) auto;
+  margin: var(--s-5) auto 0;
   padding: var(--s-5);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -884,6 +884,14 @@ footer {
 }
 
 .alt-payment a:hover { color: var(--accent-hover); }
+
+/* Generic horizontal button group (success / cancel pages) */
+.button-row {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  margin-top: var(--s-5);
+}
 
 /* Skip-to-content link (site-wide accessibility) */
 
@@ -1153,7 +1161,20 @@ h2:hover .anchor-link,
 
 @media (min-width: 768px) {
   .section {
-    padding: var(--s-8) var(--s-5);
+    padding: var(--s-5) var(--s-5);
+  }
+
+  /* Home hero keeps its original generous breathing room
+     (W6.SPACING tightens body sections only, not the hero). */
+  .hero {
+    padding-top: var(--s-8);
+    padding-bottom: var(--s-8);
+  }
+
+  /* Pricing: pull the billing toggle up close to the hero lede
+     so it reads as part of the section above, not a floating zone. */
+  .section[aria-labelledby="plans-heading"] {
+    padding-top: var(--s-3);
   }
 
   .section-heading {
