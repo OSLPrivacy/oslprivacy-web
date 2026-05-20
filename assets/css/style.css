@@ -155,7 +155,7 @@ main {
 }
 
 .hero .logo {
-  color: var(--accent);
+  display: block;
   margin: 0 auto var(--s-5);
 }
 
