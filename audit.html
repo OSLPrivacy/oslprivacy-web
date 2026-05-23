@@ -34,93 +34,50 @@
 
     <section class="section">
       <h1 class="page-heading">Audit the code</h1>
-      <p class="page-lede">The cryptographic core of OSL is published so anyone can verify how encryption works.</p>
+      <p class="page-lede">OSL is open source. The entire client — crypto, Discord integration, and the keyserver — is published on GitHub under Apache-2.0, so anyone can read exactly how it works.</p>
     </section>
 
     <section class="section" aria-labelledby="published-heading">
-      <h2 id="published-heading" class="section-heading">What's published here</h2>
+      <h2 id="published-heading" class="section-heading">The full source</h2>
       <div class="prose">
-        <p>These are the parts of OSL that matter for verifying the encryption claims — the cryptographic primitives, the message ratchet, the key store, the steganography for cover envelopes, and the threat model. You can read them in your browser or download a zip for offline review. The code in these files compiles inside the full OSL client; it isn't a stand-alone buildable project.</p>
-      </div>
-
-      <div class="audit-files">
-
-        <article class="audit-file">
-          <h3>Crypto core (crates/crypto)</h3>
-          <p class="audit-file-desc">Encryption primitives, message ratchet, sender keys, wire format.</p>
-          <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <div class="audit-file-actions">
-            <a href="/audit/files/crypto-core/" class="button button-secondary">View</a>
-            <a href="/audit/files/crypto-core.zip" class="button button-primary">Download .zip</a>
-          </div>
-        </article>
-
-        <article class="audit-file">
-          <h3>Key store (crates/keystore)</h3>
-          <p class="audit-file-desc">License cache, sealer, identity. The encryption-relevant pieces.</p>
-          <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <div class="audit-file-actions">
-            <a href="/audit/files/keystore/" class="button button-secondary">View</a>
-            <a href="/audit/files/keystore.zip" class="button button-primary">Download .zip</a>
-          </div>
-        </article>
-
-        <article class="audit-file">
-          <h3>Steganography (crates/stego)</h3>
-          <p class="audit-file-desc">Cover envelopes for hiding message payloads.</p>
-          <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <div class="audit-file-actions">
-            <a href="/audit/files/stego/" class="button button-secondary">View</a>
-            <a href="/audit/files/stego.zip" class="button button-primary">Download .zip</a>
-          </div>
-        </article>
-
-        <article class="audit-file">
-          <h3>Threat model</h3>
-          <p class="audit-file-desc">What OSL protects against, and what it doesn't.</p>
-          <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <div class="audit-file-actions">
-            <a href="/audit/files/threat-model/" class="button button-secondary">View</a>
-            <a href="/audit/files/threat-model.zip" class="button button-primary">Download .zip</a>
-          </div>
-        </article>
-
-        <article class="audit-file">
-          <h3>Wire format spec</h3>
-          <p class="audit-file-desc">How OSL messages are structured on the wire.</p>
-          <!-- AUDIT-FILES-WIRING: actual hosted file URL — operator will populate -->
-          <div class="audit-file-actions">
-            <a href="/audit/files/wire-format/" class="button button-secondary">View</a>
-            <a href="/audit/files/wire-format.zip" class="button button-primary">Download .zip</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="not-published-heading">
-      <h2 id="not-published-heading" class="section-heading">What isn't published</h2>
-      <div class="prose">
-        <p>The Discord integration layer, the keyserver, the build pipeline, and parts of the licensing infrastructure are not public. OSL is a small project, and these are the pieces that — if forked — would mostly enable rebranding and reselling the same product rather than meaningful security review.</p>
+        <p>Everything that runs on your machine, and the servers it talks to, lives in one public repository. Read it in your browser, clone it, or build it yourself.</p>
+        <p>
+          <a class="button button-primary" href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">View the source on GitHub &rarr;</a>
+        </p>
+        <p>The parts that matter most for verifying the encryption claims:</p>
         <ul>
-          <li>Discord integration — the code that hooks into the Discord client. Reading it tells you almost nothing about message security; it would just make it easier for someone to clone the product.</li>
-          <li>Keyserver — the small Cloudflare Worker that handles license validation and Stripe webhooks. Its job is to say "yes this license is valid" or "no it isn't." It never sees messages.</li>
-          <li>Build and packaging scripts — these have signing keys and deploy credentials baked in.</li>
+          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/crypto" target="_blank" rel="noopener">crates/crypto</a></strong> — PQXDH hybrid handshake (X25519 + ML-KEM-768), the message ratchet, sender keys, AEAD, and the wire format.</li>
+          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/keystore" target="_blank" rel="noopener">crates/keystore</a></strong> — identity keys, at-rest sealing, and the keyserver client.</li>
+          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/stego" target="_blank" rel="noopener">crates/stego</a></strong> — the cover-text layer that carries ciphertext inside ordinary-looking chat.</li>
+          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/ipc" target="_blank" rel="noopener">crates/ipc</a></strong> — how the pieces fit together: send, receive, whitelists, and burns.</li>
+          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/blob/main/docs/THREAT_MODEL.md" target="_blank" rel="noopener">docs/THREAT_MODEL.md</a></strong> — what OSL protects against, and what it doesn't.</li>
         </ul>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="why-heading">
-      <h2 id="why-heading" class="section-heading">Why this setup</h2>
+    <section class="section" aria-labelledby="not-published-heading">
+      <h2 id="not-published-heading" class="section-heading">What stays private</h2>
       <div class="prose">
-        <p>Open source is a real privacy guarantee for the parts where it matters: the crypto. If the encryption code is wrong, no amount of business-level openness fixes it. Conversely, publishing the full client wouldn't help anyone verify your messages are private — it would just let competitors copy the product. The split is honest: cryptography is auditable; the business is not.</p>
+        <p>The code is fully open; the operational secrets are not, and never could be:</p>
+        <ul>
+          <li>Server secrets — the keyserver's admin token, Stripe keys, and the license-signing secret live only as deployment secrets, never in the repository.</li>
+          <li>The release-signing key and deploy credentials used to build and publish installers.</li>
+        </ul>
+        <p>None of these can decrypt your messages — the keyserver never sees plaintext or your keys. They're the keys to the project's infrastructure, not to your conversations.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="why-heading">
+      <h2 id="why-heading" class="section-heading">Why open source</h2>
+      <div class="prose">
+        <p>End-to-end encryption you can't inspect is just a promise. Publishing the full client lets anyone confirm that messages are encrypted the way we say they are, that keys never leave your device, and that there's no backdoor. Reading the code is a guarantee that you <em>can</em> check — not a guarantee that the code is bug-free. OSL has not had a paid third-party security audit yet; that's a goal, not a claim.</p>
       </div>
     </section>
 
     <section class="section" aria-labelledby="verify-heading">
       <h2 id="verify-heading" class="section-heading">How to verify</h2>
       <div class="prose">
-        <p>Download a release, look at the published crypto code, and confirm the binary corresponds to the code you read. Reproducible builds are planned. If you find something wrong with the cryptography, please contact <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> — security reports are welcome and we'd rather hear about it from you than from someone else.</p>
+        <p>Read the crypto code on <a href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">GitHub</a>, then confirm the binary you downloaded corresponds to it. Reproducible builds are planned. If you find something wrong with the cryptography, please contact <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> — security reports are welcome and we'd rather hear about it from you than from someone else.</p>
       </div>
     </section>
 
@@ -137,7 +94,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How OSL works — OSL Privacy Docs</title>
-  <meta name="description" content="The cryptography behind OSL, explained without a crypto background. Post-quantum hybrid, forward secrecy, local-only keys.">
+  <meta name="description" content="The cryptography behind OSL, explained without a crypto background. Post-quantum hybrid, per-message sealing, local-only keys.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -68,8 +68,8 @@
         <ul>
           <li><strong>X25519</strong> — a modern elliptic-curve key-exchange algorithm. Battle-tested, used by Signal, WireGuard, and most contemporary secure-messaging systems.</li>
           <li><strong>ML-KEM-768</strong> — a post-quantum key-encapsulation mechanism standardized by NIST in 2024. Designed to resist attacks from quantum computers that don't exist yet but might.</li>
-          <li><strong>Double Ratchet</strong> — the protocol behind Signal's forward secrecy. Each message uses a fresh key derived from the previous one, so compromising your current keys doesn't expose your old messages.</li>
-          <li><strong>Sender Keys</strong> — for group chats. Lets one ciphertext be delivered to multiple recipients efficiently.</li>
+          <li><strong>Per-message hybrid sealing</strong> — direct messages are sealed to the recipient's published X25519 and ML-KEM-768 keys with a fresh ephemeral key for every message, so each message stands on its own.</li>
+          <li><strong>Sender Keys</strong> — for group chats and server channels. One ciphertext is delivered to every member efficiently, and the group key rotates as membership changes.</li>
         </ul>
         <p>X25519 and ML-KEM-768 are combined in a "hybrid" mode — both have to be broken for an attacker to recover your keys. If quantum computers turn out to break X25519 some day, ML-KEM-768 still holds. If a flaw is found in ML-KEM-768, X25519 still holds. You get the benefits of both algorithms and the failure mode of neither.</p>
 
@@ -86,7 +86,7 @@
         <p>This is the meaningful limit of OSL. We protect content, not metadata. If you need both, look at <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> — they were designed for that threat model from day one. See our <a href="/docs/threat-model">threat model</a> for a deeper discussion of what's and isn't covered.</p>
 
         <h2 id="open-source">Audit the crypto <a class="anchor-link" href="#open-source" aria-label="Link to this section">#</a></h2>
-        <p>The encryption code is published on the Audit page. Reading the crypto code lets you verify how messages are encrypted; it isn't a guarantee that the code is bug-free, it's a guarantee that you can check.</p>
+        <p>OSL is fully open source — the entire client is on <a href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">GitHub</a> under Apache-2.0, and the <a href="/audit">Audit page</a> points you straight at the crypto. Reading the code lets you verify how messages are encrypted; it isn't a guarantee that the code is bug-free, it's a guarantee that you can check.</p>
       </article>
     </div>
   </main>
@@ -102,7 +102,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

@@ -32,6 +32,31 @@
 
   <main id="main">
 
+    <style>
+      .beta-modal[hidden]{display:none}
+      .beta-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+      .beta-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72)}
+      .beta-modal-card{position:relative;max-width:32rem;width:100%;background:var(--surface,#15171c);border:1px solid var(--accent,#06b6d4);border-radius:14px;padding:2rem 2rem 1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+      .beta-modal-card h2{margin:0 2rem 0 0}
+      .beta-modal-card p{margin:.85rem 0 0}
+      .beta-modal-close{position:absolute;top:.6rem;right:1rem;background:none;border:0;color:var(--text,#e8e8e8);font-size:1.9rem;line-height:1;cursor:pointer}
+      .beta-modal-actions{margin-top:1.4rem}
+      .beta-modal-contact{font-size:.9rem;color:var(--muted,#9aa0aa)}
+    </style>
+    <div class="beta-modal" id="beta-modal" role="dialog" aria-modal="true" aria-labelledby="beta-modal-title" hidden>
+      <div class="beta-modal-backdrop" data-beta-close></div>
+      <div class="beta-modal-card" role="document">
+        <button type="button" class="beta-modal-close" data-beta-close aria-label="Close">&times;</button>
+        <h2 id="beta-modal-title">OSL is in open beta</h2>
+        <p><strong>Premium is free during the beta.</strong> Our Stripe account hasn't been approved yet, so we're not charging for premium — encrypted attachment sending — right now.</p>
+        <p>Want attachments today? Text <strong>&ldquo;oslprivacy&rdquo;</strong> in our Discord and we'll send you a free beta key, good for <strong>3 months</strong> of encrypted attachments.</p>
+        <p class="beta-modal-actions">
+          <a class="button button-primary" href="https://discord.gg/2euUYggp92" target="_blank" rel="noopener">Join our Discord</a>
+        </p>
+        <p class="beta-modal-contact">Prefer email? Reach us at <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>.</p>
+      </div>
+    </div>
+
     <section class="section">
       <h1 class="page-heading">Pricing</h1>
       <p class="page-lede">Two plans. Free covers unlimited encrypted text. Paid unlocks encrypted attachment sending and beta access.</p>
@@ -160,11 +185,32 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
   <script src="/assets/js/main.js" defer></script>
+  <script>
+    (function () {
+      var modal = document.getElementById('beta-modal');
+      if (!modal) return;
+      function close() { modal.setAttribute('hidden', ''); }
+      function open() { modal.removeAttribute('hidden'); }
+      // Show once per browser session so it isn't naggy on every visit.
+      try {
+        if (!sessionStorage.getItem('osl_beta_popup_shown')) {
+          open();
+          sessionStorage.setItem('osl_beta_popup_shown', '1');
+        }
+      } catch (e) { open(); }
+      modal.querySelectorAll('[data-beta-close]').forEach(function (el) {
+        el.addEventListener('click', close);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+    })();
+  </script>
 </body>
 </html>

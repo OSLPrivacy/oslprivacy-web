@@ -76,10 +76,10 @@
         <h2 id="privacy-security">Privacy &amp; Security <a class="anchor-link" href="#privacy-security" aria-label="Link to this section">#</a></h2>
 
         <h3>What encryption does OSL use?</h3>
-        <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation, Double Ratchet for forward secrecy, and Sender Keys for groups. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
+        <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation. Direct messages are sealed per-message to the recipient's published keys; group chats and server channels use Sender Keys. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
 
-        <h3>Why are forward secrecy and post-quantum important?</h3>
-        <p><strong>Forward secrecy</strong> means that if your encryption keys are stolen tomorrow, the attacker still can't read messages you sent yesterday. Each message uses a fresh key derived from the previous one. <strong>Post-quantum</strong> protects against attacks from future quantum computers. State-level adversaries are recording encrypted traffic now to decrypt later when quantum computers catch up. Post-quantum cryptography defends against that.</p>
+        <h3>Why is post-quantum encryption important?</h3>
+        <p>State-level adversaries are recording encrypted traffic now to decrypt later, once quantum computers catch up. ML-KEM-768 is a post-quantum key-encapsulation mechanism designed to resist that, and OSL pairs it with X25519 in a hybrid — so your messages stay protected even if one of the two algorithms is later broken.</p>
 
         <h3>Can my friends read encrypted messages without OSL?</h3>
         <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL — your friend, Discord itself, anyone reading the raw Discord database — sees ciphertext only.</p>
@@ -142,7 +142,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">AGPL-3.0</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
