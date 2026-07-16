@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <noscript><style>.reveal { opacity: 1 !important; }</style></noscript>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -22,8 +23,8 @@
     </button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/pricing">Pricing</a></li>
         <li><a href="/download">Download</a></li>
+        <li><a href="/pricing">Pricing</a></li>
         <li><a href="/docs/">Docs</a></li>
         <li><a href="/audit">Audit</a></li>
       </ul>
@@ -32,10 +33,63 @@
 
   <main id="main">
 
+    <div class="reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden>
+      <div class="reg-modal-backdrop" data-reg-close></div>
+      <div class="reg-modal-card" role="document" tabindex="-1">
+        <button type="button" class="reg-modal-close" data-reg-close aria-label="Close">&times;</button>
+
+        <div class="reg-warn-icon" aria-hidden="true">!</div>
+        <h2 id="reg-modal-title">YOUR CHATS AREN'T AS PRIVATE AS YOU THINK</h2>
+        <p class="reg-modal-lede">Right now, governments around the world are trying to get the power to read your private messages — or already have it. Not "if you're a criminal." Not "if you're hiding something." <strong>Everyone.</strong> Pick where you live and see exactly what's on the table.</p>
+
+        <div class="reg-region-picker" role="group" aria-label="Choose your region">
+          <button type="button" class="reg-region-btn" data-region="europe" aria-pressed="false">Europe</button>
+          <button type="button" class="reg-region-btn" data-region="namerica" aria-pressed="false">North America</button>
+          <button type="button" class="reg-region-btn" data-region="apac" aria-pressed="false">Asia-Pacific</button>
+        </div>
+
+        <div class="reg-list" id="reg-list" aria-live="polite">
+          <p class="reg-list-empty">Choose a region above to see what applies.</p>
+        </div>
+
+        <p class="reg-disclaimer">Legislative status changes quickly and this list isn't exhaustive — it reflects publicly reported information and may be out of date. Verify current status independently before relying on it.</p>
+
+        <div class="reg-actions">
+          <button type="button" class="button button-danger reg-cta" data-reg-close>Protect yourself now</button>
+          <a href="/download" class="button button-secondary reg-cta">Download now</a>
+        </div>
+      </div>
+    </div>
+
     <section class="hero section">
+      <div class="bg-decor" aria-hidden="true">
+        <div class="bg-grid"></div>
+        <div class="bg-stars">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Empty slot for a real screen-recorded product clip — drop the webm
+           in and the layout/window chrome is already sized for it. Sits
+           behind the headline (negative z-index) so the text overlaps it. -->
+      <div class="hero-video">
+        <div class="window-frame">
+          <div class="window-bar" aria-hidden="true">
+            <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+          </div>
+          <div class="window-body" data-placeholder="Video">
+            <video autoplay loop muted playsinline aria-label="Demo: OSL encrypting a Discord message before it reaches Discord's servers.">
+              <source src="/assets/video/hero-demo.webm" type="video/webm">
+            </video>
+          </div>
+        </div>
+      </div>
+
       <img class="logo" src="/assets/img/logo-mark.svg" alt="" width="112" height="112">
 
-      <h1>End-to-end encryption for Discord</h1>
+      <h1>Discord, but nobody's listening in.</h1>
+      <p class="hero-tagline">End-to-end encryption for Discord</p>
       <p class="lede">Your messages stay private from Discord, your network, and anyone else watching.</p>
       <div class="hero-cta">
         <a href="/download" class="button button-primary">Download for Windows</a>
@@ -44,7 +98,7 @@
     </section>
 
     <section class="section" id="how-it-works" aria-labelledby="steps-heading">
-      <h2 id="steps-heading" class="section-heading">How it works</h2>
+      <h2 id="steps-heading" class="section-heading reveal">How it works</h2>
       <div class="grid-3 steps">
         <article class="step">
           <div class="step-num" aria-hidden="true">1</div>
@@ -65,7 +119,7 @@
     </section>
 
     <section class="section" id="features" aria-labelledby="features-heading">
-      <h2 id="features-heading" class="section-heading">What you get</h2>
+      <h2 id="features-heading" class="section-heading reveal">What you get</h2>
       <div class="grid-2 features">
 
         <article class="card feature">
@@ -142,8 +196,80 @@
       </div>
     </section>
 
+    <section class="section" id="deep-dive" aria-labelledby="deepdive-heading">
+      <h2 id="deepdive-heading" class="section-heading reveal">See OSL in action</h2>
+
+      <div class="feature-rows">
+
+        <div class="feature-row reveal">
+          <div class="feature-row-text">
+            <h3>Encryption you never have to think about</h3>
+            <p>The moment you whitelist a friend, OSL negotiates a post-quantum hybrid handshake — X25519 paired with ML-KEM-768. No keys to copy, no ceremony to get right.</p>
+            <a class="feature-row-link" href="/docs/how-it-works">Learn about the handshake &rarr;</a>
+          </div>
+          <div class="feature-row-media">
+            <div class="window-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+              </div>
+              <div class="window-body" data-placeholder="Screenshot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-row feature-row-reverse reveal">
+          <div class="feature-row-text">
+            <h3>Messages that don't look like messages</h3>
+            <p>Encrypted text rides inside ordinary-looking chat instead of showing up as ciphertext. Discord, and anyone watching the wire, just sees a normal conversation.</p>
+            <a class="feature-row-link" href="/audit">See how the stego layer works &rarr;</a>
+          </div>
+          <div class="feature-row-media">
+            <div class="window-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+              </div>
+              <div class="window-body" data-placeholder="Screenshot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-row reveal">
+          <div class="feature-row-text">
+            <h3>Invisible when it needs to be</h3>
+            <p>On Windows, OSL can hide its own window from screenshots, screen recordings, and screen shares — so a stray capture can't leak a conversation you didn't mean to show.</p>
+            <a class="feature-row-link" href="/docs/getting-started">Read about screen-capture protection &rarr;</a>
+          </div>
+          <div class="feature-row-media">
+            <div class="window-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+              </div>
+              <div class="window-body" data-placeholder="Screenshot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-row feature-row-reverse reveal">
+          <div class="feature-row-text">
+            <h3>Burn it down, on your terms</h3>
+            <p>Wipe the keys for a channel, a server, or your entire account whenever you want. Once they're gone, everything encrypted under them is unreadable — permanently.</p>
+            <a class="feature-row-link" href="/docs/threat-model">Understand what burn actually deletes &rarr;</a>
+          </div>
+          <div class="feature-row-media">
+            <div class="window-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+              </div>
+              <div class="window-body" data-placeholder="Screenshot"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <section class="section" id="limits" aria-labelledby="limits-heading">
-      <h2 id="limits-heading" class="section-heading">What OSL doesn't protect against</h2>
+      <h2 id="limits-heading" class="section-heading reveal">What OSL doesn't protect against</h2>
       <p class="section-subhead">Honesty up front. Encryption has limits.</p>
       <div class="grid-2 limits">
         <article class="card limit">
@@ -162,7 +288,7 @@
     </section>
 
     <section class="section" id="faq" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" class="section-heading">Frequently asked questions</h2>
+      <h2 id="faq-heading" class="section-heading reveal">Frequently asked questions</h2>
       <div class="faq">
         <article class="faq-item">
           <h3>Will Discord ban my account for using OSL?</h3>
@@ -188,7 +314,16 @@
     </section>
 
     <section class="section section-cta" id="signup" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Get notified when OSL launches</h2>
+      <div class="bg-decor" aria-hidden="true">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-stars">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <h2 id="cta-heading" class="section-heading reveal">Get notified when OSL launches</h2>
       <form class="notify-form" id="notify-form" action="#" novalidate>
         <label for="email" class="visually-hidden">Email address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
