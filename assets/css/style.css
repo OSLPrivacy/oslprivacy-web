@@ -862,7 +862,64 @@ footer {
   flex-direction: column;
 }
 
-.platform h3 { margin: 0 0 var(--s-2); }
+.platform-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 5px var(--s-3) 5px 5px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.platform-badge .platform-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.card-active .platform-badge {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+.card-active .platform-badge .platform-icon {
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.16);
+}
+
+.platform-status {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  padding: 3px var(--s-2);
+  border-radius: var(--radius-full);
+}
 
 .platform-version {
   flex: 1;
@@ -873,6 +930,14 @@ footer {
 .platform-cta {
   width: 100%;
   margin-bottom: var(--s-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+}
+
+.button-icon {
+  flex-shrink: 0;
 }
 
 .platform-cta[aria-disabled="true"] {
@@ -1194,41 +1259,6 @@ footer {
   gap: var(--s-3);
   flex-wrap: wrap;
 }
-
-/* Alt-payment block (pricing page) — promoted from fineprint to a
-   centered tinted card so mail / BTC / Monero read as real options. */
-
-.alt-payment {
-  max-width: 36rem;
-  margin: var(--s-5) auto 0;
-  padding: var(--s-5);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  text-align: center;
-}
-
-.alt-payment h3 {
-  margin: 0 0 var(--s-2);
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.alt-payment p {
-  margin: 0 0 var(--s-4);
-  color: var(--text);
-}
-
-.alt-payment p:last-child { margin-bottom: 0; }
-
-.alt-payment a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  font-weight: 500;
-}
-
-.alt-payment a:hover { color: var(--accent-hover); }
 
 /* Generic horizontal button group (success / cancel pages) */
 .button-row {
@@ -1732,6 +1762,23 @@ h2:hover .anchor-link,
   color: var(--text-muted);
   font-size: 0.9375rem;
   line-height: 1.55;
+}
+
+.reg-item-sources {
+  margin: var(--s-2) 0 0;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+.reg-item-sources a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.reg-item-sources a:hover {
+  color: var(--accent-hover);
 }
 
 .reg-disclaimer {

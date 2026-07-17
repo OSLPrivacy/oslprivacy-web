@@ -31,6 +31,34 @@
   </header>
 
   <main id="main">
+
+    <div class="reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden>
+      <div class="reg-modal-backdrop" data-reg-close></div>
+      <div class="reg-modal-card" role="document" tabindex="-1">
+        <button type="button" class="reg-modal-close" data-reg-close aria-label="Close">&times;</button>
+
+        <div class="reg-warn-icon" aria-hidden="true">!</div>
+        <h2 id="reg-modal-title">YOUR CHATS AREN'T AS PRIVATE AS YOU THINK</h2>
+        <p class="reg-modal-lede">Right now, governments around the world are trying to get the power to read your private messages — or already have it. Not "if you're a criminal." Not "if you're hiding something." <strong>Everyone.</strong> Pick where you live and see exactly what's on the table.</p>
+
+        <div class="reg-region-picker" role="group" aria-label="Choose your region">
+          <button type="button" class="reg-region-btn" data-region="europe" aria-pressed="false">Europe</button>
+          <button type="button" class="reg-region-btn" data-region="namerica" aria-pressed="false">North America</button>
+          <button type="button" class="reg-region-btn" data-region="apac" aria-pressed="false">Asia-Pacific</button>
+        </div>
+
+        <div class="reg-list" id="reg-list" aria-live="polite">
+          <p class="reg-list-empty">Choose a region above to see what applies.</p>
+        </div>
+
+        <p class="reg-disclaimer">Legislative status changes quickly and this list isn't exhaustive — it reflects publicly reported information and may be out of date. Verify current status independently before relying on it.</p>
+
+        <div class="reg-actions">
+          <button type="button" class="button button-danger reg-cta" data-reg-close>Protect yourself now</button>
+          <a href="/download" class="button button-secondary reg-cta">Download now</a>
+        </div>
+      </div>
+    </div>
     <div class="docs-layout">
       <aside class="docs-sidebar">
         <details class="docs-menu" open>

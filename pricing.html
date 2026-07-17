@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <noscript><style>.reveal { opacity: 1 !important; }</style></noscript>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -31,6 +32,34 @@
   </header>
 
   <main id="main">
+
+    <div class="reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden>
+      <div class="reg-modal-backdrop" data-reg-close></div>
+      <div class="reg-modal-card" role="document" tabindex="-1">
+        <button type="button" class="reg-modal-close" data-reg-close aria-label="Close">&times;</button>
+
+        <div class="reg-warn-icon" aria-hidden="true">!</div>
+        <h2 id="reg-modal-title">YOUR CHATS AREN'T AS PRIVATE AS YOU THINK</h2>
+        <p class="reg-modal-lede">Right now, governments around the world are trying to get the power to read your private messages — or already have it. Not "if you're a criminal." Not "if you're hiding something." <strong>Everyone.</strong> Pick where you live and see exactly what's on the table.</p>
+
+        <div class="reg-region-picker" role="group" aria-label="Choose your region">
+          <button type="button" class="reg-region-btn" data-region="europe" aria-pressed="false">Europe</button>
+          <button type="button" class="reg-region-btn" data-region="namerica" aria-pressed="false">North America</button>
+          <button type="button" class="reg-region-btn" data-region="apac" aria-pressed="false">Asia-Pacific</button>
+        </div>
+
+        <div class="reg-list" id="reg-list" aria-live="polite">
+          <p class="reg-list-empty">Choose a region above to see what applies.</p>
+        </div>
+
+        <p class="reg-disclaimer">Legislative status changes quickly and this list isn't exhaustive — it reflects publicly reported information and may be out of date. Verify current status independently before relying on it.</p>
+
+        <div class="reg-actions">
+          <button type="button" class="button button-danger reg-cta" data-reg-close>Protect yourself now</button>
+          <a href="/download" class="button button-secondary reg-cta">Download now</a>
+        </div>
+      </div>
+    </div>
 
     <style>
       .beta-modal[hidden]{display:none}
@@ -110,22 +139,17 @@
       </div>
 
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
-
-      <div class="alt-payment">
-        <h3>Other payment methods:</h3>
-        <p>Want to pay another way? Email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> to pay by mail, Bitcoin, Monero, or another method.</p>
-      </div>
     </section>
 
     <section class="section" aria-labelledby="free-tier-heading">
-      <h2 id="free-tier-heading" class="section-heading">How the free tier works</h2>
+      <h2 id="free-tier-heading" class="section-heading reveal">How the free tier works</h2>
       <div class="prose">
         <p>The free tier isn't a trial. It's not a limited preview. Encrypted text messaging works the same on both tiers — no time limits, no message caps, no ads. We make money when someone wants to send encrypted attachments, which is the heavier feature to support. Receivers of encrypted attachments don't pay — so a free user can read what a paid friend sends them.</p>
       </div>
     </section>
 
     <section class="section" aria-labelledby="never-charge-heading">
-      <h2 id="never-charge-heading" class="section-heading">What we never charge for</h2>
+      <h2 id="never-charge-heading" class="section-heading reveal">What we never charge for</h2>
       <div class="grid-3">
         <article class="card">
           <h3>End-to-end encryption</h3>
@@ -143,7 +167,7 @@
     </section>
 
     <section class="section" aria-labelledby="pricing-faq-heading">
-      <h2 id="pricing-faq-heading" class="section-heading">Pricing FAQ</h2>
+      <h2 id="pricing-faq-heading" class="section-heading reveal">Pricing FAQ</h2>
       <div class="faq">
         <article class="faq-item">
           <h3>Why charge at all?</h3>
@@ -162,7 +186,7 @@
     </section>
 
     <section class="section section-cta" id="notify" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Get notified when subscriptions go live</h2>
+      <h2 id="cta-heading" class="section-heading reveal">Get notified when subscriptions go live</h2>
       <p class="section-subhead">Payment processing ships at launch. Stripe, Bitcoin, and Monero supported. Sign up to be first to know.</p>
       <form class="notify-form" id="notify-form" action="#" novalidate>
         <label for="email" class="visually-hidden">Email address</label>
