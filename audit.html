@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Audit the code — OSL Privacy</title>
-  <meta name="description" content="The cryptographic core of OSL is published so anyone can verify how encryption works.">
+  <title>Technical audit | OSL Privacy</title>
+  <meta name="description" content="Technical source map, cryptographic design, trust boundaries, payment delivery, limitations, and verification status for OSL Privacy.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -17,88 +17,105 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
     <a class="topnav-brand" href="/"><img class="topnav-brand-mark" src="/assets/img/logo-mark.svg" alt="" width="28" height="28"><span>OSL Privacy</span></a>
-    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
-      <ul class="topnav-links">
-        <li><a href="/pricing">Pricing</a></li>
-        <li><a href="/download">Download</a></li>
-        <li><a href="/docs/">Docs</a></li>
-        <li><a href="/audit" aria-current="page">Audit</a></li>
-      </ul>
+      <ul class="topnav-links"><li><a href="/pricing">Pricing</a></li><li><a href="/download">Download</a></li><li><a href="/audit" aria-current="page">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li></ul>
     </nav>
   </header>
 
   <main id="main">
-
-    <section class="section">
-      <h1 class="page-heading">Audit the code</h1>
-      <p class="page-lede">OSL is open source. The entire client — crypto, Discord integration, and the keyserver — is published on GitHub under Apache-2.0, so anyone can read exactly how it works.</p>
+    <section class="section reveal audit-intro">
+      <p class="eyebrow">For technical readers</p>
+      <h1 class="page-heading">Do not trust the homepage. Check the code.</h1>
+      <p class="page-lede">This technical overview points to the current source, states the trust boundary, and lists what has not been proven. It is not an independent audit.</p>
+      <div class="hero-cta">
+        <a class="button button-primary" href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">Client and backend</a>
+        <a class="button button-secondary" href="https://github.com/OSLPrivacy/oslprivacy-web" target="_blank" rel="noopener">Website</a>
+      </div>
     </section>
 
-    <section class="section" aria-labelledby="published-heading">
-      <h2 id="published-heading" class="section-heading">The full source</h2>
-      <div class="prose">
-        <p>Everything that runs on your machine, and the servers it talks to, lives in one public repository. Read it in your browser, clone it, or build it yourself.</p>
-        <p>
-          <a class="button button-primary" href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">View the source on GitHub &rarr;</a>
-        </p>
-        <p>The parts that matter most for verifying the encryption claims:</p>
+    <section class="section reveal" aria-labelledby="status-heading">
+      <h2 id="status-heading" class="section-heading">Current assurance status</h2>
+      <div class="audit-status-grid">
+        <article class="card"><strong>Source</strong><p>Public</p></article>
+        <article class="card"><strong>Independent paid audit</strong><p>Not completed</p></article>
+        <article class="card"><strong>Reproducible releases</strong><p>Not completed</p></article>
+        <article class="card"><strong>Windows signing</strong><p>Not completed</p></article>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="map-heading">
+      <h2 id="map-heading" class="section-heading">Source map</h2>
+      <div class="audit-files">
+        <article class="audit-file"><h3>Cryptographic core</h3><p class="audit-file-desc">Hybrid key agreement, AEAD, ratchets, sender keys, wire formats, and protocol tests.</p><div class="audit-file-actions"><a class="button button-secondary" href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/crypto" target="_blank" rel="noopener">Open crates/crypto</a></div></article>
+        <article class="audit-file"><h3>Identity and local storage</h3><p class="audit-file-desc">Identity material, recovery, key sealing, recipient records, and keyserver access.</p><div class="audit-file-actions"><a class="button button-secondary" href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/keystore" target="_blank" rel="noopener">Open crates/keystore</a></div></article>
+        <article class="audit-file"><h3>Application protocol</h3><p class="audit-file-desc">Send, receive, whitelist, burn, expiry, account switching, and group sender state.</p><div class="audit-file-actions"><a class="button button-secondary" href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/ipc" target="_blank" rel="noopener">Open crates/ipc</a></div></article>
+        <article class="audit-file"><h3>Keyserver and payments</h3><p class="audit-file-desc">Cloudflare Worker routes, D1 state, Stripe webhook verification, activation claims, crypto invoices, and aggregate reporting.</p><div class="audit-file-actions"><a class="button button-secondary" href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/keyserver-cf" target="_blank" rel="noopener">Open keyserver-cf</a></div></article>
+        <article class="audit-file"><h3>Desktop boundary</h3><p class="audit-file-desc">Tauri commands, capabilities, hosted service views, bootstrap, and local trusted UI.</p><div class="audit-file-actions"><a class="button button-secondary" href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/src-tauri" target="_blank" rel="noopener">Open src-tauri</a></div></article>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="crypto-heading">
+      <h2 id="crypto-heading" class="section-heading">Cryptographic design</h2>
+      <div class="prose technical-prose">
+        <p>OSL combines X25519 with ML KEM 768 for hybrid key establishment. Message protection uses authenticated encryption. Direct messages use recipient specific encrypted slots. Group scopes use sender key chains with local mutable state.</p>
+        <p>Long term identity keys and private conversation state are kept on the device and sealed at rest. Public identity material and encrypted control messages may pass through the keyserver. Discord receives the encrypted carrier and can still observe delivery metadata.</p>
+        <p>Same account use on multiple machines remains a protocol risk. Independently initialized machines can have different identity keys, and mutable group sender state is not synchronized. Do not treat multi device group use as solved until device certificates and state coordination ship.</p>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="boundary-heading">
+      <h2 id="boundary-heading" class="section-heading">Trust boundary</h2>
+      <div class="grid-2">
+        <article class="card"><h3>Trusted locally</h3><p>The OSL process, cryptographic implementation, local key store, trusted controls, and the device running them.</p></article>
+        <article class="card"><h3>Not trusted with plaintext</h3><p>Discord, Cloudflare, Stripe, the crypto watcher, network observers, and hosted service pages.</p></article>
+        <article class="card"><h3>Visible metadata</h3><p>Account identity, recipients, servers, timing, network addresses, encrypted message size, and payment metadata required by the chosen payment rail.</p></article>
+        <article class="card"><h3>Outside the model</h3><p>Compromised endpoints, cameras, recipient capture, malicious accessibility software, voice, video, and plaintext sent in normal mode.</p></article>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="payments-heading">
+      <h2 id="payments-heading" class="section-heading">Payment and activation path</h2>
+      <div class="prose technical-prose">
+        <ol>
+          <li>The browser generates an RSA OAEP key pair and a random claim capability.</li>
+          <li>The backend prepares an activation code before redirecting to Stripe. It stores the code hash, RSA ciphertext, and a hash of the claim capability.</li>
+          <li>Stripe signs the live webhook. The Worker rejects events marked as test mode.</li>
+          <li>The success page presents the claim capability and decrypts the returned activation code in the original browser tab.</li>
+        </ol>
+        <p>Bitcoin and Monero payments are coming soon. The published design derives a unique Bitcoin address from a watch only wallet and a unique Monero subaddress from a view only wallet. A local node watcher confirms payment and delivers an activation code encrypted for the checkout browser. It cannot spend or send funds.</p>
+        <p>The Telegram operator bot exposes aggregate payments, downloads, and subscription counts only to one configured chat. It does not receive card details, customer email addresses, activation codes, wallet identities, or message data.</p>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="claims-heading">
+      <h2 id="claims-heading" class="section-heading">Claims that still need proof</h2>
+      <div class="prose technical-prose">
         <ul>
-          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/crypto" target="_blank" rel="noopener">crates/crypto</a></strong> — PQXDH hybrid handshake (X25519 + ML-KEM-768), the message ratchet, sender keys, AEAD, and the wire format.</li>
-          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/keystore" target="_blank" rel="noopener">crates/keystore</a></strong> — identity keys, at-rest sealing, and the keyserver client.</li>
-          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/stego" target="_blank" rel="noopener">crates/stego</a></strong> — the cover-text layer that carries ciphertext inside ordinary-looking chat.</li>
-          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/tree/main/crates/ipc" target="_blank" rel="noopener">crates/ipc</a></strong> — how the pieces fit together: send, receive, whitelists, and burns.</li>
-          <li><strong><a href="https://github.com/OSLPrivacy/discord-privacy-client/blob/main/docs/THREAT_MODEL.md" target="_blank" rel="noopener">docs/THREAT_MODEL.md</a></strong> — what OSL protects against, and what it doesn't.</li>
+          <li>No independent paid security audit has been completed.</li>
+          <li>Published binaries are not yet reproducible from a tagged source commit.</li>
+          <li>The Windows beta is not yet signed by a recognized publisher.</li>
+          <li>Cross machine identity and group state are not yet a complete multi device design.</li>
+          <li>OS level capture exclusion is best effort and does not stop every capture path.</li>
+          <li>Service interface changes can break integration. Unknown encrypted attachment flows must fail closed.</li>
         </ul>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="not-published-heading">
-      <h2 id="not-published-heading" class="section-heading">What stays private</h2>
-      <div class="prose">
-        <p>The code is fully open; the operational secrets are not, and never could be:</p>
-        <ul>
-          <li>Server secrets — the keyserver's admin token, Stripe keys, and the license-signing secret live only as deployment secrets, never in the repository.</li>
-          <li>The release-signing key and deploy credentials used to build and publish installers.</li>
-        </ul>
-        <p>None of these can decrypt your messages — the keyserver never sees plaintext or your keys. They're the keys to the project's infrastructure, not to your conversations.</p>
+    <section class="section reveal" aria-labelledby="license-heading">
+      <h2 id="license-heading" class="section-heading">Licenses and reporting</h2>
+      <div class="prose technical-prose">
+        <p>The desktop client and backend repository use Apache 2.0. The website repository uses AGPL 3.0. Deployment secrets, payment credentials, release signing keys, and user private keys are not source code and are not published.</p>
+        <p>To report a security issue, email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>. Do not include private keys, passwords, activation codes, or account tokens.</p>
       </div>
     </section>
-
-    <section class="section" aria-labelledby="why-heading">
-      <h2 id="why-heading" class="section-heading">Why open source</h2>
-      <div class="prose">
-        <p>End-to-end encryption you can't inspect is just a promise. Publishing the full client lets anyone confirm that messages are encrypted the way we say they are, that keys never leave your device, and that there's no backdoor. Reading the code is a guarantee that you <em>can</em> check — not a guarantee that the code is bug-free. OSL has not had a paid third-party security audit yet; that's a goal, not a claim.</p>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="verify-heading">
-      <h2 id="verify-heading" class="section-heading">How to verify</h2>
-      <div class="prose">
-        <p>Read the crypto code on <a href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">GitHub</a>, then confirm the binary you downloaded corresponds to it. Reproducible builds are planned. If you find something wrong with the cryptography, please contact <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> — security reports are welcome and we'd rather hear about it from you than from someone else.</p>
-      </div>
-    </section>
-
   </main>
 
   <footer>
-    <nav class="footer-pages" aria-label="Site pages">
-      <a href="/pricing">Pricing</a>
-      <a href="/download">Download</a>
-      <a href="/docs/">Docs</a>
-      <a href="/docs/privacy">Privacy</a>
-      <a href="/docs/terms">Terms</a>
-    </nav>
-    <nav class="footer-meta" aria-label="External and legal">
-      <a href="/audit">Audit</a>
-      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
-    </nav>
+    <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
+    <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
-
   <script src="/assets/js/main.js" defer></script>
 </body>
 </html>

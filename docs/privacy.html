@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy policy — OSL Privacy Docs</title>
+  <title>Privacy policy | OSL Privacy Docs</title>
   <meta name="description" content="OSL Privacy's privacy policy. What we collect, what we don't, and what we do with it.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
@@ -67,11 +67,12 @@
         <h2 id="what-we-collect">What we collect <a class="anchor-link" href="#what-we-collect" aria-label="Link to this section">#</a></h2>
         <p>We collect the minimum data needed to run the service:</p>
         <ul>
-          <li><strong>Email address</strong> — if you provide one for launch notifications or paid-tier subscriptions.</li>
-          <li><strong>Website analytics</strong> — none. We don't use Google Analytics, Plausible, or any third-party analytics service. We don't set tracking cookies.</li>
-          <li><strong>Server logs</strong> — Cloudflare, our CDN, retains standard request logs (IP address, user agent, requested URL, timestamp) for a short period for security and abuse detection.</li>
-          <li><strong>Payment information</strong> — if you subscribe to the paid tier via Stripe, Stripe receives your card details; we receive a customer ID and subscription status from Stripe, never the card number itself. If you pay via Bitcoin or Monero, the payment goes directly to an OSL-owned address with no third-party processor in between.</li>
-          <li><strong>License validation</strong> — paid subscribers' OSL clients periodically check that their license is still active. These requests include the license key and a timestamp.</li>
+          <li><strong>Email address:</strong> only if you choose to contact us. Card activation does not require OSL to email you a code. Crypto checkout is coming soon.</li>
+          <li><strong>Website analytics:</strong> none. We don't use Google Analytics, Plausible, or any third-party analytics service. We don't set tracking cookies.</li>
+          <li><strong>Server logs:</strong> Cloudflare, our CDN, retains standard request logs (IP address, user agent, requested URL, timestamp) for a short period for security and abuse detection.</li>
+          <li><strong>Payment information:</strong> Stripe receives card details for card purchases; OSL does not receive card numbers. OSL stores the Stripe identifiers and status needed to manage a subscription. When Bitcoin and Monero checkout launches, invoices will store the address, amount, status, confirmation facts, and encrypted activation delivery needed to complete the order.</li>
+          <li><strong>Download counts:</strong> the download route records an anonymous event so OSL can count downloads. It does not create a user profile.</li>
+          <li><strong>License validation:</strong> paid subscribers' OSL clients periodically check that their license is still active. These requests include the license key and a timestamp.</li>
         </ul>
 
         <h2 id="what-we-dont-collect">What we don't collect <a class="anchor-link" href="#what-we-dont-collect" aria-label="Link to this section">#</a></h2>
@@ -86,17 +87,17 @@
 
         <h2 id="how-we-use-data">How we use what we collect <a class="anchor-link" href="#how-we-use-data" aria-label="Link to this section">#</a></h2>
         <ul>
-          <li><strong>Email</strong> — to send the launch notification you signed up for, or service-related notices if you're a paid subscriber. We don't sell, rent, or share your email with third parties. We don't run marketing campaigns to your address.</li>
-          <li><strong>Payment data</strong> — to process your subscription and handle renewals, refunds, and cancellations. For Stripe-paid subscriptions this is a Stripe customer ID; for crypto-paid subscriptions this is an on-chain transaction reference and license key only.</li>
-          <li><strong>License validation requests</strong> — to verify your paid tier is active. The validation server doesn't track which Discord servers you're in, who you talk to, or anything about your OSL usage beyond "this license is valid."</li>
-          <li><strong>Server logs</strong> — for security and abuse detection only. We don't analyze them for marketing or analytics purposes.</li>
+          <li><strong>Email:</strong> to answer a message you choose to send us. We do not require email to reveal an activation code in the checkout browser.</li>
+          <li><strong>Payment data:</strong> to process a purchase, manage renewals, handle refunds, and deliver an activation code. OSL stores activation code hashes rather than readable activation codes after issuance.</li>
+          <li><strong>License validation requests:</strong> to verify your paid tier is active. The validation server doesn't track which Discord servers you're in, who you talk to, or anything about your OSL usage beyond "this license is valid."</li>
+          <li><strong>Server logs:</strong> for security and abuse detection only. We don't analyze them for marketing or analytics purposes.</li>
         </ul>
 
         <h2 id="third-parties">Third parties <a class="anchor-link" href="#third-parties" aria-label="Link to this section">#</a></h2>
         <p>We use the following third-party services:</p>
         <ul>
-          <li><strong>Cloudflare</strong> — CDN and DDoS protection for oslprivacy.com.</li>
-          <li><strong>Stripe</strong> — card payment processing for paid subscriptions. Bitcoin and Monero payments do not go through Stripe or any other payment processor.</li>
+          <li><strong>Cloudflare:</strong> CDN and DDoS protection for oslprivacy.com.</li>
+          <li><strong>Stripe:</strong> card payment processing for paid subscriptions. Bitcoin and Monero payments are coming soon and will not go through Stripe or another payment processor.</li>
         </ul>
         <p>We do not use Google Analytics, Facebook Pixel, ad-retargeting trackers, or any other cross-site tracking infrastructure.</p>
 
@@ -128,7 +129,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

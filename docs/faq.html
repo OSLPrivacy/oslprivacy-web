@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAQ — OSL Privacy Docs</title>
+  <title>FAQ | OSL Privacy Docs</title>
   <meta name="description" content="Frequently asked questions about OSL Privacy.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
@@ -65,13 +65,13 @@
         <p>OSL is a desktop application that wraps the Discord client and adds end-to-end encryption to your messages. You install OSL instead of Discord, log in as normal, and any messages you send to whitelisted friends (who also have OSL) are encrypted before Discord sees them.</p>
 
         <h3>How is OSL different from Signal?</h3>
-        <p>Signal is its own messaging app — separate identity, separate contacts, separate platform. OSL piggybacks on Discord — same identity, same servers, same conversations, just with end-to-end encryption added. If you want to talk to your existing Discord friends privately, OSL fits. If you want to start over with a separate secure-messaging identity that hides metadata too, Signal is the right tool. See our <a href="/docs/threat-model">threat model</a> for a fuller discussion.</p>
+        <p>Signal is its own messaging app with a separate identity, contacts, and platform. OSL works through Discord, so you keep the same identity, servers, and conversations while adding end-to-end encryption. If you want to talk to your existing Discord friends privately, OSL fits. If you want to start over with a separate secure-messaging identity that hides metadata too, Signal is the right tool. See our <a href="/docs/threat-model">threat model</a> for a fuller discussion.</p>
 
         <h3>Why publish the crypto code?</h3>
-        <p>Privacy claims are only as good as the code behind them. If the encryption is wrong, no amount of marketing fixes it. So the cryptographic primitives, the ratchet, the key store, and the wire format are published on the Audit page. You can read or download them yourself. The Discord integration and keyserver stay closed because those are the business; the crypto isn't.</p>
+        <p>Privacy claims are only as good as the code behind them. If the encryption is wrong, no amount of marketing fixes it. The client, cryptographic core, Discord integration, and server components are published in OSL's public repository so you can inspect or build them yourself.</p>
 
         <h3>Does OSL work on mobile?</h3>
-        <p>Not yet. OSL is desktop-only at launch — Windows specifically. macOS and Linux are planned for later. Mobile (Android/iOS) is on the longer-term roadmap but isn't committed.</p>
+        <p>Not yet. OSL launches on Windows desktop only. macOS and Linux are planned for later. Mobile (Android/iOS) is on the longer-term roadmap but isn't committed.</p>
 
         <h2 id="privacy-security">Privacy &amp; Security <a class="anchor-link" href="#privacy-security" aria-label="Link to this section">#</a></h2>
 
@@ -79,19 +79,19 @@
         <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation. Direct messages are sealed per-message to the recipient's published keys; group chats and server channels use Sender Keys. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
 
         <h3>Why is post-quantum encryption important?</h3>
-        <p>State-level adversaries are recording encrypted traffic now to decrypt later, once quantum computers catch up. ML-KEM-768 is a post-quantum key-encapsulation mechanism designed to resist that, and OSL pairs it with X25519 in a hybrid — so your messages stay protected even if one of the two algorithms is later broken.</p>
+        <p>State-level adversaries are recording encrypted traffic now to decrypt later, once quantum computers catch up. ML-KEM-768 is a post-quantum key-encapsulation mechanism designed to resist that. OSL pairs it with X25519 so your messages stay protected even if one of the two algorithms is later broken.</p>
 
         <h3>Can my friends read encrypted messages without OSL?</h3>
-        <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL — your friend, Discord itself, anyone reading the raw Discord database — sees ciphertext only.</p>
+        <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL, including your friend, Discord itself, or someone reading the raw Discord database, sees ciphertext only.</p>
 
         <h3>Can I encrypt voice/video calls?</h3>
         <p>No. OSL only encrypts text messages and attached images. Voice and video calls still flow through Discord's normal infrastructure with Discord's own encryption.</p>
 
         <h3>What if I forget my password?</h3>
-        <p>Your encrypted history becomes permanently inaccessible. There is no recovery. The password is what unlocks your keys; without it, your data is just random bytes on disk. Write your password down somewhere safe.</p>
+        <p>OSL provides separate recovery material for the identity and password-protected local state. Save both during setup. OSL cannot recover them from its servers, and losing every recovery copy can make encrypted history permanently inaccessible.</p>
 
         <h3>What happens to my data if OSL shuts down?</h3>
-        <p>Your data stays on your computer. OSL doesn't host anything — we never had your keys or messages to lose. If we disappear tomorrow, your existing data stays decryptable as long as you have OSL installed and remember your password.</p>
+        <p>Your keys and readable history stay on your devices. OSL infrastructure may relay bounded ciphertext and public-key/control records, but it cannot decrypt message content. If the service disappears, locally retained data remains usable with your identity, password, and recovery material; network-dependent delivery and recovery actions may stop.</p>
 
         <h2 id="installing-using">Installing &amp; Using <a class="anchor-link" href="#installing-using" aria-label="Link to this section">#</a></h2>
 
@@ -109,7 +109,7 @@
 
         <h3>What happens when I uninstall OSL?</h3>
         <!-- UX-VERIFY: confirm uninstaller flow has "remove all data" option -->
-        <p>OSL leaves your encrypted message store on disk by default — if you reinstall, your history comes back as long as you remember your password. To delete the data entirely, remove the OSL data directory after uninstalling. The installer's uninstall flow has a "remove all data" option.</p>
+        <p>OSL leaves your encrypted message store on disk by default. If you reinstall, your history comes back as long as you remember your password. To delete the data entirely, remove the OSL data directory after uninstalling. The installer's uninstall flow has a "remove all data" option.</p>
 
         <h3>Is there a beta program?</h3>
         <p>We'll announce a beta program before public launch. Sign up on the <a href="/">landing page</a> to be notified.</p>
@@ -117,13 +117,13 @@
         <h2 id="pricing-support">Pricing &amp; Support <a class="anchor-link" href="#pricing-support" aria-label="Link to this section">#</a></h2>
 
         <h3>Is OSL free?</h3>
-        <p>Yes. The free tier gives you unlimited encrypted text messaging with no time limits and no ads. The paid tier — $5/month or $50/year — unlocks sending encrypted attachments and early access to new features via the beta channel. Free users can still receive and decrypt encrypted attachments sent by paid users.</p>
+        <p>Yes. The free tier gives you unlimited encrypted text messaging with no time limits and no ads. The paid tier costs $5/month or $50/year and unlocks encrypted attachment sending plus early access to new features through the beta channel. Free users can still receive and decrypt encrypted attachments sent by paid users.</p>
 
         <h3>What does "burn" mean in OSL?</h3>
-        <p>OSL has four ways to make messages disappear on demand. View-once messages can only be read by the recipient one time. In-memory-only mode keeps a message in RAM but never writes it to disk, so it's gone when the app closes. Remote wipe lets you delete a sent message from all recipients after the fact. Full history nuke wipes your entire OSL message store in one button. All four are manual — you decide when to burn. Auto-expiring messages (time-bombed) are planned for a future release.</p>
+        <p>Burn destroys or revokes OSL-managed local decryptability for the selected message, scope, or account and can send an authenticated deletion request to participating OSL clients. It cannot prove that a platform, screenshot, export, backup, offline device, or recipient has forgotten content. View-once and timed deletion are shown only where the active client can enforce and report their real outcome.</p>
 
         <h3>What exactly do I get for paying?</h3>
-        <p>Two things. First, you can send encrypted attachments — images, files, anything you'd attach to a Discord message — fully encrypted on your end, decrypted only by the recipient's OSL. Free users can still receive and decrypt attachments sent by paid users, so paying friends and free friends can talk to each other normally. Second, paid users get beta channel access — earliest access to new features before they're released to everyone.</p>
+        <p>Two things. First, you can send images, files, and other Discord attachments fully encrypted on your end and decrypted only by the recipient's OSL. Free users can still receive and decrypt attachments sent by paid users, so paying friends and free friends can talk to each other normally. Second, paid users get beta channel access and can use new features before they're released to everyone.</p>
 
         <h3>How do I report a bug or request a feature?</h3>
         <p>Email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> with a description of what you saw and what you expected. Include the OSL version (visible in the about screen) and your OS version. For features, the more context on what problem you're trying to solve, the better.</p>
@@ -142,7 +142,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

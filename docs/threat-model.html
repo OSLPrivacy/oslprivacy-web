@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Threat model — OSL Privacy Docs</title>
+  <title>Threat model | OSL Privacy Docs</title>
   <meta name="description" content="What OSL defends against, and what it doesn't.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
@@ -65,7 +65,7 @@
           <li>Discord itself reading your messages. Discord receives ciphertext only.</li>
           <li>Discord employees with database access. Same as above.</li>
           <li>Attackers who breach Discord's infrastructure. Same as above.</li>
-          <li>Network eavesdroppers — your ISP, public-wifi snoopers, governments tapping the wire. They see only TLS-encrypted Discord traffic carrying ciphertext.</li>
+          <li>Network eavesdroppers, including your ISP, public-wifi snoopers, and governments tapping the wire. They see only TLS-encrypted Discord traffic carrying ciphertext.</li>
           <li>Anyone with subpoena access to Discord's data. Discord can hand over what they have. What they have is ciphertext.</li>
         </ul>
 
@@ -73,7 +73,7 @@
         <p>OSL is not a complete privacy solution. It does not protect against:</p>
         <ul>
           <li><strong>Metadata.</strong> Discord can see who you're talking to, when, message frequency, message sizes, and channel membership. OSL hides the contents of conversations, not their existence.</li>
-          <li><strong>A compromised computer.</strong> If malware, a keylogger, or a screen-recorder is running on your device, OSL can't help. Encryption only protects data in transit and at rest — it can't protect data while you're reading or typing it.</li>
+          <li><strong>A compromised computer.</strong> If malware, a keylogger, or a screen-recorder is running on your device, OSL can't help. Encryption only protects data in transit and at rest. It can't protect data while you're reading or typing it.</li>
           <li><strong>The other side leaking.</strong> The person you're talking to can screenshot, copy-paste, or otherwise share your messages. Encryption defends against third parties, not against your recipient.</li>
           <li><strong>Voice and video calls.</strong> Not encrypted by OSL. Discord's normal infrastructure handles those.</li>
           <li><strong>Server moderation.</strong> If a server admin sees a problem (because they're in the conversation, because someone reports it, or because they have OSL installed and you whitelisted them), they can act on it.</li>
@@ -85,7 +85,7 @@
         <p>Possibly. Discord's terms of service prohibit client modifications. We're not aware of bans specifically related to OSL but use it at your own risk. If you have a Discord account you can't afford to lose, weigh the risk.</p>
 
         <h3>Can the government compel Discord to read my messages?</h3>
-        <p>Discord can be compelled to hand over what they have. For OSL-encrypted messages, what Discord has is ciphertext — random bytes. Decrypting requires your keys, which Discord doesn't have.</p>
+        <p>Discord can be compelled to hand over what they have. For OSL-encrypted messages, Discord has ciphertext made of random bytes. Decrypting requires your keys, which Discord doesn't have.</p>
 
         <h3>Can the government compel ME to hand over my password?</h3>
         <p>Depending on jurisdiction, possibly. Some legal systems can compel you to disclose passwords; others can't (or it's unsettled law). OSL doesn't protect against legal coercion or physical compulsion. If you're in a high-risk situation, consult a lawyer and consider whether OSL alone is enough.</p>
@@ -99,7 +99,7 @@
         </ul>
         <p>OSL is <strong>not</strong> appropriate for:</p>
         <ul>
-          <li>Activists, journalists, or dissidents in hostile environments. The metadata Discord sees is enough to map your network. Use <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> instead — they're designed for that threat model.</li>
+          <li>Activists, journalists, or dissidents in hostile environments. The metadata Discord sees is enough to map your network. Use <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> instead because they're designed for that threat model.</li>
           <li>Crime. Don't.</li>
         </ul>
       </article>
@@ -117,7 +117,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

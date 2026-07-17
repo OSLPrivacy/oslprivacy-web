@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing — OSL Privacy</title>
-  <meta name="description" content="OSL Privacy pricing. Free or Paid — same end-to-end encryption either way.">
+  <title>OSL Privacy pricing</title>
+  <meta name="description" content="Private text is free. Paid OSL plans add encrypted file sending. Card checkout is live. Bitcoin and Monero are coming soon.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -17,200 +17,92 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
     <a class="topnav-brand" href="/"><img class="topnav-brand-mark" src="/assets/img/logo-mark.svg" alt="" width="28" height="28"><span>OSL Privacy</span></a>
-    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
-      <ul class="topnav-links">
-        <li><a href="/pricing" aria-current="page">Pricing</a></li>
-        <li><a href="/download">Download</a></li>
-        <li><a href="/docs/">Docs</a></li>
-        <li><a href="/audit">Audit</a></li>
-      </ul>
+      <ul class="topnav-links"><li><a href="/pricing" aria-current="page">Pricing</a></li><li><a href="/download">Download</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li></ul>
     </nav>
   </header>
 
   <main id="main">
-
-    <style>
-      .beta-modal[hidden]{display:none}
-      .beta-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
-      .beta-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72)}
-      .beta-modal-card{position:relative;max-width:32rem;width:100%;background:var(--surface,#15171c);border:1px solid var(--accent,#06b6d4);border-radius:14px;padding:2rem 2rem 1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.55)}
-      .beta-modal-card h2{margin:0 2rem 0 0}
-      .beta-modal-card p{margin:.85rem 0 0}
-      .beta-modal-close{position:absolute;top:.6rem;right:1rem;background:none;border:0;color:var(--text,#e8e8e8);font-size:1.9rem;line-height:1;cursor:pointer}
-      .beta-modal-actions{margin-top:1.4rem}
-      .beta-modal-contact{font-size:.9rem;color:var(--muted,#9aa0aa)}
-    </style>
-    <div class="beta-modal" id="beta-modal" role="dialog" aria-modal="true" aria-labelledby="beta-modal-title" hidden>
-      <div class="beta-modal-backdrop" data-beta-close></div>
-      <div class="beta-modal-card" role="document">
-        <button type="button" class="beta-modal-close" data-beta-close aria-label="Close">&times;</button>
-        <h2 id="beta-modal-title">OSL is in open beta</h2>
-        <p><strong>Premium is free during the beta.</strong> Our Stripe account hasn't been approved yet, so we're not charging for premium — encrypted attachment sending — right now.</p>
-        <p>Want attachments today? Text <strong>&ldquo;oslprivacy&rdquo;</strong> in our Discord and we'll send you a free beta key, good for <strong>3 months</strong> of encrypted attachments.</p>
-        <p class="beta-modal-actions">
-          <a class="button button-primary" href="https://discord.gg/2euUYggp92" target="_blank" rel="noopener">Join our Discord</a>
-        </p>
-        <p class="beta-modal-contact">Prefer email? Reach us at <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>.</p>
-      </div>
-    </div>
-
-    <section class="section">
-      <h1 class="page-heading">Pricing</h1>
-      <p class="page-lede">Two plans. Free covers unlimited encrypted text. Paid unlocks encrypted attachment sending and beta access.</p>
+    <section class="section reveal">
+      <p class="eyebrow">Simple pricing</p>
+      <h1 class="page-heading">Private text is free.</h1>
+      <p class="page-lede">Pay only if you want to send encrypted files. The encryption is the same on both plans.</p>
+      <p class="live-badge charge-notice">A completed card checkout is a real charge</p>
     </section>
 
-    <section class="section" aria-labelledby="plans-heading">
+    <section class="section reveal" aria-labelledby="plans-heading">
       <h2 id="plans-heading" class="visually-hidden">Plans</h2>
-
       <fieldset class="period-toggle" aria-label="Billing period">
         <legend class="visually-hidden">Billing period</legend>
-        <input type="radio" id="period-monthly" name="period" value="monthly" checked>
-        <label for="period-monthly">Monthly</label>
-        <input type="radio" id="period-yearly" name="period" value="yearly">
-        <label for="period-yearly">Yearly <span class="period-savings">save 17%</span></label>
+        <input type="radio" id="period-monthly" name="period" value="monthly" checked><label for="period-monthly">Monthly</label>
+        <input type="radio" id="period-yearly" name="period" value="yearly"><label for="period-yearly">Yearly <span class="period-savings">Save $10</span></label>
       </fieldset>
 
       <div class="grid-2 plans">
-
         <article class="card plan">
           <h3 class="plan-name">Free</h3>
-          <div class="price-tag">
-            <span class="price-amount">$0</span>
-            <span class="price-period">/month</span>
-          </div>
+          <div class="price-tag"><span class="price-amount">$0</span><span class="price-period">forever</span></div>
           <ul class="plan-features">
-            <li><span class="check yes" aria-hidden="true">✓</span> Unlimited encrypted text messages</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Receive encrypted attachments from paid users</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> No ads, no time limits, no tracking</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Works inside Discord — wraps your existing client, your messages stay where they are</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Burn messages on demand — view-once, in-memory-only, remote wipe, full history nuke</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Send private text</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Receive private files</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> No ads or usage tracking</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> No message limit</li>
           </ul>
           <a href="/download" class="button button-secondary plan-cta">Download free</a>
         </article>
 
         <article class="card card-active plan">
           <h3 class="plan-name">Paid</h3>
-          <div class="price-tag" aria-live="polite">
-            <span class="price-amount" data-monthly="$5" data-yearly="$50">$5</span>
-            <span class="price-period" data-monthly="/month" data-yearly="/year">/month</span>
-          </div>
+          <div class="price-tag" aria-live="polite"><span class="price-amount" data-monthly="$5" data-yearly="$50">$5</span><span class="price-period" data-monthly="each month" data-yearly="each year">each month</span></div>
           <ul class="plan-features">
             <li><span class="check yes" aria-hidden="true">✓</span> Everything in Free</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Send encrypted attachments (images, files, anything)</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Beta channel access — early access to new features</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Support the project</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Cancel anytime</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Send private images and files</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Try new features early</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> Cancel at any time</li>
           </ul>
-          <button type="button" class="button button-primary plan-cta cta-subscribe" data-monthly-text="Subscribe — $5/month" data-yearly-text="Subscribe — $50/year">Subscribe — $5/month</button>
+          <button type="button" class="button button-primary plan-cta cta-subscribe" data-monthly-text="Pay $5 each month" data-yearly-text="Pay $50 each year">Pay $5 each month</button>
+          <p class="renewal-note" data-monthly="Renews at $5 each month until cancelled." data-yearly="Renews at $50 each year until cancelled.">Renews at $5 each month until cancelled.</p>
         </article>
-
       </div>
-
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
 
       <div class="alt-payment">
-        <h3>Other payment methods:</h3>
-        <p>Want to pay another way? Email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> to pay by mail, Bitcoin, Monero, or another method.</p>
+        <h3>Bitcoin and Monero</h3>
+        <p>Crypto checkout is not live yet.</p>
+        <div class="payment-actions">
+          <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
+          <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="free-tier-heading">
-      <h2 id="free-tier-heading" class="section-heading">How the free tier works</h2>
-      <div class="prose">
-        <p>The free tier isn't a trial. It's not a limited preview. Encrypted text messaging works the same on both tiers — no time limits, no message caps, no ads. We make money when someone wants to send encrypted attachments, which is the heavier feature to support. Receivers of encrypted attachments don't pay — so a free user can read what a paid friend sends them.</p>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="never-charge-heading">
-      <h2 id="never-charge-heading" class="section-heading">What we never charge for</h2>
-      <div class="grid-3">
-        <article class="card">
-          <h3>End-to-end encryption</h3>
-          <p>Every tier gets the same cryptographic protection — Free and Paid users have identical security.</p>
-        </article>
-        <article class="card">
-          <h3>Your data</h3>
-          <p>Your keys and messages live on your computer. We can't read them. There's nothing to sell, even if we wanted to.</p>
-        </article>
-        <article class="card">
-          <h3>Your contact list</h3>
-          <p>OSL never builds a social graph of who talks to whom. Discord sees that metadata, we don't.</p>
-        </article>
+    <section class="section reveal" aria-labelledby="payment-heading">
+      <h2 id="payment-heading" class="section-heading">What happens after you pay</h2>
+      <div class="plain-steps">
+        <article><span aria-hidden="true">1</span><div><h3>Stripe confirms payment</h3><p>OSL checks the signed confirmation automatically.</p></div></article>
+        <article><span aria-hidden="true">2</span><div><h3>Your code appears here</h3><p>The code is encrypted for this browser while it is delivered.</p></div></article>
+        <article><span aria-hidden="true">3</span><div><h3>Paste it into OSL</h3><p>Paid features turn on as soon as the app validates the code.</p></div></article>
       </div>
     </section>
 
     <section class="section" aria-labelledby="pricing-faq-heading">
-      <h2 id="pricing-faq-heading" class="section-heading">Pricing FAQ</h2>
+      <h2 id="pricing-faq-heading" class="section-heading">Questions</h2>
       <div class="faq">
-        <article class="faq-item">
-          <h3>Why charge at all?</h3>
-          <p>OSL has real costs — the keyserver runs on Cloudflare, payments go through Stripe, email delivery costs money, and the project takes time to build. The cryptographic core is auditable; the business stays closed so we can actually keep it running.</p>
-        </article>
-        <!-- FUTURE: expand with metadata privacy breakdown - see W6 -->
-        <article class="faq-item">
-          <h3>What payment methods do you accept?</h3>
-          <p>Credit card via Stripe, Bitcoin, and Monero. Crypto payments provide stronger privacy at checkout.</p>
-        </article>
-        <article class="faq-item">
-          <h3>What happens if I cancel my paid subscription?</h3>
-          <p>You go back to the free tier — unlimited encrypted text messaging stays available, you just lose the ability to send encrypted attachments and beta channel access until you resubscribe.</p>
-        </article>
+        <article class="faq-item"><h3>Is this a test checkout?</h3><p>If Stripe checkout opens, it is a live payment page. Completing it creates a real charge.</p></article>
+        <article class="faq-item"><h3>Will you email the activation code?</h3><p>No. The code appears in the browser that started checkout. Keep that tab open until you copy it.</p></article>
+        <article class="faq-item"><h3>What happens if I cancel?</h3><p>You keep free private text. You lose the ability to send encrypted files when the paid period ends.</p></article>
+        <article class="faq-item"><h3>Can I inspect the payment code?</h3><p>Yes. The site and payment backend are public on <a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a>.</p></article>
       </div>
-    </section>
-
-    <section class="section section-cta" id="notify" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Get notified when subscriptions go live</h2>
-      <p class="section-subhead">Payment processing ships at launch. Stripe, Bitcoin, and Monero supported. Sign up to be first to know.</p>
-      <form class="notify-form" id="notify-form" action="#" novalidate>
-        <label for="email" class="visually-hidden">Email address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
-        <button type="submit" class="button button-primary">Notify me</button>
-      </form>
-      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
     </section>
 
   </main>
 
   <footer>
-    <nav class="footer-pages" aria-label="Site pages">
-      <a href="/pricing">Pricing</a>
-      <a href="/download">Download</a>
-      <a href="/docs/">Docs</a>
-      <a href="/docs/privacy">Privacy</a>
-      <a href="/docs/terms">Terms</a>
-    </nav>
-    <nav class="footer-meta" aria-label="External and legal">
-      <a href="/audit">Audit</a>
-      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
-    </nav>
+    <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
+    <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
-
   <script src="/assets/js/main.js" defer></script>
-  <script>
-    (function () {
-      var modal = document.getElementById('beta-modal');
-      if (!modal) return;
-      function close() { modal.setAttribute('hidden', ''); }
-      function open() { modal.removeAttribute('hidden'); }
-      // Show once per browser session so it isn't naggy on every visit.
-      try {
-        if (!sessionStorage.getItem('osl_beta_popup_shown')) {
-          open();
-          sessionStorage.setItem('osl_beta_popup_shown', '1');
-        }
-      } catch (e) { open(); }
-      modal.querySelectorAll('[data-beta-close]').forEach(function (el) {
-        el.addEventListener('click', close);
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') close();
-      });
-    })();
-  </script>
 </body>
 </html>

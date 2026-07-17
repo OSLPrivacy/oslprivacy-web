@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSL Privacy — End-to-end encryption for Discord</title>
-  <meta name="description" content="OSL adds end-to-end encryption to Discord. Your messages stay private from Discord, your network, and anyone else watching. Built on post-quantum cryptography.">
+  <title>OSL Privacy | Private messages for Discord</title>
+  <meta name="description" content="OSL encrypts selected Discord messages on your computer before Discord receives them. Free, open source, and built for Windows.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -17,201 +17,175 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
     <a class="topnav-brand" href="/" aria-current="page"><img class="topnav-brand-mark" src="/assets/img/logo-mark.svg" alt="" width="28" height="28"><span>OSL Privacy</span></a>
-    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/download">Download</a></li>
-        <li><a href="/docs/">Docs</a></li>
         <li><a href="/audit">Audit</a></li>
+        <li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
       </ul>
     </nav>
   </header>
 
-  <main id="main">
+  <dialog class="privacy-warning" id="privacy-warning" aria-labelledby="privacy-warning-title" aria-describedby="privacy-warning-copy">
+    <div class="privacy-warning-inner">
+      <button class="dialog-close privacy-warning-close" type="button" data-privacy-warning-close aria-label="Close warning">&times;</button>
+      <div class="privacy-warning-icon" aria-hidden="true">!</div>
+      <p class="eyebrow">Check your exposure</p>
+      <h2 id="privacy-warning-title">Who can reach your messages?</h2>
+      <p id="privacy-warning-copy">Choose your country. OSL will show the agencies and companies that may have a path to data stored about you.</p>
 
-    <section class="hero section">
-      <img class="logo" src="/assets/img/logo-mark.svg" alt="" width="112" height="112">
+      <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Use my location</button>
+      <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">Your location stays in this browser.</p>
 
-      <h1>End-to-end encryption for Discord</h1>
-      <p class="lede">Your messages stay private from Discord, your network, and anyone else watching.</p>
-      <div class="hero-cta">
-        <a href="/download" class="button button-primary">Download for Windows</a>
-        <a href="#how-it-works" class="button button-secondary">How it works</a>
-      </div>
-    </section>
-
-    <section class="section" id="how-it-works" aria-labelledby="steps-heading">
-      <h2 id="steps-heading" class="section-heading">How it works</h2>
-      <div class="grid-3 steps">
-        <article class="step">
-          <div class="step-num" aria-hidden="true">1</div>
-          <h3>Install OSL</h3>
-          <p>It replaces your Discord desktop client. Same look, same features, plus encryption.</p>
-        </article>
-        <article class="step">
-          <div class="step-num" aria-hidden="true">2</div>
-          <h3>Whitelist your friends</h3>
-          <p>Choose who you want to talk to privately. Both of you need OSL installed.</p>
-        </article>
-        <article class="step">
-          <div class="step-num" aria-hidden="true">3</div>
-          <h3>Type as normal</h3>
-          <p>OSL encrypts your messages before Discord sees them. The other side decrypts on their end.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="features" aria-labelledby="features-heading">
-      <h2 id="features-heading" class="section-heading">What you get</h2>
-      <div class="grid-2 features">
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <ellipse cx="16" cy="16" rx="13" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-            <ellipse cx="16" cy="16" rx="13" ry="5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(60 16 16)"/>
-            <ellipse cx="16" cy="16" rx="13" ry="5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(120 16 16)"/>
-            <circle cx="16" cy="16" r="2" fill="currentColor"/>
-          </svg>
-          <h3>Post-quantum cryptography</h3>
-          <p>X25519 + ML-KEM-768. Resistant to attacks from future quantum computers.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <path d="M 13 8 a 6 6 0 1 0 0 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M 19 8 a 6 6 0 1 1 0 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <h3>Hidden in plain sight</h3>
-          <p>Your encrypted messages don't appear as obvious ciphertext on Discord. They ride inside ordinary-looking chat text — only someone with the conversation key can tell there's anything to read.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <circle cx="9" cy="16" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-            <line x1="13" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="23" y1="16" x2="23" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="28" y1="16" x2="28" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <h3>Local-only keys</h3>
-          <p>Your encryption keys never leave your computer. Encrypted at rest with your password.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <rect x="5" y="7" width="22" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="21" x2="16" y2="25" stroke="currentColor" stroke-width="2"/>
-            <line x1="12" y1="25" x2="20" y2="25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="7" y1="26" x2="26" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <h3>Screen-capture protection</h3>
-          <p>On Windows, OSL hides its own window from screenshots, screen recordings, and screen-sharing — so a shared screen or a stray screenshot can't leak your conversations. On by default; turn it off anytime you need to record or present.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <path d="M 16 4 C 11 11 9 16 9 20 C 9 25 12 28 16 28 C 20 28 23 25 23 20 C 23 16 21 11 16 4 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
-          <h3>Burn on demand</h3>
-          <p>Wipe your keys for a channel, a server, or your entire account. Past messages become permanently unreadable.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <polyline points="12,10 6,16 12,22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="19" y1="8" x2="13" y2="24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <polyline points="20,10 26,16 20,22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <h3>Fully open source</h3>
-          <p>The entire client is published on GitHub under Apache-2.0. Read exactly how OSL encrypts your messages — nothing is hidden.</p>
-        </article>
-
-        <article class="card feature">
-          <svg class="icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
-            <circle cx="16" cy="22" r="2" fill="currentColor"/>
-            <path d="M 10 22 a 6 6 0 0 1 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M 4 22 a 12 12 0 0 1 24 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="5" y1="28" x2="27" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <h3>No telemetry</h3>
-          <p>OSL doesn't phone home. No analytics, no usage tracking, no accounts on our side.</p>
-        </article>
-
-      </div>
-    </section>
-
-    <section class="section" id="limits" aria-labelledby="limits-heading">
-      <h2 id="limits-heading" class="section-heading">What OSL doesn't protect against</h2>
-      <p class="section-subhead">Honesty up front. Encryption has limits.</p>
-      <div class="grid-2 limits">
-        <article class="card limit">
-          <h3>Discord still sees metadata</h3>
-          <p>Discord can see who you're talking to and when, even if they can't read what you're saying.</p>
-        </article>
-        <article class="card limit">
-          <h3>Compromised devices aren't safe</h3>
-          <p>If your computer is compromised, OSL can't protect your messages — encryption only protects data in transit and at rest.</p>
-        </article>
-        <article class="card limit limit-wide">
-          <h3>Voice and video aren't covered</h3>
-          <p>Voice and video calls aren't encrypted by OSL. Discord's own encryption applies there.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="faq" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" class="section-heading">Frequently asked questions</h2>
-      <div class="faq">
-        <article class="faq-item">
-          <h3>Will Discord ban my account for using OSL?</h3>
-          <p>OSL modifies the Discord client locally. Discord's ToS technically prohibits client modifications. We're not aware of any bans related to OSL specifically, but use it at your own risk.</p>
-        </article>
-        <article class="faq-item">
-          <h3>Can my friends read my encrypted messages without OSL?</h3>
-          <p>No. OSL recipients need OSL installed to decrypt messages. Anyone without OSL sees ciphertext.</p>
-        </article>
-        <article class="faq-item">
-          <h3>What happens if I forget my password?</h3>
-          <p>All your encrypted history becomes permanently inaccessible. There is no recovery. Write your password down somewhere safe.</p>
-        </article>
-        <article class="faq-item">
-          <h3>Is OSL free?</h3>
-          <p>Yes. The free tier gives you unlimited encrypted text messaging with no time limits and no ads. The paid tier unlocks sending encrypted attachments and beta channel access. See the <a href="/pricing">pricing page</a> for details.</p>
-        </article>
-        <article class="faq-item">
-          <h3>What platforms does OSL support?</h3>
-          <p>Windows at launch. macOS and Linux are planned for later.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section section-cta" id="signup" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Get notified when OSL launches</h2>
-      <form class="notify-form" id="notify-form" action="#" novalidate>
-        <label for="email" class="visually-hidden">Email address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
-        <button type="submit" class="button button-primary">Notify me</button>
+      <div class="location-divider" aria-hidden="true"><span>or</span></div>
+      <form class="manual-location-form" id="manual-location-form">
+        <label for="manual-location">Or enter a country</label>
+        <div><input id="manual-location" name="location" autocomplete="country-name" maxlength="80" placeholder="United States" required><button class="button button-secondary" type="submit">Check</button></div>
       </form>
-      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-      <p class="fineprint">We'll email you once. No spam, no marketing list.</p>
+
+      <section class="agency-result" id="agency-result" aria-labelledby="agency-result-title" hidden>
+        <h3 id="agency-result-title">Who can reach stored data</h3>
+        <p id="agency-result-copy"></p>
+        <div class="exposure-list" id="agency-result-list"></div>
+        <h3 class="service-result-title">United States intelligence reach</h3>
+        <div class="exposure-list" id="us-intelligence-result-list"></div>
+        <h3 class="service-result-title">Companies keeping the record</h3>
+        <div class="exposure-list" id="service-result-list"></div>
+      </section>
+
+      <p class="privacy-warning-limit">OSL encrypts message content. It cannot hide your account, contacts, location, or activity.</p>
+      <div class="privacy-warning-actions">
+        <a class="button button-primary" href="/download">Download OSL</a>
+        <button class="button button-secondary" type="button" data-privacy-warning-close>Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <main id="main">
+    <section class="hero section reveal">
+      <p class="eyebrow">Open source privacy</p>
+      <img class="logo" src="/assets/img/logo-mark.svg" alt="" width="112" height="112">
+      <h1>Your messages can become evidence.</h1>
+      <p class="lede">Ordinary Discord messages live on computers you do not control. They can be copied in a breach, handed over under a court order, or collected during lawful surveillance. OSL encrypts selected messages before Discord receives them.</p>
+      <div class="download-choice-grid" aria-label="Choose an OSL download">
+        <article class="download-choice">
+          <div class="download-choice-heading">
+            <h2>Free</h2>
+            <p><strong>$0</strong> forever</p>
+          </div>
+          <a href="/download" class="button button-secondary">Download Free</a>
+          <ul class="download-features">
+            <li>Send private text</li>
+            <li>Receive encrypted images and files</li>
+            <li>Unlimited private messages</li>
+            <li>Open source. Keys stay on your computer.</li>
+          </ul>
+        </article>
+
+        <article class="download-choice download-choice-pro">
+          <div class="download-choice-heading">
+            <h2>Pro</h2>
+            <p><strong>$5</strong> a month</p>
+          </div>
+          <p class="download-payment-label">Pay securely with Stripe</p>
+          <button class="button button-primary cta-subscribe" type="button">Download Pro with Stripe</button>
+          <div class="coming-payment-options" aria-label="Payment methods coming soon">
+            <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
+            <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
+          </div>
+          <ul class="download-features">
+            <li>Everything in Free</li>
+            <li>Send encrypted images and files</li>
+            <li>Early access to new privacy tools</li>
+          </ul>
+          <p class="download-coming-label">Coming to Pro</p>
+          <ul class="download-features download-features-coming">
+            <li>Clean identifying details from attachments</li>
+            <li>View-once private media</li>
+            <li>Guided cleanup with verified receipts</li>
+            <li>Advanced message retention controls</li>
+          </ul>
+          <p class="download-renewal">Stripe is live. $5 per month until canceled. Your activation code appears after payment.</p>
+        </article>
+      </div>
+      <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="section tutorial-preview reveal" aria-labelledby="tutorial-preview-heading">
+      <p class="eyebrow">Learn OSL</p>
+      <h2 class="section-heading" id="tutorial-preview-heading">Every feature, shown simply.</h2>
+      <div class="tutorial-placeholder-grid">
+        <article class="tutorial-placeholder tutorial-video-placeholder">
+          <span class="tutorial-placeholder-icon" aria-hidden="true">&#9654;</span>
+          <div><h3>Video tutorials</h3><p>Short walkthroughs will appear here.</p></div>
+          <span class="placeholder-badge">Coming soon</span>
+        </article>
+        <article class="tutorial-placeholder">
+          <span class="tutorial-placeholder-icon" aria-hidden="true">01</span>
+          <div><h3>Written tutorials</h3><p>Simple steps for every feature will appear here.</p></div>
+          <span class="placeholder-badge">Coming soon</span>
+        </article>
+      </div>
+      <div class="screenshot-placeholder-grid" aria-label="Future feature screenshots">
+        <div class="screenshot-placeholder"><span>Feature example</span></div>
+        <div class="screenshot-placeholder"><span>Feature example</span></div>
+        <div class="screenshot-placeholder"><span>Feature example</span></div>
+      </div>
+    </section>
+
+    <div class="trust-strip trust-strip-single reveal" aria-label="Product facts">
+      <span><strong>Free private text.</strong> Open source. Keys stay on your computer.</span>
+    </div>
+
+    <section class="section reveal" id="how-it-works" aria-labelledby="how-heading">
+      <p class="eyebrow">What OSL changes</p>
+      <h2 id="how-heading" class="section-heading">Discord gets the sealed message, not the words.</h2>
+      <div class="plain-steps">
+        <article>
+          <span aria-hidden="true">1</span>
+          <div><h3>Choose a private chat</h3><p>Both people install OSL and approve the conversation.</p></div>
+        </article>
+        <article>
+          <span aria-hidden="true">2</span>
+          <div><h3>Write normally</h3><p>OSL encrypts the message on your computer.</p></div>
+        </article>
+        <article>
+          <span aria-hidden="true">3</span>
+          <div><h3>Only the other person opens it</h3><p>Their copy of OSL decrypts it locally.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="limits-heading">
+      <p class="eyebrow">The honest limits</p>
+      <h2 id="limits-heading" class="section-heading">Encryption does not make you invisible.</h2>
+      <div class="grid-2 limits">
+        <article class="card limit"><h3>Discord still sees activity</h3><p>Discord can see your account, servers, recipients, timing, and encrypted message data.</p></article>
+        <article class="card limit"><h3>Your device still matters</h3><p>OSL cannot protect a hacked computer, a camera, a recipient screenshot, or text sent in normal mode.</p></article>
+        <article class="card limit"><h3>Both people need OSL</h3><p>A private chat works only after every required person installs OSL and approves it.</p></article>
+        <article class="card limit"><h3>Voice and video are separate</h3><p>OSL protects selected text and supported files. It does not protect Discord calls.</p></article>
+      </div>
+      <p class="center-link"><a href="/audit">Read the technical audit</a></p>
+    </section>
+
+    <section class="section section-cta reveal" aria-labelledby="cta-heading">
+      <h2 id="cta-heading" class="section-heading">Protect the words that matter.</h2>
+      <p class="section-subhead">Windows beta. Free private text. No ads or usage tracking.</p>
+      <a href="/download" class="button button-primary">Download for Windows</a>
     </section>
 
   </main>
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/pricing">Pricing</a>
-      <a href="/download">Download</a>
-      <a href="/docs/">Docs</a>
-      <a href="/docs/privacy">Privacy</a>
-      <a href="/docs/terms">Terms</a>
+      <a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
-      <a href="/audit">Audit</a>
-      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
+      <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Getting started — OSL Privacy Docs</title>
+  <title>Getting started | OSL Privacy Docs</title>
   <meta name="description" content="Install OSL, set your password, and send your first encrypted message.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
@@ -61,29 +61,29 @@
 
         <h2 id="install">Install OSL <a class="anchor-link" href="#install" aria-label="Link to this section">#</a></h2>
         <p>Download OSL from the <a href="/download">download page</a> and run the installer.</p>
-        <p>On first launch, Windows may show a SmartScreen warning that says "Windows protected your PC." This is expected — OSL is a new application from an independent developer. Click "More info" and then "Run anyway." See the <a href="/download#smartscreen">explanation on the download page</a> for the full story.</p>
+        <p>On first launch, Windows may show a SmartScreen warning that says "Windows protected your PC." This is expected because OSL is a new application from an independent developer. Click "More info" and then "Run anyway." See the <a href="/download#smartscreen">explanation on the download page</a> for the full story.</p>
         <p>OSL replaces your Discord desktop client. After install, you'll launch OSL instead of Discord, but Discord works the same way inside it.</p>
 
         <h2 id="set-password">Set your password <a class="anchor-link" href="#set-password" aria-label="Link to this section">#</a></h2>
         <p>The first time you launch OSL, you'll be prompted to set a password. This password encrypts your keys and message history on your computer.</p>
-        <p>OSL requires at least 6 characters — longer is stronger. There is no password recovery. If you forget your password, all your encrypted history becomes permanently inaccessible.</p>
+        <p>OSL requires at least 6 characters, but longer passwords are stronger. There is no password recovery. If you forget your password, all your encrypted history becomes permanently inaccessible.</p>
         <p>Write your password down somewhere safe. A password manager works. A piece of paper in a drawer works. What doesn't work is "I'll remember it."</p>
 
         <h2 id="whitelist">Whitelist your first friend <a class="anchor-link" href="#whitelist" aria-label="Link to this section">#</a></h2>
         <p>Both you and your friend need OSL installed to exchange encrypted messages. After both of you have OSL running, you can whitelist each other.</p>
-        <!-- UX-VERIFY: confirm against V2 — exact menu label "Whitelist for OSL" -->
+        <!-- UX-VERIFY: confirm against V2; exact menu label "Whitelist for OSL" -->
         <p>To whitelist someone, click their name in any channel to open their profile, then click "Whitelist for OSL." Once they whitelist you back, encryption is enabled between you.</p>
-        <!-- UX-VERIFY: confirm against V2 — channel header lock-icon right-click menu -->
+        <!-- UX-VERIFY: confirm against V2; channel header lock-icon right-click menu -->
         <p>For bulk whitelisting in a server or channel, right-click the channel header's lock icon and choose "Whitelist channel members."</p>
 
         <h2 id="first-message">Send your first encrypted message <a class="anchor-link" href="#first-message" aria-label="Link to this section">#</a></h2>
-        <!-- UX-VERIFY: confirm against V2 — lock icon color/state semantics -->
+        <!-- UX-VERIFY: confirm against V2; lock icon color/state semantics -->
         <p>Type as you normally would in Discord. OSL encrypts the message before sending. The lock icon in the channel header turns green when encryption is active.</p>
-        <p>Your friend, also running OSL, sees your message decrypted automatically. Anyone reading the raw Discord messages — including Discord itself — sees ciphertext only.</p>
+        <p>Your friend, also running OSL, sees your message decrypted automatically. Anyone reading the raw Discord messages, including Discord itself, sees ciphertext only.</p>
 
         <h2 id="non-osl-friend">What if your friend doesn't have OSL? <a class="anchor-link" href="#non-osl-friend" aria-label="Link to this section">#</a></h2>
-        <p>If you send an encrypted message to someone without OSL, they'll see what looks like random base64 garbage — that's the ciphertext, undecryptable without OSL installed and the right keys.</p>
-        <!-- UX-VERIFY: confirm against V2 — unencrypted send flow -->
+        <p>If you send an encrypted message to someone without OSL, they'll see what looks like random base64 garbage. That is the ciphertext, and it cannot be decrypted without OSL and the right keys.</p>
+        <!-- UX-VERIFY: confirm against V2; unencrypted send flow -->
         <p>You have two options: install OSL together with them, or send them an unencrypted message by clicking the lock icon to temporarily disable encryption for that message.</p>
         <p>You'll get a clear visual indicator before sending an unencrypted message so it doesn't happen by accident.</p>
       </article>
@@ -101,7 +101,7 @@
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a>
       <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
     </nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

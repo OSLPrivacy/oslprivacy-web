@@ -1,10 +1,10 @@
 # oslprivacy-web
 
-Marketing site for [OSL Privacy](https://oslprivacy.com) — end-to-end encryption for Discord.
+Public website for [OSL Privacy](https://oslprivacy.com).
 
 ## Tech stack
 
-Static HTML, CSS, and vanilla JavaScript. No frameworks, no build step, no third-party calls (no fonts, analytics, or trackers). Deployed on Cloudflare Pages.
+Static HTML, CSS, and vanilla JavaScript. No frameworks, remote fonts, analytics, or advertising trackers. Payment and download actions call the public OSL keyserver API. Card checkout redirects to Stripe.
 
 ## Deploy
 
@@ -12,7 +12,17 @@ Push to `main`. Cloudflare Pages auto-deploys.
 
 ## Develop locally
 
-Open `index.html` in a browser. That's it.
+From this directory, run:
+
+```sh
+node scripts/serve-local.mjs
+```
+
+Then open `http://127.0.0.1:4173/`.
+
+## Related source
+
+The desktop client, cryptographic core, keyserver, Stripe webhook, crypto watcher integration, and activation delivery are in [OSLPrivacy/discord-privacy-client](https://github.com/OSLPrivacy/discord-privacy-client).
 
 ## License
 
