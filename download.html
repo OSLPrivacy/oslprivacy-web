@@ -25,14 +25,7 @@
     </nav>
   </header>
 
-  <main id="main">
-    <section class="section reveal">
-      <p class="eyebrow">Windows beta</p>
-      <h1 class="page-heading">Download OSL</h1>
-      <p class="page-lede">Protect social and email conversations from one simple desktop app. Setup takes a few minutes.</p>
-      <p class="availability-note"><strong>Current download:</strong> version 0.0.1 is an early beta. Protected sending is not enabled yet.</p>
-    </section>
-
+  <main id="main" class="download-main">
     <section class="section product-demo download-setup-demo reveal" aria-labelledby="download-setup-flow-heading" data-product-animation="download-setup-flow">
       <div class="demo-heading-row">
         <div>
@@ -40,23 +33,29 @@
           <h2 id="download-setup-flow-heading" class="section-heading">Keep the app. Add OSL.</h2>
           <p class="section-subhead">Use the official app or website. Sign in there. Then choose who OSL should protect.</p>
         </div>
-        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="clean-motion-stage clean-setup-stage" aria-hidden="true">
-        <article class="clean-setup-window">
-          <span class="clean-service-mark"></span>
-          <div class="clean-setup-native-bar"></div>
-          <div class="clean-setup-osl-bar"><img src="/assets/img/logo-mark.svg" alt=""><span class="clean-lock"></span><strong>OSL</strong></div>
+      <div class="setup-product-scene" aria-hidden="true">
+        <article class="setup-social-window">
+          <header class="setup-window-header"><span class="setup-app-mark"></span><strong>Messages</strong><span class="setup-window-actions"><i></i><i></i></span></header>
+          <div class="setup-app-body">
+            <aside class="setup-conversation-list"><div class="setup-search-line"></div><div class="setup-conversation setup-conversation-active"><i></i><span><strong>Project</strong><small>Updated plan</small></span></div><div class="setup-conversation"><i></i><span><strong>Team</strong><small>See you tomorrow</small></span></div><div class="setup-conversation"><i></i><span><strong>Design</strong><small>Thank you</small></span></div></aside>
+            <section class="setup-chat-pane">
+              <header class="setup-chat-header"><i class="setup-chat-avatar"></i><span></span><b></b></header>
+              <div class="setup-chat-history"><p class="setup-chat-day">Today</p><div class="setup-bubble setup-bubble-in">Can you send the updated plan?</div><div class="setup-bubble setup-bubble-out">Yes. I'll send it before three.</div><div class="setup-bubble setup-bubble-in">Perfect. I'll review it after lunch.</div></div>
+              <div class="setup-native-composer"><span class="setup-attach-icon"></span><p>Message</p><span class="setup-native-send"></span></div>
+              <div class="setup-osl-layer"><div class="setup-osl-frame"></div><header class="setup-osl-trustbar"><img src="/assets/img/logo-mark.svg" alt=""><strong>OSL</strong><span>Protected</span><i class="setup-osl-lock"></i></header><span class="setup-message-lock setup-message-lock-one"></span><span class="setup-message-lock setup-message-lock-two"></span><div class="setup-osl-composer"><img src="/assets/img/logo-mark.svg" alt=""><p>Write privately</p><i class="setup-osl-lock"></i><button type="button" tabindex="-1" aria-hidden="true"><span class="setup-send-arrow"></span></button></div></div>
+            </section>
+          </div>
         </article>
       </div>
 
       <p class="clean-motion-note">Sign in with the official service. OSL stays beside it and never receives that password.</p>
-      <p class="demo-script-note">Product design. External adapters are not enabled in version 0.0.1.</p>
     </section>
 
     <section class="section reveal" aria-labelledby="windows-heading">
-      <h2 id="windows-heading" class="section-heading">Choose your download</h2>
+      <p class="eyebrow">Windows</p>
+      <h1 id="windows-heading" class="page-heading">Download OSL</h1>
       <div class="download-choice-grid" role="group" aria-label="Choose an OSL download">
         <article class="download-choice">
           <div class="download-choice-heading">
@@ -69,7 +68,6 @@
             <li>Receive encrypted images and files</li>
             <li>Unlimited private messages</li>
           </ul>
-          <p class="download-renewal">Current 0.0.1 beta: protected cross-device sending, encrypted file transport, and automated Scrub are not enabled yet.</p>
         </article>
 
         <article class="download-choice download-choice-pro">
@@ -77,7 +75,7 @@
             <h2>Pro</h2>
             <p><strong>$5</strong> one time</p>
           </div>
-          <button class="button button-primary cta-subscribe" type="button">Get Pro beta for $5</button>
+          <button class="button button-primary cta-subscribe" type="button">Download Pro · $5</button>
           <div class="coming-payment-options" role="group" aria-label="Payment methods coming soon">
             <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
             <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
@@ -87,7 +85,6 @@
             <li>Send encrypted images and files</li>
             <li>Early access to new privacy tools</li>
           </ul>
-          <p class="download-renewal">Current 0.0.1 beta: $5 activates Pro beta supporter access. Protected sending, encrypted file transport, and automated Scrub are not enabled yet. One payment. Recurring billing is off.</p>
         </article>
       </div>
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
@@ -159,6 +156,25 @@
       <p class="section-subhead">App availability changes during the beta. Check the release notes before relying on a specific social or email service.</p>
     </section>
   </main>
+
+  <dialog class="payment-dialog" id="crypto-dialog" aria-labelledby="crypto-dialog-title">
+    <div class="payment-dialog-inner">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close payment window">×</button>
+      <h2 id="crypto-dialog-title">Crypto checkout</h2>
+      <p>Send the exact amount once.</p>
+      <div class="payment-detail">
+        <span>Address</span><code id="crypto-address"></code>
+        <span>Exact amount</span><code id="crypto-amount"></code>
+        <span>Confirmation</span><strong id="crypto-confirmations"></strong>
+        <span>Invoice expires</span><time id="crypto-expires"></time>
+      </div>
+      <p class="form-status" id="crypto-status" role="status" aria-live="polite"></p>
+      <section class="activation-panel" id="crypto-activation-panel" tabindex="-1" hidden>
+        <h3>Pro unlocked</h3>
+        <code class="activation-code" data-activation-code></code>
+      </section>
+    </div>
+  </dialog>
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>

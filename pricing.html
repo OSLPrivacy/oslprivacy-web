@@ -24,39 +24,29 @@
   </header>
 
   <main id="main">
-    <section class="section reveal">
-      <p class="eyebrow">Free or Pro</p>
-      <h1 class="page-heading">Private text stays free.</h1>
-      <p class="page-lede">Free covers private text. Pro adds encrypted file sending and new privacy tools for one $5 payment.</p>
-      <p class="availability-note"><strong>Current download:</strong> version 0.0.1 is an early beta. Protected sending is not enabled yet.</p>
-      <p class="live-badge charge-notice">A completed card checkout is a real charge</p>
+    <section class="section reveal pricing-hero">
+      <h1 class="page-heading">Free text. Pro files.</h1>
+      <p class="page-lede">$0 forever. $5 once.</p>
+      <div class="payment-actions pricing-top-payments" role="group" aria-label="Choose a Pro payment method">
+        <button class="button button-primary cta-subscribe" type="button">Card · $5 once</button>
+        <button class="button button-secondary" type="button" disabled>Bitcoin</button>
+        <button class="button button-secondary" type="button" disabled>Monero</button>
+      </div>
     </section>
 
     <section class="section product-demo pricing-plan-demo reveal" aria-labelledby="pricing-plan-flow-heading" data-product-animation="pricing-plan-flow">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Free and Pro</p>
-          <h2 id="pricing-plan-flow-heading" class="section-heading">Same private text. Files with Pro.</h2>
-          <p class="section-subhead">Both plans use the same text encryption. Pro also sends supported images and files.</p>
+          <h2 id="pricing-plan-flow-heading" class="section-heading">Free or Pro.</h2>
+          <p class="section-subhead">Text is free. Pro adds files.</p>
         </div>
-        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
       <div class="pricing-plan-scene" aria-hidden="true">
-        <div class="pricing-shared-core">
-          <div class="pricing-launch-space"><div class="pricing-launch-envelope"><span></span></div></div>
-          <article class="pricing-shared-composer">
-            <header><img src="/assets/img/logo-mark.svg" alt=""><span class="pricing-motion-lock"></span></header>
-            <p data-type-sequence data-type-start="350" data-type-duration="2200">I'll see you after lunch.</p>
-            <span class="pricing-shared-seal">Sealed locally</span>
-            <p class="pricing-lift-copy">I'll see you after lunch.</p>
-          </article>
-        </div>
-
-        <div class="pricing-tier-grid">
+        <div class="pricing-tier-grid pricing-tier-grid-cinematic">
           <article class="pricing-motion-card pricing-motion-free">
             <header class="pricing-motion-header"><span class="pricing-motion-plan">Free</span><strong>$0 forever</strong></header>
-            <div class="pricing-motion-capability"><span class="pricing-motion-check">✓</span><strong>Private text</strong></div>
+            <div class="pricing-card-demo"><div class="pricing-native-composer"><span></span><i></i></div><div class="pricing-osl-composer"><header><img src="/assets/img/logo-mark.svg" alt=""><i class="pricing-motion-lock"></i></header><p data-type-sequence data-type-start="600" data-type-duration="2200">I'll see you after lunch.</p><b class="pricing-send-symbol"></b></div><div class="pricing-card-envelope"><span></span></div><div class="pricing-card-protected"><i class="pricing-motion-lock"></i><strong>Private text</strong></div></div>
             <ul class="pricing-motion-features">
               <li><i class="pricing-feature-glyph pricing-feature-warning"></i><span>Before-send warnings</span></li>
               <li><i class="pricing-feature-glyph pricing-feature-link"></i><span>Clean links and trackers</span></li>
@@ -66,7 +56,7 @@
 
           <article class="pricing-motion-card pricing-motion-pro">
             <header class="pricing-motion-header"><span class="pricing-motion-plan">Pro</span><strong>$5 one time</strong></header>
-            <div class="pricing-motion-capability pricing-motion-capability-pro"><span class="pricing-motion-check">✓</span><strong>Text and files</strong></div>
+            <div class="pricing-card-demo"><div class="pricing-native-composer"><span></span><i></i></div><div class="pricing-osl-composer"><header><img src="/assets/img/logo-mark.svg" alt=""><i class="pricing-motion-lock"></i></header><p data-type-sequence data-type-start="600" data-type-duration="2200">I'll see you after lunch.</p><b class="pricing-send-symbol"></b></div><div class="pricing-card-envelope"><span></span></div><div class="pricing-card-protected"><i class="pricing-motion-lock"></i><strong>Private text</strong><span class="pricing-pro-file">Files</span></div></div>
             <ul class="pricing-motion-features pricing-motion-features-pro">
               <li><i class="pricing-feature-glyph pricing-feature-file"></i><span>Encrypted attachments</span></li>
               <li><i class="pricing-feature-glyph pricing-feature-view"></i><span>View-once media</span></li>
@@ -90,7 +80,6 @@
             <li><span class="check yes" aria-hidden="true">✓</span> No message limit</li>
           </ul>
           <a href="/download" class="button button-secondary plan-cta">Download free</a>
-          <p class="renewal-note">Current 0.0.1 beta: protected cross-device sending, encrypted file transport, and automated Scrub are not enabled yet.</p>
         </article>
 
         <article class="card card-active plan">
@@ -102,20 +91,11 @@
             <li><span class="check yes" aria-hidden="true">✓</span> Early access to new privacy tools</li>
             <li><span class="check yes" aria-hidden="true">✓</span> No automatic renewal</li>
           </ul>
-          <button type="button" class="button button-primary plan-cta cta-subscribe">Get Pro for $5</button>
-          <p class="renewal-note">Current 0.0.1 beta: $5 activates Pro beta supporter access. Protected sending, encrypted file transport, and automated Scrub are not enabled yet. One payment. Recurring billing is off.</p>
+          <button type="button" class="button button-primary plan-cta cta-subscribe">Get Pro · $5</button>
         </article>
       </div>
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
 
-      <div class="alt-payment">
-        <h3>Bitcoin and Monero</h3>
-        <p>Crypto checkout is not live yet.</p>
-        <div class="payment-actions">
-          <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
-          <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
-        </div>
-      </div>
     </section>
 
     <section class="section product-demo activation-demo reveal" aria-labelledby="activation-flow-heading" data-product-animation="activation-flow">
@@ -125,21 +105,14 @@
           <h2 id="activation-flow-heading" class="section-heading">Pay once.<br>No OSL profile.</h2>
           <p class="section-subhead">Your code appears here. OSL does not copy your Stripe email or create a billing profile.</p>
         </div>
-        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="clean-activation-scene" aria-hidden="true">
-        <div class="clean-activation-browser">
-          <span class="clean-activation-browser-label">Payment complete</span>
-          <code class="clean-activation-code">OSL-7K4M-••••</code>
-        </div>
-
-        <div class="clean-activation-osl">
-          <img class="clean-activation-logo" src="/assets/img/logo-mark.svg" alt="">
-          <span class="clean-activation-lock"></span>
-          <strong>Pro active</strong>
-        </div>
+      <div class="activation-process" aria-hidden="true">
+        <article class="activation-browser-plane"><header class="activation-browser-chrome"><i></i><i></i><i></i><span class="activation-browser-lock"></span></header><div class="activation-checkout-state"><span class="activation-card-icon"></span><strong>Checkout confirmed</strong><small>$5 once</small></div><div class="activation-delivery-state"><span class="activation-browser-shield"></span><strong>Returned securely</strong><code>OSL-7K4M-••••</code></div></article>
+        <div class="activation-bridge"><span class="activation-pass"><i class="activation-pass-lock"></i></span></div>
+        <article class="activation-app-plane"><header><img src="/assets/img/logo-mark.svg" alt=""><strong>OSL</strong></header><div class="activation-paste-state"><span>Activation code</span><code>OSL-7K4M-••••</code></div><div class="activation-unlocked-state"><i class="activation-unlocked-lock"></i><strong>Pro unlocked</strong><small>No renewal</small></div></article>
       </div>
+      <ol class="activation-beats" aria-hidden="true"><li>Checkout</li><li>Protected return</li><li>Code appears</li><li>Paste into OSL</li><li>Pro unlocked</li></ol>
 
       <p class="clean-activation-truth">$5 once. No renewal. The code appears here. Stripe keeps its payment record; OSL does not copy your email.</p>
     </section>
@@ -167,7 +140,6 @@
         <p class="eyebrow">More with Pro</p>
         <p>Attachment metadata cleaning, view-once private media, guided cleanup with verified receipts, and advanced retention controls expand what OSL can protect.</p>
       </div>
-      <p class="section-subhead pricing-availability">Features work only with apps supported by your installed release. Social and email coverage will expand over time.</p>
     </section>
 
     <section class="section reveal" aria-labelledby="payment-heading">
@@ -175,7 +147,7 @@
       <div class="plain-steps">
         <article><span aria-hidden="true">1</span><div><h3>Stripe confirms payment</h3><p>OSL checks the signed confirmation automatically.</p></div></article>
         <article><span aria-hidden="true">2</span><div><h3>Your code appears here</h3><p>The code is encrypted for this browser while it is delivered.</p></div></article>
-        <article><span aria-hidden="true">3</span><div><h3>Paste it into OSL</h3><p>The current code activates Pro beta supporter access. Pro features become available as they enter the release.</p></div></article>
+        <article><span aria-hidden="true">3</span><div><h3>Paste it into OSL</h3><p>The code activates Pro on this device.</p></div></article>
       </div>
     </section>
 
@@ -186,12 +158,30 @@
         <article class="faq-item"><h3>Will you email the activation code?</h3><p>No. The code appears in the browser that started checkout. Stripe may ask for billing details on its hosted page, but OSL does not store the returned email for this purchase.</p></article>
         <article class="faq-item"><h3>Does it renew?</h3><p>No. The current Pro checkout is a one-time $5 purchase. It does not start a recurring payment.</p></article>
         <article class="faq-item"><h3>What payment data does OSL keep?</h3><p>OSL does not copy your card details or Stripe email into its product database. Stripe keeps the payment record required to process the purchase.</p></article>
-        <article class="faq-item"><h3>Does Pro send encrypted files today?</h3><p>No. The purchase activates Pro beta supporter access. Cross-device protected messages, encrypted attachment transport, and automated Scrub are not enabled in version 0.0.1.</p></article>
         <article class="faq-item"><h3>Can I inspect the payment code?</h3><p>Yes. The site and payment backend are public on <a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a>.</p></article>
       </div>
     </section>
 
   </main>
+
+  <dialog class="payment-dialog" id="crypto-dialog" aria-labelledby="crypto-dialog-title">
+    <div class="payment-dialog-inner">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close payment window">×</button>
+      <h2 id="crypto-dialog-title">Crypto checkout</h2>
+      <p>Send the exact amount once.</p>
+      <div class="payment-detail">
+        <span>Address</span><code id="crypto-address"></code>
+        <span>Exact amount</span><code id="crypto-amount"></code>
+        <span>Confirmation</span><strong id="crypto-confirmations"></strong>
+        <span>Invoice expires</span><time id="crypto-expires"></time>
+      </div>
+      <p class="form-status" id="crypto-status" role="status" aria-live="polite"></p>
+      <section class="activation-panel" id="crypto-activation-panel" tabindex="-1" hidden>
+        <h3>Pro unlocked</h3>
+        <code class="activation-code" data-activation-code></code>
+      </section>
+    </div>
+  </dialog>
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>

@@ -39,7 +39,12 @@
         <button class="button button-secondary" type="button" data-donation-amount="5" aria-label="Donate 5 dollars once">$5</button>
         <button class="button button-primary" type="button" data-donation-amount="20" aria-label="Donate 20 dollars once">$20</button>
         <button class="button button-secondary" type="button" data-donation-amount="50" aria-label="Donate 50 dollars once">$50</button>
+        <button class="button button-secondary" type="button" data-donation-custom-toggle aria-expanded="false" aria-controls="custom-donation-form">Other</button>
       </div>
+      <form class="custom-donation-form" id="custom-donation-form" hidden>
+        <label for="custom-donation-amount">Amount in US dollars</label>
+        <div><span aria-hidden="true">$</span><input id="custom-donation-amount" name="amount" type="number" min="1" max="10000" step="1" inputmode="numeric" required><button class="button button-primary" type="submit">Donate once</button></div>
+      </form>
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
       <p class="live-badge charge-notice">Completing Stripe checkout creates a real one-time charge</p>
     </section>

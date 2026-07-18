@@ -178,6 +178,12 @@
     section.classList.remove('is-running');
     void section.offsetWidth;
     section.classList.add('is-running');
+    const playbackRate = Number(section.dataset.playbackRate || 1);
+    if (Number.isFinite(playbackRate) && playbackRate > 0) {
+      section.getAnimations({ subtree: true }).forEach((animation) => {
+        animation.playbackRate = playbackRate;
+      });
+    }
   };
 
   productAnimations.forEach((section) => {
@@ -307,6 +313,22 @@
     return { ...agencyProfiles.other, label: value.trim() || agencyProfiles.other.label };
   };
 
+  const profileForCoordinates = (latitude, longitude) => {
+    const inside = (south, north, west, east) => (
+      latitude >= south && latitude <= north && longitude >= west && longitude <= east
+    );
+    if (
+      inside(24.4, 49.5, -125, -66.5) ||
+      inside(51, 72, -170, -130) ||
+      inside(18.5, 22.5, -161, -154)
+    ) return agencyProfiles.us;
+    if (inside(41.7, 83.2, -141, -52)) return agencyProfiles.canada;
+    if (inside(49.5, 61, -8.7, 2.2)) return agencyProfiles.uk;
+    if (inside(-44, -10, 112, 154)) return agencyProfiles.australia;
+    if (inside(34, 72, -25, 45)) return agencyProfiles.europe;
+    return agencyProfiles.other;
+  };
+
   const exposureCard = (entry) => {
     const card = document.createElement('article');
     const title = document.createElement('h4');
@@ -336,11 +358,18 @@
   };
 
   if (privacyWarning instanceof HTMLDialogElement) {
-    const isMotionLab = new URLSearchParams(window.location.search).get('motionLab') === '1';
+    const previewParams = new URLSearchParams(window.location.search);
+    const isMotionLab = previewParams.get('motionLab') === '1';
+    const isLocalPreview = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+    const forceWarningPreview = previewParams.get('previewWarning') === '1';
     let shouldOpen = true;
     try {
-      shouldOpen = !isMotionLab && localStorage.getItem(privacyWarningKey) !== '1';
-      if (shouldOpen) localStorage.setItem(privacyWarningKey, '1');
+      shouldOpen = !isMotionLab && (
+        isLocalPreview || forceWarningPreview || localStorage.getItem(privacyWarningKey) !== '1'
+      );
+      if (shouldOpen && !isLocalPreview && !forceWarningPreview) {
+        localStorage.setItem(privacyWarningKey, '1');
+      }
     } catch {
       shouldOpen = !isMotionLab;
     }
@@ -364,10 +393,12 @@
       locationButton.textContent = 'Waiting for permission...';
       setStatus(locationResult, 'Your browser may ask for location access.');
       navigator.geolocation.getCurrentPosition(
-        () => {
-          setStatus(locationResult, 'Location access worked. Confirm your country below. OSL did not send this result to its servers.', 'success');
-          locationButton.textContent = 'Location available';
-          manualLocationInput?.focus();
+        (position) => {
+          const profile = profileForCoordinates(position.coords.latitude, position.coords.longitude);
+          showAgencyProfile(profile);
+          setStatus(locationResult, `${profile.label} selected locally. OSL did not send or save your coordinates.`, 'success');
+          locationButton.textContent = 'Location checked';
+          agencyResult?.focus?.();
         },
         () => {
           setStatus(locationResult, 'Location was not shared. Enter a country instead.', 'error');
@@ -389,12 +420,12 @@
     });
   }
 
-  const subscribeButton = document.querySelector('.cta-subscribe');
+  const subscribeButtons = [...document.querySelectorAll('.cta-subscribe')];
   const checkoutStatus = document.getElementById('checkout-status');
-  if (subscribeButton) {
-    subscribeButton.addEventListener('click', async () => {
-      const label = subscribeButton.textContent;
-      subscribeButton.disabled = true;
+  if (subscribeButtons.length > 0) {
+    subscribeButtons.forEach((subscribeButton) => subscribeButton.addEventListener('click', async () => {
+      const labels = subscribeButtons.map((button) => button.textContent);
+      subscribeButtons.forEach((button) => { button.disabled = true; });
       subscribeButton.textContent = 'Opening Stripe...';
       setStatus(checkoutStatus, 'Opening Stripe checkout...');
       try {
@@ -429,13 +460,18 @@
           error instanceof Error ? error.message : 'Live checkout is temporarily unavailable.',
           'error',
         );
-        subscribeButton.disabled = false;
-        subscribeButton.textContent = label;
+        subscribeButtons.forEach((button, index) => {
+          button.disabled = false;
+          button.textContent = labels[index];
+        });
       }
-    });
+    }));
   }
 
   const donationButtons = [...document.querySelectorAll('[data-donation-amount]')];
+  const customDonationToggle = document.querySelector('[data-donation-custom-toggle]');
+  const customDonationForm = document.getElementById('custom-donation-form');
+  const customDonationAmount = document.getElementById('custom-donation-amount');
   if (donationButtons.length > 0) {
     const donationResult = new URLSearchParams(window.location.search).get('donation');
     if (donationResult === 'complete') {
@@ -448,44 +484,68 @@
       setStatus(checkoutStatus, 'Donation cancelled. No payment was completed.');
     }
 
-    donationButtons.forEach((button) => {
-      button.addEventListener('click', async () => {
-        const dollars = Number.parseInt(button.dataset.donationAmount || '', 10);
-        if (![5, 20, 50].includes(dollars)) {
-          setStatus(checkoutStatus, 'That donation amount is unavailable.', 'error');
-          return;
-        }
-        donationButtons.forEach((candidate) => { candidate.disabled = true; });
-        setStatus(checkoutStatus, 'Opening one-time Stripe checkout...');
-        try {
-          const requestTokenBytes = new Uint8Array(32);
-          crypto.getRandomValues(requestTokenBytes);
-          const response = await fetch(`${API}/v1/donations/stripe/session`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              amount_usd_cents: dollars * 100,
-              request_token: bytesToBase64Url(requestTokenBytes),
-            }),
-          });
-          const result = await response.json().catch(() => ({}));
-          if (!response.ok || typeof result.url !== 'string') {
-            throw new Error(result.error || 'Donations are temporarily unavailable.');
-          }
-          const checkoutUrl = new URL(result.url);
-          if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
-            throw new Error('Stripe returned an unexpected checkout address. No payment was opened.');
-          }
-          window.location.assign(checkoutUrl.href);
-        } catch (error) {
-          setStatus(
-            checkoutStatus,
-            error instanceof Error ? error.message : 'Donations are temporarily unavailable.',
-            'error',
-          );
-          donationButtons.forEach((candidate) => { candidate.disabled = false; });
-        }
+    const setDonationControlsDisabled = (disabled) => {
+      donationButtons.forEach((candidate) => { candidate.disabled = disabled; });
+      if (customDonationToggle) customDonationToggle.disabled = disabled;
+      customDonationForm?.querySelectorAll('input, button').forEach((control) => {
+        control.disabled = disabled;
       });
+    };
+
+    const startStripeDonation = async (dollars) => {
+      if (!Number.isSafeInteger(dollars) || dollars < 1 || dollars > 10000) {
+        setStatus(checkoutStatus, 'Enter a whole-dollar amount from $1 to $10,000.', 'error');
+        return;
+      }
+      setDonationControlsDisabled(true);
+      setStatus(checkoutStatus, 'Opening one-time Stripe checkout...');
+      try {
+        const requestTokenBytes = new Uint8Array(32);
+        crypto.getRandomValues(requestTokenBytes);
+        const response = await fetch(`${API}/v1/donations/stripe/session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount_usd_cents: dollars * 100,
+            request_token: bytesToBase64Url(requestTokenBytes),
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || typeof result.url !== 'string') {
+          throw new Error(result.error || 'Donations are temporarily unavailable.');
+        }
+        const checkoutUrl = new URL(result.url);
+        if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
+          throw new Error('Stripe returned an unexpected checkout address. No payment was opened.');
+        }
+        window.location.assign(checkoutUrl.href);
+      } catch (error) {
+        setStatus(
+          checkoutStatus,
+          error instanceof Error ? error.message : 'Donations are temporarily unavailable.',
+          'error',
+        );
+        setDonationControlsDisabled(false);
+      }
+    };
+
+    donationButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        void startStripeDonation(Number.parseInt(button.dataset.donationAmount || '', 10));
+      });
+    });
+
+    customDonationToggle?.addEventListener('click', () => {
+      const open = customDonationToggle.getAttribute('aria-expanded') === 'true';
+      customDonationToggle.setAttribute('aria-expanded', String(!open));
+      if (customDonationForm) customDonationForm.hidden = open;
+      if (!open) customDonationAmount?.focus();
+    });
+
+    customDonationForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const dollars = Number(customDonationAmount?.value || '');
+      void startStripeDonation(dollars);
     });
   }
 
