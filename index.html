@@ -24,6 +24,7 @@
       <ul class="topnav-links">
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/download">Download</a></li>
+        <li><a href="/donate">Donate</a></li>
         <li><a href="/audit">Audit</a></li>
         <li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
       </ul>
@@ -92,97 +93,21 @@
           <h2 id="flow-heading" class="section-heading">The service never gets<br>the real message.</h2>
           <p class="section-subhead">You approve readable cover text for the service. The real message stays inside a locked blob and opens only on your friend's device.</p>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="cinema-viewport" aria-hidden="true">
-        <div class="cinema-world">
-          <div class="cinema-floor"></div>
-          <svg class="cinema-routes" viewBox="0 0 1050 560" preserveAspectRatio="none">
-            <path class="route route-compose" d="M325 300 C350 300 365 300 395 300"></path>
-            <path class="route route-danger" d="M555 270 C585 245 590 155 635 155"></path>
-            <path class="route route-lock" d="M555 340 C585 365 590 430 635 430"></path>
-            <path class="route route-danger-out" d="M795 155 C820 170 820 265 850 285"></path>
-            <path class="route route-lock-out" d="M795 430 C820 420 820 355 850 345"></path>
-          </svg>
-
-          <article class="cinema-composer cinema-object">
-            <div class="chat-history-3d">
-              <header class="social-chat-header">
-                <i class="social-avatar"></i>
-                <span><strong>Alex</strong><small>Active now</small></span>
-                <b aria-hidden="true">○</b><b aria-hidden="true">i</b>
-              </header>
-              <p class="chat-bubble chat-bubble-in">Clouds are rolling in. Still meeting at five?</p>
-              <p class="chat-bubble chat-bubble-out">Yes. The north entrance still works.</p>
-              <p class="chat-bubble chat-bubble-in">Perfect. It may rain around four.</p>
-            </div>
-            <div class="service-bar-3d"><span class="native-photo-symbol"></span><b class="native-input-line"></b><i></i><i></i></div>
-            <div class="osl-bar-3d">
-              <header><img class="cinema-osl-mark" src="/assets/img/logo-mark.svg" alt=""><span class="cinema-mini-lock"></span><span class="cinema-local-dot"></span></header>
-              <p data-type-sequence data-type-start="400" data-type-duration="2800">I'll bring an umbrella. Meet by the north entrance at five.</p>
-              <button type="button" tabindex="-1" aria-hidden="true"><span class="send-arrow"></span></button>
-            </div>
-          </article>
-
-          <div class="cinema-envelope cinema-object"><span></span></div>
-
-          <article class="cinema-device local-cinema-device cinema-object">
-            <div class="computer-shell">
-              <div class="computer-screen">
-                <span class="device-screen-label">Your device</span>
-                <div class="local-processing"><i></i><strong>Protecting locally</strong></div>
-                <div class="split-output split-carrier"><span>Approved cover</span><p data-type-sequence data-type-start="5200" data-type-duration="1400">The weather looks clear here.</p></div>
-                <div class="split-output split-locked"><span>Real message</span><p data-type-sequence data-type-start="5500" data-type-duration="1400">OSL::9F3A7C...</p></div>
-              </div>
-              <span class="computer-stand"></span>
-            </div>
-          </article>
-
-          <article class="cinema-server danger-server cinema-object">
-            <div class="danger-symbol"><span>!</span></div>
-            <div class="server-rack-3d"><i></i><i></i><i></i></div>
-            <span class="server-name">Social or email service</span>
-            <strong>Sees the approved cover and token</strong>
-          </article>
-
-          <article class="cinema-server osl-server cinema-object">
-            <div class="lock-symbol"><span></span></div>
-            <div class="server-rack-3d"><i></i><i></i><i></i></div>
-            <span class="server-name">OSL relay</span>
-            <strong>Stores only a locked blob</strong>
-          </article>
-
-          <div class="cinema-packet packet-to-device"><span class="envelope-mini"></span></div>
-          <div class="cinema-packet fake-to-service"><span>COVER</span></div>
-          <div class="cinema-packet lock-to-relay"><span class="packet-lock"></span><code>7M9K2QAF...</code></div>
-          <div class="cinema-packet fake-to-friend"><span>COVER</span></div>
-          <div class="cinema-packet lock-to-friend"><span class="packet-lock"></span><code>7M9K2QAF...</code></div>
-          <div class="decrypt-stream"><code>7M9K·Q2AF·81C...</code><span>umbrella · north entrance · five</span></div>
-
-          <article class="cinema-device friend-cinema-device cinema-object">
-            <div class="computer-shell">
-              <div class="computer-screen friend-screen">
-                <span class="device-screen-label">Friend's device</span>
-                <div class="native-carrier-message"><span>Service message</span><p>The weather looks clear here.</p></div>
-                <div class="restored-message-3d">
-                  <span><b>OSL</b> Restored locally</span>
-                  <p>I'll bring an umbrella. Meet by the north entrance at five.</p>
-                </div>
-              </div>
-              <span class="computer-stand"></span>
-            </div>
-          </article>
-
-        </div>
+      <div class="clean-motion-stage clean-message-stage" aria-hidden="true">
+        <article class="clean-chat-window clean-message-window">
+          <header><i></i><strong>Alex</strong><span>••</span></header>
+          <div class="clean-chat-history"><p>Clouds are rolling in.</p><p>Still meeting at five?</p></div>
+          <div class="clean-native-bar"></div>
+          <div class="clean-osl-bar"><img src="/assets/img/logo-mark.svg" alt=""><span class="clean-lock"></span><p data-type-sequence data-type-start="450" data-type-duration="2500">I'll bring an umbrella. Meet by the north entrance at five.</p><b>↑</b></div>
+          <div class="clean-message-sealed"><span>The weather looks clear here.</span><code><i class="clean-lock"></i> OSL::9F3A7C</code></div>
+          <div class="clean-message-opened"><span><img src="/assets/img/logo-mark.svg" alt=""> Opened on your friend's computer</span><p>I'll bring an umbrella. Meet by the north entrance at five.</p></div>
+        </article>
       </div>
 
-      <ol class="demo-explanation">
-        <li>You type in the clearly marked OSL composer above the normal service send bar.</li>
-        <li>You approve readable cover text; your device adds a token and encrypts the separate real message locally.</li>
-        <li>The service gets the readable cover and token. The OSL relay gets a blob it cannot unlock.</li>
-        <li>Your friend's device combines both paths and restores the real message over the cover.</li>
-      </ol>
+      <p class="clean-motion-note">Typed here. Protected here. Readable again only on your friend's computer.</p>
     </section>
 
     <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow">
@@ -192,41 +117,17 @@
           <h2 id="seizure-heading" class="section-heading">The server never had<br>the real message.</h2>
           <p class="section-subhead">The service may keep the approved cover message. The OSL relay holds only a locked blob. Neither has the real words in readable form.</p>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="seizure-scene" aria-hidden="true">
-        <article class="seizure-node seizure-server">
-          <div class="concept-icon server-icon"><span></span><span></span><span></span></div>
-          <span class="demo-kicker">Service and OSL relay</span>
-          <strong>Stored records</strong>
-          <div class="stored-pair">
-            <div class="stored-cover"><span>Approved cover</span><strong>Looks windy today.</strong></div>
-            <div class="stored-locked"><span class="evidence-lock"></span><div><small>Real message</small><strong>Locked</strong></div></div>
-          </div>
-        </article>
-
-        <div class="seizure-transfer">
-          <span class="transfer-label">Legal request or seizure</span>
-          <div class="evidence-path"><span class="evidence-packet"><b></b></span></div>
-        </div>
-
-        <article class="seizure-node seizure-review">
-          <div class="badge-lockup">
-            <svg class="concept-icon badge-icon" viewBox="0 0 48 56" focusable="false" aria-hidden="true">
-              <path d="M24 2 42 10v15c0 13-7.7 22.5-18 28C13.7 47.5 6 38 6 25V10L24 2Z"></path>
-              <path d="m24 15 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2-4.5-4.4 6.2-.9L24 15Z"></path>
-            </svg>
-            <div><span class="demo-kicker">Collected copy</span><strong>Record opened</strong></div>
-          </div>
-          <div class="evidence-pair">
-            <article class="evidence-item evidence-cover"><span class="evidence-quote">“</span><div><small>Approved cover</small><strong>Looks windy today.</strong></div><b>Visible</b></article>
-            <article class="evidence-item evidence-locked"><span class="evidence-lock"></span><div><small>Encrypted real message</small><strong class="evidence-vapor"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></strong></div></article>
-          </div>
+      <div class="clean-motion-stage clean-server-stage" aria-hidden="true">
+        <article class="clean-record-card">
+          <header><span>Stored copy</span></header>
+          <p class="clean-record-cover">Looks windy today.</p>
+          <div class="clean-record-locked"><span class="clean-lock"></span><code>OSL::9F3A7C</code></div>
         </article>
       </div>
 
-      <p class="seizure-limit">Services may still retain the readable cover, token, accounts, recipients, timing, and delivery data.</p>
+      <p class="clean-motion-note">A stored cover may remain. The real words were never there to recover.</p>
     </section>
 
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow">
@@ -236,18 +137,20 @@
           <h2 id="scrub-heading" class="section-heading">Find it. Clear it.</h2>
           <p class="scrub-promise">The scan stays on your device.</p>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="scrub-simple-scene" aria-hidden="true">
-        <article class="scrub-scan-card"><span class="scrub-scan-icon"></span><strong>Scanning locally</strong><div class="scrub-scan-field"><i></i></div></article>
-        <span class="simple-flow-arrow"></span>
-        <article class="scrub-found-card"><header><strong>Found</strong><small>3 findings</small></header><div class="scrub-hit"><i>!</i><code>••••••••••••</code></div><div class="scrub-hit"><i>!</i><code>**************</code></div><div class="scrub-hit"><i>!</i><code>••••••••••••</code></div><div class="scrub-cleared"><strong>Findings cleared</strong><small>Source unchanged</small></div></article>
+      <div class="clean-motion-stage clean-scrub-stage" aria-hidden="true">
+        <article class="clean-scrub-card">
+          <header><span class="clean-document-icon"></span><strong>Scanning on this computer</strong></header>
+          <div class="clean-scrub-mask"><i></i><i></i><i></i></div>
+          <b class="clean-findings-badge">!&nbsp; 3 findings</b>
+          <i class="clean-scrub-line"></i>
+          <strong class="clean-scrub-done">Cleared locally</strong>
+        </article>
       </div>
 
-      <ol class="demo-explanation">
-        <li>Scrub scans selected history locally.</li><li>Three possible risks appear without exposing their contents.</li><li>The selected findings clear together.</li><li>Automatic cleanup reports success only after a supported service confirms it.</li>
-      </ol>
+      <p class="clean-motion-note">Scan locally. Confirm the findings. Clear them together.</p>
     </section>
 
     <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-product-animation="attachment-guard-flow">
@@ -257,14 +160,17 @@
           <h2 id="attachment-guard-heading" class="section-heading">Clean first.<br>Lock second.</h2>
           <p class="section-subhead">OSL removes hidden details on your computer. Pro then encrypts the clean file before it crosses a supported service.</p>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="attachment-simple-scene" aria-hidden="true"><article class="attachment-simple-file"><div class="simple-file-icon"><i></i></div><strong>Original file</strong></article><span class="simple-flow-arrow"></span><article class="attachment-clean-checklist"><header><span class="device-dot"></span><strong>This PC</strong></header><ul><li><span>GPS location</span><b>Removed</b></li><li><span>Camera + author</span><b>Removed</b></li><li><span>Filename</span><b>Replaced</b></li></ul><footer><span class="simple-lock-icon"></span><strong>Clean file locked</strong></footer></article><span class="simple-flow-arrow"></span><article class="attachment-simple-locked"><div class="simple-lock-icon"></div><strong>Protected file</strong></article></div>
+      <div class="clean-motion-stage clean-attachment-stage" aria-hidden="true">
+        <article class="clean-file-card">
+          <ul><li><span>Location</span><b>Removed</b></li><li><span>Device</span><b>Removed</b></li><li><span>Name</span><b>Replaced</b></li></ul>
+          <footer class="clean-file-sealed"><span class="clean-lock"></span><strong>Clean file locked</strong></footer>
+        </article>
+      </div>
 
-      <ol class="demo-explanation">
-        <li>The original file can contain hidden details.</li><li>Your computer removes them.</li><li>OSL locks the clean file.</li><li>The service receives unreadable content.</li>
-      </ol>
+      <p class="clean-motion-note">Hidden details come off. Encryption goes on.</p>
     </section>
 
     <section class="section product-demo expiry-demo reveal" aria-labelledby="expiry-heading" data-product-animation="expiry-flow">
@@ -273,14 +179,14 @@
           <p class="eyebrow">Honest expiry</p>
           <h2 id="expiry-heading" class="section-heading">Readable until expiry.<br>Then the key is gone.</h2>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="expiry-simple-scene" aria-hidden="true"><article class="expiry-vapor-message"><span>Meeting</span><span>moved</span><span>to</span><span>six.</span></article><div class="expiry-simple-clock"><i></i><b>24h</b></div><article class="expiry-carrier-remains"><div class="expiry-vapor-cloud"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><strong>Key expired</strong><small>Locked carrier may remain</small><code>OSL::••••••••</code></article></div>
+      <div class="clean-motion-stage clean-expiry-stage" aria-hidden="true">
+        <article class="clean-expiry-card"><span class="clean-expiry-pill">24h</span><p>Meeting moved to six.</p><div class="clean-expired"><span class="clean-lock"></span><strong>Key expired</strong><code>OSL::9F3A7C</code></div></article>
+      </div>
 
-      <ol class="demo-explanation expiry-explanation">
-        <li>The message is readable before its timer ends.</li><li>The timer runs on your device.</li><li>The readable words vaporize when the key expires.</li><li>A locked carrier, screenshot, or prior copy can remain.</li>
-      </ol>
+      <p class="clean-motion-note">The readable words disappear with the key. Prior copies and screenshots can remain.</p>
     </section>
 
     <section class="section tutorial-compact reveal" aria-labelledby="tutorial-preview-heading">
@@ -312,7 +218,7 @@
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
+      <a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>

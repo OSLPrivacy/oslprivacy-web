@@ -432,6 +432,60 @@
     });
   }
 
+  const donationButtons = [...document.querySelectorAll('[data-donation-amount]')];
+  if (donationButtons.length > 0) {
+    const donationResult = new URLSearchParams(window.location.search).get('donation');
+    if (donationResult === 'complete') {
+      setStatus(
+        checkoutStatus,
+        'Thank you. Stripe checkout finished. OSL counts the donation only after Stripe confirms payment.',
+        'success',
+      );
+    } else if (donationResult === 'cancelled') {
+      setStatus(checkoutStatus, 'Donation cancelled. No payment was completed.');
+    }
+
+    donationButtons.forEach((button) => {
+      button.addEventListener('click', async () => {
+        const dollars = Number.parseInt(button.dataset.donationAmount || '', 10);
+        if (![5, 20, 50].includes(dollars)) {
+          setStatus(checkoutStatus, 'That donation amount is unavailable.', 'error');
+          return;
+        }
+        donationButtons.forEach((candidate) => { candidate.disabled = true; });
+        setStatus(checkoutStatus, 'Opening one-time Stripe checkout...');
+        try {
+          const requestTokenBytes = new Uint8Array(32);
+          crypto.getRandomValues(requestTokenBytes);
+          const response = await fetch(`${API}/v1/donations/stripe/session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount_usd_cents: dollars * 100,
+              request_token: bytesToBase64Url(requestTokenBytes),
+            }),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || typeof result.url !== 'string') {
+            throw new Error(result.error || 'Donations are temporarily unavailable.');
+          }
+          const checkoutUrl = new URL(result.url);
+          if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
+            throw new Error('Stripe returned an unexpected checkout address. No payment was opened.');
+          }
+          window.location.assign(checkoutUrl.href);
+        } catch (error) {
+          setStatus(
+            checkoutStatus,
+            error instanceof Error ? error.message : 'Donations are temporarily unavailable.',
+            'error',
+          );
+          donationButtons.forEach((candidate) => { candidate.disabled = false; });
+        }
+      });
+    });
+  }
+
   function showActivationCode(code, panel = document.getElementById('activation-panel')) {
     if (!panel) return;
     panel.querySelectorAll('[data-activation-code]').forEach((codeElement) => {

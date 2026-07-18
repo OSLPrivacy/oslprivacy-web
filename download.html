@@ -20,7 +20,7 @@
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/pricing">Pricing</a></li><li><a href="/download" aria-current="page">Download</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
+        <li><a href="/pricing">Pricing</a></li><li><a href="/download" aria-current="page">Download</a></li><li><a href="/donate">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
       </ul>
     </nav>
   </header>
@@ -40,58 +40,18 @@
           <h2 id="download-setup-flow-heading" class="section-heading">Keep the app. Add OSL.</h2>
           <p class="section-subhead">Use the official app or website. Sign in there. Then choose who OSL should protect.</p>
         </div>
-        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+        <button class="clean-replay replay-button" type="button" data-animation-replay aria-label="Replay animation">↻</button>
       </div>
 
-      <div class="download-setup-scene" aria-hidden="true">
-        <article class="download-setup-stage download-setup-official">
-          <span class="download-setup-number">01</span>
-          <div class="official-app-icon">
-            <span class="official-app-window"><i></i><i></i><i></i></span>
-            <span class="official-site-window"><i></i><i></i><i></i></span>
-          </div>
-          <div><strong>Open the official app</strong><small>Or its website</small></div>
-        </article>
-
-        <span class="download-setup-path"><i></i></span>
-
-        <article class="download-setup-stage download-setup-signin">
-          <span class="download-setup-number">02</span>
-          <div class="official-signin-icon">
-            <span class="signin-avatar"></span>
-            <span class="signin-field"></span>
-            <span class="signin-field signin-field-short"></span>
-          </div>
-          <div><strong>Sign in there</strong><small>Not through OSL</small></div>
-        </article>
-
-        <span class="download-setup-path"><i></i></span>
-
-        <article class="download-setup-stage download-setup-choose">
-          <span class="download-setup-number">03</span>
-          <div class="choose-chat-icon">
-            <span class="choose-chat-row"><i></i><b></b></span>
-            <span class="choose-chat-row"><i></i><b></b></span>
-            <span class="choose-chat-row"><i></i><b></b></span>
-          </div>
-          <div><strong>Choose people and chats</strong><small>You stay in control</small></div>
-        </article>
-
-        <span class="download-setup-path"><i></i></span>
-
-        <article class="download-setup-stage download-setup-ready">
-          <span class="download-setup-number">04</span>
-          <div class="ready-beside-icon"><span class="ready-service-panel"><i></i><i></i><i></i></span><span class="ready-osl-panel"><img src="/assets/img/logo-mark.svg" alt=""><i></i></span></div>
-          <div><strong>OSL is ready beside it</strong><small>Protection stays visible</small></div>
+      <div class="clean-motion-stage clean-setup-stage" aria-hidden="true">
+        <article class="clean-setup-window">
+          <span class="clean-service-mark"></span>
+          <div class="clean-setup-native-bar"></div>
+          <div class="clean-setup-osl-bar"><img src="/assets/img/logo-mark.svg" alt=""><span class="clean-lock"></span><strong>OSL</strong></div>
         </article>
       </div>
 
-      <ol class="demo-explanation download-setup-explanation">
-        <li>Open the service's official desktop app or website.</li>
-        <li>Sign in with the service. OSL does not collect that password.</li>
-        <li>Choose the people and conversations you want to use with OSL.</li>
-        <li>OSL stays beside the service so its protection is easy to see.</li>
-      </ol>
+      <p class="clean-motion-note">Sign in with the official service. OSL stays beside it and never receives that password.</p>
       <p class="demo-script-note">Product design. External adapters are not enabled in version 0.0.1.</p>
     </section>
 
@@ -201,7 +161,7 @@
   </main>
 
   <footer>
-    <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
+    <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
     <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
