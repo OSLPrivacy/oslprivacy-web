@@ -36,15 +36,15 @@
       <button class="dialog-close privacy-warning-close" type="button" data-privacy-warning-close aria-label="Close warning">&times;</button>
       <div class="privacy-warning-icon" aria-hidden="true">!</div>
       <p class="eyebrow">Check your exposure</p>
-      <h2 id="privacy-warning-title">Who can reach your messages?</h2>
-      <p id="privacy-warning-copy">Choose your country. OSL will show the agencies and companies that may have a path to data stored about you.</p>
+      <h2 id="privacy-warning-title">Who can reach your data?</h2>
+      <p id="privacy-warning-copy">Choose a country.</p>
 
-      <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Use my location</button>
-      <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">OSL does not send this result to its servers.</p>
+      <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Check my location</button>
+      <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">Checked only in this browser.</p>
 
       <div class="location-divider" aria-hidden="true"><span>or</span></div>
       <form class="manual-location-form" id="manual-location-form">
-        <label for="manual-location">Or enter a country</label>
+        <label for="manual-location">Or type a country</label>
         <div><input id="manual-location" name="location" type="text" autocomplete="country-name" maxlength="80" placeholder="United States" required><button class="button button-secondary" type="submit">Check</button></div>
       </form>
 
@@ -59,10 +59,9 @@
         <div class="exposure-list" id="service-result-list"></div>
       </section>
 
-      <p class="privacy-warning-limit">OSL is designed to protect supported message content. It does not hide your account, contacts, location, or activity.</p>
       <div class="privacy-warning-actions">
-        <a class="button button-primary" href="/download">Download OSL</a>
-        <button class="button button-secondary" type="button" data-privacy-warning-close>Close</button>
+        <a class="button button-primary" href="/download">Protect yourself</a>
+        <button class="button button-secondary" type="button" data-privacy-warning-close>Not now</button>
       </div>
     </div>
   </dialog>
@@ -172,7 +171,7 @@
         <div>
           <p class="eyebrow">Server protection</p>
           <h2 id="seizure-heading" class="section-heading">The server never had<br>the real message.</h2>
-          <p class="section-subhead">The service may keep the approved cover message. The OSL relay holds only a locked blob. Neither has the real words in readable form.</p>
+          <p class="section-subhead">A request can recover the cover. Not the private message.</p>
         </div>
       </div>
 
@@ -206,7 +205,7 @@
         </article>
       </div>
 
-      <p class="clean-motion-note">A stored cover may remain. The real words were never there to recover.</p>
+      <p class="clean-motion-note">No readable private message was stored.</p>
     </section>
 
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow">
@@ -272,23 +271,12 @@
         </article>
       </div>
 
-      <p class="clean-motion-note">The readable words disappear with the key. Prior copies and screenshots can remain.</p>
+      <p class="clean-motion-note">At zero, the key and readable message disappear.</p>
     </section>
 
     <section class="section tutorial-compact reveal" aria-labelledby="tutorial-preview-heading">
       <span class="tutorial-placeholder-icon" aria-hidden="true">▶</span>
           <div><p class="eyebrow">Coming next</p><h2 id="tutorial-preview-heading">Tutorials and real screenshots.</h2><p>Short walkthroughs will replace this preview as each supported app ships.</p></div>
-    </section>
-
-    <section class="section reveal" aria-labelledby="limits-heading">
-      <p class="eyebrow">Honest limits</p>
-      <h2 id="limits-heading" class="section-heading">Private content is not invisible activity.</h2>
-      <div class="grid-3 limits">
-        <article class="card limit"><h3>Services see metadata</h3><p>Connected services can still see accounts, recipients, timing, and delivery data.</p></article>
-        <article class="card limit"><h3>Devices still matter</h3><p>OSL cannot stop malware, cameras, screenshots, or a recipient sharing your words.</p></article>
-        <article class="card limit"><h3>Support varies by app</h3><p>Text, files, cleanup, calls, and verification differ by service. Check current availability first.</p></article>
-      </div>
-      <p class="center-link"><a href="/audit">Read the technical audit and trust boundaries</a></p>
     </section>
 
     <section class="section section-cta reveal" aria-labelledby="cta-heading">

@@ -5843,10 +5843,10 @@ h2:hover .anchor-link,
 }
 @media (max-width:1239px) and (prefers-reduced-motion:no-preference) {
   [data-product-animation="message-flow"].is-running .cinema-composer { animation:message-mobile-stage-v3 4.5s ease 0s both; }
-  [data-product-animation="message-flow"].is-running .local-cinema-device { animation:message-mobile-stage-v3 4s ease 4.8s both; }
-  [data-product-animation="message-flow"].is-running .danger-server { animation:message-mobile-stage-v3 3s ease 9.1s both; }
-  [data-product-animation="message-flow"].is-running .osl-server { animation:message-mobile-stage-v3 3s ease 12.4s both; }
-  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:message-mobile-final-v3 4.5s ease 15.8s both; }
+  [data-product-animation="message-flow"].is-running .local-cinema-device { animation:message-mobile-stage-v3 4s ease 3.5s both; }
+  [data-product-animation="message-flow"].is-running .danger-server { animation:message-mobile-stage-v3 3s ease 6.8s both; }
+  [data-product-animation="message-flow"].is-running .osl-server { animation:message-mobile-stage-v3 3s ease 9.4s both; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:message-mobile-final-v3 4.5s ease 12s both; }
 }
 @keyframes message-mobile-stage-v3 { 0%,100% { opacity:0; } 12%,82% { opacity:1; } }
 @keyframes message-mobile-final-v3 { 0% { opacity:0; } 16%,100% { opacity:1; } }
@@ -6032,7 +6032,7 @@ h2:hover .anchor-link,
   [data-product-animation="activation-flow"].is-running .activation-beats li:nth-child(5) { animation:activation-beat-five-v3 7.4s step-end both; }
 }
 @keyframes activation-checkout-v3 { 0%,20% { opacity:1; } 27%,100% { opacity:0; } }
-@keyframes activation-delivery-v3 { 0%,20% { opacity:0; } 28%,57% { opacity:1; } 64%,100% { opacity:0; } }
+@keyframes activation-delivery-v3 { 0%,20% { opacity:0; } 28%,57% { opacity:1; } 64%,100% { opacity:.28; } }
 @keyframes activation-pass-v3 { 0% { left:0; opacity:0; } 18%,82% { opacity:1; } 100% { left:calc(100% - 2.4rem); opacity:0; } }
 @keyframes activation-paste-v3 { 0%,57% { opacity:0; } 64%,76% { opacity:1; } 82%,100% { opacity:0; } }
 @keyframes activation-unlocked-v3 { 0%,78% { opacity:0; } 86%,100% { opacity:1; } }
@@ -6130,6 +6130,7 @@ h2:hover .anchor-link,
 @media (max-width:767px) {
   .home-main #how-it-works { padding-top:1rem; }
   .home-main > .hero { padding-block:3rem; }
+  .privacy-warning-actions .button { padding-inline:.5rem; font-size:.875rem; white-space:nowrap; }
   .pricing-top-payments { display:grid; grid-template-columns:1fr; }
   .custom-donation-form > div { grid-template-columns:auto 1fr; }
   .custom-donation-form button { grid-column:1 / -1; }

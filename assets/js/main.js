@@ -381,6 +381,10 @@
     privacyWarning.addEventListener('click', (event) => {
       if (event.target === privacyWarning) closePrivacyWarning();
     });
+    privacyWarning.addEventListener('close', () => {
+      const primaryStory = document.querySelector('[data-product-animation="message-flow"]');
+      if (primaryStory) replayProductAnimation(primaryStory);
+    });
   }
 
   if (locationButton && locationResult) {
