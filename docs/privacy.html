@@ -70,15 +70,15 @@
           <li><strong>Email address:</strong> only if you choose to contact us. Card activation does not require OSL to email you a code. Crypto checkout is coming soon.</li>
           <li><strong>Website analytics:</strong> none. We don't use Google Analytics, Plausible, or any third-party analytics service. We don't set tracking cookies.</li>
           <li><strong>Server logs:</strong> Cloudflare, our CDN, retains standard request logs (IP address, user agent, requested URL, timestamp) for a short period for security and abuse detection.</li>
-          <li><strong>Payment information:</strong> Stripe receives card details for card purchases; OSL does not receive card numbers. OSL stores the Stripe identifiers and status needed to manage a subscription. When Bitcoin and Monero checkout launches, invoices will store the address, amount, status, confirmation facts, and encrypted activation delivery needed to complete the order.</li>
+          <li><strong>Payment information:</strong> Stripe receives card and billing details for a card purchase; OSL does not receive card numbers. OSL does not copy the returned email into its database or create an OSL customer profile for the one-time checkout. It stores the minimum opaque Stripe identifiers, payment status, and activation records needed to prove and deliver the purchase. When Bitcoin and Monero checkout launches, invoices will store the address, amount, status, confirmation facts, and encrypted activation delivery needed to complete the order.</li>
           <li><strong>Download counts:</strong> the download route records an anonymous event so OSL can count downloads. It does not create a user profile.</li>
-          <li><strong>License validation:</strong> paid subscribers' OSL clients periodically check that their license is still active. These requests include the license key and a timestamp.</li>
+          <li><strong>License validation:</strong> Pro users' OSL clients periodically check that their activation is valid. These requests include the license key and a timestamp.</li>
         </ul>
 
         <h2 id="what-we-dont-collect">What we don't collect <a class="anchor-link" href="#what-we-dont-collect" aria-label="Link to this section">#</a></h2>
         <p>From within OSL itself, we collect nothing:</p>
         <ul>
-          <li>Your Discord messages or contacts. OSL never sends them off your computer.</li>
+          <li>Readable social messages, email content, or contacts from connected services. Supported protected content is processed locally.</li>
           <li>Your encryption keys. They live on your device, encrypted at rest with your password.</li>
           <li>Usage analytics. OSL doesn't phone home with telemetry.</li>
           <li>Cross-site tracking via cookies.</li>
@@ -88,8 +88,8 @@
         <h2 id="how-we-use-data">How we use what we collect <a class="anchor-link" href="#how-we-use-data" aria-label="Link to this section">#</a></h2>
         <ul>
           <li><strong>Email:</strong> to answer a message you choose to send us. We do not require email to reveal an activation code in the checkout browser.</li>
-          <li><strong>Payment data:</strong> to process a purchase, manage renewals, handle refunds, and deliver an activation code. OSL stores activation code hashes rather than readable activation codes after issuance.</li>
-          <li><strong>License validation requests:</strong> to verify your paid tier is active. The validation server doesn't track which Discord servers you're in, who you talk to, or anything about your OSL usage beyond "this license is valid."</li>
+          <li><strong>Payment data:</strong> to process a purchase, handle refunds or disputes, and deliver an activation code. OSL stores activation code hashes rather than readable activation codes after issuance.</li>
+          <li><strong>License validation requests:</strong> to verify your paid tier is active. The validation server does not need your conversations, groups, recipients, or connected service activity.</li>
           <li><strong>Server logs:</strong> for security and abuse detection only. We don't analyze them for marketing or analytics purposes.</li>
         </ul>
 
@@ -97,7 +97,7 @@
         <p>We use the following third-party services:</p>
         <ul>
           <li><strong>Cloudflare:</strong> CDN and DDoS protection for oslprivacy.com.</li>
-          <li><strong>Stripe:</strong> card payment processing for paid subscriptions. Bitcoin and Monero payments are coming soon and will not go through Stripe or another payment processor.</li>
+          <li><strong>Stripe:</strong> card payment processing for one-time Pro purchases. Bitcoin and Monero payments are coming soon and will not go through Stripe or another payment processor.</li>
         </ul>
         <p>We do not use Google Analytics, Facebook Pixel, ad-retargeting trackers, or any other cross-site tracking infrastructure.</p>
 

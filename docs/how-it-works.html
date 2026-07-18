@@ -60,8 +60,8 @@
         <p class="lede">The cryptography behind OSL, explained without needing a crypto background.</p>
 
         <h2 id="basic-idea">The basic idea <a class="anchor-link" href="#basic-idea" aria-label="Link to this section">#</a></h2>
-        <p>OSL encrypts your messages before Discord ever sees them. When you type a message and hit send, OSL transforms it into random-looking bytes called ciphertext. Only then does it hand the message to Discord for delivery. Discord routes the ciphertext to your recipient. Their copy of OSL transforms it back into the original message.</p>
-        <p>Think of it like sending a sealed letter through the mail. The postal service handles delivery but can't read the contents. Discord plays the postal service role here: it routes the envelope, but the inside is just bytes to Discord.</p>
+        <p>OSL encrypts a supported message before the connected service receives it. When you send, OSL transforms the message into random-looking bytes called ciphertext. The service delivers that sealed carrier. The recipient's copy of OSL transforms it back into the original message.</p>
+        <p>Think of it like sending a sealed letter through the mail. The delivery service handles the envelope but cannot read its contents.</p>
 
         <h2 id="cryptography">The cryptography <a class="anchor-link" href="#cryptography" aria-label="Link to this section">#</a></h2>
         <p>OSL uses end-to-end encryption with a post-quantum hybrid. The building blocks:</p>
@@ -77,10 +77,10 @@
         <p>Everything cryptographic happens on your computer. Your encryption keys are generated locally and stored locally. They're encrypted at rest with your password, so even someone with full access to your filesystem can't read them without it.</p>
         <p>We never see your keys. We have no copy of them. We can't recover them if you lose them. This is the trade-off for end-to-end encryption: nobody else can read your data, and that includes us.</p>
 
-        <h2 id="what-discord-sees">What Discord sees <a class="anchor-link" href="#what-discord-sees" aria-label="Link to this section">#</a></h2>
-        <p>Discord still routes messages between you and your friends. From their perspective:</p>
+        <h2 id="what-services-see">What connected services see <a class="anchor-link" href="#what-services-see" aria-label="Link to this section">#</a></h2>
+        <p>The underlying social or email service still handles delivery. From its perspective:</p>
         <ul>
-          <li><strong>They can see:</strong> timestamps, who you're talking to, message sizes, when you're online, which servers you're in.</li>
+          <li><strong>They can see:</strong> timestamps, recipients, message sizes, online activity, and service groups or accounts.</li>
           <li><strong>They cannot see:</strong> the contents of your messages, your encryption keys, your OSL whitelist, or the relationships between OSL users.</li>
         </ul>
         <p>This is the meaningful limit of OSL. We protect content, not metadata. If you need both, look at <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a>. They were designed for that threat model from day one. See our <a href="/docs/threat-model">threat model</a> for a deeper discussion of what's and isn't covered.</p>

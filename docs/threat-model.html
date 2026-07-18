@@ -62,30 +62,30 @@
         <h2 id="defends-against">What OSL defends against <a class="anchor-link" href="#defends-against" aria-label="Link to this section">#</a></h2>
         <p>OSL protects the <strong>content</strong> of your messages against the following adversaries:</p>
         <ul>
-          <li>Discord itself reading your messages. Discord receives ciphertext only.</li>
-          <li>Discord employees with database access. Same as above.</li>
-          <li>Attackers who breach Discord's infrastructure. Same as above.</li>
-          <li>Network eavesdroppers, including your ISP, public-wifi snoopers, and governments tapping the wire. They see only TLS-encrypted Discord traffic carrying ciphertext.</li>
-          <li>Anyone with subpoena access to Discord's data. Discord can hand over what they have. What they have is ciphertext.</li>
+          <li>A connected social or email service reading protected message content. It receives ciphertext only.</li>
+          <li>Service employees with access to stored message data. They see the same ciphertext.</li>
+          <li>Attackers who breach the connected service's infrastructure.</li>
+          <li>Network eavesdroppers, including an ISP, public Wi-Fi snooper, or government tapping the wire. They see encrypted network traffic carrying ciphertext.</li>
+          <li>Anyone using legal process to obtain stored data from the connected service. The protected content in that data is ciphertext.</li>
         </ul>
 
         <h2 id="doesnt-defend-against">What OSL does NOT defend against <a class="anchor-link" href="#doesnt-defend-against" aria-label="Link to this section">#</a></h2>
         <p>OSL is not a complete privacy solution. It does not protect against:</p>
         <ul>
-          <li><strong>Metadata.</strong> Discord can see who you're talking to, when, message frequency, message sizes, and channel membership. OSL hides the contents of conversations, not their existence.</li>
+          <li><strong>Metadata.</strong> A connected service can see recipients, timing, message frequency, message sizes, and account or group membership. OSL hides supported content, not the existence of the activity.</li>
           <li><strong>A compromised computer.</strong> If malware, a keylogger, or a screen-recorder is running on your device, OSL can't help. Encryption only protects data in transit and at rest. It can't protect data while you're reading or typing it.</li>
           <li><strong>The other side leaking.</strong> The person you're talking to can screenshot, copy-paste, or otherwise share your messages. Encryption defends against third parties, not against your recipient.</li>
-          <li><strong>Voice and video calls.</strong> Not encrypted by OSL. Discord's normal infrastructure handles those.</li>
-          <li><strong>Server moderation.</strong> If a server admin sees a problem (because they're in the conversation, because someone reports it, or because they have OSL installed and you whitelisted them), they can act on it.</li>
+          <li><strong>Voice and video calls.</strong> OSL does not encrypt them. The connected service's normal infrastructure handles those.</li>
+          <li><strong>Service moderation.</strong> A moderator or administrator who receives a report or has legitimate access can still act on it.</li>
         </ul>
 
         <h2 id="specific-concerns">Specific concerns <a class="anchor-link" href="#specific-concerns" aria-label="Link to this section">#</a></h2>
 
-        <h3>Can Discord ban me for using OSL?</h3>
-        <p>Possibly. Discord's terms of service prohibit client modifications. We're not aware of bans specifically related to OSL but use it at your own risk. If you have a Discord account you can't afford to lose, weigh the risk.</p>
+        <h3>Can a connected service restrict my account?</h3>
+        <p>Possibly. Rules differ by provider, and some prohibit modified clients or automated interaction. Experimental interaction modes are off by default. Do not connect an account you cannot afford to lose without reviewing that service's current rules.</p>
 
-        <h3>Can the government compel Discord to read my messages?</h3>
-        <p>Discord can be compelled to hand over what they have. For OSL-encrypted messages, Discord has ciphertext made of random bytes. Decrypting requires your keys, which Discord doesn't have.</p>
+        <h3>Can a government obtain my messages from a service?</h3>
+        <p>A provider may be compelled to hand over what it has. For content protected by OSL, the provider has ciphertext made of random-looking bytes. Decrypting it requires keys the provider does not have.</p>
 
         <h3>Can the government compel ME to hand over my password?</h3>
         <p>Depending on jurisdiction, possibly. Some legal systems can compel you to disclose passwords; others can't (or it's unsettled law). OSL doesn't protect against legal coercion or physical compulsion. If you're in a high-risk situation, consult a lawyer and consider whether OSL alone is enough.</p>
@@ -93,13 +93,13 @@
         <h2 id="right-for-you">Is OSL right for you? <a class="anchor-link" href="#right-for-you" aria-label="Link to this section">#</a></h2>
         <p>OSL is appropriate for:</p>
         <ul>
-          <li>Casual privacy. You don't want Discord, your employer, or your ISP reading your group chats.</li>
+          <li>Everyday privacy. You do not want a social service, email provider, employer, or ISP reading supported protected content.</li>
           <li>Communities discussing sensitive topics (health, identity, politics, finances) without changing platforms.</li>
           <li>Anyone who wants end-to-end encryption added to conversations they're already having.</li>
         </ul>
         <p>OSL is <strong>not</strong> appropriate for:</p>
         <ul>
-          <li>Activists, journalists, or dissidents in hostile environments. The metadata Discord sees is enough to map your network. Use <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a> instead because they're designed for that threat model.</li>
+          <li>Activists, journalists, or dissidents in hostile environments. Metadata retained by connected services may be enough to map a network. Use a system designed for that threat model, such as <a href="https://signal.org" rel="noopener">Signal</a> or <a href="https://session.org" rel="noopener">Session</a>, and seek expert operational security advice.</li>
           <li>Crime. Don't.</li>
         </ul>
       </article>

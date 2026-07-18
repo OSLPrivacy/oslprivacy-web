@@ -104,7 +104,7 @@
       event.preventDefault();
       setStatus(
         formStatus,
-        'Email signup is not connected yet. Use the Discord link or project GitHub for release updates.',
+        'Email signup is not connected yet. Use the project GitHub for release updates.',
         'error',
       );
     });
@@ -309,39 +309,10 @@
     });
   }
 
-  const periodInputs = document.querySelectorAll('input[name="period"]');
-  if (periodInputs.length) {
-    const setPeriod = (period) => {
-      document.querySelectorAll('[data-monthly][data-yearly]').forEach((element) => {
-        element.textContent = element.dataset[period];
-      });
-      document.querySelectorAll('[data-monthly-text][data-yearly-text]').forEach((element) => {
-        element.textContent = element.dataset[`${period}Text`];
-      });
-      const url = new URL(window.location.href);
-      if (period === 'yearly') url.searchParams.set('period', 'yearly');
-      else url.searchParams.delete('period');
-      history.replaceState(null, '', url);
-    };
-    const requested = new URLSearchParams(window.location.search).get('period');
-    if (requested === 'yearly') {
-      const yearly = document.querySelector('input[name="period"][value="yearly"]');
-      if (yearly) yearly.checked = true;
-      setPeriod('yearly');
-    }
-    periodInputs.forEach((input) => {
-      input.addEventListener('change', (event) => {
-        if (event.target.checked) setPeriod(event.target.value);
-      });
-    });
-  }
-
   const subscribeButton = document.querySelector('.cta-subscribe');
   const checkoutStatus = document.getElementById('checkout-status');
   if (subscribeButton) {
     subscribeButton.addEventListener('click', async () => {
-      const yearly = document.querySelector('input[name="period"][value="yearly"]');
-      const plan = yearly?.checked ? 'yearly' : 'monthly';
       const label = subscribeButton.textContent;
       subscribeButton.disabled = true;
       subscribeButton.textContent = 'Opening Stripe...';
@@ -353,7 +324,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            plan,
+            plan: 'pro',
             claim_token: delivery.claimToken,
             delivery_public_key_spki: delivery.deliveryPublicKeySpki,
           }),
@@ -472,8 +443,6 @@
 
   document.querySelectorAll('[data-crypto-method]').forEach((button) => {
     button.addEventListener('click', async () => {
-      const yearly = document.querySelector('input[name="period"][value="yearly"]');
-      const plan = yearly?.checked ? 'yearly' : 'monthly';
       const paymentMethod = button.dataset.cryptoMethod;
       button.disabled = true;
       setStatus(checkoutStatus, 'Creating a unique payment address...');
@@ -483,7 +452,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            plan,
+            plan: 'pro',
             payment_method: paymentMethod,
             delivery_public_key_spki: delivery.deliveryPublicKeySpki,
           }),

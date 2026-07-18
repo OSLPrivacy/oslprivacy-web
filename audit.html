@@ -25,9 +25,9 @@
 
   <main id="main">
     <section class="section reveal audit-intro">
-      <p class="eyebrow">For technical readers</p>
-      <h1 class="page-heading">Do not trust the homepage. Check the code.</h1>
-      <p class="page-lede">This technical overview points to the current source, states the trust boundary, and lists what has not been proven. It is not an independent audit.</p>
+      <p class="eyebrow">Technical overview</p>
+      <h1 class="page-heading">Architecture and assurance status</h1>
+      <p class="page-lede">Source map, trust boundaries, known limitations, and current verification status. This is not an independent audit.</p>
       <div class="hero-cta">
         <a class="button button-primary" href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">Client and backend</a>
         <a class="button button-secondary" href="https://github.com/OSLPrivacy/oslprivacy-web" target="_blank" rel="noopener">Website</a>
@@ -59,7 +59,7 @@
       <h2 id="crypto-heading" class="section-heading">Cryptographic design</h2>
       <div class="prose technical-prose">
         <p>OSL combines X25519 with ML KEM 768 for hybrid key establishment. Message protection uses authenticated encryption. Direct messages use recipient specific encrypted slots. Group scopes use sender key chains with local mutable state.</p>
-        <p>Long term identity keys and private conversation state are kept on the device and sealed at rest. Public identity material and encrypted control messages may pass through the keyserver. Discord receives the encrypted carrier and can still observe delivery metadata.</p>
+        <p>Long term identity keys and private conversation state are kept on the device and sealed at rest. Public identity material and encrypted control messages may pass through the keyserver. A connected service receives the encrypted carrier and can still observe delivery metadata.</p>
         <p>Same account use on multiple machines remains a protocol risk. Independently initialized machines can have different identity keys, and mutable group sender state is not synchronized. Do not treat multi device group use as solved until device certificates and state coordination ship.</p>
       </div>
     </section>
@@ -68,8 +68,8 @@
       <h2 id="boundary-heading" class="section-heading">Trust boundary</h2>
       <div class="grid-2">
         <article class="card"><h3>Trusted locally</h3><p>The OSL process, cryptographic implementation, local key store, trusted controls, and the device running them.</p></article>
-        <article class="card"><h3>Not trusted with plaintext</h3><p>Discord, Cloudflare, Stripe, the crypto watcher, network observers, and hosted service pages.</p></article>
-        <article class="card"><h3>Visible metadata</h3><p>Account identity, recipients, servers, timing, network addresses, encrypted message size, and payment metadata required by the chosen payment rail.</p></article>
+        <article class="card"><h3>Not trusted with plaintext</h3><p>Connected social and email services, Cloudflare, Stripe, the crypto watcher, network observers, and hosted service pages.</p></article>
+        <article class="card"><h3>Visible metadata</h3><p>Service account identity, recipients, groups, timing, network addresses, encrypted message size, and payment metadata required by the chosen payment rail.</p></article>
         <article class="card"><h3>Outside the model</h3><p>Compromised endpoints, cameras, recipient capture, malicious accessibility software, voice, video, and plaintext sent in normal mode.</p></article>
       </div>
     </section>
@@ -84,7 +84,7 @@
           <li>The success page presents the claim capability and decrypts the returned activation code in the original browser tab.</li>
         </ol>
         <p>Bitcoin and Monero payments are coming soon. The published design derives a unique Bitcoin address from a watch only wallet and a unique Monero subaddress from a view only wallet. A local node watcher confirms payment and delivers an activation code encrypted for the checkout browser. It cannot spend or send funds.</p>
-        <p>The Telegram operator bot exposes aggregate payments, downloads, and subscription counts only to one configured chat. It does not receive card details, customer email addresses, activation codes, wallet identities, or message data.</p>
+        <p>The Telegram operator bot exposes aggregate payments, downloads, and activation counts only to one configured chat. It does not receive card details, customer email addresses, activation codes, wallet identities, or message data.</p>
       </div>
     </section>
 

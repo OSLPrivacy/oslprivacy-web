@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSL Privacy pricing</title>
-  <meta name="description" content="Private text is free. Paid OSL plans add encrypted file sending. Card checkout is live. Bitcoin and Monero are coming soon.">
+  <meta name="description" content="Compare OSL Free and Pro. Private text is free. Pro adds encrypted file sending for a one-time $5 payment.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -25,20 +25,14 @@
 
   <main id="main">
     <section class="section reveal">
-      <p class="eyebrow">Simple pricing</p>
-      <h1 class="page-heading">Private text is free.</h1>
-      <p class="page-lede">Pay only if you want to send encrypted files. The encryption is the same on both plans.</p>
+      <p class="eyebrow">Free or Pro</p>
+      <h1 class="page-heading">Private text stays free.</h1>
+      <p class="page-lede">Pay once for encrypted file sending and early access. No automatic renewal.</p>
       <p class="live-badge charge-notice">A completed card checkout is a real charge</p>
     </section>
 
     <section class="section reveal" aria-labelledby="plans-heading">
       <h2 id="plans-heading" class="visually-hidden">Plans</h2>
-      <fieldset class="period-toggle" aria-label="Billing period">
-        <legend class="visually-hidden">Billing period</legend>
-        <input type="radio" id="period-monthly" name="period" value="monthly" checked><label for="period-monthly">Monthly</label>
-        <input type="radio" id="period-yearly" name="period" value="yearly"><label for="period-yearly">Yearly <span class="period-savings">Save $10</span></label>
-      </fieldset>
-
       <div class="grid-2 plans">
         <article class="card plan">
           <h3 class="plan-name">Free</h3>
@@ -53,16 +47,16 @@
         </article>
 
         <article class="card card-active plan">
-          <h3 class="plan-name">Paid</h3>
-          <div class="price-tag" aria-live="polite"><span class="price-amount" data-monthly="$5" data-yearly="$50">$5</span><span class="price-period" data-monthly="each month" data-yearly="each year">each month</span></div>
+          <h3 class="plan-name">Pro</h3>
+          <div class="price-tag"><span class="price-amount">$5</span><span class="price-period">one time</span></div>
           <ul class="plan-features">
             <li><span class="check yes" aria-hidden="true">✓</span> Everything in Free</li>
             <li><span class="check yes" aria-hidden="true">✓</span> Send private images and files</li>
             <li><span class="check yes" aria-hidden="true">✓</span> Try new features early</li>
-            <li><span class="check yes" aria-hidden="true">✓</span> Cancel at any time</li>
+            <li><span class="check yes" aria-hidden="true">✓</span> No automatic renewal</li>
           </ul>
-          <button type="button" class="button button-primary plan-cta cta-subscribe" data-monthly-text="Pay $5 each month" data-yearly-text="Pay $50 each year">Pay $5 each month</button>
-          <p class="renewal-note" data-monthly="Renews at $5 each month until cancelled." data-yearly="Renews at $50 each year until cancelled.">Renews at $5 each month until cancelled.</p>
+          <button type="button" class="button button-primary plan-cta cta-subscribe">Get Pro for $5</button>
+          <p class="renewal-note">One payment. Recurring billing is off.</p>
         </article>
       </div>
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
@@ -75,6 +69,32 @@
           <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
         </div>
       </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="details-heading">
+      <p class="eyebrow">Full comparison</p>
+      <h2 id="details-heading" class="section-heading">What you actually get</h2>
+      <div class="pricing-detail-columns">
+        <article class="pricing-detail-plan">
+          <header><span>Free</span><strong>Private words</strong></header>
+          <div class="pricing-detail-item"><h3>Encrypted text</h3><p>Write in OSL Protected mode on a supported connector. The message is encrypted on your computer and opened locally by approved OSL recipients.</p></div>
+          <div class="pricing-detail-item"><h3>Unlimited conversations</h3><p>There is no message counter, trial timer, advertising, or reduced encryption for Free users.</p></div>
+          <div class="pricing-detail-item"><h3>Receive protected files</h3><p>Free users can open encrypted images and files sent by a Pro user. A group does not need every person to pay.</p></div>
+          <div class="pricing-detail-item"><h3>Local identity and keys</h3><p>Your OSL identity, private keys, and readable message state stay on your device.</p></div>
+        </article>
+        <article class="pricing-detail-plan pricing-detail-plan-pro">
+          <header><span>Pro</span><strong>Private files too</strong></header>
+          <div class="pricing-detail-item"><h3>Send encrypted images and files</h3><p>Seal supported attachments before they reach the connected service. Only approved OSL recipients can open them.</p></div>
+          <div class="pricing-detail-item"><h3>Early feature access</h3><p>Use new privacy tools after they enter the public beta channel. Experimental features remain clearly labeled.</p></div>
+          <div class="pricing-detail-item"><h3>One-time activation</h3><p>Pay $5 once. Your code appears in the same browser after Stripe confirms payment. OSL does not store your email or create an OSL customer profile.</p></div>
+          <div class="pricing-detail-item"><h3>Same encryption</h3><p>Pro does not buy stronger text encryption. It unlocks additional capabilities while the Free cryptographic core stays the same.</p></div>
+        </article>
+      </div>
+      <div class="pricing-roadmap">
+        <p class="eyebrow">Planned for Pro</p>
+        <p>Attachment metadata cleaning, view-once private media, guided cleanup with verified receipts, and advanced retention controls are in development. They are not included in the current build yet.</p>
+      </div>
+      <p class="section-subhead pricing-availability">Features work only on connectors available in the installed beta. Social and email connector coverage is expanding.</p>
     </section>
 
     <section class="section reveal" aria-labelledby="payment-heading">
@@ -90,8 +110,8 @@
       <h2 id="pricing-faq-heading" class="section-heading">Questions</h2>
       <div class="faq">
         <article class="faq-item"><h3>Is this a test checkout?</h3><p>If Stripe checkout opens, it is a live payment page. Completing it creates a real charge.</p></article>
-        <article class="faq-item"><h3>Will you email the activation code?</h3><p>No. The code appears in the browser that started checkout. Keep that tab open until you copy it.</p></article>
-        <article class="faq-item"><h3>What happens if I cancel?</h3><p>You keep free private text. You lose the ability to send encrypted files when the paid period ends.</p></article>
+        <article class="faq-item"><h3>Will you email the activation code?</h3><p>No. The code appears in the browser that started checkout. Stripe may ask for billing details on its hosted page, but OSL does not store the returned email for this purchase.</p></article>
+        <article class="faq-item"><h3>Does it renew?</h3><p>No. The current Pro checkout is a one-time $5 purchase. It does not start a recurring payment.</p></article>
         <article class="faq-item"><h3>Can I inspect the payment code?</h3><p>Yes. The site and payment backend are public on <a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a>.</p></article>
       </div>
     </section>

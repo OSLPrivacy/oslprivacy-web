@@ -62,7 +62,7 @@
         <h2 id="install">Install OSL <a class="anchor-link" href="#install" aria-label="Link to this section">#</a></h2>
         <p>Download OSL from the <a href="/download">download page</a> and run the installer.</p>
         <p>On first launch, Windows may show a SmartScreen warning that says "Windows protected your PC." This is expected because OSL is a new application from an independent developer. Click "More info" and then "Run anyway." See the <a href="/download#smartscreen">explanation on the download page</a> for the full story.</p>
-        <p>OSL replaces your Discord desktop client. After install, you'll launch OSL instead of Discord, but Discord works the same way inside it.</p>
+        <p>OSL opens as its own desktop hub. Connector availability changes during the beta, so the app shows which social and email services can be linked in your installed release.</p>
 
         <h2 id="set-password">Set your password <a class="anchor-link" href="#set-password" aria-label="Link to this section">#</a></h2>
         <p>The first time you launch OSL, you'll be prompted to set a password. This password encrypts your keys and message history on your computer.</p>
@@ -78,8 +78,8 @@
 
         <h2 id="first-message">Send your first encrypted message <a class="anchor-link" href="#first-message" aria-label="Link to this section">#</a></h2>
         <!-- UX-VERIFY: confirm against V2; lock icon color/state semantics -->
-        <p>Type as you normally would in Discord. OSL encrypts the message before sending. The lock icon in the channel header turns green when encryption is active.</p>
-        <p>Your friend, also running OSL, sees your message decrypted automatically. Anyone reading the raw Discord messages, including Discord itself, sees ciphertext only.</p>
+        <p>Open a supported conversation, choose OSL Protected, and type in the trusted OSL composer. OSL encrypts the message before giving the sealed carrier to the connected service.</p>
+        <p>Your friend, also running OSL, sees the message opened locally. Anyone reading the raw stored service message sees ciphertext only.</p>
 
         <h2 id="non-osl-friend">What if your friend doesn't have OSL? <a class="anchor-link" href="#non-osl-friend" aria-label="Link to this section">#</a></h2>
         <p>If you send an encrypted message to someone without OSL, they'll see what looks like random base64 garbage. That is the ciphertext, and it cannot be decrypted without OSL and the right keys.</p>
