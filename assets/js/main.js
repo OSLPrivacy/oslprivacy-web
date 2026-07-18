@@ -4,6 +4,9 @@
   const API = 'https://keyserver.oslprivacy.com';
   const STRIPE_DELIVERY_KEY = 'osl_stripe_delivery_v1';
   const CRYPTO_DELIVERY_KEY = 'osl_crypto_delivery_v1';
+  const CRYPTO_POLL_MS = 8000;
+  const CRYPTO_CONFIRMATION_POLL_MS = 30000;
+  const CRYPTO_CONFIRMATION_GRACE_SECONDS = 24 * 60 * 60;
 
   const bytesToBase64 = (bytes) => {
     let binary = '';
@@ -570,41 +573,121 @@
   const cryptoAmount = document.getElementById('crypto-amount');
   const cryptoConfirmations = document.getElementById('crypto-confirmations');
   const cryptoExpires = document.getElementById('crypto-expires');
+  let activeCryptoPoll = null;
+
+  function showCryptoInvoice(invoice) {
+    if (cryptoAddress) cryptoAddress.textContent = invoice.address || '';
+    if (cryptoAmount) {
+      cryptoAmount.textContent = invoice.amount_native && invoice.payment_method
+        ? `${invoice.amount_native} ${invoice.payment_method.toUpperCase()}`
+        : '';
+    }
+    if (cryptoConfirmations && invoice.confirmations_required) {
+      cryptoConfirmations.textContent = `${invoice.confirmations_required} network confirmations`;
+    }
+    if (cryptoExpires && invoice.expires_at) {
+      cryptoExpires.textContent = new Date(invoice.expires_at * 1000).toLocaleString();
+    }
+    if (paymentDialog && !paymentDialog.open) paymentDialog.showModal();
+  }
 
   async function pollCrypto(invoice, delivery) {
-    while (Math.floor(Date.now() / 1000) < invoice.expires_at) {
-      await delay(5000);
-      const response = await fetch(`${API}/v1/crypto/status`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          invoice_id: invoice.invoice_id,
-          claim_token: invoice.claim_token,
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (response.ok && result.encrypted_license) {
-        const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
-        sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({
-          delivery: {
-            privateJwk: delivery.privateJwk,
-            encryptedLicense: result.encrypted_license,
-          },
-          invoice: { invoice_id: invoice.invoice_id },
-        }));
-        await acknowledgeDelivery('/v1/crypto/status', {
-          invoice_id: invoice.invoice_id,
-          claim_token: invoice.claim_token,
-        });
-        showActivationCode(code, document.getElementById('crypto-activation-panel'));
-        setStatus(cryptoStatus, 'Payment confirmed by the network. Activation code ready.', 'success');
-        return;
+    if (!invoice?.invoice_id || !invoice?.claim_token || !delivery?.privateJwk) return;
+    if (activeCryptoPoll === invoice.invoice_id) return;
+    activeCryptoPoll = invoice.invoice_id;
+    const stopAt = invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS;
+    try {
+      while (Math.floor(Date.now() / 1000) < stopAt) {
+        const now = Math.floor(Date.now() / 1000);
+        await delay(now < invoice.expires_at ? CRYPTO_POLL_MS : CRYPTO_CONFIRMATION_POLL_MS);
+        let response;
+        let result = {};
+        try {
+          response = await fetch(`${API}/v1/crypto/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              invoice_id: invoice.invoice_id,
+              claim_token: invoice.claim_token,
+            }),
+          });
+          result = await response.json().catch(() => ({}));
+        } catch {
+          setStatus(cryptoStatus, 'Connection interrupted. OSL will keep checking.');
+          continue;
+        }
+        if (response.status === 429) {
+          const retryAfter = Number.parseInt(response.headers.get('retry-after') || '', 10);
+          await delay(Number.isFinite(retryAfter) ? retryAfter * 1000 : CRYPTO_POLL_MS);
+          continue;
+        }
+        if (response.ok && result.encrypted_license) {
+          const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
+          sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({
+            delivery: {
+              privateJwk: delivery.privateJwk,
+              encryptedLicense: result.encrypted_license,
+            },
+            invoice: { invoice_id: invoice.invoice_id },
+          }));
+          await acknowledgeDelivery('/v1/crypto/status', {
+            invoice_id: invoice.invoice_id,
+            claim_token: invoice.claim_token,
+          });
+          showActivationCode(code, document.getElementById('crypto-activation-panel'));
+          setStatus(cryptoStatus, 'Payment confirmed by the network. Activation code ready.', 'success');
+          return;
+        }
+        if (result.status === 'expired') break;
+        if (!response.ok && response.status < 500) {
+          setStatus(cryptoStatus, result.error || 'This invoice can no longer be checked.', 'error');
+          return;
+        }
+        if (Math.floor(Date.now() / 1000) >= invoice.expires_at) {
+          setStatus(
+            cryptoStatus,
+            'Do not send now. OSL is only waiting for an on-time payment to finish confirming.',
+          );
+        } else {
+          setStatus(cryptoStatus, 'Waiting for the required network confirmations...');
+        }
       }
-      if (result.status === 'expired') break;
-      setStatus(cryptoStatus, 'Waiting for the required network confirmations...');
+      setStatus(cryptoStatus, 'This invoice expired. Start a new invoice and do not reuse the address.', 'error');
+    } finally {
+      if (activeCryptoPoll === invoice.invoice_id) activeCryptoPoll = null;
     }
-    setStatus(cryptoStatus, 'This quote expired before confirmation. Start a new invoice and do not reuse the address.', 'error');
   }
+
+  async function resumeCryptoCheckout() {
+    if (!paymentDialog || !cryptoStatus) return;
+    let saved;
+    try {
+      saved = JSON.parse(sessionStorage.getItem(CRYPTO_DELIVERY_KEY) || 'null');
+    } catch {
+      sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
+      return;
+    }
+    if (saved?.delivery?.encryptedLicense && saved?.delivery?.privateJwk) {
+      try {
+        const code = await decryptActivationCode(
+          saved.delivery.encryptedLicense,
+          saved.delivery.privateJwk,
+        );
+        showActivationCode(code, document.getElementById('crypto-activation-panel'));
+        setStatus(cryptoStatus, 'Activation code ready. It is stored only in this browser tab.', 'success');
+        paymentDialog.showModal();
+      } catch {
+        sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
+      }
+      return;
+    }
+    if (saved?.invoice?.invoice_id && saved?.invoice?.claim_token && saved?.delivery?.privateJwk) {
+      showCryptoInvoice(saved.invoice);
+      setStatus(cryptoStatus, 'Resuming payment confirmation...');
+      void pollCrypto(saved.invoice, saved.delivery);
+    }
+  }
+  void resumeCryptoCheckout();
 
   document.querySelectorAll('[data-crypto-method]').forEach((button) => {
     button.addEventListener('click', async () => {
@@ -626,17 +709,10 @@
         if (!response.ok || !invoice.claim_token || !invoice.address) {
           throw new Error(invoice.error || 'Crypto checkout is temporarily unavailable.');
         }
+        invoice.payment_method = paymentMethod;
         sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({ delivery, invoice }));
-        cryptoAddress.textContent = invoice.address;
-        cryptoAmount.textContent = `${invoice.amount_native} ${paymentMethod.toUpperCase()}`;
-        if (cryptoConfirmations) {
-          cryptoConfirmations.textContent = `${invoice.confirmations_required} network confirmations`;
-        }
-        if (cryptoExpires) {
-          cryptoExpires.textContent = new Date(invoice.expires_at * 1000).toLocaleString();
-        }
+        showCryptoInvoice(invoice);
         setStatus(cryptoStatus, 'Send the exact amount once. The code appears here after the node confirms payment.');
-        paymentDialog.showModal();
         void pollCrypto(invoice, delivery);
       } catch (error) {
         setStatus(checkoutStatus, error instanceof Error ? error.message : 'Crypto checkout is temporarily unavailable.', 'error');
