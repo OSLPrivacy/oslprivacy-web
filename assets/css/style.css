@@ -5175,6 +5175,128 @@ h2:hover .anchor-link,
   .clean-file-card { min-height:13rem; }
 }
 
+/* Final launch composition: app branding, quiet hierarchy, and crisp looping stories. */
+.app-logo {
+  filter: drop-shadow(0 0 8px rgba(6,182,212,.62)) drop-shadow(0 0 22px rgba(6,182,212,.24));
+}
+.topnav-brand-mark { width:2.1rem; height:2.1rem; }
+.topnav-brand { gap:.65rem; color:var(--text); font-weight:700; }
+.hero-app-logo { width:5.75rem; height:5.75rem; margin:0 auto 1rem; }
+.hero-brand { margin:0 0 .75rem; color:var(--accent); font-size:.8rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.home-main > .hero { order:-4; padding:2.75rem 1.5rem 1rem; }
+.home-main > .hero h1 { margin:0; font-size:clamp(2.8rem,6.8vw,5.9rem); line-height:.94; }
+.home-main > .hero .hero-actions { margin-top:1.75rem; }
+.home-main #how-it-works { order:-3; padding-top:1rem; }
+.home-main > .scrub-demo { order:-2; }
+.home-main > .home-buy { order:-1; }
+.home-buy { max-width:52rem; text-align:center; }
+.home-buy h2 { margin:0 0 1.5rem; font-size:clamp(2.4rem,5vw,4.5rem); line-height:1; }
+.home-buy-actions { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; }
+.home-buy-actions .button { min-width:11.5rem; }
+.home-feature-link { display:inline-block; margin-top:1.25rem; color:var(--text-muted); font-size:.8rem; }
+.home-main > .section,
+.download-main > .section { width:100%; }
+.features-main > .hero { min-height:auto; padding-block:3.5rem 1rem; }
+
+/* Prelaunch location review: compact, animated, and intentionally shown on each home visit. */
+.privacy-warning { width:min(32rem,calc(100% - 1.25rem)); background:var(--bg); border-color:rgba(255,255,255,.42); }
+.privacy-warning-inner { padding:clamp(1.25rem,4vw,2rem); }
+.privacy-warning-brand { position:relative; display:grid; width:5.25rem; height:5.25rem; margin:0 auto 1.1rem; place-items:center; }
+.privacy-warning-brand img { width:100%; height:100%; animation:warning-logo-breathe 3.2s ease-in-out infinite; }
+.privacy-warning-brand span { position:absolute; right:-.2rem; bottom:.2rem; display:grid; width:1.65rem; height:1.65rem; place-items:center; color:#190808; background:var(--danger); border-radius:50%; font-weight:900; box-shadow:0 0 0 5px var(--bg); }
+.privacy-warning .eyebrow { color:var(--text-muted); }
+.privacy-warning .agency-result { max-height:48vh; overflow:auto; }
+@keyframes warning-logo-breathe { 0%,100% { transform:scale(.96); } 50% { transform:scale(1.03); } }
+
+/* Message: one open envelope, then two separate envelope trips. */
+.fake-to-friend,
+.lock-to-friend { width:42px; height:28px; padding:0; background:#f4f5f5; border:1px solid white; box-shadow:0 10px 22px rgba(0,0,0,.38); }
+.fake-to-friend::before,
+.fake-to-friend::after,
+.lock-to-friend::before,
+.lock-to-friend::after { position:absolute; top:0; width:1px; height:27px; background:#6f767b; content:""; transform-origin:top; }
+.fake-to-friend::before,
+.lock-to-friend::before { left:0; transform:rotate(-54deg); }
+.fake-to-friend::after,
+.lock-to-friend::after { right:0; transform:rotate(54deg); }
+.fake-to-friend > span { display:none; }
+.lock-to-friend { color:var(--accent); background:#111416; border-color:var(--accent); }
+.lock-to-friend .packet-lock { z-index:2; margin:auto; }
+@media (min-width:1100px) and (prefers-reduced-motion:no-preference) {
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope { animation:message-intake-envelope-final 2.4s cubic-bezier(.2,.8,.2,1) 3.45s both; }
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope .cinema-envelope-flap { animation:message-envelope-breathe-final 2.1s ease 3.75s both; }
+  [data-product-animation="message-flow"].is-running .route-danger-out { animation:cinema-route .9s ease 15.2s both; }
+  [data-product-animation="message-flow"].is-running .fake-to-friend { animation:cinema-packet 1.8s cubic-bezier(.2,.75,.2,1) 15.55s both; }
+  [data-product-animation="message-flow"].is-running .route-lock-out { animation:cinema-route .9s ease 17.2s both; }
+  [data-product-animation="message-flow"].is-running .lock-to-friend { animation:cinema-packet 1.8s cubic-bezier(.2,.75,.2,1) 17.55s both; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:message-focus-friend-v3 5s cubic-bezier(.2,.8,.2,1) 19s both; }
+  [data-product-animation="message-flow"].is-running .native-carrier-message { animation:cinema-carrier-arrive .7s ease 20s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream { animation:cinema-decrypt-stream 2.1s ease 20.2s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream code { animation:cinema-cipher-resolve 1.4s ease 20.2s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream span { animation:cinema-plain-resolve 1.1s ease 20.9s both; }
+  [data-product-animation="message-flow"].is-running .restored-message-3d { animation:cinema-restore 1.3s cubic-bezier(.15,.9,.2,1) 22s both; }
+}
+@keyframes message-intake-envelope-final {
+  0% { opacity:0; top:310px; left:360px; }
+  18%,76% { opacity:1; }
+  100% { opacity:0; top:305px; left:430px; }
+}
+@keyframes message-envelope-breathe-final {
+  0% { transform:rotateX(0); }
+  30%,66% { transform:rotateX(180deg); }
+  100% { transform:rotateX(0); }
+}
+
+/* Server search: equal square cards, centered on a single line. */
+.seizure-scene { grid-template-columns:minmax(16rem,21rem) 7rem minmax(16rem,21rem); justify-content:center; align-items:center; gap:1.5rem; }
+.seizure-node { display:grid; width:100%; aspect-ratio:1; min-height:0; align-content:center; justify-self:center; }
+.seizure-transfer { align-self:center; }
+
+/* Scrub: flat findings with the warning marks on the true center line. */
+.scrub-flat-findings .scrub-hit { grid-template-columns:1.5rem minmax(8rem,10rem); justify-content:center; }
+.scrub-flat-findings .scrub-hit::after { display:none; }
+.scrub-flat-findings .scrub-hit i { display:grid; width:1.5rem; height:1.5rem; place-items:center; justify-self:center; line-height:1; }
+
+/* Attachment checklist: no phantom fourth row. */
+.attachment-clean-checklist { display:grid; grid-template-rows:auto auto auto; align-content:center; gap:0; }
+.attachment-clean-checklist footer { margin:0; padding-top:.8rem; }
+
+/* Expiry: the private line evaporates, then an ordinary chat message replaces it. */
+.expiry-final-state { right:5.8rem; left:0; width:auto; height:4.25rem; padding:1.15rem 1.3rem; place-items:start; align-content:center; color:var(--text); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.42); font-size:.95rem; }
+
+/* Pricing: Pro visibly carries a file after the envelope lands. */
+.pricing-pro-attachment { display:flex; gap:.45rem; align-items:center; min-width:6.8rem; padding:.45rem .55rem; opacity:0; border:1px solid rgba(255,255,255,.42); }
+.pricing-pro-attachment > i { position:relative; width:.8rem; height:1rem; border:1px solid var(--text); }
+.pricing-pro-attachment > i::after { position:absolute; top:-1px; right:-1px; width:.35rem; height:.35rem; border-left:1px solid var(--text); border-bottom:1px solid var(--text); content:""; }
+.pricing-pro-attachment small { color:var(--text); font-size:.62rem; }
+@media (prefers-reduced-motion:no-preference) {
+  [data-product-animation="pricing-plan-flow"].is-running .pricing-pro-attachment { animation:pricing-pro-file-v3 .5s ease 6.05s both; }
+}
+
+/* Activation and setup: app mark, verification dot, and a quiet paper-plane action. */
+.activation-return-mark { width:3.3rem; height:3.3rem; filter:drop-shadow(0 0 10px rgba(6,182,212,.5)); }
+.activation-app-plane > header img { width:1.6rem; height:1.6rem; filter:drop-shadow(0 0 7px rgba(6,182,212,.42)); }
+.setup-verified-mark { width:.65rem; height:.65rem; margin-left:auto; background:var(--accent); border-radius:50%; box-shadow:0 0 0 3px rgba(6,182,212,.14); }
+.setup-osl-composer { grid-template-columns:auto 1fr auto; }
+.setup-osl-composer button { width:2rem; height:2rem; background:transparent; border:1px solid rgba(255,255,255,.62); border-radius:50%; }
+.setup-send-arrow { width:.8rem; height:.65rem; border:0; background:var(--text); clip-path:polygon(0 0,100% 50%,0 100%,24% 54%); transform:none; }
+.setup-message-lock { display:none; }
+
+/* Combined download and pricing page order. */
+.download-main > section[aria-labelledby="windows-heading"] { order:-4; }
+.download-main > .pricing-plan-demo { order:-3; }
+.download-main > .download-setup-demo { order:-2; }
+.download-main > .activation-demo { order:-1; }
+
+@media (max-width:767px) {
+  .home-main > .hero { padding-top:2rem; }
+  .hero-app-logo { width:4.6rem; height:4.6rem; }
+  .seizure-scene { grid-template-columns:1fr; }
+  .seizure-node { width:min(21rem,100%); }
+  .expiry-final-state { right:4.5rem; }
+  .pricing-card-protected { flex-wrap:wrap; padding:1rem; }
+}
+
 /* Product motion is intentionally monochrome. Complexity belongs in the
    implementation, not in what a visitor has to parse. */
 .product-demo {
@@ -6134,4 +6256,115 @@ h2:hover .anchor-link,
   .pricing-top-payments { display:grid; grid-template-columns:1fr; }
   .custom-donation-form > div { grid-template-columns:auto 1fr; }
   .custom-donation-form button { grid-column:1 / -1; }
+}
+
+/* Cascade lock: final visual decisions must win over legacy animation layers above. */
+.app-logo { filter:drop-shadow(0 0 8px rgba(6,182,212,.62)) drop-shadow(0 0 22px rgba(6,182,212,.24)); }
+.topnav-brand-mark { width:2.1rem; height:2.1rem; }
+.hero-app-logo { width:5.75rem; height:5.75rem; margin:0 auto 1rem; }
+.hero-brand { margin:0 0 .75rem; color:var(--accent); font-size:.8rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.home-main > .hero { order:-4; padding:2.75rem 1.5rem 1rem; }
+.home-main > .hero h1 { margin:0; font-size:clamp(2.8rem,6.8vw,5.9rem); line-height:.94; }
+.home-main #how-it-works { order:-3; padding-top:1rem; }
+.home-main > .scrub-demo { order:-2; }
+.home-main > .home-buy { order:-1; }
+.home-buy { max-width:52rem; text-align:center; }
+.home-buy h2 { margin:0 0 1.5rem; font-size:clamp(2.4rem,5vw,4.5rem); line-height:1; }
+.home-buy-actions { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; }
+.home-feature-link { display:inline-block; margin-top:1.25rem; color:var(--text-muted); font-size:.8rem; }
+
+.privacy-warning-brand { position:relative; display:grid; width:5.25rem; height:5.25rem; margin:0 auto 1.1rem; place-items:center; }
+.privacy-warning-brand img { width:100%; height:100%; animation:warning-logo-breathe 3.2s ease-in-out infinite; }
+.privacy-warning-brand span { position:absolute; right:-.2rem; bottom:.2rem; display:grid; width:1.65rem; height:1.65rem; place-items:center; color:#190808; background:var(--danger); border-radius:50%; font-weight:900; box-shadow:0 0 0 5px var(--bg); }
+
+.fake-to-friend,.lock-to-friend { width:42px; height:28px; padding:0; background:#f4f5f5; border:1px solid white; box-shadow:0 10px 22px rgba(0,0,0,.38); }
+.fake-to-friend::before,.fake-to-friend::after,.lock-to-friend::before,.lock-to-friend::after { position:absolute; top:0; width:1px; height:27px; background:#6f767b; content:""; transform-origin:top; }
+.fake-to-friend::before,.lock-to-friend::before { left:0; transform:rotate(-54deg); }
+.fake-to-friend::after,.lock-to-friend::after { right:0; transform:rotate(54deg); }
+.fake-to-friend > span { display:none; }
+.lock-to-friend { color:var(--accent); background:#111416; border-color:var(--accent); }
+@media (min-width:1100px) and (prefers-reduced-motion:no-preference) {
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope { animation:message-intake-envelope-final 2.4s cubic-bezier(.2,.8,.2,1) 3.45s both; }
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope .cinema-envelope-flap { animation:message-envelope-breathe-final 2.1s ease 3.75s both; }
+  [data-product-animation="message-flow"].is-running .route-danger-out { animation:cinema-route .9s ease 15.2s both; }
+  [data-product-animation="message-flow"].is-running .fake-to-friend { animation:cinema-packet 1.8s cubic-bezier(.2,.75,.2,1) 15.55s both; }
+  [data-product-animation="message-flow"].is-running .route-lock-out { animation:cinema-route .9s ease 17.2s both; }
+  [data-product-animation="message-flow"].is-running .lock-to-friend { animation:cinema-packet 1.8s cubic-bezier(.2,.75,.2,1) 17.55s both; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:message-focus-friend-v3 5s cubic-bezier(.2,.8,.2,1) 19s both; }
+  [data-product-animation="message-flow"].is-running .native-carrier-message { animation:cinema-carrier-arrive .7s ease 20s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream { animation:cinema-decrypt-stream 2.1s ease 20.2s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream code { animation:cinema-cipher-resolve 1.4s ease 20.2s both; }
+  [data-product-animation="message-flow"].is-running .decrypt-stream span { animation:cinema-plain-resolve 1.1s ease 20.9s both; }
+  [data-product-animation="message-flow"].is-running .restored-message-3d { animation:cinema-restore 1.3s cubic-bezier(.15,.9,.2,1) 22s both; }
+}
+
+.seizure-scene { grid-template-columns:minmax(16rem,21rem) 7rem minmax(16rem,21rem); justify-content:center; align-items:center; gap:1.5rem; }
+.seizure-node { display:grid; width:100%; aspect-ratio:1; min-height:0; align-content:center; justify-self:center; }
+.scrub-flat-findings .scrub-hit { grid-template-columns:1.5rem minmax(8rem,10rem); justify-content:center; }
+.scrub-flat-findings .scrub-hit::after { display:none; }
+.scrub-flat-findings .scrub-hit i { display:grid; width:1.5rem; height:1.5rem; place-items:center; justify-self:center; line-height:1; }
+.attachment-clean-checklist { display:grid; grid-template-rows:auto auto auto; align-content:center; gap:0; }
+.attachment-clean-checklist footer { margin:0; padding-top:.8rem; }
+.expiry-final-state { right:5.8rem; left:0; width:auto; height:4.25rem; padding:1.15rem 1.3rem; place-items:start; align-content:center; color:var(--text); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.42); font-size:.95rem; }
+.pricing-pro-attachment { display:flex; gap:.45rem; align-items:center; min-width:6.8rem; padding:.45rem .55rem; opacity:0; border:1px solid rgba(255,255,255,.42); }
+.pricing-pro-attachment > i { position:relative; width:.8rem; height:1rem; border:1px solid var(--text); }
+.pricing-pro-attachment small { color:var(--text); font-size:.62rem; }
+@media (prefers-reduced-motion:no-preference) { [data-product-animation="pricing-plan-flow"].is-running .pricing-pro-attachment { animation:pricing-pro-file-v3 .5s ease 6.05s both; } }
+.activation-return-mark { width:3.3rem; height:3.3rem; filter:drop-shadow(0 0 10px rgba(6,182,212,.5)); }
+.setup-verified-mark { width:.65rem; height:.65rem; margin-left:auto; background:var(--accent); border-radius:50%; box-shadow:0 0 0 3px rgba(6,182,212,.14); }
+.setup-osl-composer { grid-template-columns:auto 1fr auto; }
+.setup-osl-composer button { width:2rem; height:2rem; background:transparent; border:1px solid rgba(255,255,255,.62); border-radius:50%; }
+.setup-send-arrow { width:.8rem; height:.65rem; border:0; background:var(--text); clip-path:polygon(0 0,100% 50%,0 100%,24% 54%); transform:none; }
+.setup-message-lock { display:none; }
+.download-main > section[aria-labelledby="windows-heading"] { order:-4; }
+.download-main > .pricing-plan-demo { order:-3; }
+.download-main > .download-setup-demo { order:-2; }
+.download-main > .activation-demo { order:-1; }
+
+@media (max-width:767px) {
+  .home-main > .hero { padding-block:2rem 1rem; }
+  .hero-app-logo { width:4.6rem; height:4.6rem; }
+  .seizure-scene { grid-template-columns:1fr; }
+  .seizure-node { width:min(21rem,100%); }
+  .expiry-final-state { right:4.5rem; }
+}
+
+@keyframes message-route-envelope-v3 {
+  0% { opacity:0; offset-distance:0%; }
+  6%,22% { opacity:1; offset-distance:0%; }
+  86% { opacity:1; offset-distance:100%; }
+  100% { opacity:0; offset-distance:100%; }
+}
+
+@media (min-width:768px) {
+  .home-main > .hero {
+    display:grid;
+    width:100%;
+    max-width:80rem;
+    padding-block:1.35rem .75rem;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    gap:1.5rem;
+    align-items:center;
+    text-align:left;
+  }
+  .home-main > .hero h1 { margin:0; font-size:clamp(2.2rem,3.4vw,3.45rem); white-space:nowrap; }
+  .home-main > .hero h1 br { display:none; }
+  .home-main > .hero .hero-actions { margin:0; flex-wrap:nowrap; }
+  .home-main > .hero .hero-actions .button { min-width:9.8rem; }
+  .hero-app-logo { width:4rem; height:4rem; margin:0; }
+  .hero-brand { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+}
+
+@media (min-width:768px) and (max-width:1100px) {
+  .home-main > .hero { grid-template-columns:auto 1fr; }
+  .home-main > .hero .hero-actions { grid-column:1 / -1; justify-content:center; }
+}
+
+@media (max-width:767px) {
+  #how-it-works .cinema-viewport { height:29rem; }
+  #how-it-works .cinema-composer,
+  #how-it-works .local-cinema-device,
+  #how-it-works .friend-cinema-device { top:2rem; }
+  #how-it-works .danger-server,
+  #how-it-works .osl-server { top:3.25rem; }
 }

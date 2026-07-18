@@ -16,13 +16,13 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
-    <a class="topnav-brand" href="/" aria-current="page"><img class="topnav-brand-mark" src="/assets/img/logo-mark.svg" alt="" width="28" height="28"><span>OSL Privacy</span></a>
+    <a class="topnav-brand" href="/" aria-current="page"><img class="topnav-brand-mark app-logo" src="/assets/img/osl-app-icon.png" alt="" width="34" height="34"><span>OSL</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/features">Features</a></li>
         <li><a href="/download">Download</a></li>
         <li><a href="/donate">Donate</a></li>
         <li><a href="/audit">Audit</a></li>
@@ -34,10 +34,10 @@
   <dialog class="privacy-warning" id="privacy-warning" aria-labelledby="privacy-warning-title" aria-describedby="privacy-warning-copy">
     <div class="privacy-warning-inner">
       <button class="dialog-close privacy-warning-close" type="button" data-privacy-warning-close aria-label="Close warning">&times;</button>
-      <div class="privacy-warning-icon" aria-hidden="true">!</div>
-      <p class="eyebrow">Check your exposure</p>
+      <div class="privacy-warning-brand" aria-hidden="true"><img class="app-logo" src="/assets/img/osl-app-icon.png" alt=""><span>!</span></div>
+      <p class="eyebrow">Your location changes the risk</p>
       <h2 id="privacy-warning-title">Who can reach your data?</h2>
-      <p id="privacy-warning-copy">Choose a country.</p>
+      <p id="privacy-warning-copy">Choose your country.</p>
 
       <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Check my location</button>
       <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">Checked only in this browser.</p>
@@ -68,8 +68,9 @@
 
   <main id="main" class="home-main">
     <section class="hero section reveal">
-      <h1>Private words.<br>Still yours.</h1>
-      <p class="lede">Protect social and email messages on your computer.</p>
+      <img class="hero-app-logo app-logo" src="/assets/img/osl-app-icon.png" alt="">
+      <p class="hero-brand">OSL</p>
+      <h1>Encrypt your<br>social media.</h1>
       <div class="hero-actions" role="group" aria-label="Download OSL">
         <a href="/download" class="button button-secondary">Download Free</a>
         <button class="button button-primary cta-subscribe" type="button">Get Pro · $5</button>
@@ -77,16 +78,11 @@
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
     </section>
 
-    <div class="trust-strip trust-strip-single reveal" role="group" aria-label="Product facts">
-      <span><strong>Always open source.</strong> Keys stay on your computer.</span>
-    </div>
-
-    <section class="section product-demo reveal" id="how-it-works" aria-labelledby="flow-heading" data-product-animation="message-flow" data-playback-rate="0.8">
+    <section class="section product-demo reveal" id="how-it-works" aria-labelledby="flow-heading" data-product-animation="message-flow" data-playback-rate="0.76">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Protected flow</p>
-          <h2 id="flow-heading" class="section-heading">The service never gets<br>the real message.</h2>
-          <p class="section-subhead">The service sees a harmless cover. Your friend sees the real message.</p>
+          <p class="eyebrow">How it works</p>
+          <h2 id="flow-heading" class="section-heading">Private in.<br>Private out.</h2>
         </div>
       </div>
 
@@ -163,52 +159,10 @@
         </div>
       </div>
 
-      <p class="clean-motion-note">Typed here. Protected here. Readable again only on your friend's computer.</p>
+      <p class="clean-motion-note">Protected on your computer. Opened on theirs.</p>
     </section>
 
-    <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow">
-      <div class="demo-heading-row">
-        <div>
-          <p class="eyebrow">Server protection</p>
-          <h2 id="seizure-heading" class="section-heading">The server never had<br>the real message.</h2>
-          <p class="section-subhead">A request can recover the cover. Not the private message.</p>
-        </div>
-      </div>
-
-      <div class="seizure-scene" aria-hidden="true">
-        <article class="seizure-node seizure-server">
-          <div class="concept-icon server-icon"><span></span><span></span><span></span></div>
-          <strong>Stored records</strong>
-          <div class="stored-pair">
-            <div class="stored-cover"><span>Approved cover</span><strong>Looks windy today.</strong></div>
-            <div class="stored-locked"><span class="evidence-lock"></span><div><strong>Locked</strong></div></div>
-          </div>
-        </article>
-
-        <div class="seizure-transfer">
-          <span class="transfer-label">Legal request</span>
-          <div class="evidence-path"><span class="evidence-packet"><b></b></span></div>
-        </div>
-
-        <article class="seizure-node seizure-review">
-          <div class="badge-lockup">
-            <svg class="concept-icon badge-icon" viewBox="0 0 48 56" focusable="false" aria-hidden="true">
-              <path d="M24 2 42 10v15c0 13-7.7 22.5-18 28C13.7 47.5 6 38 6 25V10L24 2Z"></path>
-              <path d="m24 15 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2-4.5-4.4 6.2-.9L24 15Z"></path>
-            </svg>
-            <strong>Record opened</strong>
-          </div>
-          <div class="evidence-pair">
-            <article class="evidence-item evidence-cover"><span class="evidence-quote">“</span><div><small>Approved cover</small><strong>Looks windy today.</strong></div><b>Visible</b></article>
-            <article class="evidence-item evidence-locked"><span class="evidence-lock"></span><div><small>Encrypted item</small><strong class="evidence-vapor"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></strong></div></article>
-          </div>
-        </article>
-      </div>
-
-      <p class="clean-motion-note">No readable private message was stored.</p>
-    </section>
-
-    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow">
+    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Scrub</p>
@@ -225,74 +179,22 @@
         </article>
       </div>
 
-      <p class="clean-motion-note">Scan locally. Confirm the findings. Clear them together.</p>
     </section>
 
-    <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-product-animation="attachment-guard-flow">
-      <div class="demo-heading-row">
-        <div>
-          <p class="eyebrow">Attachment Privacy Guard</p>
-          <h2 id="attachment-guard-heading" class="section-heading">Clean first.<br>Lock second.</h2>
-          <p class="section-subhead">Pro cleans and encrypts supported attachments. Supported media can also be view once.</p>
-        </div>
+    <section class="section home-buy reveal" aria-labelledby="buy-heading">
+      <p class="eyebrow">Free or Pro</p>
+      <h2 id="buy-heading">Start private.</h2>
+      <div class="home-buy-actions">
+        <a href="/download" class="button button-secondary">Download Free</a>
+        <button class="button button-primary cta-subscribe" type="button">Get Pro · $5</button>
       </div>
-
-      <div class="attachment-simple-scene" aria-hidden="true">
-        <article class="attachment-simple-file"><div class="simple-file-icon"><i></i></div><strong>Original file</strong></article>
-        <span class="simple-flow-arrow"></span>
-        <article class="attachment-clean-checklist"><header><span class="device-dot"></span><strong>This PC</strong></header><ul><li><span>GPS location</span><b>Removed</b></li><li><span>Camera + author</span><b>Removed</b></li><li><span>Filename</span><b>Replaced</b></li></ul><footer><span class="simple-lock-icon"></span><strong>Encrypt file</strong><b class="motion-pro-badge">Pro</b></footer></article>
-        <span class="simple-flow-arrow"></span>
-        <article class="attachment-simple-locked"><div class="simple-lock-icon"></div><strong>Encrypted attachment</strong><span class="attachment-pro-feature">Encrypted <b>Pro</b></span><span class="attachment-pro-feature">View once <b>Pro</b></span></article>
-      </div>
-
-      <p class="clean-motion-note">Hidden details come off. Encryption goes on.</p>
+      <a class="home-feature-link" href="/features">See every feature</a>
     </section>
-
-    <section class="section product-demo expiry-demo reveal" aria-labelledby="expiry-heading" data-product-animation="expiry-flow">
-      <div class="demo-heading-row">
-        <div>
-          <p class="eyebrow">Honest expiry</p>
-          <h2 id="expiry-heading" class="section-heading">Readable until expiry.<br>Then the key is gone.</h2>
-        </div>
-      </div>
-
-      <div class="expiry-chat-scene" aria-hidden="true">
-        <article class="expiry-chat-window">
-          <header class="expiry-chat-header"><i class="expiry-chat-avatar"></i><span></span><b class="expiry-chat-lock"></b></header>
-          <div class="expiry-chat-body">
-            <p class="expiry-history-line expiry-history-line-one"></p><p class="expiry-history-line expiry-history-line-two"></p>
-            <div class="expiry-live-row">
-              <div class="expiry-message-bubble"><p class="expiry-message-copy"><span>Meeting</span><span>moved</span><span>to</span><span>six.</span></p><span class="expiry-particles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-              <time class="expiry-digital-timer" datetime="PT3S"><span class="expiry-time expiry-time-3">00:03</span><span class="expiry-time expiry-time-2">00:02</span><span class="expiry-time expiry-time-1">00:01</span><span class="expiry-time expiry-time-0">00:00</span></time>
-              <div class="expiry-final-state"><strong>Expired</strong></div>
-            </div>
-            <div class="expiry-native-composer"><span></span><i></i></div>
-          </div>
-        </article>
-      </div>
-
-      <p class="clean-motion-note">At zero, the key and readable message disappear.</p>
-    </section>
-
-    <section class="section tutorial-compact reveal" aria-labelledby="tutorial-preview-heading">
-      <span class="tutorial-placeholder-icon" aria-hidden="true">▶</span>
-          <div><p class="eyebrow">Coming next</p><h2 id="tutorial-preview-heading">Tutorials and real screenshots.</h2><p>Short walkthroughs will replace this preview as each supported app ships.</p></div>
-    </section>
-
-    <section class="section section-cta reveal" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Keep the important words closer.</h2>
-      <p class="section-subhead">Windows beta. Open source. No ads or usage tracking.</p>
-      <a href="/download" class="button button-primary">Download for Windows</a>
-    </section>
-
-    <aside class="site-small-print" aria-label="Important privacy limits">
-      <strong>How “protected” works.</strong> The OSL composer is visibly marked whenever it covers a service composer. The design does not give the service or OSL backend a recoverable plaintext copy. Accounts, recipients, timing, screenshots, unlocked devices, malware, and people who already saw a message can still expose information.
-    </aside>
   </main>
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
+      <a href="/features">Features</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>

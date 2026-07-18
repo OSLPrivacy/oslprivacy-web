@@ -16,17 +16,17 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
-    <a class="topnav-brand" href="/"><img class="topnav-brand-mark" src="/assets/img/logo-mark.svg" alt="" width="28" height="28"><span>OSL Privacy</span></a>
+    <a class="topnav-brand" href="/"><img class="topnav-brand-mark app-logo" src="/assets/img/osl-app-icon.png" alt="" width="34" height="34"><span>OSL</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/pricing">Pricing</a></li><li><a href="/download" aria-current="page">Download</a></li><li><a href="/donate">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
+        <li><a href="/features">Features</a></li><li><a href="/download" aria-current="page">Download</a></li><li><a href="/donate">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
       </ul>
     </nav>
   </header>
 
   <main id="main" class="download-main">
-    <section class="section product-demo download-setup-demo reveal" aria-labelledby="download-setup-flow-heading" data-product-animation="download-setup-flow">
+    <section class="section product-demo download-setup-demo reveal" aria-labelledby="download-setup-flow-heading" data-product-animation="download-setup-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Simple setup</p>
@@ -44,13 +44,39 @@
               <header class="setup-chat-header"><i class="setup-chat-avatar"></i><span></span><b></b></header>
               <div class="setup-chat-history"><p class="setup-chat-day">Today</p><div class="setup-bubble setup-bubble-in">Can you send the updated plan?</div><div class="setup-bubble setup-bubble-out">Yes. I'll send it before three.</div><div class="setup-bubble setup-bubble-in">Perfect. I'll review it after lunch.</div></div>
               <div class="setup-native-composer"><span class="setup-attach-icon"></span><p>Message</p><span class="setup-native-send"></span></div>
-              <div class="setup-osl-layer"><div class="setup-osl-frame"></div><header class="setup-osl-trustbar"><img src="/assets/img/logo-mark.svg" alt=""><strong>OSL</strong><span>Protected</span><i class="setup-osl-lock"></i></header><span class="setup-message-lock setup-message-lock-one"></span><span class="setup-message-lock setup-message-lock-two"></span><div class="setup-osl-composer"><img src="/assets/img/logo-mark.svg" alt=""><p>Write privately</p><i class="setup-osl-lock"></i><button type="button" tabindex="-1" aria-hidden="true"><span class="setup-send-arrow"></span></button></div></div>
+              <div class="setup-osl-layer"><div class="setup-osl-frame"></div><header class="setup-osl-trustbar"><img src="/assets/img/logo-mark.svg" alt=""><strong>OSL</strong><span>Protected</span><i class="setup-verified-mark"></i></header><div class="setup-osl-composer"><img src="/assets/img/logo-mark.svg" alt=""><p>Write privately</p><button type="button" tabindex="-1" aria-hidden="true"><span class="setup-send-arrow"></span></button></div></div>
             </section>
           </div>
         </article>
       </div>
 
       <p class="clean-motion-note">Sign in with the official service. OSL stays beside it and never receives that password.</p>
+    </section>
+
+    <section class="section product-demo pricing-plan-demo reveal" aria-labelledby="pricing-plan-flow-heading" data-product-animation="pricing-plan-flow" data-playback-rate="0.8">
+      <div class="demo-heading-row"><div><p class="eyebrow">Free or Pro</p><h2 id="pricing-plan-flow-heading" class="section-heading">Text is free.<br>Pro adds files.</h2></div></div>
+      <div class="pricing-plan-scene" aria-hidden="true">
+        <div class="pricing-tier-grid pricing-tier-grid-cinematic">
+          <article class="pricing-motion-card pricing-motion-free">
+            <header class="pricing-motion-header"><span class="pricing-motion-plan">Free</span><strong>$0 forever</strong></header>
+            <div class="pricing-card-demo"><div class="pricing-native-composer"><span></span><i></i></div><div class="pricing-osl-composer"><header><img src="/assets/img/logo-mark.svg" alt=""><i class="pricing-motion-lock"></i></header><p data-type-sequence data-type-start="600" data-type-duration="2200">I'll see you after lunch.</p><b class="pricing-send-symbol"></b></div><div class="pricing-card-envelope"><span></span></div><div class="pricing-card-protected"><i class="pricing-motion-lock"></i><strong>Private text</strong></div></div>
+          </article>
+          <article class="pricing-motion-card pricing-motion-pro">
+            <header class="pricing-motion-header"><span class="pricing-motion-plan">Pro</span><strong>$5 once</strong></header>
+            <div class="pricing-card-demo"><div class="pricing-native-composer"><span></span><i></i></div><div class="pricing-osl-composer"><header><img src="/assets/img/logo-mark.svg" alt=""><i class="pricing-motion-lock"></i></header><p data-type-sequence data-type-start="600" data-type-duration="2200">I'll see you after lunch.</p><b class="pricing-send-symbol"></b></div><div class="pricing-card-envelope"><span></span></div><div class="pricing-card-protected"><i class="pricing-motion-lock"></i><strong>Private text</strong><span class="pricing-pro-attachment"><i></i><small>photo.jpg</small></span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section product-demo activation-demo reveal" aria-labelledby="activation-flow-heading" data-product-animation="activation-flow" data-playback-rate="0.8">
+      <div class="demo-heading-row"><div><p class="eyebrow">Instant Pro</p><h2 id="activation-flow-heading" class="section-heading">Pay once.<br>Paste the code.</h2></div></div>
+      <div class="activation-process" aria-hidden="true">
+        <article class="activation-browser-plane"><header class="activation-browser-chrome"><i></i><i></i><i></i><span class="activation-browser-lock"></span></header><div class="activation-checkout-state"><span class="activation-card-icon"></span><strong>Payment confirmed</strong><small>$5 once</small></div><div class="activation-delivery-state"><img class="activation-return-mark" src="/assets/img/osl-app-icon.png" alt=""><strong>Code ready</strong><code>OSL-7K4M-••••</code></div></article>
+        <div class="activation-bridge"><span class="activation-pass"><i class="activation-pass-lock"></i></span></div>
+        <article class="activation-app-plane"><header><img src="/assets/img/osl-app-icon.png" alt=""><strong>OSL</strong></header><div class="activation-paste-state"><span>Activation code</span><code>OSL-7K4M-••••</code></div><div class="activation-unlocked-state"><i class="activation-unlocked-lock"></i><strong>Pro unlocked</strong><small>No renewal</small></div></article>
+      </div>
+      <ol class="activation-beats" aria-hidden="true"><li>Pay</li><li>Code</li><li>Paste</li><li>Unlock</li><li>Done</li></ol>
     </section>
 
     <section class="section reveal" aria-labelledby="windows-heading">
@@ -88,34 +114,12 @@
         </article>
       </div>
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
-      <article class="card installer-details">
-        <h3>Current installer</h3>
+      <details class="card installer-details">
+        <summary>Verify installer</summary>
         <p>Version 0.0.1. Published May 23, 2026.</p>
         <p><code>SHA-256 0376c371c382f5cf64da37799171c7e984e117ce5be1dc5f6abec66eca61fc6d</code></p>
-      </article>
+      </details>
       <p class="center-link"><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Read the source before installing</a></p>
-    </section>
-
-    <section class="section tutorial-preview reveal" aria-labelledby="tutorial-preview-heading">
-      <p class="eyebrow">Learn OSL</p>
-      <h2 class="section-heading" id="tutorial-preview-heading">Every feature, shown simply.</h2>
-      <div class="tutorial-placeholder-grid">
-        <article class="tutorial-placeholder tutorial-video-placeholder">
-          <span class="tutorial-placeholder-icon" aria-hidden="true">&#9654;</span>
-          <div><h3>Video tutorials</h3><p>Short walkthroughs will appear here.</p></div>
-          <span class="placeholder-badge">Coming soon</span>
-        </article>
-        <article class="tutorial-placeholder">
-          <span class="tutorial-placeholder-icon" aria-hidden="true">01</span>
-          <div><h3>Written tutorials</h3><p>Simple steps for every feature will appear here.</p></div>
-          <span class="placeholder-badge">Coming soon</span>
-        </article>
-      </div>
-      <div class="screenshot-placeholder-grid" role="group" aria-label="Future feature screenshots">
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-      </div>
     </section>
 
     <section class="section reveal" aria-labelledby="install-heading">
@@ -127,34 +131,6 @@
       </div>
     </section>
 
-    <section class="section section-quiet reveal" aria-labelledby="warning-heading">
-      <article class="card">
-        <h2 id="warning-heading">About the Windows warning</h2>
-        <p>SmartScreen warns about new unsigned apps. That warning does not prove an app is safe or unsafe. It means Windows does not recognize the publisher.</p>
-        <p>If you are not comfortable continuing, stop and inspect the source first. A signed installer and reproducible release builds are still pending.</p>
-      </article>
-    </section>
-
-    <section class="section reveal" aria-labelledby="expect-heading">
-      <h2 id="expect-heading" class="section-heading">What to expect</h2>
-      <div class="grid-2">
-        <article class="card"><h3>Your accounts stay yours</h3><p>You sign in through the service's official app or fixed official website. OSL does not ask you to send those passwords to us.</p></article>
-        <article class="card"><h3>Private mode is a choice</h3><p>Normal conversations stay normal. OSL Protected mode is for approved OSL recipients.</p></article>
-        <article class="card"><h3>Recovery is your responsibility</h3><p>OSL cannot recover your password or secret recovery material from a server.</p></article>
-        <article class="card"><h3>Calls stay with the service</h3><p>Voice and video still use each connected service's normal system.</p></article>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="requirements-heading">
-      <h2 id="requirements-heading" class="section-heading">What you need</h2>
-      <ul class="requirements">
-        <li>Windows 10 version 1809 or newer, or Windows 11</li>
-        <li>A 64 bit computer</li>
-        <li>200 MB of free space</li>
-        <li>No external service account is required for the current beta; service adapters are still planned</li>
-      </ul>
-      <p class="section-subhead">App availability changes during the beta. Check the release notes before relying on a specific social or email service.</p>
-    </section>
   </main>
 
   <dialog class="payment-dialog" id="crypto-dialog" aria-labelledby="crypto-dialog-title">
@@ -177,7 +153,7 @@
   </dialog>
 
   <footer>
-    <nav class="footer-pages" aria-label="Site pages"><a href="/pricing">Pricing</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
+    <nav class="footer-pages" aria-label="Site pages"><a href="/features">Features</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
     <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

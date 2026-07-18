@@ -186,6 +186,40 @@
     }
   };
 
+  const animationLoopTimers = new WeakMap();
+  const visibleProductAnimations = new Set();
+  const isMotionLabPreview = new URLSearchParams(window.location.search).get('motionLab') === '1';
+
+  const clearAnimationLoop = (section) => {
+    const timer = animationLoopTimers.get(section);
+    if (timer) window.clearTimeout(timer);
+    animationLoopTimers.delete(section);
+  };
+
+  const scheduleAnimationLoop = (section) => {
+    clearAnimationLoop(section);
+    if (
+      isMotionLabPreview
+      || motionPreference?.matches
+      || document.hidden
+      || !visibleProductAnimations.has(section)
+    ) return;
+    const playbackRate = Number(section.dataset.playbackRate || 1);
+    const finiteEndTimes = section.getAnimations({ subtree: true })
+      .map((animation) => animation.effect?.getComputedTiming().endTime)
+      .filter((endTime) => Number.isFinite(endTime) && endTime > 0);
+    const longestAnimation = finiteEndTimes.length > 0 ? Math.max(...finiteEndTimes) : 6000;
+    const realDuration = longestAnimation / (
+      Number.isFinite(playbackRate) && playbackRate > 0 ? playbackRate : 1
+    );
+    const timer = window.setTimeout(() => {
+      if (!visibleProductAnimations.has(section) || document.hidden) return;
+      replayProductAnimation(section);
+      scheduleAnimationLoop(section);
+    }, realDuration + 1800);
+    animationLoopTimers.set(section, timer);
+  };
+
   productAnimations.forEach((section) => {
     const replayButton = section.querySelector('[data-animation-replay]');
     const updateMotionControl = () => {
@@ -201,20 +235,49 @@
     motionPreference?.addEventListener?.('change', updateMotionControl);
   });
 
-  if (!motionPreference?.matches && productAnimations.length > 0) {
+  if (!motionPreference?.matches && productAnimations.length > 0 && !isMotionLabPreview) {
     if ('IntersectionObserver' in window) {
-      const productAnimationObserver = new IntersectionObserver((entries, observer) => {
+      const productAnimationObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+          if (!entry.isIntersecting) {
+            visibleProductAnimations.delete(entry.target);
+            clearAnimationLoop(entry.target);
+            return;
+          }
+          visibleProductAnimations.add(entry.target);
           replayProductAnimation(entry.target);
-          observer.unobserve(entry.target);
+          scheduleAnimationLoop(entry.target);
         });
       }, { threshold: 0.04, rootMargin: '0px 0px -22% 0px' });
       productAnimations.forEach((section) => productAnimationObserver.observe(section));
     } else {
-      productAnimations.forEach((section) => replayProductAnimation(section));
+      productAnimations.forEach((section) => {
+        visibleProductAnimations.add(section);
+        replayProductAnimation(section);
+        scheduleAnimationLoop(section);
+      });
     }
   }
+
+  document.addEventListener('visibilitychange', () => {
+    productAnimations.forEach((section) => {
+      if (document.hidden) clearAnimationLoop(section);
+      else if (visibleProductAnimations.has(section)) {
+        replayProductAnimation(section);
+        scheduleAnimationLoop(section);
+      }
+    });
+  });
+
+  motionPreference?.addEventListener?.('change', () => {
+    productAnimations.forEach((section) => {
+      if (motionPreference.matches) clearAnimationLoop(section);
+      else if (visibleProductAnimations.has(section)) {
+        replayProductAnimation(section);
+        scheduleAnimationLoop(section);
+      }
+    });
+  });
 
   const privacyWarning = document.getElementById('privacy-warning');
   const locationButton = document.getElementById('privacy-location-button');
@@ -226,7 +289,6 @@
   const agencyResultList = document.getElementById('agency-result-list');
   const usIntelligenceResultList = document.getElementById('us-intelligence-result-list');
   const serviceResultList = document.getElementById('service-result-list');
-  const privacyWarningKey = 'osl_privacy_warning_seen_v2';
 
   const agencyProfiles = {
     us: {
@@ -360,19 +422,9 @@
   if (privacyWarning instanceof HTMLDialogElement) {
     const previewParams = new URLSearchParams(window.location.search);
     const isMotionLab = previewParams.get('motionLab') === '1';
-    const isLocalPreview = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
-    const forceWarningPreview = previewParams.get('previewWarning') === '1';
-    let shouldOpen = true;
-    try {
-      shouldOpen = !isMotionLab && (
-        isLocalPreview || forceWarningPreview || localStorage.getItem(privacyWarningKey) !== '1'
-      );
-      if (shouldOpen && !isLocalPreview && !forceWarningPreview) {
-        localStorage.setItem(privacyWarningKey, '1');
-      }
-    } catch {
-      shouldOpen = !isMotionLab;
-    }
+    // Prelaunch review deliberately opens on every homepage visit. Switch this
+    // to a versioned, first-visit flag only when the public release is final.
+    const shouldOpen = !isMotionLab;
     if (shouldOpen) privacyWarning.showModal();
 
     privacyWarning.querySelectorAll('[data-privacy-warning-close]').forEach((control) => {
@@ -383,7 +435,10 @@
     });
     privacyWarning.addEventListener('close', () => {
       const primaryStory = document.querySelector('[data-product-animation="message-flow"]');
-      if (primaryStory) replayProductAnimation(primaryStory);
+      if (primaryStory) {
+        replayProductAnimation(primaryStory);
+        scheduleAnimationLoop(primaryStory);
+      }
     });
   }
 
