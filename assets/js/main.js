@@ -137,6 +137,21 @@
 
   const motionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const productAnimations = document.querySelectorAll('[data-product-animation]');
+  const revealSections = document.querySelectorAll('.reveal');
+
+  if (!motionPreference?.matches && revealSections.length > 0 && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-ready');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -7% 0px' });
+    revealSections.forEach((section) => revealObserver.observe(section));
+  } else {
+    revealSections.forEach((section) => section.classList.add('is-revealed'));
+  }
 
   document.querySelectorAll('[data-type-sequence]').forEach((element) => {
     const copy = element.textContent || '';

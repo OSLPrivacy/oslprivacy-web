@@ -98,12 +98,12 @@
       <div class="cinema-viewport" aria-hidden="true">
         <div class="cinema-world">
           <div class="cinema-floor"></div>
-          <svg class="cinema-routes" viewBox="0 0 1200 680" preserveAspectRatio="none">
-            <path class="route route-compose" d="M340 330 C385 330 405 330 450 330"></path>
-            <path class="route route-danger" d="M565 300 C635 275 655 170 735 170"></path>
-            <path class="route route-lock" d="M565 365 C640 390 655 520 735 520"></path>
-            <path class="route route-danger-out" d="M875 170 C945 180 950 280 1010 305"></path>
-            <path class="route route-lock-out" d="M875 520 C950 500 955 405 1010 375"></path>
+          <svg class="cinema-routes" viewBox="0 0 1050 560" preserveAspectRatio="none">
+            <path class="route route-compose" d="M325 300 C350 300 365 300 395 300"></path>
+            <path class="route route-danger" d="M555 270 C585 245 590 155 635 155"></path>
+            <path class="route route-lock" d="M555 340 C585 365 590 430 635 430"></path>
+            <path class="route route-danger-out" d="M795 155 C820 170 820 265 850 285"></path>
+            <path class="route route-lock-out" d="M795 430 C820 420 820 355 850 345"></path>
           </svg>
 
           <article class="cinema-composer cinema-object">
@@ -202,10 +202,9 @@
           <div class="concept-icon server-icon"><span></span><span></span><span></span></div>
           <span class="demo-kicker">Service and OSL relay</span>
           <strong>Stored records</strong>
-          <div class="server-record">
-            <span>Account</span><i></i>
-            <span>Time</span><i></i>
-            <span>Cover message</span><code>Looks windy today.</code>
+          <div class="stored-pair">
+            <div class="stored-cover"><span>Approved cover</span><strong>Looks windy today.</strong></div>
+            <div class="stored-locked"><span class="evidence-lock"></span><div><small>Real message</small><strong>Locked</strong></div></div>
           </div>
         </article>
 
@@ -222,12 +221,10 @@
             </svg>
             <div><span class="demo-kicker">Collected copy</span><strong>Record opened</strong></div>
           </div>
-          <div class="evidence-sheet">
-            <div><span>Account and time</span><strong>Visible</strong></div>
-            <div><span>Approved cover message</span><strong>Visible</strong></div>
-            <div class="sealed-evidence"><span>OSL relay blob</span><strong><span class="mini-lock">●</span> Unreadable</strong></div>
+          <div class="evidence-pair">
+            <article class="evidence-item evidence-cover"><span class="evidence-quote">“</span><div><small>Approved cover</small><strong>Looks windy today.</strong></div><b>Visible</b></article>
+            <article class="evidence-item evidence-locked"><span class="evidence-lock"></span><div><small>Encrypted real message</small><strong>Unreadable</strong></div></article>
           </div>
-          <p class="no-key-status">Without the device key, the encrypted real message stays unreadable.</p>
         </article>
       </div>
 
@@ -237,46 +234,21 @@
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Manual Scrub · Free · this device only</p>
-          <h2 id="scrub-heading" class="section-heading">Review sensitive messages locally.</h2>
-          <p class="scrub-promise">Your messages never leave this device.</p>
-          <p class="section-subhead">Choose an exported message file. Scrub reads it locally, marks possible risks, and prepares plain cleanup directions.</p>
+          <p class="eyebrow">Scrub</p>
+          <h2 id="scrub-heading" class="section-heading">Find it. Clear it.</h2>
+          <p class="scrub-promise">The scan stays on your device.</p>
         </div>
         <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="scrub-scene" aria-hidden="true">
-        <article class="scrub-device scrub-stage scrub-stage-scan">
-          <div class="device-label"><span class="device-dot"></span>This PC · not uploaded</div>
-          <div class="scrub-file-row"><span>messages.csv</span><small>TXT · CSV · JSON</small></div>
-          <div class="scan-line"><span>Exported message history</span><strong class="scan-progress">Scanning locally</strong></div>
-          <div class="scan-track"><span></span></div>
-        </article>
-
-        <article class="scrub-findings scrub-stage scrub-stage-findings">
-          <span class="demo-kicker">Sensitive findings</span>
-          <label><input type="checkbox" checked disabled><span><strong>Customer export</strong><small>Attachment and recipient reference</small></span><em>Review</em></label>
-          <label><input type="checkbox" checked disabled><span><strong>Password in message</strong><small>Credential-like text</small></span><em>Review</em></label>
-          <label><input type="checkbox" checked disabled><span><strong>Confidential roadmap</strong><small>Unreleased product timing</small></span><em>Review</em></label>
-        </article>
-
-        <article class="scrub-review scrub-stage scrub-stage-review">
-          <span class="demo-kicker">Your choice</span>
-          <p><strong>3 selected items</strong><br>Review every finding before opening the cleanup directions.</p>
-          <span class="mock-confirm">Show cleanup steps</span>
-        </article>
-
-        <article class="scrub-result scrub-stage scrub-stage-result">
-          <span class="result-check">✓</span>
-          <div><strong>Directions ready</strong><p>Nothing was deleted or uploaded. Follow the service steps only when you are ready.</p></div>
-        </article>
+      <div class="scrub-simple-scene" aria-hidden="true">
+        <article class="scrub-scan-card"><span class="device-dot"></span><strong>Scanning locally</strong><div class="scrub-scan-field"><i></i></div></article>
+        <span class="simple-flow-arrow"></span>
+        <article class="scrub-found-card"><header><strong>Found</strong><b>3</b></header><div class="scrub-hit"><i>!</i><code>••••••••••••</code></div><div class="scrub-hit"><i>!</i><code>**************</code></div><div class="scrub-hit"><i>!</i><code>••••••••••••</code></div><div class="scrub-cleared"><span>✓</span><strong>Cleared</strong></div></article>
       </div>
 
       <ol class="demo-explanation">
-        <li>Choose a TXT, CSV, or JSON export from a supported service.</li>
-        <li>Scrub scans that file on your computer and marks possible risks.</li>
-        <li>You choose which findings matter. Nothing is deleted automatically.</li>
-        <li>Manual Scrub gives cleanup directions. Verified automatic cleanup is a Pro feature.</li>
+        <li>Scrub scans selected history locally.</li><li>Three possible risks appear without exposing their contents.</li><li>The selected findings clear together.</li><li>Automatic cleanup reports success only after a supported service confirms it.</li>
       </ol>
     </section>
 
@@ -290,65 +262,10 @@
         <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="attachment-guard-scene" aria-hidden="true">
-        <article class="attachment-photo-stage attachment-guard-stage">
-          <span class="demo-kicker">Original photo</span>
-          <div class="attachment-photo-card">
-            <div class="attachment-photo-art"><span></span><i></i></div>
-            <strong>IMG_4821.JPG</strong>
-          </div>
-          <div class="attachment-metadata">
-            <span><b>GPS</b> 37.7749, 122.4194</span>
-            <span><b>Camera</b> Phone model</span>
-            <span><b>Author</b> Liam</span>
-            <span><b>Filename</b> IMG_4821.JPG</span>
-          </div>
-        </article>
-
-        <div class="attachment-stage-path attachment-clean-path"><span>1</span><i></i></div>
-
-        <article class="attachment-clean-stage attachment-guard-stage">
-          <header><span class="device-dot"></span><strong>This PC</strong><small>Local cleaning</small></header>
-          <div class="attachment-clean-preview">
-            <div class="attachment-photo-art"><span></span><i></i></div>
-            <span class="clean-scan-line"></span>
-          </div>
-          <ul>
-            <li><span>GPS location</span><b>Removed</b></li>
-            <li><span>Camera and author</span><b>Removed</b></li>
-            <li><span>Original filename</span><b>Replaced</b></li>
-          </ul>
-          <div class="clean-copy-status"><span>✓</span> Clean copy</div>
-        </article>
-
-        <div class="attachment-stage-path attachment-seal-path"><span>2</span><i></i></div>
-
-        <article class="attachment-seal-stage attachment-guard-stage">
-          <span class="pro-label">Pro</span>
-          <div class="attachment-capsule">
-            <span class="attachment-lock-icon"></span>
-            <div class="attachment-photo-art"><span></span><i></i></div>
-            <code>OSL::4C8F21...</code>
-          </div>
-          <strong>Encrypted locally</strong>
-          <small>Only the locked clean file leaves.</small>
-        </article>
-
-        <div class="attachment-service-path"><i></i><code>7M9K2QAF...</code></div>
-
-        <article class="attachment-service-stage attachment-guard-stage">
-          <div class="generic-service-icon"><i></i><i></i><i></i></div>
-          <span class="demo-kicker">Social or email service</span>
-          <strong>Unreadable file</strong>
-          <code>OSL::4C8F21...</code>
-        </article>
-      </div>
+      <div class="attachment-simple-scene" aria-hidden="true"><article class="attachment-simple-file"><div class="simple-file-icon"><i></i></div><strong>Original file</strong><span class="hidden-data-dots"><i></i><i></i><i></i></span></article><span class="simple-flow-arrow"></span><article class="attachment-simple-local"><span class="device-dot"></span><strong>Clean + lock</strong><div class="simple-lock-icon"></div></article><span class="simple-flow-arrow"></span><article class="attachment-simple-locked"><div class="simple-lock-icon"></div><strong>Unreadable</strong></article></div>
 
       <ol class="demo-explanation">
-        <li>OSL finds location, camera, author, and filename details hidden in the original file.</li>
-        <li>Your computer removes those details and creates a separate clean copy.</li>
-        <li>Pro encrypts the clean copy only after cleaning is complete.</li>
-        <li>The supported service receives a locked file it cannot read.</li>
+        <li>The original file can contain hidden details.</li><li>Your computer removes them.</li><li>OSL locks the clean file.</li><li>The service receives unreadable content.</li>
       </ol>
     </section>
 
@@ -356,50 +273,15 @@
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Honest expiry</p>
-          <h2 id="expiry-heading" class="section-heading">Know what disappears.<br>Know what can remain.</h2>
-          <p class="section-subhead">OSL names the exact result instead of hiding different actions behind one self-destruct label.</p>
+          <h2 id="expiry-heading" class="section-heading">Readable now.<br>Unreadable later.</h2>
         </div>
         <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="expiry-scene" aria-hidden="true">
-        <article class="expiry-lane expiry-native-lane">
-          <header><span>A</span><div><strong>Platform timer</strong><small>Where supported</small></div></header>
-          <div class="expiry-device-frame">
-            <div class="expiry-message native-expiry-message"><span>Meeting moved to six.</span><i></i></div>
-            <div class="expiry-clock"><i></i><b>24h</b></div>
-            <p class="expiry-outcome">Service reports removed</p>
-          </div>
-        </article>
-
-        <article class="expiry-lane expiry-key-lane">
-          <header><span>B</span><div><strong>OSL key expiry</strong><small>Cryptographic expiry</small></div></header>
-          <div class="expiry-key-stage">
-            <div class="expiry-carrier"><code>OSL::7M9K2QAF...</code><span>Carrier remains</span></div>
-            <div class="expiry-key"><i></i><b>Device key</b></div>
-            <div class="expiry-broken-link"></div>
-            <p class="expiry-unreadable"><span class="attachment-lock-icon"></span> Unreadable</p>
-          </div>
-        </article>
-
-        <article class="expiry-lane expiry-account-lane">
-          <header><span>C</span><div><strong>My view only</strong><small>Local or account cleanup</small></div></header>
-          <div class="expiry-account-stage">
-            <div class="expiry-my-account"><span>My account</span><p>Meeting moved to six.</p></div>
-            <div class="expiry-copy-row">
-              <div><i class="expiry-copy-icon screen"></i><span>Screenshot</span></div>
-              <div><i class="expiry-copy-icon archive"></i><span>Backup</span></div>
-            </div>
-            <p class="expiry-account-result">Gone from my view. Other copies can remain.</p>
-          </div>
-        </article>
-      </div>
+      <div class="expiry-simple-scene" aria-hidden="true"><article class="expiry-readable"><span>Meeting moved to six.</span></article><span class="simple-flow-arrow"></span><div class="expiry-simple-clock"><i></i><b>24h</b></div><span class="simple-flow-arrow"></span><article class="expiry-simple-locked"><div class="simple-lock-icon"></div><code>OSL::••••••••</code><strong>Unreadable</strong></article></div>
 
       <ol class="demo-explanation expiry-explanation">
-        <li>A platform timer asks the service to remove a supported message.</li>
-        <li>After OSL expiry, compliant OSL clients can no longer open the encrypted content. A carrier can remain.</li>
-        <li>Account cleanup removes a message from your view or account only.</li>
-        <li>OSL never claims to remove screenshots, exports, recipient copies, or platform backups.</li>
+        <li>The message is readable before its timer ends.</li><li>The timer runs on your device.</li><li>The decryption key expires.</li><li>Screenshots or copies already made can remain.</li>
       </ol>
     </section>
 

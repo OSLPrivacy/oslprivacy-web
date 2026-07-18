@@ -42,51 +42,10 @@
         <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="pricing-plan-scene" aria-hidden="true">
-        <article class="pricing-motion-card pricing-motion-free">
-          <header class="pricing-motion-header">
-            <span class="pricing-motion-plan">Free</span>
-            <strong>$0 forever</strong>
-          </header>
-          <div class="pricing-motion-connector">
-            <span class="pricing-motion-service">Supported app</span>
-            <div class="pricing-motion-overlay">
-              <span class="pricing-motion-overlay-label"><i class="pricing-motion-mark">OSL</i> Protected overlay</span>
-              <p data-type-sequence data-type-start="180" data-type-duration="720">See you after lunch.</p>
-              <span class="pricing-motion-seal"><i class="pricing-motion-lock"></i> Sealed locally</span>
-            </div>
-          </div>
-          <div class="pricing-motion-capability"><span class="pricing-motion-check">✓</span><strong>Private text</strong></div>
-          <ul class="pricing-motion-features" aria-hidden="true">
-            <li><i class="pricing-feature-glyph pricing-feature-warning"></i><span>Before-send warnings</span></li>
-            <li><i class="pricing-feature-glyph pricing-feature-link"></i><span>Clean links and trackers</span></li>
-            <li><i class="pricing-feature-glyph pricing-feature-scan"></i><span>Manual Scrub</span></li>
-          </ul>
-        </article>
-
-        <div class="pricing-motion-equals" aria-hidden="true"><span></span><strong>Same text protection</strong><span></span></div>
-
-        <article class="pricing-motion-card pricing-motion-pro">
-          <header class="pricing-motion-header">
-            <span class="pricing-motion-plan">Pro</span>
-            <strong>$5 one time</strong>
-          </header>
-          <div class="pricing-motion-connector">
-            <span class="pricing-motion-service">Supported app</span>
-            <div class="pricing-motion-overlay">
-              <span class="pricing-motion-overlay-label"><i class="pricing-motion-mark">OSL</i> Protected overlay</span>
-              <p data-type-sequence data-type-start="180" data-type-duration="720">See you after lunch.</p>
-              <span class="pricing-motion-seal"><i class="pricing-motion-lock"></i> Sealed locally</span>
-              <div class="pricing-motion-file"><i class="pricing-motion-file-icon"><span></span></i><span><strong>photo.jpg</strong><small>Supported file</small></span></div>
-            </div>
-          </div>
-          <div class="pricing-motion-capability pricing-motion-capability-pro"><span class="pricing-motion-check">✓</span><strong>Private text and file sending</strong></div>
-          <ul class="pricing-motion-features pricing-motion-features-pro" aria-hidden="true">
-            <li><i class="pricing-feature-glyph pricing-feature-file"></i><span>Attachment cleaning</span></li>
-            <li><i class="pricing-feature-glyph pricing-feature-view"></i><span>View-once media</span></li>
-            <li><i class="pricing-feature-glyph pricing-feature-receipt"></i><span>AutoScrub and receipts</span></li>
-          </ul>
-        </article>
+      <div class="pricing-simple-stage" aria-hidden="true">
+        <div class="pricing-launch-space"><div class="pricing-launch-envelope"><span></span></div></div>
+        <article class="pricing-shared-composer"><header><img src="/assets/img/logo-mark.svg" alt=""><span class="pricing-motion-lock"></span></header><p data-type-sequence data-type-start="350" data-type-duration="2200">I'll see you after lunch.</p><span class="pricing-shared-seal">Sealed locally</span><p class="pricing-lift-copy">I'll see you after lunch.</p></article>
+        <div class="pricing-plan-minis"><article><span>Free</span><strong>Private text</strong><small>$0 forever</small></article><article class="pricing-plan-mini-pro"><span>Pro</span><strong>Private text + files</strong><small>$5 one time</small></article></div>
       </div>
 
       <ol class="demo-explanation pricing-plan-explanation">
@@ -100,41 +59,16 @@
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Instant activation</p>
-          <h2 id="activation-flow-heading" class="section-heading">Pro arrives here.<br>Not in an inbox.</h2>
-          <p class="section-subhead">After payment, an activation code appears in this browser and unlocks Pro in the app. OSL does not email the code.</p>
+          <h2 id="activation-flow-heading" class="section-heading">Pay once.<br>No OSL profile.</h2>
+          <p class="section-subhead">Your code appears here. OSL does not copy your Stripe email or create a billing profile.</p>
         </div>
         <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
       </div>
 
-      <div class="activation-scene" aria-hidden="true">
-        <article class="activation-node activation-payment">
-          <span class="activation-step">01</span>
-          <div class="activation-payment-mark"><i></i></div>
-          <strong>Card payment confirmed</strong>
-          <div class="activation-methods"><span>Card</span><span>One payment</span><span>No renewal</span></div>
-        </article>
-        <div class="activation-path"><span class="activation-code-packet">OSL</span></div>
-        <article class="activation-node activation-browser">
-          <span class="activation-step">02</span>
-          <div class="activation-browser-bar"><i></i><i></i><i></i></div>
-          <code>OSL-7K4M-9Q2F-8R3T-6V5W</code>
-          <strong>Code appears here</strong>
-          <small>No email</small>
-        </article>
-        <div class="activation-path"><span class="activation-code-packet">OSL</span></div>
-        <article class="activation-node activation-app">
-          <span class="activation-step">03</span>
-          <img src="/assets/img/logo-mark.svg" alt="">
-          <div class="activation-lock"><i></i></div>
-          <strong>Pro active</strong>
-          <small>Stored on this device</small>
-        </article>
-      </div>
+      <div class="activation-simple-scene" aria-hidden="true"><div class="activation-simple-step"><span class="activation-dollar">$5</span><strong>Once</strong></div><span class="simple-flow-arrow"></span><div class="activation-simple-step activation-private-step"><span class="no-profile-icon"><i></i></span><strong>No OSL profile</strong></div><span class="simple-flow-arrow"></span><div class="activation-simple-step activation-code-step"><code>OSL-7K4M-••••</code><strong>Code here</strong></div><span class="simple-flow-arrow"></span><div class="activation-simple-step activation-active-step"><img src="/assets/img/logo-mark.svg" alt=""><span class="simple-lock-icon"></span><strong>Pro active</strong></div></div>
 
       <ol class="demo-explanation activation-explanation">
-        <li>Stripe confirms the card purchase. Bitcoin and Monero checkout remain disabled and marked Coming soon below.</li>
-        <li>The code appears in the browser that started checkout.</li>
-        <li>Paste it into OSL for instant activation on this device.</li>
+        <li>Stripe confirms one card payment and keeps its required payment record.</li><li>OSL does not copy your Stripe email into its product database.</li><li>The activation code appears in this browser.</li><li>Paste it into OSL. Nothing waits in an email inbox.</li>
       </ol>
     </section>
 
