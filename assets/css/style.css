@@ -47,9 +47,10 @@ html {
   font-family: var(--font-sys);
   font-size: 16px;
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
+
 
 body {
   min-height: 100vh;
@@ -5455,4 +5456,257 @@ h2:hover .anchor-link,
     width:min(90%,32rem);
     box-shadow:4px 5px 0 rgba(247,248,248,.03), 0 1.25rem 2.8rem rgba(0,0,0,.34);
   }
+}
+/* Rich cinematic stories, with crisp readable planes.
+   Depth belongs to shells, routes, shadows, and packets. Text is never held
+   on a scaled, filtered, or projected GPU texture. */
+.product-demo {
+  --story-shell-shadow:4px 5px 0 rgba(255,255,255,.12), 9px 11px 0 rgba(255,255,255,.045), 0 24px 48px rgba(0,0,0,.48);
+  --story-floor-angle:67deg;
+  text-rendering: geometricPrecision;
+}
+
+.product-demo :is(
+  .cinema-composer,
+  .local-cinema-device,
+  .friend-cinema-device,
+  .cinema-server,
+  .seizure-node,
+  .scrub-scan-card,
+  .scrub-found-card,
+  .attachment-simple-scene article,
+  .attachment-clean-checklist,
+  .expiry-vapor-message,
+  .expiry-carrier-remains,
+  .pricing-shared-composer,
+  .pricing-motion-card,
+  .clean-activation-browser,
+  .clean-activation-osl,
+  .clean-setup-window,
+  .clean-setup-osl-bar
+) {
+  backface-visibility: visible;
+  filter: none;
+  text-shadow: none;
+}
+
+/* Message: keep the old physical world, but focus one readable station. */
+.cinema-viewport {
+  height: 35rem;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,255,255,.045), transparent 38%),
+    var(--bg);
+  border: 0;
+  box-shadow: none;
+  perspective: 1400px;
+}
+.cinema-world {
+  position: relative;
+  top: 0;
+  left: auto;
+  width: min(1050px,100%);
+  height: 560px;
+  margin: 0 auto;
+  transform: none;
+  transform-style: flat;
+}
+.cinema-floor { opacity:.34; transform:rotateX(var(--story-floor-angle)); }
+.cinema-object { transform: none; transform-style: flat; }
+.cinema-composer { top: 128px; left: 12px; width: 320px; }
+.local-cinema-device { top: 190px; left: 390px; width: 210px; }
+.danger-server { top: 64px; left: 620px; width: 190px; }
+.osl-server { top: 382px; left: 620px; width: 190px; }
+.friend-cinema-device { top: 190px; left: 820px; width: 220px; }
+.chat-history-3d,
+.osl-bar-3d,
+.computer-screen,
+.cinema-server {
+  transform: none;
+  box-shadow:var(--story-shell-shadow);
+}
+.computer-screen,
+.friend-cinema-device .computer-screen { transform: none; }
+.chat-bubble { font-size: 12px; }
+.social-chat-header strong { font-size: 11px; }
+.social-chat-header small { font-size: 9px; }
+.osl-bar-3d p { font-size: 13px; }
+.device-screen-label,
+.server-name { font-size: 10px; }
+.local-processing,
+.cinema-server strong { font-size: 11px; }
+.split-output span { font-size: 9px; }
+.split-output p,
+.friend-cinema-device :is(.native-carrier-message p,.restored-message-3d p) { font-size: 11px; }
+.cinema-caption { display: none; }
+.restored-message-3d,
+.decrypt-stream { transform: none; }
+.restored-message-3d { box-shadow: 4px 5px 0 rgba(255,255,255,.1), 0 18px 36px rgba(0,0,0,.5); }
+
+@media (min-width:1100px) and (prefers-reduced-motion:no-preference) {
+  [data-product-animation="message-flow"].is-running .cinema-composer { animation:crisp-focus-composer 4.4s cubic-bezier(.2,.8,.2,1) 0s both; }
+  [data-product-animation="message-flow"].is-running .local-cinema-device { animation:crisp-focus-local 3.6s cubic-bezier(.2,.8,.2,1) 4.9s both; }
+  [data-product-animation="message-flow"].is-running .danger-server { animation:crisp-focus-danger 3s cubic-bezier(.2,.8,.2,1) 9s both; }
+  [data-product-animation="message-flow"].is-running .osl-server { animation:crisp-focus-relay 3s cubic-bezier(.2,.8,.2,1) 10.5s both; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:crisp-focus-friend 4.4s cubic-bezier(.2,.8,.2,1) 14s both; }
+}
+@keyframes crisp-focus-composer {
+  0% { z-index:3; top:128px; left:12px; opacity:.35; }
+  12%,76% { z-index:30; top:98px; left:365px; opacity:1; }
+  100% { z-index:3; top:128px; left:12px; opacity:.28; }
+}
+@keyframes crisp-focus-local {
+  0% { z-index:3; top:190px; left:390px; opacity:.28; }
+  14%,78% { z-index:31; top:145px; left:420px; opacity:1; }
+  100% { z-index:3; top:190px; left:390px; opacity:.28; }
+}
+@keyframes crisp-focus-danger {
+  0% { z-index:3; top:64px; left:620px; opacity:.22; }
+  16%,74% { z-index:32; top:165px; left:430px; opacity:1; }
+  100% { z-index:3; top:64px; left:620px; opacity:.22; }
+}
+@keyframes crisp-focus-relay {
+  0% { z-index:3; top:382px; left:620px; opacity:.22; }
+  16%,74% { z-index:32; top:165px; left:430px; opacity:1; }
+  100% { z-index:3; top:382px; left:620px; opacity:.22; }
+}
+@keyframes crisp-focus-friend {
+  0% { z-index:3; top:190px; left:820px; opacity:.25; }
+  18%,100% { z-index:34; top:145px; left:415px; opacity:1; }
+}
+
+/* Compact widths become a crisp station-by-station carousel. No world scale. */
+@media (max-width:1099px) {
+  .cinema-viewport { height:32rem; }
+  .cinema-world { width:100%; height:32rem; }
+  .cinema-floor,
+  .cinema-routes,
+  .cinema-packet,
+  .cinema-envelope,
+  .decrypt-stream { display:none; }
+  .cinema-composer { top:70px; left:5%; width:90%; }
+  .local-cinema-device { top:120px; left:17%; width:66%; }
+  .danger-server,
+  .osl-server { top:150px; left:20%; width:60%; }
+  .friend-cinema-device { top:120px; left:16%; width:68%; }
+}
+@media (max-width:1099px) and (prefers-reduced-motion:no-preference) {
+  [data-product-animation="message-flow"].is-running .cinema-composer { animation:crisp-mobile-station 4.2s ease 0s both; }
+  [data-product-animation="message-flow"].is-running .local-cinema-device { animation:crisp-mobile-station 3.5s ease 4.3s both; }
+  [data-product-animation="message-flow"].is-running .danger-server { animation:crisp-mobile-station 2.6s ease 7.9s both; }
+  [data-product-animation="message-flow"].is-running .osl-server { animation:crisp-mobile-station 2.6s ease 10.6s both; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:crisp-mobile-final 4.3s ease 13.3s both; }
+}
+@keyframes crisp-mobile-station { 0%,100% { opacity:0; } 12%,82% { opacity:1; } }
+@keyframes crisp-mobile-final { 0% { opacity:0; } 16%,100% { opacity:1; } }
+
+/* The remaining stories regain the older multi-beat objects without filters. */
+.seizure-node,
+.scrub-scan-card,
+.scrub-found-card,
+.attachment-simple-scene article,
+.attachment-clean-checklist,
+.pricing-shared-composer,
+.pricing-tier-grid .pricing-motion-card {
+  transform:none;
+  box-shadow:var(--story-shell-shadow);
+}
+.seizure-server,
+.seizure-review { transform:none; }
+.scrub-cleared { background:var(--bg); }
+.simple-lock-icon,
+.evidence-lock { border-width:2px; }
+.simple-lock-icon::before,
+.evidence-lock::before { border-width:2px; }
+
+@keyframes simple-focus {
+  from { opacity:.3; transform:translateY(8px); }
+  25%,78% { opacity:1; transform:none; }
+  to { opacity:.82; transform:none; }
+}
+@keyframes simple-lock-focus {
+  from { opacity:.15; transform:translateY(12px); }
+  28%,100% { opacity:1; transform:none; }
+}
+@keyframes pricing-copy-lift {
+  0% { opacity:0; transform:none; }
+  12% { opacity:1; transform:none; }
+  100% { opacity:0; transform:translate(12rem,-12rem); }
+}
+@keyframes vapor-word {
+  0%,12% { opacity:1; transform:none; }
+  100% { opacity:0; transform:translate(var(--word-x),var(--word-y)); }
+}
+@keyframes cinema-local { from { opacity:.4; } to { opacity:1; } }
+@keyframes cinema-cipher-resolve { 0%,52% { opacity:1; } 100% { opacity:0; letter-spacing:.16em; } }
+@keyframes cinema-plain-resolve { from { opacity:0; letter-spacing:.11em; } to { opacity:1; letter-spacing:.05em; } }
+@keyframes cinema-restore { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+/* Pricing cards remain physically layered without rotating their text. */
+.plans { perspective:none; }
+.plans .plan,
+.plans .plan.card-active {
+  transform:none;
+  box-shadow:var(--story-shell-shadow);
+}
+
+/* Activation and setup keep the newer reduced story, now sharp. */
+.clean-activation-scene,
+.clean-setup-stage { perspective:none; }
+.clean-activation-scene::before,
+.clean-setup-stage::before { display:none; }
+.clean-activation-browser,
+.clean-activation-osl,
+.clean-setup-window,
+.clean-setup-osl-bar {
+  transform:none;
+  transform-style:flat;
+  box-shadow:var(--story-shell-shadow);
+}
+.clean-activation-browser::before {
+  display:grid;
+  width:3rem;
+  height:3rem;
+  margin:0 auto 1.25rem;
+  place-items:center;
+  color:var(--bg);
+  background:var(--text);
+  border-radius:50%;
+  content:"✓";
+  font-size:1.25rem;
+  font-weight:900;
+}
+.clean-activation-osl :is(img,.clean-activation-lock,strong),
+.clean-activation-code,
+.clean-setup-native-bar { transform:none; }
+.clean-activation-logo,
+.clean-setup-osl-bar img { filter:none; }
+.clean-service-mark { transform:translateX(-50%); }
+
+@media (prefers-reduced-motion:no-preference) {
+  [data-product-animation="activation-flow"].is-running .clean-activation-browser { animation:crisp-activation-out 5.8s ease both; }
+  [data-product-animation="activation-flow"].is-running .clean-activation-osl { animation:crisp-activation-in 5.8s ease both; }
+  [data-product-animation="download-setup-flow"].is-running .clean-setup-window { animation:crisp-setup-window 5.8s ease both; }
+  [data-product-animation="download-setup-flow"].is-running .clean-setup-osl-bar { animation:crisp-setup-bar 1.2s ease 2.6s both; }
+}
+@keyframes crisp-activation-out { 0%,43% { opacity:1; transform:none; } 52%,100% { opacity:0; transform:translateY(-12px); } }
+@keyframes crisp-activation-in { 0%,47% { opacity:0; transform:translateY(12px); } 58%,100% { opacity:1; transform:none; } }
+@keyframes crisp-setup-window { 0% { opacity:.4; transform:translateY(12px); } 18%,100% { opacity:1; transform:none; } }
+@keyframes crisp-setup-bar { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+@media (max-width:767px) {
+  .product-demo :is(
+    .cinema-composer,
+    .local-cinema-device,
+    .friend-cinema-device,
+    .cinema-server,
+    .seizure-node,
+    .scrub-scan-card,
+    .scrub-found-card,
+    .attachment-simple-scene article,
+    .attachment-clean-checklist,
+    .pricing-motion-card,
+    .clean-activation-browser,
+    .clean-activation-osl,
+    .clean-setup-window
+  ) { box-shadow:3px 4px 0 rgba(255,255,255,.08), 0 18px 36px rgba(0,0,0,.28); }
 }
