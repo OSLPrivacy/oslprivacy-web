@@ -66,7 +66,22 @@
     const binary = atob(encryptedBase64);
     const encrypted = Uint8Array.from(binary, (character) => character.charCodeAt(0));
     const plaintext = await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, key, encrypted);
-    return new TextDecoder().decode(plaintext);
+    const activationCode = new TextDecoder().decode(plaintext);
+    if (!/^OSL-[0-9A-HJKMNP-TV-Z]{4}(?:-[0-9A-HJKMNP-TV-Z]{4}){3}$/.test(activationCode)) {
+      throw new Error('Activation delivery could not be verified.');
+    }
+    return activationCode;
+  }
+
+  async function acknowledgeDelivery(path, payload) {
+    const response = await fetch(`${API}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, acknowledge_delivery: true }),
+    });
+    if (!response.ok) {
+      throw new Error('Activation was decrypted, but server cleanup is pending.');
+    }
   }
 
   async function copyText(value, button) {
@@ -118,6 +133,63 @@
       toggle.setAttribute('aria-expanded', String(!open));
       menu.classList.toggle('open');
     });
+  }
+
+  const motionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const productAnimations = document.querySelectorAll('[data-product-animation]');
+
+  document.querySelectorAll('[data-type-sequence]').forEach((element) => {
+    const copy = element.textContent || '';
+    const start = Number(element.dataset.typeStart || 0);
+    const duration = Math.max(1, Number(element.dataset.typeDuration || 600));
+    const characters = Array.from(copy);
+    element.setAttribute('aria-label', copy);
+    element.textContent = '';
+    characters.forEach((character, index) => {
+      const span = document.createElement('span');
+      span.className = 'type-character';
+      span.setAttribute('aria-hidden', 'true');
+      span.style.setProperty('--type-delay', `${start + ((duration * index) / Math.max(1, characters.length - 1))}ms`);
+      span.textContent = character;
+      element.appendChild(span);
+    });
+  });
+
+  const replayProductAnimation = (section) => {
+    if (motionPreference?.matches) return;
+    section.classList.remove('is-running');
+    void section.offsetWidth;
+    section.classList.add('is-running');
+  };
+
+  productAnimations.forEach((section) => {
+    const replayButton = section.querySelector('[data-animation-replay]');
+    const updateMotionControl = () => {
+      if (!replayButton) return;
+      replayButton.disabled = Boolean(motionPreference?.matches);
+      replayButton.title = motionPreference?.matches
+        ? 'Animation is disabled by your reduced-motion setting.'
+        : 'Replay this explanation.';
+    };
+
+    updateMotionControl();
+    replayButton?.addEventListener('click', () => replayProductAnimation(section));
+    motionPreference?.addEventListener?.('change', updateMotionControl);
+  });
+
+  if (!motionPreference?.matches && productAnimations.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const productAnimationObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          replayProductAnimation(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.04, rootMargin: '0px 0px -22% 0px' });
+      productAnimations.forEach((section) => productAnimationObserver.observe(section));
+    } else {
+      productAnimations.forEach((section) => replayProductAnimation(section));
+    }
   }
 
   const privacyWarning = document.getElementById('privacy-warning');
@@ -202,7 +274,6 @@
   ];
 
   const serviceProfiles = [
-    { name: 'Discord', detail: 'Keeps account, content, device, IP address, and usage data. Discord says it does not sell personal data.', url: 'https://discord.com/privacy' },
     { name: 'Meta', detail: 'Combines content, activity, device, location, and partner data to personalize products and ads.', url: 'https://www.facebook.com/privacy/policy/' },
     { name: 'Google', detail: 'Keeps searches, viewing activity, device, IP address, and location signals. It uses them for personalization, measurement, and ads.', url: 'https://policies.google.com/privacy' },
     { name: 'X', detail: 'Keeps posts, direct message information, device, location, ad, and partner data. X says it does not sell personal data.', url: 'https://x.com/en/privacy' },
@@ -216,16 +287,6 @@
     if (/\baustralia\b/.test(text)) return agencyProfiles.australia;
     if (/\b(europe|european union|eu|france|germany|italy|spain|portugal|netherlands|belgium|ireland|poland|sweden|norway|denmark|finland|austria|switzerland|greece|romania|czechia|czech republic)\b/.test(text)) return agencyProfiles.europe;
     return { ...agencyProfiles.other, label: value.trim() || agencyProfiles.other.label };
-  };
-
-  const profileForCoordinates = (latitude, longitude) => {
-    const inBox = (south, north, west, east) => latitude >= south && latitude <= north && longitude >= west && longitude <= east;
-    if (inBox(18, 72, -170, -66) || inBox(18, 23, -161, -154)) return agencyProfiles.us;
-    if (inBox(41, 84, -141, -52)) return agencyProfiles.canada;
-    if (inBox(49, 61, -9, 2)) return agencyProfiles.uk;
-    if (inBox(-45, -9, 112, 154)) return agencyProfiles.australia;
-    if (inBox(34, 72, -11, 40)) return agencyProfiles.europe;
-    return agencyProfiles.other;
   };
 
   const exposureCard = (entry) => {
@@ -257,12 +318,13 @@
   };
 
   if (privacyWarning instanceof HTMLDialogElement) {
+    const isMotionLab = new URLSearchParams(window.location.search).get('motionLab') === '1';
     let shouldOpen = true;
     try {
-      shouldOpen = localStorage.getItem(privacyWarningKey) !== '1';
+      shouldOpen = !isMotionLab && localStorage.getItem(privacyWarningKey) !== '1';
       if (shouldOpen) localStorage.setItem(privacyWarningKey, '1');
     } catch {
-      shouldOpen = true;
+      shouldOpen = !isMotionLab;
     }
     if (shouldOpen) privacyWarning.showModal();
 
@@ -284,10 +346,10 @@
       locationButton.textContent = 'Waiting for permission...';
       setStatus(locationResult, 'Your browser may ask for location access.');
       navigator.geolocation.getCurrentPosition(
-        ({ coords }) => {
-          setStatus(locationResult, 'Approximate result. Choose a country to correct it.', 'success');
-          showAgencyProfile(profileForCoordinates(coords.latitude, coords.longitude));
-          locationButton.textContent = 'Location checked';
+        () => {
+          setStatus(locationResult, 'Location access worked. Confirm your country below. OSL did not send this result to its servers.', 'success');
+          locationButton.textContent = 'Location available';
+          manualLocationInput?.focus();
         },
         () => {
           setStatus(locationResult, 'Location was not shared. Enter a country instead.', 'error');
@@ -305,7 +367,7 @@
       const value = manualLocationInput.value.trim();
       if (!value) return;
       showAgencyProfile(profileForText(value));
-      setStatus(locationResult, `${value} selected. Nothing left this browser.`, 'success');
+      setStatus(locationResult, `${value} selected. OSL did not send this country selection to its servers.`, 'success');
     });
   }
 
@@ -333,11 +395,15 @@
         if (!response.ok || typeof result.url !== 'string' || typeof result.session_id !== 'string') {
           throw new Error(result.error || 'Live checkout is temporarily unavailable.');
         }
+        const checkoutUrl = new URL(result.url);
+        if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
+          throw new Error('Stripe returned an unexpected checkout address. No payment was opened.');
+        }
         sessionStorage.setItem(STRIPE_DELIVERY_KEY, JSON.stringify({
           ...delivery,
           sessionId: result.session_id,
         }));
-        window.location.assign(result.url);
+        window.location.assign(checkoutUrl.href);
       } catch (error) {
         sessionStorage.removeItem(STRIPE_DELIVERY_KEY);
         setStatus(
@@ -370,6 +436,17 @@
     } catch {
       delivery = null;
     }
+    if (delivery?.encryptedLicense && delivery?.privateJwk) {
+      try {
+        showActivationCode(await decryptActivationCode(delivery.encryptedLicense, delivery.privateJwk));
+        const heading = document.getElementById('payment-heading');
+        if (heading) heading.textContent = 'Payment confirmed';
+        setStatus(status, 'Activation code ready. It is stored only in this browser tab.', 'success');
+        return;
+      } catch {
+        sessionStorage.removeItem(STRIPE_DELIVERY_KEY);
+      }
+    }
     if (!sessionId || !delivery?.claimToken || !delivery?.privateJwk) {
       setStatus(
         status,
@@ -389,6 +466,14 @@
         const result = await response.json().catch(() => ({}));
         if (response.ok && result.status === 'delivery_ready' && result.encrypted_license) {
           const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
+          sessionStorage.setItem(STRIPE_DELIVERY_KEY, JSON.stringify({
+            privateJwk: delivery.privateJwk,
+            encryptedLicense: result.encrypted_license,
+          }));
+          await acknowledgeDelivery('/v1/checkout/claim', {
+            session_id: sessionId,
+            claim_token: delivery.claimToken,
+          });
           showActivationCode(code);
           const heading = document.getElementById('payment-heading');
           if (heading) heading.textContent = 'Payment confirmed';
@@ -431,6 +516,17 @@
       const result = await response.json().catch(() => ({}));
       if (response.ok && result.encrypted_license) {
         const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
+        sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({
+          delivery: {
+            privateJwk: delivery.privateJwk,
+            encryptedLicense: result.encrypted_license,
+          },
+          invoice: { invoice_id: invoice.invoice_id },
+        }));
+        await acknowledgeDelivery('/v1/crypto/status', {
+          invoice_id: invoice.invoice_id,
+          claim_token: invoice.claim_token,
+        });
         showActivationCode(code, document.getElementById('crypto-activation-panel'));
         setStatus(cryptoStatus, 'Payment confirmed by the network. Activation code ready.', 'success');
         return;

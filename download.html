@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download OSL Privacy for Windows</title>
-  <meta name="description" content="Download the OSL Privacy beta for Windows 10 and Windows 11. Private text on supported services is free.">
+  <meta name="description" content="Download OSL Privacy for Windows and protect social media and email conversations from one local desktop app.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -29,12 +29,75 @@
     <section class="section reveal">
       <p class="eyebrow">Windows beta</p>
       <h1 class="page-heading">Download OSL</h1>
-      <p class="page-lede">Private text on supported social and email services is free. Setup takes a few minutes.</p>
+      <p class="page-lede">Protect social and email conversations from one simple desktop app. Setup takes a few minutes.</p>
+      <p class="availability-note"><strong>Current download:</strong> version 0.0.1 is an early beta. Protected sending is not enabled yet.</p>
+    </section>
+
+    <section class="section product-demo download-setup-demo reveal" aria-labelledby="download-setup-flow-heading" data-product-animation="download-setup-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Simple setup</p>
+          <h2 id="download-setup-flow-heading" class="section-heading">Keep the app. Add OSL.</h2>
+          <p class="section-subhead">Use the official app or website. Sign in there. Then choose who OSL should protect.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="download-setup-scene" aria-hidden="true">
+        <article class="download-setup-stage download-setup-official">
+          <span class="download-setup-number">01</span>
+          <div class="official-app-icon">
+            <span class="official-app-window"><i></i><i></i><i></i></span>
+            <span class="official-site-window"><i></i><i></i><i></i></span>
+          </div>
+          <div><strong>Open the official app</strong><small>Or its website</small></div>
+        </article>
+
+        <span class="download-setup-path"><i></i></span>
+
+        <article class="download-setup-stage download-setup-signin">
+          <span class="download-setup-number">02</span>
+          <div class="official-signin-icon">
+            <span class="signin-avatar"></span>
+            <span class="signin-field"></span>
+            <span class="signin-field signin-field-short"></span>
+          </div>
+          <div><strong>Sign in there</strong><small>Not through OSL</small></div>
+        </article>
+
+        <span class="download-setup-path"><i></i></span>
+
+        <article class="download-setup-stage download-setup-choose">
+          <span class="download-setup-number">03</span>
+          <div class="choose-chat-icon">
+            <span class="choose-chat-row"><i></i><b></b></span>
+            <span class="choose-chat-row"><i></i><b></b></span>
+            <span class="choose-chat-row"><i></i><b></b></span>
+          </div>
+          <div><strong>Choose people and chats</strong><small>You stay in control</small></div>
+        </article>
+
+        <span class="download-setup-path"><i></i></span>
+
+        <article class="download-setup-stage download-setup-ready">
+          <span class="download-setup-number">04</span>
+          <div class="ready-beside-icon"><span class="ready-service-panel"><i></i><i></i><i></i></span><span class="ready-osl-panel"><img src="/assets/img/logo-mark.svg" alt=""><i></i></span></div>
+          <div><strong>OSL is ready beside it</strong><small>Protection stays visible</small></div>
+        </article>
+      </div>
+
+      <ol class="demo-explanation download-setup-explanation">
+        <li>Open the service's official desktop app or website.</li>
+        <li>Sign in with the service. OSL does not collect that password.</li>
+        <li>Choose the people and conversations you want to use with OSL.</li>
+        <li>OSL stays beside the service so its protection is easy to see.</li>
+      </ol>
+      <p class="demo-script-note">Product design. External adapters are not enabled in version 0.0.1.</p>
     </section>
 
     <section class="section reveal" aria-labelledby="windows-heading">
       <h2 id="windows-heading" class="section-heading">Choose your download</h2>
-      <div class="download-choice-grid" aria-label="Choose an OSL download">
+      <div class="download-choice-grid" role="group" aria-label="Choose an OSL download">
         <article class="download-choice">
           <div class="download-choice-heading">
             <h2>Free</h2>
@@ -46,6 +109,7 @@
             <li>Receive encrypted images and files</li>
             <li>Unlimited private messages</li>
           </ul>
+          <p class="download-renewal">Current 0.0.1 beta: protected cross-device sending, encrypted file transport, and automated Scrub are not enabled yet.</p>
         </article>
 
         <article class="download-choice download-choice-pro">
@@ -53,8 +117,8 @@
             <h2>Pro</h2>
             <p><strong>$5</strong> one time</p>
           </div>
-          <button class="button button-primary cta-subscribe" type="button">Download Pro for $5</button>
-          <div class="coming-payment-options" aria-label="Payment methods coming soon">
+          <button class="button button-primary cta-subscribe" type="button">Get Pro beta for $5</button>
+          <div class="coming-payment-options" role="group" aria-label="Payment methods coming soon">
             <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
             <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
           </div>
@@ -63,11 +127,16 @@
             <li>Send encrypted images and files</li>
             <li>Early access to new privacy tools</li>
           </ul>
-          <p class="download-renewal">Stripe is live. Pay $5 once. Recurring billing is off. Your activation code appears after payment.</p>
+          <p class="download-renewal">Current 0.0.1 beta: $5 activates Pro beta supporter access. Protected sending, encrypted file transport, and automated Scrub are not enabled yet. One payment. Recurring billing is off.</p>
         </article>
       </div>
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
-      <p class="center-link"><a href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">Read the source before installing</a></p>
+      <article class="card installer-details">
+        <h3>Current installer</h3>
+        <p>Version 0.0.1. Published May 23, 2026.</p>
+        <p><code>SHA-256 0376c371c382f5cf64da37799171c7e984e117ce5be1dc5f6abec66eca61fc6d</code></p>
+      </article>
+      <p class="center-link"><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Read the source before installing</a></p>
     </section>
 
     <section class="section tutorial-preview reveal" aria-labelledby="tutorial-preview-heading">
@@ -85,7 +154,7 @@
           <span class="placeholder-badge">Coming soon</span>
         </article>
       </div>
-      <div class="screenshot-placeholder-grid" aria-label="Future feature screenshots">
+      <div class="screenshot-placeholder-grid" role="group" aria-label="Future feature screenshots">
         <div class="screenshot-placeholder"><span>Feature example</span></div>
         <div class="screenshot-placeholder"><span>Feature example</span></div>
         <div class="screenshot-placeholder"><span>Feature example</span></div>
@@ -112,10 +181,10 @@
     <section class="section reveal" aria-labelledby="expect-heading">
       <h2 id="expect-heading" class="section-heading">What to expect</h2>
       <div class="grid-2">
-        <article class="card"><h3>Your accounts stay yours</h3><p>You sign in to each connected service inside its isolated browser profile. OSL does not ask you to send those passwords to us.</p></article>
-        <article class="card"><h3>Private mode is a choice</h3><p>Normal chats work normally. OSL protects a chat only after the required people install OSL and approve it.</p></article>
+        <article class="card"><h3>Your accounts stay yours</h3><p>You sign in through the service's official app or fixed official website. OSL does not ask you to send those passwords to us.</p></article>
+        <article class="card"><h3>Private mode is a choice</h3><p>Normal conversations stay normal. OSL Protected mode is for approved OSL recipients.</p></article>
         <article class="card"><h3>Recovery is your responsibility</h3><p>OSL cannot recover your password or secret recovery material from a server.</p></article>
-        <article class="card"><h3>Calls are not covered</h3><p>Voice and video still use each connected service's normal system.</p></article>
+        <article class="card"><h3>Calls stay with the service</h3><p>Voice and video still use each connected service's normal system.</p></article>
       </div>
     </section>
 
@@ -125,9 +194,9 @@
         <li>Windows 10 version 1809 or newer, or Windows 11</li>
         <li>A 64 bit computer</li>
         <li>200 MB of free space</li>
-        <li>An account with a connector available in your beta release</li>
+        <li>No external service account is required for the current beta; service adapters are still planned</li>
       </ul>
-      <p class="section-subhead">Connector availability changes during the beta. Check the release notes before relying on a specific social or email service.</p>
+      <p class="section-subhead">App availability changes during the beta. Check the release notes before relying on a specific social or email service.</p>
     </section>
   </main>
 

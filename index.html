@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSL Privacy | Privacy for social media and email</title>
-  <meta name="description" content="OSL is an open source privacy hub for social media and email. Supported messages are encrypted locally before the service receives them.">
+  <meta name="description" content="OSL is an open source privacy hub for social media and email. Protection happens locally on your computer.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -39,12 +39,12 @@
       <p id="privacy-warning-copy">Choose your country. OSL will show the agencies and companies that may have a path to data stored about you.</p>
 
       <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Use my location</button>
-      <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">Your location stays in this browser.</p>
+      <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">OSL does not send this result to its servers.</p>
 
       <div class="location-divider" aria-hidden="true"><span>or</span></div>
       <form class="manual-location-form" id="manual-location-form">
         <label for="manual-location">Or enter a country</label>
-        <div><input id="manual-location" name="location" autocomplete="country-name" maxlength="80" placeholder="United States" required><button class="button button-secondary" type="submit">Check</button></div>
+        <div><input id="manual-location" name="location" type="text" autocomplete="country-name" maxlength="80" placeholder="United States" required><button class="button button-secondary" type="submit">Check</button></div>
       </form>
 
       <section class="agency-result" id="agency-result" aria-labelledby="agency-result-title" hidden>
@@ -58,7 +58,7 @@
         <div class="exposure-list" id="service-result-list"></div>
       </section>
 
-      <p class="privacy-warning-limit">OSL encrypts message content. It cannot hide your account, contacts, location, or activity.</p>
+      <p class="privacy-warning-limit">OSL is designed to protect supported message content. It does not hide your account, contacts, location, or activity.</p>
       <div class="privacy-warning-actions">
         <a class="button button-primary" href="/download">Download OSL</a>
         <button class="button button-secondary" type="button" data-privacy-warning-close>Close</button>
@@ -68,117 +68,366 @@
 
   <main id="main">
     <section class="hero section reveal">
-      <p class="eyebrow">Always open source</p>
-      <img class="logo" src="/assets/img/logo-mark.svg" alt="" width="112" height="112">
-      <h1>Your messages can become evidence.</h1>
-      <p class="lede">Social media messages and email live on computers you do not control. They can be copied in a breach or handed over under legal process. OSL is building one private hub that encrypts supported messages on your computer before the service receives them.</p>
-      <div class="download-choice-grid" aria-label="Choose an OSL download">
-        <article class="download-choice">
-          <div class="download-choice-heading">
-            <h2>Free</h2>
-            <p><strong>$0</strong> forever</p>
-          </div>
-          <a href="/download" class="button button-secondary">Download Free</a>
-          <ul class="download-features">
-            <li>Send private text</li>
-            <li>Receive encrypted images and files</li>
-            <li>Unlimited private messages</li>
-            <li>Open source. Keys stay on your computer.</li>
-          </ul>
-        </article>
-
-        <article class="download-choice download-choice-pro">
-          <div class="download-choice-heading">
-            <h2>Pro</h2>
-            <p><strong>$5</strong> one time</p>
-          </div>
-          <p class="download-payment-label">Pay securely with Stripe</p>
-          <button class="button button-primary cta-subscribe" type="button">Download Pro with Stripe</button>
-          <div class="coming-payment-options" aria-label="Payment methods coming soon">
-            <button class="button button-secondary" type="button" disabled>Bitcoin <span>Coming soon</span></button>
-            <button class="button button-secondary" type="button" disabled>Monero <span>Coming soon</span></button>
-          </div>
-          <ul class="download-features">
-            <li>Everything in Free</li>
-            <li>Send encrypted images and files</li>
-            <li>Early access to new privacy tools</li>
-          </ul>
-          <p class="download-coming-label">Coming to Pro</p>
-          <ul class="download-features download-features-coming">
-            <li>Clean identifying details from attachments</li>
-            <li>View-once private media</li>
-            <li>Guided cleanup with verified receipts</li>
-            <li>Advanced message retention controls</li>
-          </ul>
-          <p class="download-renewal">Stripe is live. Pay $5 once. Your activation code appears after payment.</p>
-        </article>
+      <p class="eyebrow">Open source privacy hub</p>
+      <img class="logo" src="/assets/img/logo-mark.svg" alt="" width="88" height="88">
+      <h1>Private words.<br>Still yours.</h1>
+      <p class="lede">OSL sits beside the social media and email you already use. Protection happens on your computer before a supported service receives the message.</p>
+      <div class="hero-actions" role="group" aria-label="Download OSL">
+        <a href="/download" class="button button-secondary">Download Free</a>
+        <button class="button button-primary cta-subscribe" type="button">Get Pro beta for $5</button>
       </div>
+      <p class="hero-note">No subscription. Private text is free. Pro adds private files and early features.</p>
+      <p class="availability-note"><strong>Current download:</strong> early Windows beta. Protected sending is not enabled yet.</p>
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
     </section>
 
-    <section class="section tutorial-preview reveal" aria-labelledby="tutorial-preview-heading">
-      <p class="eyebrow">Learn OSL</p>
-      <h2 class="section-heading" id="tutorial-preview-heading">Every feature, shown simply.</h2>
-      <div class="tutorial-placeholder-grid">
-        <article class="tutorial-placeholder tutorial-video-placeholder">
-          <span class="tutorial-placeholder-icon" aria-hidden="true">&#9654;</span>
-          <div><h3>Video tutorials</h3><p>Short walkthroughs will appear here.</p></div>
-          <span class="placeholder-badge">Coming soon</span>
-        </article>
-        <article class="tutorial-placeholder">
-          <span class="tutorial-placeholder-icon" aria-hidden="true">01</span>
-          <div><h3>Written tutorials</h3><p>Simple steps for every feature will appear here.</p></div>
-          <span class="placeholder-badge">Coming soon</span>
-        </article>
-      </div>
-      <div class="screenshot-placeholder-grid" aria-label="Future feature screenshots">
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-        <div class="screenshot-placeholder"><span>Feature example</span></div>
-      </div>
-    </section>
-
-    <div class="trust-strip trust-strip-single reveal" aria-label="Product facts">
-      <span><strong>Always open source.</strong> Free private text. Keys stay on your computer.</span>
+    <div class="trust-strip trust-strip-single reveal" role="group" aria-label="Product facts">
+      <span><strong>Always open source.</strong> Keys stay on your computer.</span>
     </div>
 
-    <section class="section reveal" id="how-it-works" aria-labelledby="how-heading">
-      <p class="eyebrow">What OSL changes</p>
-      <h2 id="how-heading" class="section-heading">The service gets a sealed message, not your words.</h2>
-      <div class="plain-steps">
-        <article>
-          <span aria-hidden="true">1</span>
-          <div><h3>Choose a private chat</h3><p>Both people install OSL and approve the conversation.</p></div>
+    <section class="section product-demo reveal" id="how-it-works" aria-labelledby="flow-heading" data-product-animation="message-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Protected flow</p>
+          <h2 id="flow-heading" class="section-heading">The service never gets<br>the real message.</h2>
+          <p class="section-subhead">You approve readable cover text for the service. The real message stays inside a locked blob and opens only on your friend's device.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="cinema-viewport" aria-hidden="true">
+        <div class="cinema-world">
+          <div class="cinema-floor"></div>
+          <svg class="cinema-routes" viewBox="0 0 1200 680" preserveAspectRatio="none">
+            <path class="route route-compose" d="M340 330 C385 330 405 330 450 330"></path>
+            <path class="route route-danger" d="M565 300 C635 275 655 170 735 170"></path>
+            <path class="route route-lock" d="M565 365 C640 390 655 520 735 520"></path>
+            <path class="route route-danger-out" d="M875 170 C945 180 950 280 1010 305"></path>
+            <path class="route route-lock-out" d="M875 520 C950 500 955 405 1010 375"></path>
+          </svg>
+
+          <article class="cinema-composer cinema-object">
+            <div class="chat-history-3d">
+              <header class="social-chat-header">
+                <i class="social-avatar"></i>
+                <span><strong>Alex</strong><small>Active now</small></span>
+                <b aria-hidden="true">○</b><b aria-hidden="true">i</b>
+              </header>
+              <p class="chat-bubble chat-bubble-in">Clouds are rolling in. Still meeting at five?</p>
+              <p class="chat-bubble chat-bubble-out">Yes. The north entrance still works.</p>
+              <p class="chat-bubble chat-bubble-in">Perfect. It may rain around four.</p>
+            </div>
+            <div class="service-bar-3d"><span class="native-photo-symbol"></span><b class="native-input-line"></b><i></i><i></i></div>
+            <div class="osl-bar-3d">
+              <header><img class="cinema-osl-mark" src="/assets/img/logo-mark.svg" alt=""><span class="cinema-mini-lock"></span><span class="cinema-local-dot"></span></header>
+              <p data-type-sequence data-type-start="300" data-type-duration="2200">I'll bring an umbrella. Meet by the north entrance at five.</p>
+              <button type="button" tabindex="-1" aria-hidden="true"><span class="send-arrow"></span></button>
+            </div>
+          </article>
+
+          <div class="cinema-envelope cinema-object"><span></span></div>
+
+          <article class="cinema-device local-cinema-device cinema-object">
+            <div class="computer-shell">
+              <div class="computer-screen">
+                <span class="device-screen-label">Your device</span>
+                <div class="local-processing"><i></i><strong>Protecting locally</strong></div>
+                <div class="split-output split-carrier"><span>Approved cover</span><p data-type-sequence data-type-start="4700" data-type-duration="1100">The weather looks clear here.</p></div>
+                <div class="split-output split-locked"><span>Real message</span><p data-type-sequence data-type-start="4700" data-type-duration="1100">OSL::9F3A7C...</p></div>
+              </div>
+              <span class="computer-stand"></span>
+            </div>
+          </article>
+
+          <article class="cinema-server danger-server cinema-object">
+            <div class="danger-symbol"><span>!</span></div>
+            <div class="server-rack-3d"><i></i><i></i><i></i></div>
+            <span class="server-name">Social or email service</span>
+            <strong>Sees the approved cover and token</strong>
+          </article>
+
+          <article class="cinema-server osl-server cinema-object">
+            <div class="lock-symbol"><span></span></div>
+            <div class="server-rack-3d"><i></i><i></i><i></i></div>
+            <span class="server-name">OSL relay</span>
+            <strong>Stores only a locked blob</strong>
+          </article>
+
+          <div class="cinema-packet packet-to-device"><span class="envelope-mini"></span></div>
+          <div class="cinema-packet fake-to-service"><span>COVER</span></div>
+          <div class="cinema-packet lock-to-relay"><span class="packet-lock"></span><code>7M9K2QAF...</code></div>
+          <div class="cinema-packet fake-to-friend"><span>COVER</span></div>
+          <div class="cinema-packet lock-to-friend"><span class="packet-lock"></span><code>7M9K2QAF...</code></div>
+          <div class="decrypt-stream"><code>7M9K·Q2AF·81C...</code><span>umbrella · north entrance · five</span></div>
+
+          <article class="cinema-device friend-cinema-device cinema-object">
+            <div class="computer-shell">
+              <div class="computer-screen friend-screen">
+                <span class="device-screen-label">Friend's device</span>
+                <div class="native-carrier-message"><span>Service message</span><p>The weather looks clear here.</p></div>
+                <div class="restored-message-3d">
+                  <span><b>OSL</b> Restored locally</span>
+                  <p>I'll bring an umbrella. Meet by the north entrance at five.</p>
+                </div>
+              </div>
+              <span class="computer-stand"></span>
+            </div>
+          </article>
+
+          <div class="cinema-caption danger-caption">Harmless carrier</div>
+          <div class="cinema-caption lock-caption">Locked real message</div>
+        </div>
+      </div>
+
+      <ol class="demo-explanation">
+        <li>You type in the clearly marked OSL composer above the normal service send bar.</li>
+        <li>You approve readable cover text; your device adds a token and encrypts the separate real message locally.</li>
+        <li>The service gets the readable cover and token. The OSL relay gets a blob it cannot unlock.</li>
+        <li>Your friend's device combines both paths and restores the real message over the cover.</li>
+      </ol>
+    </section>
+
+    <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Server protection</p>
+          <h2 id="seizure-heading" class="section-heading">The server never had<br>the real message.</h2>
+          <p class="section-subhead">The service may keep the approved cover message. The OSL relay holds only a locked blob. Neither has the real words in readable form.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="seizure-scene" aria-hidden="true">
+        <article class="seizure-node seizure-server">
+          <div class="concept-icon server-icon"><span></span><span></span><span></span></div>
+          <span class="demo-kicker">Service and OSL relay</span>
+          <strong>Stored records</strong>
+          <div class="server-record">
+            <span>Account</span><i></i>
+            <span>Time</span><i></i>
+            <span>Cover message</span><code>Looks windy today.</code>
+          </div>
         </article>
-        <article>
-          <span aria-hidden="true">2</span>
-          <div><h3>Write normally</h3><p>OSL encrypts the message on your computer.</p></div>
-        </article>
-        <article>
-          <span aria-hidden="true">3</span>
-          <div><h3>Only the other person opens it</h3><p>Their copy of OSL decrypts it locally.</p></div>
+
+        <div class="seizure-transfer">
+          <span class="transfer-label">Legal request or seizure</span>
+          <div class="evidence-path"><span class="evidence-packet"><b></b></span></div>
+        </div>
+
+        <article class="seizure-node seizure-review">
+          <div class="badge-lockup">
+            <svg class="concept-icon badge-icon" viewBox="0 0 48 56" focusable="false" aria-hidden="true">
+              <path d="M24 2 42 10v15c0 13-7.7 22.5-18 28C13.7 47.5 6 38 6 25V10L24 2Z"></path>
+              <path d="m24 15 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2-4.5-4.4 6.2-.9L24 15Z"></path>
+            </svg>
+            <div><span class="demo-kicker">Collected copy</span><strong>Record opened</strong></div>
+          </div>
+          <div class="evidence-sheet">
+            <div><span>Account and time</span><strong>Visible</strong></div>
+            <div><span>Approved cover message</span><strong>Visible</strong></div>
+            <div class="sealed-evidence"><span>OSL relay blob</span><strong><span class="mini-lock">●</span> Unreadable</strong></div>
+          </div>
+          <p class="no-key-status">Without the device key, the encrypted real message stays unreadable.</p>
         </article>
       </div>
+
+      <p class="seizure-limit">Services may still retain the readable cover, token, accounts, recipients, timing, and delivery data.</p>
+    </section>
+
+    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Manual Scrub · Free · this device only</p>
+          <h2 id="scrub-heading" class="section-heading">Review sensitive messages locally.</h2>
+          <p class="scrub-promise">Your messages never leave this device.</p>
+          <p class="section-subhead">Choose an exported message file. Scrub reads it locally, marks possible risks, and prepares plain cleanup directions.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="scrub-scene" aria-hidden="true">
+        <article class="scrub-device scrub-stage scrub-stage-scan">
+          <div class="device-label"><span class="device-dot"></span>This PC · not uploaded</div>
+          <div class="scrub-file-row"><span>messages.csv</span><small>TXT · CSV · JSON</small></div>
+          <div class="scan-line"><span>Exported message history</span><strong class="scan-progress">Scanning locally</strong></div>
+          <div class="scan-track"><span></span></div>
+        </article>
+
+        <article class="scrub-findings scrub-stage scrub-stage-findings">
+          <span class="demo-kicker">Sensitive findings</span>
+          <label><input type="checkbox" checked disabled><span><strong>Customer export</strong><small>Attachment and recipient reference</small></span><em>Review</em></label>
+          <label><input type="checkbox" checked disabled><span><strong>Password in message</strong><small>Credential-like text</small></span><em>Review</em></label>
+          <label><input type="checkbox" checked disabled><span><strong>Confidential roadmap</strong><small>Unreleased product timing</small></span><em>Review</em></label>
+        </article>
+
+        <article class="scrub-review scrub-stage scrub-stage-review">
+          <span class="demo-kicker">Your choice</span>
+          <p><strong>3 selected items</strong><br>Review every finding before opening the cleanup directions.</p>
+          <span class="mock-confirm">Show cleanup steps</span>
+        </article>
+
+        <article class="scrub-result scrub-stage scrub-stage-result">
+          <span class="result-check">✓</span>
+          <div><strong>Directions ready</strong><p>Nothing was deleted or uploaded. Follow the service steps only when you are ready.</p></div>
+        </article>
+      </div>
+
+      <ol class="demo-explanation">
+        <li>Choose a TXT, CSV, or JSON export from a supported service.</li>
+        <li>Scrub scans that file on your computer and marks possible risks.</li>
+        <li>You choose which findings matter. Nothing is deleted automatically.</li>
+        <li>Manual Scrub gives cleanup directions. Verified automatic cleanup is a Pro feature.</li>
+      </ol>
+    </section>
+
+    <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-product-animation="attachment-guard-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Attachment Privacy Guard</p>
+          <h2 id="attachment-guard-heading" class="section-heading">Clean first.<br>Lock second.</h2>
+          <p class="section-subhead">OSL removes hidden details on your computer. Pro then encrypts the clean file before it crosses a supported service.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="attachment-guard-scene" aria-hidden="true">
+        <article class="attachment-photo-stage attachment-guard-stage">
+          <span class="demo-kicker">Original photo</span>
+          <div class="attachment-photo-card">
+            <div class="attachment-photo-art"><span></span><i></i></div>
+            <strong>IMG_4821.JPG</strong>
+          </div>
+          <div class="attachment-metadata">
+            <span><b>GPS</b> 37.7749, 122.4194</span>
+            <span><b>Camera</b> Phone model</span>
+            <span><b>Author</b> Liam</span>
+            <span><b>Filename</b> IMG_4821.JPG</span>
+          </div>
+        </article>
+
+        <div class="attachment-stage-path attachment-clean-path"><span>1</span><i></i></div>
+
+        <article class="attachment-clean-stage attachment-guard-stage">
+          <header><span class="device-dot"></span><strong>This PC</strong><small>Local cleaning</small></header>
+          <div class="attachment-clean-preview">
+            <div class="attachment-photo-art"><span></span><i></i></div>
+            <span class="clean-scan-line"></span>
+          </div>
+          <ul>
+            <li><span>GPS location</span><b>Removed</b></li>
+            <li><span>Camera and author</span><b>Removed</b></li>
+            <li><span>Original filename</span><b>Replaced</b></li>
+          </ul>
+          <div class="clean-copy-status"><span>✓</span> Clean copy</div>
+        </article>
+
+        <div class="attachment-stage-path attachment-seal-path"><span>2</span><i></i></div>
+
+        <article class="attachment-seal-stage attachment-guard-stage">
+          <span class="pro-label">Pro</span>
+          <div class="attachment-capsule">
+            <span class="attachment-lock-icon"></span>
+            <div class="attachment-photo-art"><span></span><i></i></div>
+            <code>OSL::4C8F21...</code>
+          </div>
+          <strong>Encrypted locally</strong>
+          <small>Only the locked clean file leaves.</small>
+        </article>
+
+        <div class="attachment-service-path"><i></i><code>7M9K2QAF...</code></div>
+
+        <article class="attachment-service-stage attachment-guard-stage">
+          <div class="generic-service-icon"><i></i><i></i><i></i></div>
+          <span class="demo-kicker">Social or email service</span>
+          <strong>Unreadable file</strong>
+          <code>OSL::4C8F21...</code>
+        </article>
+      </div>
+
+      <ol class="demo-explanation">
+        <li>OSL finds location, camera, author, and filename details hidden in the original file.</li>
+        <li>Your computer removes those details and creates a separate clean copy.</li>
+        <li>Pro encrypts the clean copy only after cleaning is complete.</li>
+        <li>The supported service receives a locked file it cannot read.</li>
+      </ol>
+    </section>
+
+    <section class="section product-demo expiry-demo reveal" aria-labelledby="expiry-heading" data-product-animation="expiry-flow">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Honest expiry</p>
+          <h2 id="expiry-heading" class="section-heading">Know what disappears.<br>Know what can remain.</h2>
+          <p class="section-subhead">OSL names the exact result instead of hiding different actions behind one self-destruct label.</p>
+        </div>
+        <button class="button button-secondary replay-button" type="button" data-animation-replay>Replay</button>
+      </div>
+
+      <div class="expiry-scene" aria-hidden="true">
+        <article class="expiry-lane expiry-native-lane">
+          <header><span>A</span><div><strong>Platform timer</strong><small>Where supported</small></div></header>
+          <div class="expiry-device-frame">
+            <div class="expiry-message native-expiry-message"><span>Meeting moved to six.</span><i></i></div>
+            <div class="expiry-clock"><i></i><b>24h</b></div>
+            <p class="expiry-outcome">Service reports removed</p>
+          </div>
+        </article>
+
+        <article class="expiry-lane expiry-key-lane">
+          <header><span>B</span><div><strong>OSL key expiry</strong><small>Cryptographic expiry</small></div></header>
+          <div class="expiry-key-stage">
+            <div class="expiry-carrier"><code>OSL::7M9K2QAF...</code><span>Carrier remains</span></div>
+            <div class="expiry-key"><i></i><b>Device key</b></div>
+            <div class="expiry-broken-link"></div>
+            <p class="expiry-unreadable"><span class="attachment-lock-icon"></span> Unreadable</p>
+          </div>
+        </article>
+
+        <article class="expiry-lane expiry-account-lane">
+          <header><span>C</span><div><strong>My view only</strong><small>Local or account cleanup</small></div></header>
+          <div class="expiry-account-stage">
+            <div class="expiry-my-account"><span>My account</span><p>Meeting moved to six.</p></div>
+            <div class="expiry-copy-row">
+              <div><i class="expiry-copy-icon screen"></i><span>Screenshot</span></div>
+              <div><i class="expiry-copy-icon archive"></i><span>Backup</span></div>
+            </div>
+            <p class="expiry-account-result">Gone from my view. Other copies can remain.</p>
+          </div>
+        </article>
+      </div>
+
+      <ol class="demo-explanation expiry-explanation">
+        <li>A platform timer asks the service to remove a supported message.</li>
+        <li>After OSL expiry, compliant OSL clients can no longer open the encrypted content. A carrier can remain.</li>
+        <li>Account cleanup removes a message from your view or account only.</li>
+        <li>OSL never claims to remove screenshots, exports, recipient copies, or platform backups.</li>
+      </ol>
+    </section>
+
+    <section class="section tutorial-compact reveal" aria-labelledby="tutorial-preview-heading">
+      <span class="tutorial-placeholder-icon" aria-hidden="true">▶</span>
+          <div><p class="eyebrow">Coming next</p><h2 id="tutorial-preview-heading">Tutorials and real screenshots.</h2><p>Short walkthroughs will replace this preview as each supported app ships.</p></div>
     </section>
 
     <section class="section reveal" aria-labelledby="limits-heading">
-      <p class="eyebrow">The honest limits</p>
-      <h2 id="limits-heading" class="section-heading">Encryption does not make you invisible.</h2>
-      <div class="grid-2 limits">
-        <article class="card limit"><h3>Services still see activity</h3><p>A connected service can still see your account, recipients, groups, timing, and encrypted message data.</p></article>
-        <article class="card limit"><h3>Your device still matters</h3><p>OSL cannot protect a hacked computer, a camera, a recipient screenshot, or text sent in normal mode.</p></article>
-        <article class="card limit"><h3>Both people need OSL</h3><p>A private chat works only after every required person installs OSL and approves it.</p></article>
-        <article class="card limit"><h3>Voice and video are separate</h3><p>OSL protects selected text and supported files. Calls still use the connected service's normal system.</p></article>
+      <p class="eyebrow">Honest limits</p>
+      <h2 id="limits-heading" class="section-heading">Private content is not invisible activity.</h2>
+      <div class="grid-3 limits">
+        <article class="card limit"><h3>Services see metadata</h3><p>Connected services can still see accounts, recipients, timing, and delivery data.</p></article>
+        <article class="card limit"><h3>Devices still matter</h3><p>OSL cannot stop malware, cameras, screenshots, or a recipient sharing your words.</p></article>
+        <article class="card limit"><h3>Support varies by app</h3><p>Text, files, cleanup, calls, and verification differ by service. Check current availability first.</p></article>
       </div>
-      <p class="center-link"><a href="/audit">Read the technical audit</a></p>
+      <p class="center-link"><a href="/audit">Read the technical audit and trust boundaries</a></p>
     </section>
 
     <section class="section section-cta reveal" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" class="section-heading">Protect the words that matter.</h2>
-      <p class="section-subhead">Windows beta. Free private text. No ads or usage tracking.</p>
+      <h2 id="cta-heading" class="section-heading">Keep the important words closer.</h2>
+      <p class="section-subhead">Windows beta. Open source. No ads or usage tracking.</p>
       <a href="/download" class="button button-primary">Download for Windows</a>
     </section>
 
+    <aside class="site-small-print" aria-label="Important privacy limits">
+      <strong>How “protected” works.</strong> The OSL composer is visibly marked whenever it covers a service composer. The design does not give the service or OSL backend a recoverable plaintext copy. Accounts, recipients, timing, screenshots, unlocked devices, malware, and people who already saw a message can still expose information.
+    </aside>
   </main>
 
   <footer>
