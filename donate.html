@@ -40,30 +40,37 @@
 
       <div class="mission-scene" aria-hidden="true">
         <article class="mission-device">
-          <span class="mission-device-dot"></span>
-          <strong>Your device</strong>
+          <header><span class="mission-device-dot"></span><strong>Your device</strong></header>
           <div class="mission-message">Meet me at five.</div>
-          <small>Private key</small>
+          <small>Plaintext stays here</small>
         </article>
 
+        <div class="mission-route mission-route-in">
+          <span class="mission-route-line"></span>
+          <span class="mission-packet mission-packet-out"><i class="mission-mini-lock"></i></span>
+        </div>
+
         <div class="mission-center">
-          <div class="mission-community"><i></i><i></i><i></i></div>
-          <div class="mission-shield"><span>&lt;/&gt;</span></div>
-          <strong>Open code</strong>
+          <small>Open source</small>
+          <svg class="mission-shield" viewBox="0 0 96 112" focusable="false" aria-hidden="true">
+            <path class="mission-shield-outline" d="M48 4 88 20v31c0 26-15.6 44.6-40 57C23.6 95.6 8 77 8 51V20L48 4Z"></path>
+            <path class="mission-shield-lock" d="M35 50v-7c0-8 5-14 13-14s13 6 13 14v7m-31 0h36v28H30V50Z"></path>
+          </svg>
+          <strong>Protected</strong>
+        </div>
+
+        <div class="mission-route mission-route-out">
+          <span class="mission-route-line"></span>
+          <span class="mission-packet mission-packet-in"><code>••••</code></span>
         </div>
 
         <article class="mission-request-card">
-          <span class="mission-badge"></span>
-          <strong>Records request</strong>
-          <div class="mission-record"><span>Stored data</span><code>•••• ••••</code></div>
-          <small>Unreadable</small>
+          <header><span class="mission-badge">!</span><strong>Records request</strong></header>
+          <div class="mission-record"><span>Recovered</span><code>•••• ••••</code></div>
+          <small>No plaintext</small>
         </article>
-
-        <div class="mission-rail"></div>
-        <div class="mission-request-packet"><span></span></div>
-        <div class="mission-locked-packet"><span></span></div>
       </div>
-      <p class="mission-caption">They can request the record. They cannot recover the message.</p>
+      <p class="mission-caption">The record can be requested. Your message cannot be recovered.</p>
     </section>
 
     <section class="donate-checkout reveal" aria-labelledby="card-donation-heading">
@@ -91,8 +98,8 @@
         <h2 id="crypto-donation-heading">Bitcoin or Monero.</h2>
       </div>
       <div class="payment-actions" role="group" aria-label="Crypto donation methods coming soon">
-        <button class="button button-secondary" type="button" data-crypto-donation-method="bitcoin" disabled>Bitcoin <span>Coming soon</span></button>
-        <button class="button button-secondary" type="button" data-crypto-donation-method="monero" disabled>Monero <span>Coming soon</span></button>
+        <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="bitcoin" disabled><svg class="bitcoin-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><text x="16" y="21">₿</text></svg><strong>Bitcoin</strong><span>Coming soon</span></button>
+        <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="monero" disabled><svg class="monero-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><path d="M7 23V9l9 9 9-9v14h-4v-7l-5 5-5-5v7z"></path></svg><strong>Monero</strong><span>Coming soon</span></button>
       </div>
     </section>
   </main>
