@@ -169,6 +169,10 @@
   stroke-width: 2.5;
 }
 
+.mission-shield-logo {
+  filter: drop-shadow(0 0 7px rgba(11, 217, 244, .55));
+}
+
 .mission-center small,
 .mission-center > strong {
   font-size: .7rem;
