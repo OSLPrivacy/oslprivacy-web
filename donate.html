@@ -96,13 +96,54 @@
       <div>
         <p class="eyebrow">Crypto</p>
         <h2 id="crypto-donation-heading">Bitcoin or Monero.</h2>
+        <p class="crypto-donation-selection">Selected: <strong id="crypto-donation-selected-amount">$20.00</strong></p>
       </div>
-      <div class="payment-actions" role="group" aria-label="Crypto donation methods coming soon">
-        <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="bitcoin" disabled><svg class="bitcoin-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><text x="16" y="21">₿</text></svg><strong>Bitcoin</strong><span>Coming soon</span></button>
-        <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="monero" disabled><svg class="monero-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><path d="M7 23V9l9 9 9-9v14h-4v-7l-5 5-5-5v7z"></path></svg><strong>Monero</strong><span>Coming soon</span></button>
+      <div class="crypto-donation-controls">
+        <div class="crypto-donation-amounts" role="group" aria-label="Choose a crypto donation amount">
+          <button class="button button-secondary" type="button" data-crypto-donation-amount-cents="500">$5</button>
+          <button class="button button-primary" type="button" data-crypto-donation-amount-cents="2000" aria-pressed="true">$20</button>
+          <button class="button button-secondary" type="button" data-crypto-donation-amount-cents="5000">$50</button>
+          <button class="button button-secondary" type="button" data-crypto-donation-custom-toggle aria-expanded="false" aria-controls="crypto-donation-custom-form">Other</button>
+        </div>
+        <form class="crypto-donation-custom-form" id="crypto-donation-custom-form" hidden>
+          <label for="crypto-donation-custom-amount">Amount in US dollars</label>
+          <div><span aria-hidden="true">$</span><input id="crypto-donation-custom-amount" name="amount" type="number" min="1" max="10000" step="0.01" inputmode="decimal" required><button class="button button-primary" type="submit">Use amount</button></div>
+          <p class="form-status" id="crypto-donation-amount-status" role="status" aria-live="polite"></p>
+        </form>
+        <div class="payment-actions" role="group" aria-label="Crypto donation methods coming soon">
+          <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="btc" disabled><svg class="bitcoin-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><text x="16" y="21">₿</text></svg><strong>Bitcoin</strong><span>Coming soon</span></button>
+          <button class="button button-secondary payment-brand-button" type="button" data-crypto-donation-method="xmr" disabled><svg class="monero-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"></circle><path d="M7 23V9l9 9 9-9v14h-4v-7l-5 5-5-5v7z"></path></svg><strong>Monero</strong><span>Coming soon</span></button>
+        </div>
       </div>
     </section>
   </main>
+
+  <dialog class="payment-dialog crypto-donation-dialog" id="crypto-donation-dialog" aria-labelledby="crypto-donation-dialog-title">
+    <div class="payment-dialog-inner">
+      <button class="dialog-close" type="button" data-crypto-donation-close aria-label="Close crypto donation window">×</button>
+      <p class="eyebrow">One-time donation</p>
+      <h2 id="crypto-donation-dialog-title">Send the exact amount.</h2>
+      <p>Use this address once before the invoice closes.</p>
+      <dl class="payment-detail">
+        <dt>Donation</dt>
+        <dd><strong id="crypto-donation-usd"></strong></dd>
+        <dt>Address</dt>
+        <dd><code id="crypto-donation-address"></code><button class="payment-copy" type="button" data-crypto-donation-copy="address">Copy</button></dd>
+        <dt>Exact crypto amount</dt>
+        <dd><code id="crypto-donation-native-amount"></code><span class="crypto-donation-asset" id="crypto-donation-asset"></span><button class="payment-copy" type="button" data-crypto-donation-copy="amount">Copy</button></dd>
+        <dt>Confirmations</dt>
+        <dd><strong id="crypto-donation-confirmations"></strong></dd>
+        <dt>Invoice closes</dt>
+        <dd><time id="crypto-donation-expires"></time></dd>
+      </dl>
+      <p class="crypto-expired-warning" id="crypto-donation-expired" role="alert" hidden>Invoice closed. Do not send to this address.</p>
+      <p class="form-status" id="crypto-donation-status" role="status" aria-live="polite"></p>
+      <section class="crypto-donation-confirmed" id="crypto-donation-confirmed" tabindex="-1" hidden>
+        <span aria-hidden="true">✓</span>
+        <div><h3>Donation confirmed.</h3><p>Thank you for supporting open-source privacy.</p></div>
+      </section>
+    </div>
+  </dialog>
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages"><a href="/download">Download</a><a href="/features">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
@@ -110,5 +151,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
   <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/crypto-donation.js" type="module"></script>
 </body>
 </html>

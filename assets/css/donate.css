@@ -386,6 +386,129 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.crypto-donation-selection {
+  margin: 1rem 0 0;
+  color: #9eaaaf;
+}
+
+.crypto-donation-selection strong {
+  color: var(--donate-white);
+}
+
+.crypto-donation-controls {
+  display: grid;
+  gap: .75rem;
+}
+
+.crypto-donation-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .65rem;
+}
+
+.crypto-donation-amounts .button {
+  min-width: 0;
+}
+
+.crypto-donation-amounts [aria-pressed="true"] {
+  color: #020708;
+  background: #0bd9f4;
+  border-color: #0bd9f4;
+}
+
+.crypto-donation-custom-form[hidden] {
+  display: none;
+}
+
+.crypto-donation-custom-form {
+  padding: 1rem;
+  border: 1px solid #435057;
+  background: #0b0e10;
+}
+
+.crypto-donation-custom-form label {
+  display: block;
+  margin-bottom: .55rem;
+  color: #aeb8bd;
+  font-size: .75rem;
+}
+
+.crypto-donation-custom-form > div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .7rem;
+}
+
+.crypto-donation-custom-form input {
+  min-width: 0;
+  padding: .9rem .25rem;
+  border: 0;
+  outline: 0;
+  color: var(--donate-white);
+  background: transparent;
+  font: inherit;
+}
+
+.crypto-donation-custom-form input:focus-visible {
+  box-shadow: inset 0 -2px #0bd9f4;
+}
+
+.crypto-donation-custom-form .form-status {
+  margin: .75rem 0 0;
+}
+
+.crypto-donation-dialog .payment-detail dd code {
+  font-size: .78rem;
+}
+
+.crypto-donation-asset {
+  color: #9eaaaf;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.crypto-donation-confirmed {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #5ce0a0;
+  background: rgba(92, 224, 160, .06);
+}
+
+.crypto-donation-confirmed[hidden] {
+  display: none;
+}
+
+.crypto-donation-confirmed > span {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: #020708;
+  background: #5ce0a0;
+  font-weight: 800;
+}
+
+.crypto-donation-confirmed h3,
+.crypto-donation-confirmed p {
+  margin: 0;
+}
+
+.crypto-donation-confirmed h3 {
+  color: var(--donate-white);
+  font-size: 1rem;
+}
+
+.crypto-donation-confirmed p {
+  margin-top: .25rem;
+  font-size: .8rem;
+}
+
 .donate-crypto .button span {
   display: block;
   margin-top: .25rem;
@@ -568,6 +691,18 @@
 
   .donate-crypto .payment-actions {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .crypto-donation-amounts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .crypto-donation-custom-form > div {
+    grid-template-columns: auto 1fr;
+  }
+
+  .crypto-donation-custom-form .button {
+    grid-column: 1 / -1;
   }
 }
 
