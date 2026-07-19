@@ -22,8 +22,8 @@
     </button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
       <ul class="topnav-links">
-        <li><a href="/features">Features</a></li>
         <li><a href="/download">Download</a></li>
+        <li><a href="/features">Features</a></li>
         <li><a href="/donate">Donate</a></li>
         <li><a href="/audit">Audit</a></li>
         <li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li>
@@ -78,23 +78,16 @@
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
     </section>
 
-    <section class="section product-demo reveal" id="how-it-works" aria-labelledby="flow-heading" data-product-animation="message-flow" data-playback-rate="0.76">
-      <div class="demo-heading-row">
-        <div>
-          <p class="eyebrow">How it works</p>
-          <h2 id="flow-heading" class="section-heading">Private in.<br>Private out.</h2>
-        </div>
-      </div>
-
+    <section class="section product-demo reveal" id="how-it-works" aria-label="Message protection" data-product-animation="message-flow" data-playback-rate="0.8">
       <div class="cinema-viewport" aria-hidden="true">
         <div class="cinema-world">
           <div class="cinema-floor"></div>
-          <svg class="cinema-routes" viewBox="0 0 1180 560" preserveAspectRatio="none">
-            <path class="route route-compose" d="M340 300 C365 300 380 300 410 300"></path>
-            <path class="route route-danger" d="M610 270 C655 238 680 155 735 155"></path>
-            <path class="route route-lock" d="M610 340 C655 375 680 462 735 462"></path>
-            <path class="route route-danger-out" d="M905 155 C945 178 960 265 990 285"></path>
-            <path class="route route-lock-out" d="M905 462 C945 438 960 365 990 345"></path>
+          <svg class="cinema-routes" viewBox="0 0 1380 560" preserveAspectRatio="none">
+            <path class="route route-compose" d="M350 300 C382 300 398 300 430 300"></path>
+            <path class="route route-danger" d="M650 270 C690 238 706 155 750 155"></path>
+            <path class="route route-lock" d="M650 340 C690 375 706 462 750 462"></path>
+            <path class="route route-danger-out" d="M930 155 C975 178 995 265 1030 285"></path>
+            <path class="route route-lock-out" d="M930 462 C975 438 995 365 1030 345"></path>
           </svg>
 
           <article class="cinema-composer cinema-object">
@@ -147,26 +140,25 @@
           <div class="cinema-packet lock-to-friend"><span class="packet-lock"></span></div>
           <div class="decrypt-stream"><code>7M9K·Q2AF·81C...</code><span>umbrella · north entrance · five</span></div>
 
-          <article class="cinema-device friend-cinema-device cinema-object">
-            <div class="computer-shell">
-              <div class="computer-screen friend-screen">
-                <div class="native-carrier-message"><p>The weather looks clear here.</p></div>
-                <div class="restored-message-3d"><span><b>OSL</b></span><p>I'll bring an umbrella. Meet by the north entrance at five.</p></div>
-              </div>
-              <span class="computer-stand"></span>
+          <article class="friend-cinema-device cinema-object">
+            <div class="chat-history-3d friend-chat-history">
+              <header class="social-chat-header"><i class="social-avatar"></i><span class="social-recipient"></span></header>
+              <p class="chat-bubble chat-bubble-in">Clouds are rolling in. Still meeting at five?</p>
+              <p class="chat-bubble chat-bubble-out">Yes. The north entrance still works.</p>
+              <div class="native-carrier-message"><p>The weather looks clear here.</p></div>
+              <div class="restored-message-3d"><span><b>OSL</b></span><p>I'll bring an umbrella. Meet by the north entrance at five.</p></div>
             </div>
+            <div class="service-bar-3d"><span class="native-photo-symbol"></span><b class="native-input-line"></b><span class="native-send-symbol"></span></div>
           </article>
         </div>
       </div>
-
-      <p class="clean-motion-note">Protected on your computer. Opened on theirs.</p>
     </section>
 
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Scrub</p>
-          <h2 id="scrub-heading" class="section-heading">Find it. Clear it.</h2>
+          <h2 id="scrub-heading" class="section-heading">Protect your digital footprint.</h2>
           <p class="scrub-promise">The scan stays on your device.</p>
         </div>
       </div>
@@ -194,7 +186,7 @@
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/features">Features</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
+      <a href="/download">Download</a><a href="/features">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donate to OSL Privacy</title>
-  <meta name="description" content="Make a one-time donation to support open-source privacy work at OSL Privacy.">
+  <meta name="description" content="Support open-source privacy with a one-time donation to OSL Privacy.">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -12,29 +12,65 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/donate.css">
 </head>
-<body>
+<body class="donate-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topnav">
     <a class="topnav-brand" href="/"><img class="topnav-brand-mark app-logo" src="/assets/img/osl-app-icon-v2.png" alt="" width="34" height="34"><span>OSL</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
-      <ul class="topnav-links"><li><a href="/features">Features</a></li><li><a href="/download">Download</a></li><li><a href="/donate" aria-current="page">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li></ul>
+      <ul class="topnav-links"><li><a href="/download">Download</a></li><li><a href="/features">Features</a></li><li><a href="/donate" aria-current="page">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li></ul>
     </nav>
   </header>
 
-  <main id="main">
-    <section class="section reveal">
-      <p class="eyebrow">Independent and open source</p>
-      <h1 class="page-heading">Support OSL.</h1>
-      <p class="page-lede">Donations help fund open-source privacy work, security testing, and public infrastructure.</p>
-      <p class="availability-note">No pressure. Using OSL for free is enough.</p>
+  <main id="main" class="donate-main">
+    <section class="donate-hero reveal" aria-labelledby="donate-title">
+      <img class="donate-logo app-logo" src="/assets/img/osl-app-icon-v2.png" alt="" width="72" height="72">
+      <p class="eyebrow">Open source. Independent.</p>
+      <h1 id="donate-title">Keep privacy open.</h1>
+      <p>One donation. No account. No subscription.</p>
     </section>
 
-    <section class="section reveal" aria-labelledby="card-donation-heading">
-      <p class="eyebrow">Card donation</p>
-      <h2 id="card-donation-heading" class="section-heading">Choose an amount.</h2>
-      <p class="section-subhead">One payment. No recurring charge.</p>
+    <section class="donate-mission reveal" aria-labelledby="mission-title" data-product-animation="donation-mission" data-playback-rate="0.8">
+      <div class="donate-mission-heading">
+        <p class="eyebrow">The mission</p>
+        <h2 id="mission-title">Private stays private.</h2>
+      </div>
+
+      <div class="mission-scene" aria-hidden="true">
+        <article class="mission-device">
+          <span class="mission-device-dot"></span>
+          <strong>Your device</strong>
+          <div class="mission-message">Meet me at five.</div>
+          <small>Private key</small>
+        </article>
+
+        <div class="mission-center">
+          <div class="mission-community"><i></i><i></i><i></i></div>
+          <div class="mission-shield"><span>&lt;/&gt;</span></div>
+          <strong>Open code</strong>
+        </div>
+
+        <article class="mission-request-card">
+          <span class="mission-badge"></span>
+          <strong>Records request</strong>
+          <div class="mission-record"><span>Stored data</span><code>•••• ••••</code></div>
+          <small>Unreadable</small>
+        </article>
+
+        <div class="mission-rail"></div>
+        <div class="mission-request-packet"><span></span></div>
+        <div class="mission-locked-packet"><span></span></div>
+      </div>
+      <p class="mission-caption">They can request the record. They cannot recover the message.</p>
+    </section>
+
+    <section class="donate-checkout reveal" aria-labelledby="card-donation-heading">
+      <div class="donate-checkout-copy">
+        <p class="eyebrow">Donate once</p>
+        <h2 id="card-donation-heading">Choose an amount.</h2>
+      </div>
       <div class="payment-actions" role="group" aria-label="Choose a one-time donation amount">
         <button class="button button-secondary" type="button" data-donation-amount="5" aria-label="Donate 5 dollars once">$5</button>
         <button class="button button-primary" type="button" data-donation-amount="20" aria-label="Donate 20 dollars once">$20</button>
@@ -46,37 +82,23 @@
         <div><span aria-hidden="true">$</span><input id="custom-donation-amount" name="amount" type="number" min="1" max="10000" step="1" inputmode="numeric" required><button class="button button-primary" type="submit">Donate once</button></div>
       </form>
       <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
-      <p class="live-badge charge-notice">Completing Stripe checkout creates a real one-time charge</p>
+      <p class="donate-privacy-line"><span aria-hidden="true">✓</span> No OSL donor profile</p>
     </section>
 
-    <section class="section section-quiet reveal" aria-labelledby="donation-privacy-heading">
-      <h2 id="donation-privacy-heading" class="section-heading">No donor profile.</h2>
-      <p class="section-subhead">OSL does not create a donor profile or copy your Stripe email into its product database. Stripe keeps the payment and billing records it requires to process the donation.</p>
-    </section>
-
-    <section class="section reveal" aria-labelledby="crypto-donation-heading">
-      <p class="eyebrow">Crypto donation</p>
-      <h2 id="crypto-donation-heading" class="section-heading">Bitcoin or Monero.</h2>
-      <p class="section-subhead">Crypto donations are not live yet. These options stay disabled until the self-hosted watcher and settlement proof pass production verification.</p>
+    <section class="donate-crypto reveal" aria-labelledby="crypto-donation-heading">
+      <div>
+        <p class="eyebrow">Crypto</p>
+        <h2 id="crypto-donation-heading">Bitcoin or Monero.</h2>
+      </div>
       <div class="payment-actions" role="group" aria-label="Crypto donation methods coming soon">
         <button class="button button-secondary" type="button" data-crypto-donation-method="bitcoin" disabled>Bitcoin <span>Coming soon</span></button>
         <button class="button button-secondary" type="button" data-crypto-donation-method="monero" disabled>Monero <span>Coming soon</span></button>
-      </div>
-      <p class="section-subhead">Bitcoin and Monero retain their respective chain records. OSL will not ask you to submit a transaction ID.</p>
-    </section>
-
-    <section class="section reveal" aria-labelledby="donation-use-heading">
-      <h2 id="donation-use-heading" class="section-heading">What donations support</h2>
-      <div class="grid-3">
-        <article class="card"><h3>Open source</h3><p>Public code, documentation, and reproducible release work.</p></article>
-        <article class="card"><h3>Security</h3><p>Independent review, testing, and safer defaults.</p></article>
-        <article class="card"><h3>Infrastructure</h3><p>Small public services needed to deliver encrypted data and activation codes.</p></article>
       </div>
     </section>
   </main>
 
   <footer>
-    <nav class="footer-pages" aria-label="Site pages"><a href="/features">Features</a><a href="/download">Download</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
+    <nav class="footer-pages" aria-label="Site pages"><a href="/download">Download</a><a href="/features">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a></nav>
     <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>

@@ -1,0 +1,309 @@
+/* Audit-only layout: dense, technical, and intentionally distinct from marketing pages. */
+
+#main {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+  padding: 0 clamp(1rem, 3vw, 2rem) 3rem;
+}
+
+#main .section {
+  width: 100%;
+  max-width: 70rem;
+  padding: clamp(1.8rem, 4vw, 3rem) 0;
+  border-top: 1px solid var(--border);
+}
+
+#main .audit-intro {
+  max-width: 60rem;
+  padding-top: clamp(2.5rem, 7vw, 5.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 0;
+  text-align: center;
+}
+
+#main .audit-intro > .eyebrow,
+#main .audit-intro > .page-heading,
+#main .audit-intro > .page-lede {
+  margin-inline: auto;
+  text-align: center;
+}
+
+#main .audit-intro > .eyebrow {
+  margin-bottom: .75rem;
+  font-family: var(--font-terminal);
+  font-size: .68rem;
+  letter-spacing: .16em;
+}
+
+#main .audit-intro > .page-heading {
+  max-width: 44rem;
+  margin-bottom: 1rem;
+  font-size: clamp(2.15rem, 5vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+}
+
+#main .audit-intro > .page-lede {
+  max-width: 42rem;
+  font-size: clamp(.95rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+}
+
+#main .audit-intro > .hero-cta {
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+#main .audit-intro .button,
+#main .audit-file .button {
+  min-height: 2.55rem;
+  padding: .68rem .9rem;
+  border-radius: 3px;
+  font-family: var(--font-terminal);
+  font-size: .76rem;
+  letter-spacing: .01em;
+}
+
+#main .section-heading {
+  display: grid;
+  grid-template-columns: minmax(1.5rem, 1fr) auto minmax(1.5rem, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+  letter-spacing: -.025em;
+  text-align: center;
+}
+
+#main .section-heading::before,
+#main .section-heading::after {
+  height: 1px;
+  background: var(--border);
+  content: "";
+}
+
+#main .audit-status-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+#main .audit-status-grid .card {
+  min-height: 7.25rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, .018);
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+#main .audit-status-grid strong {
+  min-height: 2.2rem;
+  margin-bottom: .75rem;
+  font-family: var(--font-terminal);
+  font-size: .64rem;
+  line-height: 1.45;
+  letter-spacing: .09em;
+}
+
+#main .audit-status-grid p {
+  font-size: .82rem;
+  line-height: 1.35;
+}
+
+#main .audit-status-grid .card:first-child {
+  border-color: rgba(6, 182, 212, .6);
+}
+
+#main .audit-status-grid .card:first-child p {
+  color: var(--accent);
+}
+
+#main .audit-files {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .85rem;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+#main .audit-file {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 13rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, .014);
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+#main .audit-file:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+#main .audit-file:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+
+#main .audit-file:hover {
+  border-color: rgba(6, 182, 212, .7);
+}
+
+#main .audit-file h3 {
+  margin-bottom: .55rem;
+  font-size: .98rem;
+  letter-spacing: -.015em;
+}
+
+#main .audit-file-desc {
+  flex: 1;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+  font-size: .82rem;
+  line-height: 1.58;
+}
+
+#main .audit-file-actions {
+  margin-top: auto;
+}
+
+#main .audit-file-actions .button {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#main .technical-prose {
+  max-width: 54rem;
+  padding: .2rem 0 .2rem 1.25rem;
+  border-left: 2px solid rgba(6, 182, 212, .55);
+  font-size: .88rem;
+  line-height: 1.72;
+}
+
+#main .technical-prose p,
+#main .technical-prose ol {
+  color: var(--text-muted);
+}
+
+#main .technical-prose ol {
+  padding-left: 1.35rem;
+}
+
+#main .technical-prose li {
+  padding-left: .25rem;
+}
+
+#main .grid-2 {
+  gap: .8rem;
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
+#main .grid-2 .card {
+  min-height: 9.5rem;
+  padding: 1.15rem;
+  background: rgba(255, 255, 255, .014);
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+#main .grid-2 .card h3 {
+  margin-bottom: .55rem;
+  font-family: var(--font-terminal);
+  font-size: .82rem;
+  letter-spacing: .01em;
+}
+
+#main .grid-2 .card p {
+  font-size: .84rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 900px) {
+  #main .audit-status-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #main .audit-files {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #main .audit-file,
+  #main .audit-file:nth-child(4),
+  #main .audit-file:nth-child(5) {
+    grid-column: auto;
+  }
+
+  #main .audit-file:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - .425rem);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 620px) {
+  #main {
+    padding-inline: 1rem;
+  }
+
+  #main .section {
+    padding-block: 2rem;
+  }
+
+  #main .audit-intro {
+    padding-top: 2.75rem;
+    padding-bottom: 2.5rem;
+  }
+
+  #main .audit-intro > .page-heading {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+  }
+
+  #main .audit-intro > .hero-cta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .6rem;
+  }
+
+  #main .audit-intro .button {
+    width: 100%;
+  }
+
+  #main .section-heading {
+    grid-template-columns: 1fr;
+    gap: .65rem;
+    text-align: left;
+  }
+
+  #main .section-heading::before {
+    display: none;
+  }
+
+  #main .section-heading::after {
+    width: 3rem;
+    background: var(--accent);
+  }
+
+  #main .audit-status-grid,
+  #main .audit-files,
+  #main .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  #main .audit-status-grid .card,
+  #main .audit-file,
+  #main .audit-file:last-child:nth-child(odd),
+  #main .grid-2 .card {
+    width: 100%;
+    min-height: 0;
+  }
+
+  #main .audit-status-grid strong {
+    min-height: 0;
+  }
+
+  #main .technical-prose {
+    padding-left: 1rem;
+    font-size: .85rem;
+  }
+}

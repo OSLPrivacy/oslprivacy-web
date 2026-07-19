@@ -1,0 +1,597 @@
+.donate-page {
+  --donate-line: #293137;
+  --donate-panel: #101416;
+  --donate-white: #f7f9fa;
+}
+
+.donate-page .topnav {
+  margin-bottom: 0;
+}
+
+.donate-main {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
+}
+
+.donate-hero {
+  display: grid;
+  justify-items: center;
+  padding: clamp(4.5rem, 10vw, 8rem) 1rem clamp(3.5rem, 8vw, 6rem);
+  text-align: center;
+}
+
+.donate-logo {
+  width: clamp(3.75rem, 7vw, 5rem);
+  height: auto;
+  margin-bottom: 1.4rem;
+  filter: drop-shadow(0 0 18px rgba(0, 216, 255, .3));
+}
+
+.donate-hero h1 {
+  max-width: 860px;
+  margin: .45rem 0 1rem;
+  color: var(--donate-white);
+  font-size: clamp(3rem, 8vw, 6.7rem);
+  font-weight: 650;
+  letter-spacing: -.065em;
+  line-height: .94;
+}
+
+.donate-hero > p:last-child {
+  margin: 0;
+  color: #b3bdc2;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.donate-mission {
+  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  border-block: 1px solid var(--donate-line);
+}
+
+.donate-mission-heading {
+  text-align: center;
+}
+
+.donate-mission h2,
+.donate-checkout h2,
+.donate-crypto h2 {
+  margin: .35rem 0 0;
+  color: var(--donate-white);
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -.05em;
+  line-height: 1;
+}
+
+.mission-scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 5rem);
+  min-height: 410px;
+  max-width: 1040px;
+  margin: clamp(2.5rem, 6vw, 5rem) auto 1.5rem;
+  isolation: isolate;
+}
+
+.mission-device,
+.mission-request-card {
+  position: relative;
+  z-index: 2;
+  min-height: 230px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #505a60;
+  background: #0b0e10;
+  box-shadow: 9px 10px 0 #151a1d;
+}
+
+.mission-device {
+  transform: perspective(900px) rotateY(4deg);
+}
+
+.mission-request-card {
+  transform: perspective(900px) rotateY(-4deg);
+}
+
+.mission-device > strong,
+.mission-request-card > strong {
+  display: block;
+  margin-bottom: 1.6rem;
+  color: var(--donate-white);
+  font-size: 1rem;
+}
+
+.mission-device-dot {
+  display: inline-block;
+  width: .55rem;
+  height: .55rem;
+  margin-right: .55rem;
+  border-radius: 50%;
+  background: #5ce0a0;
+  box-shadow: 0 0 0 5px rgba(92, 224, 160, .08);
+}
+
+.mission-message,
+.mission-record {
+  border: 1px solid #3d474c;
+  background: #151a1d;
+}
+
+.mission-message {
+  padding: 1rem;
+  color: var(--donate-white);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.mission-device small,
+.mission-request-card small {
+  display: block;
+  margin-top: 1.35rem;
+  color: #8b969c;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mission-device small::before {
+  content: '';
+  display: inline-block;
+  width: .48rem;
+  height: .58rem;
+  margin-right: .5rem;
+  border: 1px solid #08d8f3;
+  vertical-align: -.08rem;
+}
+
+.mission-center {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  justify-items: center;
+  gap: .85rem;
+  color: var(--donate-white);
+  text-align: center;
+}
+
+.mission-community {
+  display: flex;
+  gap: .45rem;
+  align-items: end;
+  height: 2.25rem;
+}
+
+.mission-community i {
+  position: relative;
+  display: block;
+  width: .72rem;
+  height: .72rem;
+  border: 1px solid #f7f9fa;
+  border-radius: 50%;
+}
+
+.mission-community i::after {
+  content: '';
+  position: absolute;
+  top: .95rem;
+  left: 50%;
+  width: 1rem;
+  height: .8rem;
+  border: 1px solid #f7f9fa;
+  border-bottom: 0;
+  border-radius: .7rem .7rem 0 0;
+  transform: translateX(-50%);
+}
+
+.mission-shield {
+  display: grid;
+  place-items: center;
+  width: 5.4rem;
+  height: 6.1rem;
+  border: 2px solid #0bd9f4;
+  clip-path: polygon(50% 0, 92% 14%, 88% 66%, 50% 100%, 12% 66%, 8% 14%);
+  color: #0bd9f4;
+  background: #080b0d;
+  box-shadow: 0 0 28px rgba(11, 217, 244, .12);
+}
+
+.mission-shield span {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 1rem;
+}
+
+.mission-center > strong {
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.mission-badge {
+  display: inline-grid;
+  width: 2rem;
+  height: 2.25rem;
+  margin: 0 .7rem -.75rem 0;
+  border: 1px solid #f77676;
+  border-radius: 1rem 1rem 1.2rem 1.2rem;
+  vertical-align: top;
+}
+
+.mission-badge::after {
+  content: '!';
+  place-self: center;
+  color: #f77676;
+  font-weight: 750;
+}
+
+.mission-record {
+  display: grid;
+  gap: .65rem;
+  padding: 1rem;
+  opacity: 0;
+}
+
+.mission-record span {
+  color: #8f9a9f;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.mission-record code {
+  color: #0bd9f4;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .24em;
+}
+
+.mission-request-card small {
+  color: #0bd9f4;
+  font-weight: 700;
+}
+
+.mission-rail {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 22%;
+  right: 22%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #3d484e 0 7px, transparent 7px 14px);
+}
+
+.mission-request-packet,
+.mission-locked-packet {
+  position: absolute;
+  z-index: 5;
+  top: calc(50% - 1.35rem);
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  background: #090c0e;
+  opacity: 0;
+}
+
+.mission-request-packet {
+  right: 21%;
+  border: 1px solid #f77676;
+}
+
+.mission-request-packet span {
+  width: .9rem;
+  height: 1.1rem;
+  border: 1px solid #f77676;
+}
+
+.mission-locked-packet {
+  left: calc(50% - 1.35rem);
+  border: 1px solid #0bd9f4;
+}
+
+.mission-locked-packet span {
+  width: .8rem;
+  height: .7rem;
+  border: 1px solid #0bd9f4;
+}
+
+.mission-locked-packet span::before {
+  content: '';
+  display: block;
+  width: .48rem;
+  height: .5rem;
+  margin: -.58rem auto 0;
+  border: 1px solid #0bd9f4;
+  border-bottom: 0;
+  border-radius: .4rem .4rem 0 0;
+}
+
+.mission-caption {
+  margin: 0 auto;
+  color: #aab5ba;
+  text-align: center;
+}
+
+.donate-checkout,
+.donate-crypto {
+  display: grid;
+  grid-template-columns: minmax(260px, .75fr) minmax(400px, 1.25fr);
+  align-items: center;
+  gap: clamp(2rem, 8vw, 8rem);
+  padding: clamp(4rem, 9vw, 7rem) 0;
+  border-bottom: 1px solid var(--donate-line);
+}
+
+.donate-checkout .payment-actions,
+.donate-crypto .payment-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .65rem;
+  margin: 0;
+}
+
+.donate-checkout .button,
+.donate-crypto .button {
+  min-width: 0;
+  min-height: 4rem;
+  padding: .9rem;
+  font-size: 1rem;
+}
+
+.donate-checkout .button-primary {
+  color: #020708;
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+
+.custom-donation-form,
+.form-status,
+.donate-privacy-line {
+  grid-column: 2;
+}
+
+.custom-donation-form[hidden] {
+  display: none;
+}
+
+.custom-donation-form {
+  margin-top: -3rem;
+}
+
+.custom-donation-form label {
+  color: #aeb8bd;
+}
+
+.custom-donation-form > div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .7rem;
+  margin-top: .65rem;
+  padding-left: 1rem;
+  border: 1px solid #435057;
+  background: #0b0e10;
+}
+
+.custom-donation-form input {
+  min-width: 0;
+  padding: 1rem .25rem;
+  border: 0;
+  outline: 0;
+  color: var(--donate-white);
+  background: transparent;
+  font: inherit;
+}
+
+.custom-donation-form input:focus-visible {
+  box-shadow: inset 0 -2px #0bd9f4;
+}
+
+.custom-donation-form .button {
+  border-block: 0;
+  border-right: 0;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+.donate-privacy-line {
+  margin: -3rem 0 0;
+  color: #abb5ba;
+  font-size: .88rem;
+}
+
+.donate-privacy-line span {
+  margin-right: .45rem;
+  color: #0bd9f4;
+}
+
+.donate-crypto {
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.donate-crypto .payment-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.donate-crypto .button span {
+  display: block;
+  margin-top: .25rem;
+  color: #7f898e;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-product-animation="donation-mission"].is-running .mission-request-card {
+    animation: donation-request-focus 1700ms cubic-bezier(.2,.8,.2,1) 250ms both;
+  }
+
+  [data-product-animation="donation-mission"].is-running .mission-request-packet {
+    animation: donation-request-travel 1500ms cubic-bezier(.2,.8,.2,1) 1900ms both;
+  }
+
+  [data-product-animation="donation-mission"].is-running .mission-shield {
+    animation: donation-shield 1200ms cubic-bezier(.2,.8,.2,1) 3150ms both;
+  }
+
+  [data-product-animation="donation-mission"].is-running .mission-community i {
+    animation: donation-community 700ms ease 3550ms both;
+  }
+
+  [data-product-animation="donation-mission"].is-running .mission-locked-packet {
+    animation: donation-locked-travel 1500ms cubic-bezier(.2,.8,.2,1) 4400ms both;
+  }
+
+  [data-product-animation="donation-mission"].is-running .mission-record {
+    animation: donation-record-open 900ms ease 5650ms both;
+  }
+}
+
+@keyframes donation-request-focus {
+  from { opacity: .5; transform: perspective(900px) rotateY(-4deg) translateY(10px); }
+  to { opacity: 1; transform: perspective(900px) rotateY(-4deg) translateY(0); }
+}
+
+@keyframes donation-request-travel {
+  0% { right: 21%; opacity: 0; }
+  15% { opacity: 1; }
+  78% { right: calc(50% - 1.35rem); opacity: 1; }
+  100% { right: calc(50% - 1.35rem); opacity: 0; }
+}
+
+@keyframes donation-shield {
+  0% { transform: scale(.92); box-shadow: 0 0 0 rgba(11,217,244,0); }
+  45% { transform: scale(1.08); box-shadow: 0 0 42px rgba(11,217,244,.25); }
+  100% { transform: scale(1); box-shadow: 0 0 28px rgba(11,217,244,.12); }
+}
+
+@keyframes donation-community {
+  from { opacity: .25; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes donation-locked-travel {
+  0% { left: calc(50% - 1.35rem); opacity: 0; }
+  15% { opacity: 1; }
+  78% { left: calc(79% - 1.35rem); opacity: 1; }
+  100% { left: calc(79% - 1.35rem); opacity: 0; }
+}
+
+@keyframes donation-record-open {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); box-shadow: inset 2px 0 #0bd9f4; }
+}
+
+@media (max-width: 760px) {
+  .donate-main {
+    width: min(100% - 1.25rem, 1180px);
+  }
+
+  .mission-scene {
+    grid-template-columns: 1fr 84px 1fr;
+    gap: .6rem;
+    min-height: 330px;
+  }
+
+  .mission-device,
+  .mission-request-card {
+    min-height: 190px;
+    padding: .85rem;
+    box-shadow: 5px 6px 0 #151a1d;
+    transform: none;
+  }
+
+  .mission-device > strong,
+  .mission-request-card > strong {
+    margin-bottom: 1rem;
+    font-size: .75rem;
+  }
+
+  .mission-message,
+  .mission-record {
+    padding: .7rem;
+    font-size: .72rem;
+  }
+
+  .mission-device small,
+  .mission-request-card small {
+    font-size: .55rem;
+  }
+
+  .mission-shield {
+    width: 3.7rem;
+    height: 4.25rem;
+  }
+
+  .mission-community {
+    transform: scale(.75);
+  }
+
+  .mission-center > strong {
+    font-size: .56rem;
+  }
+
+  .mission-badge {
+    display: none;
+  }
+
+  .mission-rail { left: 18%; right: 18%; }
+  .mission-request-packet,
+  .mission-locked-packet {
+    width: 2rem;
+    height: 2rem;
+    top: calc(50% - 1rem);
+    transform: scale(.8);
+  }
+
+  @keyframes donation-request-travel {
+    0% { right: 16%; opacity: 0; }
+    15% { opacity: 1; }
+    78% { right: calc(50% - 1rem); opacity: 1; }
+    100% { right: calc(50% - 1rem); opacity: 0; }
+  }
+
+  @keyframes donation-locked-travel {
+    0% { left: calc(50% - 1rem); opacity: 0; }
+    15% { opacity: 1; }
+    78% { left: calc(82% - 1rem); opacity: 1; }
+    100% { left: calc(82% - 1rem); opacity: 0; }
+  }
+
+  .mission-caption {
+    max-width: 28rem;
+    font-size: .9rem;
+  }
+
+  .donate-checkout,
+  .donate-crypto {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .donate-checkout .payment-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .custom-donation-form,
+  .form-status,
+  .donate-privacy-line {
+    grid-column: 1;
+  }
+
+  .custom-donation-form,
+  .donate-privacy-line {
+    margin-top: -1rem;
+  }
+
+  .donate-crypto .payment-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-request-packet,
+  .mission-locked-packet {
+    display: none;
+  }
+}
