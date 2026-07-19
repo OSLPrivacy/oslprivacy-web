@@ -3461,13 +3461,60 @@ footer {
   border: 1px solid var(--border);
 }
 
-.payment-detail span {
+.payment-detail dt {
   color: var(--text-muted);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+.payment-detail dd {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+  margin: 0 0 var(--s-2);
+}
+
+.payment-detail dd:last-child { margin-bottom: 0; }
+
+.payment-detail dd code { flex: 1; min-width: 0; }
+
+.payment-copy {
+  flex: none;
+  padding: 0.42rem 0.62rem;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+}
+
+.payment-copy:disabled { cursor: not-allowed; opacity: 0.45; }
+
+.payment-dialog[data-expired="true"] .payment-detail { border-color: var(--danger); opacity: 0.64; }
+
+.crypto-expired-warning { color: var(--danger) !important; font-weight: 700; }
+
+.crypto-recovery {
+  margin-top: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--border);
+}
+
+.crypto-recovery h3 { margin: 0 0 var(--s-1); font-size: 0.95rem; }
+.crypto-recovery p { margin: 0 0 var(--s-2); font-size: 0.78rem; }
+
+.crypto-recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.crypto-recovery-actions .button { min-height: 2.5rem; padding: 0.55rem 0.75rem; }
 
 .payment-detail code,
 .activation-code {

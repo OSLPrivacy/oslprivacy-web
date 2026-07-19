@@ -7,6 +7,11 @@
   const CRYPTO_POLL_MS = 8000;
   const CRYPTO_CONFIRMATION_POLL_MS = 30000;
   const CRYPTO_CONFIRMATION_GRACE_SECONDS = 24 * 60 * 60;
+  const CRYPTO_FETCH_TIMEOUT_MS = 15000;
+  const CRYPTO_MAX_RETRY_AFTER_SECONDS = 10 * 60;
+  const CRYPTO_RECOVERY_FORMAT = 'osl-crypto-payment-recovery';
+  const CRYPTO_RECOVERY_VERSION = 1;
+  const CRYPTO_RECOVERY_MAX_BYTES = 16 * 1024;
 
   const bytesToBase64 = (bytes) => {
     let binary = '';
@@ -29,6 +34,16 @@
   const delay = (milliseconds) => new Promise((resolve) => {
     window.setTimeout(resolve, milliseconds);
   });
+
+  async function fetchWithTimeout(url, options = {}, timeoutMs = CRYPTO_FETCH_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
 
   async function createDeliveryBundle() {
     if (!window.crypto?.subtle || !window.sessionStorage) {
@@ -692,9 +707,218 @@
   const cryptoAmount = document.getElementById('crypto-amount');
   const cryptoConfirmations = document.getElementById('crypto-confirmations');
   const cryptoExpires = document.getElementById('crypto-expires');
+  const cryptoExpiredWarning = document.getElementById('crypto-expired-warning');
+  const cryptoRecoveryExport = document.getElementById('crypto-recovery-export');
+  const cryptoRecoveryImport = document.getElementById('crypto-recovery-import');
+  const cryptoRecoveryFile = document.getElementById('crypto-recovery-file');
+  const cryptoRecoveryStatus = document.getElementById('crypto-recovery-status');
+  const cryptoButtons = [...document.querySelectorAll('[data-crypto-method]')];
   let activeCryptoPoll = null;
+  let cryptoQuoteBusy = false;
+  let cryptoCooldownTimer = null;
+
+  const CRYPTO_INVOICE_ID = /^cpay_[0-9a-f]{32}$/;
+  const CRYPTO_CLAIM_TOKEN = /^[A-Za-z0-9_-]{43}$/;
+  const CRYPTO_ADDRESSES = {
+    btc: /^bc1[023456789acdefghjklmnpqrstuvwxyz]{11,87}$/,
+    xmr: /^[48][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$/,
+  };
+  const PRIVATE_JWK_KEYS = [
+    'alg', 'd', 'dp', 'dq', 'e', 'ext', 'key_ops', 'kty', 'n', 'p', 'q', 'qi',
+  ];
+
+  function hasExactKeys(value, expectedKeys) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const actual = Object.keys(value).sort();
+    const expected = [...expectedKeys].sort();
+    return actual.length === expected.length
+      && actual.every((key, index) => key === expected[index]);
+  }
+
+  async function validatePrivateRecoveryJwk(value) {
+    const base64Url = /^[A-Za-z0-9_-]+$/;
+    if (
+      !hasExactKeys(value, PRIVATE_JWK_KEYS)
+      || value.alg !== 'RSA-OAEP-256'
+      || value.kty !== 'RSA'
+      || value.ext !== true
+      || !Array.isArray(value.key_ops)
+      || value.key_ops.length !== 1
+      || value.key_ops[0] !== 'decrypt'
+      || value.e !== 'AQAB'
+      || typeof value.n !== 'string'
+      || value.n.length !== 342
+      || !base64Url.test(value.n)
+      || !['d', 'p', 'q', 'dp', 'dq', 'qi'].every((key) => (
+        typeof value[key] === 'string'
+        && value[key].length >= 170
+        && value[key].length <= 342
+        && base64Url.test(value[key])
+      ))
+    ) {
+      throw new Error('Recovery file contains an invalid private key.');
+    }
+    try {
+      await crypto.subtle.importKey(
+        'jwk',
+        value,
+        { name: 'RSA-OAEP', hash: 'SHA-256' },
+        false,
+        ['decrypt'],
+      );
+    } catch {
+      throw new Error('Recovery file contains an invalid private key.');
+    }
+    return value;
+  }
+
+  function readCryptoCheckout() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(CRYPTO_DELIVERY_KEY) || 'null');
+      return saved && typeof saved === 'object' ? saved : null;
+    } catch {
+      sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
+      return null;
+    }
+  }
+
+  function saveCryptoCheckout(saved) {
+    sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify(saved));
+    updateCryptoRecoveryControls();
+  }
+
+  function clearCryptoCheckout() {
+    sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
+    updateCryptoRecoveryControls();
+  }
+
+  function setCryptoButtonsDisabled(disabled) {
+    cryptoButtons.forEach((button) => {
+      button.disabled = disabled;
+      button.setAttribute('aria-busy', disabled && cryptoQuoteBusy ? 'true' : 'false');
+    });
+  }
+
+  function validateCryptoInvoice(value, expectedMethod, allowExpired = false) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      throw new Error('The payment service returned an invalid invoice. No payment was started.');
+    }
+    const decimals = expectedMethod === 'btc' ? 8 : expectedMethod === 'xmr' ? 12 : 0;
+    const amountPattern = decimals > 0 ? new RegExp(`^\\d+\\.\\d{${decimals}}$`) : null;
+    const now = Math.floor(Date.now() / 1000);
+    if (
+      !CRYPTO_INVOICE_ID.test(value.invoice_id)
+      || !CRYPTO_CLAIM_TOKEN.test(value.claim_token)
+      || value.payment_method !== expectedMethod
+      || !CRYPTO_ADDRESSES[expectedMethod]?.test(value.address)
+      || !amountPattern?.test(value.amount_native)
+      || !Number.isSafeInteger(value.expires_at)
+      || (!allowExpired && value.expires_at <= now)
+      || !Number.isSafeInteger(value.confirmations_required)
+      || value.confirmations_required <= 0
+    ) {
+      throw new Error('The payment service returned an invalid invoice. No payment was started.');
+    }
+    return {
+      invoice_id: value.invoice_id,
+      claim_token: value.claim_token,
+      payment_method: value.payment_method,
+      address: value.address,
+      amount_native: value.amount_native,
+      expires_at: value.expires_at,
+      confirmations_required: value.confirmations_required,
+    };
+  }
+
+  async function parseCryptoRecoveryFile(text) {
+    let recovery;
+    try {
+      recovery = JSON.parse(text);
+    } catch {
+      throw new Error('Recovery file is not valid JSON.');
+    }
+    if (!hasExactKeys(recovery, [
+      'format', 'version', 'origin', 'invoice', 'claim_token', 'private_jwk',
+    ])) {
+      throw new Error('Recovery file schema is invalid.');
+    }
+    if (
+      recovery.format !== CRYPTO_RECOVERY_FORMAT
+      || recovery.version !== CRYPTO_RECOVERY_VERSION
+      || recovery.origin !== window.location.origin
+    ) {
+      throw new Error('Recovery file belongs to a different site or version.');
+    }
+    if (!hasExactKeys(recovery.invoice, [
+      'invoice_id', 'payment_method', 'address', 'amount_native', 'expires_at',
+      'confirmations_required',
+    ])) {
+      throw new Error('Recovery file invoice schema is invalid.');
+    }
+    const invoice = validateCryptoInvoice({
+      ...recovery.invoice,
+      claim_token: recovery.claim_token,
+    }, recovery.invoice.payment_method, true);
+    const now = Math.floor(Date.now() / 1000);
+    if (now >= invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS) {
+      throw new Error('Recovery file has expired.');
+    }
+    const privateJwk = await validatePrivateRecoveryJwk(recovery.private_jwk);
+    return { invoice, privateJwk };
+  }
+
+  async function buildCryptoRecovery(saved) {
+    const invoice = validateCryptoInvoice(saved?.invoice, saved?.invoice?.payment_method, true);
+    const now = Math.floor(Date.now() / 1000);
+    if (now >= invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS) {
+      throw new Error('This invoice is too old to recover.');
+    }
+    const privateJwk = await validatePrivateRecoveryJwk(saved?.delivery?.privateJwk);
+    return {
+      format: CRYPTO_RECOVERY_FORMAT,
+      version: CRYPTO_RECOVERY_VERSION,
+      origin: window.location.origin,
+      invoice: {
+        invoice_id: invoice.invoice_id,
+        payment_method: invoice.payment_method,
+        address: invoice.address,
+        amount_native: invoice.amount_native,
+        expires_at: invoice.expires_at,
+        confirmations_required: invoice.confirmations_required,
+      },
+      claim_token: invoice.claim_token,
+      private_jwk: privateJwk,
+    };
+  }
+
+  function updateCryptoRecoveryControls() {
+    if (!cryptoRecoveryExport) return;
+    const saved = readCryptoCheckout();
+    cryptoRecoveryExport.disabled = !(
+      saved?.invoice?.claim_token
+      && saved?.delivery?.privateJwk
+      && !saved?.delivery?.encryptedLicense
+    );
+  }
+
+  function markCryptoExpired() {
+    if (paymentDialog) paymentDialog.dataset.expired = 'true';
+    if (cryptoExpiredWarning) cryptoExpiredWarning.hidden = false;
+    paymentDialog?.querySelectorAll('[data-crypto-copy]').forEach((button) => {
+      button.disabled = true;
+    });
+  }
+
+  function resetCryptoExpired() {
+    if (paymentDialog) delete paymentDialog.dataset.expired;
+    if (cryptoExpiredWarning) cryptoExpiredWarning.hidden = true;
+    paymentDialog?.querySelectorAll('[data-crypto-copy]').forEach((button) => {
+      button.disabled = false;
+    });
+  }
 
   function showCryptoInvoice(invoice) {
+    resetCryptoExpired();
     if (cryptoAddress) cryptoAddress.textContent = invoice.address || '';
     if (cryptoAmount) {
       cryptoAmount.textContent = invoice.amount_native && invoice.payment_method
@@ -705,14 +929,66 @@
       cryptoConfirmations.textContent = `${invoice.confirmations_required} network confirmations`;
     }
     if (cryptoExpires && invoice.expires_at) {
-      cryptoExpires.textContent = new Date(invoice.expires_at * 1000).toLocaleString();
+      const expiry = new Date(invoice.expires_at * 1000);
+      cryptoExpires.textContent = expiry.toLocaleString();
+      cryptoExpires.dateTime = expiry.toISOString();
     }
+    if (Math.floor(Date.now() / 1000) >= invoice.expires_at) markCryptoExpired();
     if (paymentDialog && !paymentDialog.open) paymentDialog.showModal();
+  }
+
+  async function acknowledgeCryptoCheckout(saved) {
+    const invoice = saved?.invoice;
+    if (!invoice?.invoice_id || !invoice?.claim_token) return false;
+    try {
+      const response = await fetchWithTimeout(`${API}/v1/crypto/status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoice_id: invoice.invoice_id,
+          claim_token: invoice.claim_token,
+          acknowledge_delivery: true,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.status !== 'acknowledged') return false;
+      saveCryptoCheckout({
+        delivery: saved.delivery,
+        invoice: { invoice_id: invoice.invoice_id },
+        acknowledged: true,
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function startCryptoCooldown(seconds) {
+    const boundedSeconds = Math.min(
+      CRYPTO_MAX_RETRY_AFTER_SECONDS,
+      Math.max(1, Number.isFinite(seconds) ? seconds : 60),
+    );
+    const endsAt = Date.now() + boundedSeconds * 1000;
+    window.clearInterval(cryptoCooldownTimer);
+    setCryptoButtonsDisabled(true);
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+      if (remaining === 0) {
+        window.clearInterval(cryptoCooldownTimer);
+        cryptoCooldownTimer = null;
+        setCryptoButtonsDisabled(false);
+        setStatus(checkoutStatus, 'Crypto checkout is ready to try again.');
+        return;
+      }
+      setStatus(checkoutStatus, `Too many invoice attempts. Try again in ${remaining} seconds.`, 'error');
+    };
+    tick();
+    cryptoCooldownTimer = window.setInterval(tick, 1000);
   }
 
   async function pollCrypto(invoice, delivery) {
     if (!invoice?.invoice_id || !invoice?.claim_token || !delivery?.privateJwk) return;
-    if (activeCryptoPoll === invoice.invoice_id) return;
+    if (activeCryptoPoll) return;
     activeCryptoPoll = invoice.invoice_id;
     const stopAt = invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS;
     try {
@@ -722,7 +998,7 @@
         let response;
         let result = {};
         try {
-          response = await fetch(`${API}/v1/crypto/status`, {
+          response = await fetchWithTimeout(`${API}/v1/crypto/status`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -737,32 +1013,51 @@
         }
         if (response.status === 429) {
           const retryAfter = Number.parseInt(response.headers.get('retry-after') || '', 10);
-          await delay(Number.isFinite(retryAfter) ? retryAfter * 1000 : CRYPTO_POLL_MS);
+          const wait = Math.min(
+            CRYPTO_MAX_RETRY_AFTER_SECONDS,
+            Math.max(1, Number.isFinite(retryAfter) ? retryAfter : CRYPTO_POLL_MS / 1000),
+          );
+          await delay(wait * 1000);
           continue;
         }
         if (response.ok && result.encrypted_license) {
           const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
-          sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({
+          const recoverable = {
             delivery: {
               privateJwk: delivery.privateJwk,
               encryptedLicense: result.encrypted_license,
             },
-            invoice: { invoice_id: invoice.invoice_id },
-          }));
-          await acknowledgeDelivery('/v1/crypto/status', {
-            invoice_id: invoice.invoice_id,
-            claim_token: invoice.claim_token,
-          });
+            invoice: {
+              invoice_id: invoice.invoice_id,
+              claim_token: invoice.claim_token,
+            },
+            acknowledged: false,
+          };
+          saveCryptoCheckout(recoverable);
           showActivationCode(code, document.getElementById('crypto-activation-panel'));
-          setStatus(cryptoStatus, 'Payment confirmed by the network. Activation code ready.', 'success');
+          const acknowledged = await acknowledgeCryptoCheckout(recoverable);
+          setStatus(
+            cryptoStatus,
+            acknowledged
+              ? 'Payment confirmed by the network. Activation code ready.'
+              : 'Activation code ready. Server cleanup will retry when this tab reloads.',
+            acknowledged ? 'success' : 'error',
+          );
           return;
         }
-        if (result.status === 'expired') break;
+        if (result.status === 'expired') {
+          markCryptoExpired();
+          clearCryptoCheckout();
+          break;
+        }
         if (!response.ok && response.status < 500) {
+          clearCryptoCheckout();
+          if (response.status === 404 || response.status === 410) markCryptoExpired();
           setStatus(cryptoStatus, result.error || 'This invoice can no longer be checked.', 'error');
           return;
         }
         if (Math.floor(Date.now() / 1000) >= invoice.expires_at) {
+          markCryptoExpired();
           setStatus(
             cryptoStatus,
             'Do not send now. OSL is only waiting for an on-time payment to finish confirming.',
@@ -771,7 +1066,15 @@
           setStatus(cryptoStatus, 'Waiting for the required network confirmations...');
         }
       }
+      markCryptoExpired();
+      clearCryptoCheckout();
       setStatus(cryptoStatus, 'This invoice expired. Start a new invoice and do not reuse the address.', 'error');
+    } catch (error) {
+      setStatus(
+        cryptoStatus,
+        error instanceof Error ? error.message : 'Payment confirmation stopped unexpectedly.',
+        'error',
+      );
     } finally {
       if (activeCryptoPoll === invoice.invoice_id) activeCryptoPoll = null;
     }
@@ -779,13 +1082,7 @@
 
   async function resumeCryptoCheckout() {
     if (!paymentDialog || !cryptoStatus) return;
-    let saved;
-    try {
-      saved = JSON.parse(sessionStorage.getItem(CRYPTO_DELIVERY_KEY) || 'null');
-    } catch {
-      sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
-      return;
-    }
+    const saved = readCryptoCheckout();
     if (saved?.delivery?.encryptedLicense && saved?.delivery?.privateJwk) {
       try {
         const code = await decryptActivationCode(
@@ -793,29 +1090,139 @@
           saved.delivery.privateJwk,
         );
         showActivationCode(code, document.getElementById('crypto-activation-panel'));
-        setStatus(cryptoStatus, 'Activation code ready. It is stored only in this browser tab.', 'success');
         paymentDialog.showModal();
+        if (!saved.acknowledged && saved?.invoice?.claim_token) {
+          setStatus(cryptoStatus, 'Activation code ready. Finishing secure server cleanup...');
+          const acknowledged = await acknowledgeCryptoCheckout(saved);
+          setStatus(
+            cryptoStatus,
+            acknowledged
+              ? 'Activation code ready. Secure server cleanup completed.'
+              : 'Activation code ready. Server cleanup will retry when this tab reloads.',
+            acknowledged ? 'success' : 'error',
+          );
+        } else {
+          setStatus(cryptoStatus, 'Activation code ready. It is stored only in this browser tab.', 'success');
+        }
       } catch {
-        sessionStorage.removeItem(CRYPTO_DELIVERY_KEY);
+        clearCryptoCheckout();
       }
       return;
     }
     if (saved?.invoice?.invoice_id && saved?.invoice?.claim_token && saved?.delivery?.privateJwk) {
-      showCryptoInvoice(saved.invoice);
+      let invoice;
+      try {
+        invoice = validateCryptoInvoice(saved.invoice, saved.invoice.payment_method, true);
+      } catch {
+        clearCryptoCheckout();
+        return;
+      }
+      showCryptoInvoice(invoice);
       setStatus(cryptoStatus, 'Resuming payment confirmation...');
-      void pollCrypto(saved.invoice, saved.delivery);
+      void pollCrypto(invoice, saved.delivery);
     }
   }
   void resumeCryptoCheckout();
 
-  document.querySelectorAll('[data-crypto-method]').forEach((button) => {
+  cryptoRecoveryExport?.addEventListener('click', async () => {
+    try {
+      const saved = readCryptoCheckout();
+      const recovery = await buildCryptoRecovery(saved);
+      const contents = `${JSON.stringify(recovery, null, 2)}\n`;
+      if (new TextEncoder().encode(contents).byteLength > CRYPTO_RECOVERY_MAX_BYTES) {
+        throw new Error('Recovery file is unexpectedly large.');
+      }
+      const blob = new Blob([contents], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `OSL-payment-recovery-${recovery.invoice.invoice_id.slice(-12)}.json`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+      setStatus(
+        cryptoRecoveryStatus,
+        'Private recovery file saved. Keep it secret until activation finishes.',
+        'success',
+      );
+    } catch (error) {
+      setStatus(
+        cryptoRecoveryStatus,
+        error instanceof Error ? error.message : 'Recovery file could not be saved.',
+        'error',
+      );
+    }
+  });
+
+  cryptoRecoveryImport?.addEventListener('click', () => cryptoRecoveryFile?.click());
+
+  cryptoRecoveryFile?.addEventListener('change', async () => {
+    const file = cryptoRecoveryFile.files?.[0];
+    cryptoRecoveryFile.value = '';
+    if (!file) return;
+    try {
+      if (file.size <= 0 || file.size > CRYPTO_RECOVERY_MAX_BYTES) {
+        throw new Error('Recovery file size is invalid.');
+      }
+      const imported = await parseCryptoRecoveryFile(await file.text());
+      const existing = readCryptoCheckout();
+      if (
+        existing?.invoice?.invoice_id
+        && existing.invoice.invoice_id !== imported.invoice.invoice_id
+      ) {
+        throw new Error('Another payment is active in this tab. Finish it before importing a different one.');
+      }
+      saveCryptoCheckout({
+        delivery: { privateJwk: imported.privateJwk },
+        invoice: imported.invoice,
+        acknowledged: false,
+      });
+      showCryptoInvoice(imported.invoice);
+      setStatus(
+        cryptoRecoveryStatus,
+        'Private recovery file accepted. Checking the original payment.',
+        'success',
+      );
+      setStatus(
+        cryptoStatus,
+        Math.floor(Date.now() / 1000) >= imported.invoice.expires_at
+          ? 'Do not send now. Checking whether an earlier payment finished confirming.'
+          : 'Recovery loaded. Waiting for network confirmation...',
+      );
+      void pollCrypto(imported.invoice, { privateJwk: imported.privateJwk });
+    } catch (error) {
+      setStatus(
+        cryptoRecoveryStatus,
+        error instanceof Error ? error.message : 'Recovery file was rejected.',
+        'error',
+      );
+    }
+  });
+
+  updateCryptoRecoveryControls();
+
+  cryptoButtons.forEach((button) => {
     button.addEventListener('click', async () => {
+      const existing = readCryptoCheckout();
+      if (existing?.invoice?.invoice_id && existing?.delivery?.privateJwk) {
+        if (existing.invoice.claim_token) {
+          showCryptoInvoice(existing.invoice);
+          setStatus(cryptoStatus, 'This is your active invoice. OSL will not create another one yet.');
+          void pollCrypto(existing.invoice, existing.delivery);
+        } else if (existing.delivery.encryptedLicense) {
+          void resumeCryptoCheckout();
+        }
+        return;
+      }
+      if (cryptoQuoteBusy || cryptoCooldownTimer) return;
       const paymentMethod = button.dataset.cryptoMethod;
-      button.disabled = true;
+      cryptoQuoteBusy = true;
+      setCryptoButtonsDisabled(true);
       setStatus(checkoutStatus, 'Creating a unique payment address...');
       try {
         const delivery = await createDeliveryBundle();
-        const response = await fetch(`${API}/v1/crypto/quote`, {
+        const response = await fetchWithTimeout(`${API}/v1/crypto/quote`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -824,19 +1231,25 @@
             delivery_public_key_spki: delivery.deliveryPublicKeySpki,
           }),
         });
-        const invoice = await response.json().catch(() => ({}));
-        if (!response.ok || !invoice.claim_token || !invoice.address) {
-          throw new Error(invoice.error || 'Crypto checkout is temporarily unavailable.');
+        const rawInvoice = await response.json().catch(() => ({}));
+        if (response.status === 429) {
+          const retryAfter = Number.parseInt(response.headers.get('retry-after') || '', 10);
+          startCryptoCooldown(retryAfter);
+          return;
         }
-        invoice.payment_method = paymentMethod;
-        sessionStorage.setItem(CRYPTO_DELIVERY_KEY, JSON.stringify({ delivery, invoice }));
+        if (!response.ok) {
+          throw new Error(rawInvoice.error || 'Crypto checkout is temporarily unavailable.');
+        }
+        const invoice = validateCryptoInvoice(rawInvoice, paymentMethod);
+        saveCryptoCheckout({ delivery, invoice, acknowledged: false });
         showCryptoInvoice(invoice);
         setStatus(cryptoStatus, 'Send the exact amount once. The code appears here after the node confirms payment.');
         void pollCrypto(invoice, delivery);
       } catch (error) {
         setStatus(checkoutStatus, error instanceof Error ? error.message : 'Crypto checkout is temporarily unavailable.', 'error');
       } finally {
-        button.disabled = false;
+        cryptoQuoteBusy = false;
+        if (!cryptoCooldownTimer) setCryptoButtonsDisabled(false);
       }
     });
   });

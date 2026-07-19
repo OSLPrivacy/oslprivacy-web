@@ -138,13 +138,28 @@
       <button class="dialog-close" type="button" data-dialog-close aria-label="Close payment window">×</button>
       <h2 id="crypto-dialog-title">Crypto checkout</h2>
       <p>Send the exact amount once.</p>
-      <div class="payment-detail">
-        <span>Address</span><code id="crypto-address"></code>
-        <span>Exact amount</span><code id="crypto-amount"></code>
-        <span>Confirmation</span><strong id="crypto-confirmations"></strong>
-        <span>Invoice expires</span><time id="crypto-expires"></time>
-      </div>
+      <dl class="payment-detail">
+        <dt>Address</dt>
+        <dd><code id="crypto-address"></code><button class="payment-copy" type="button" data-copy-target="crypto-address" data-crypto-copy>Copy address</button></dd>
+        <dt>Exact amount</dt>
+        <dd><code id="crypto-amount"></code><button class="payment-copy" type="button" data-copy-target="crypto-amount" data-crypto-copy>Copy amount</button></dd>
+        <dt>Confirmation</dt>
+        <dd><strong id="crypto-confirmations"></strong></dd>
+        <dt>Invoice expires</dt>
+        <dd><time id="crypto-expires"></time></dd>
+      </dl>
+      <p class="crypto-expired-warning" id="crypto-expired-warning" role="alert" hidden>Invoice closed. Do not send to this address.</p>
       <p class="form-status" id="crypto-status" role="status" aria-live="polite"></p>
+      <section class="crypto-recovery" aria-labelledby="crypto-recovery-title">
+        <h3 id="crypto-recovery-title">Private payment recovery</h3>
+        <p>This file grants access to your activation. Keep it secret, then delete it after Pro unlocks.</p>
+        <div class="crypto-recovery-actions">
+          <button class="button button-secondary" id="crypto-recovery-export" type="button" disabled>Save recovery file</button>
+          <button class="button button-secondary" id="crypto-recovery-import" type="button">Import recovery file</button>
+          <input id="crypto-recovery-file" type="file" accept="application/json,.json" hidden>
+        </div>
+        <p class="form-status" id="crypto-recovery-status" role="status" aria-live="polite"></p>
+      </section>
       <section class="activation-panel" id="crypto-activation-panel" tabindex="-1" hidden>
         <h3>Pro unlocked</h3>
         <code class="activation-code" data-activation-code></code>
