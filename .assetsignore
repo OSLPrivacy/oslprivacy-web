@@ -21,6 +21,15 @@ build/
 .dev.vars*
 !.dev.vars.example
 wrangler.jsonc
+.serena
+.serena/**
+
+# Local-only animation lab and development helpers.
+motion-lab.html
+assets/css/motion-lab.css
+assets/js/motion-lab.js
+scripts/
+scripts/**
 
 # Working and reference files that must not be published.
 change.md
