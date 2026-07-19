@@ -10,7 +10,7 @@
   const CRYPTO_FETCH_TIMEOUT_MS = 15000;
   const CRYPTO_MAX_RETRY_AFTER_SECONDS = 10 * 60;
   const CRYPTO_RECOVERY_FORMAT = 'osl-crypto-payment-recovery';
-  const CRYPTO_RECOVERY_VERSION = 1;
+  const CRYPTO_RECOVERY_VERSION = 2;
   const CRYPTO_RECOVERY_MAX_BYTES = 16 * 1024;
 
   const bytesToBase64 = (bytes) => {
@@ -735,6 +735,47 @@
       && actual.every((key, index) => key === expected[index]);
   }
 
+  async function decryptCryptoActivationEnvelope(encryptedBase64, privateJwk, quotedInvoice) {
+    const invoice = validateCryptoInvoice(
+      quotedInvoice,
+      quotedInvoice?.payment_method,
+      true,
+    );
+    const key = await crypto.subtle.importKey(
+      'jwk',
+      privateJwk,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['decrypt'],
+    );
+    const binary = atob(encryptedBase64);
+    const encrypted = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+    const plaintext = await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, key, encrypted);
+    let envelope;
+    try {
+      envelope = JSON.parse(new TextDecoder().decode(plaintext));
+    } catch {
+      throw new Error('Activation delivery could not be verified.');
+    }
+    if (
+      !hasExactKeys(envelope, [
+        'version', 'invoice_id', 'payment_method', 'amount_usd_cents', 'plan',
+        'activation_code',
+      ])
+      || envelope.version !== 1
+      || envelope.invoice_id !== invoice.invoice_id
+      || envelope.payment_method !== invoice.payment_method
+      || envelope.amount_usd_cents !== invoice.amount_usd_cents
+      || envelope.plan !== invoice.plan
+      || !/^OSL-[0-9A-HJKMNP-TV-Z]{4}(?:-[0-9A-HJKMNP-TV-Z]{4}){3}$/.test(
+        envelope.activation_code,
+      )
+    ) {
+      throw new Error('Activation delivery could not be verified.');
+    }
+    return envelope.activation_code;
+  }
+
   async function validatePrivateRecoveryJwk(value) {
     const base64Url = /^[A-Za-z0-9_-]+$/;
     if (
@@ -810,8 +851,10 @@
       !CRYPTO_INVOICE_ID.test(value.invoice_id)
       || !CRYPTO_CLAIM_TOKEN.test(value.claim_token)
       || value.payment_method !== expectedMethod
+      || (value.plan !== undefined && value.plan !== 'pro')
       || !CRYPTO_ADDRESSES[expectedMethod]?.test(value.address)
       || !amountPattern?.test(value.amount_native)
+      || value.amount_usd_cents !== 500
       || !Number.isSafeInteger(value.expires_at)
       || (!allowExpired && value.expires_at <= now)
       || !Number.isSafeInteger(value.confirmations_required)
@@ -825,6 +868,8 @@
       payment_method: value.payment_method,
       address: value.address,
       amount_native: value.amount_native,
+      amount_usd_cents: value.amount_usd_cents,
+      plan: 'pro',
       expires_at: value.expires_at,
       confirmations_required: value.confirmations_required,
     };
@@ -851,7 +896,7 @@
     }
     if (!hasExactKeys(recovery.invoice, [
       'invoice_id', 'payment_method', 'address', 'amount_native', 'expires_at',
-      'confirmations_required',
+      'confirmations_required', 'amount_usd_cents', 'plan',
     ])) {
       throw new Error('Recovery file invoice schema is invalid.');
     }
@@ -883,6 +928,8 @@
         payment_method: invoice.payment_method,
         address: invoice.address,
         amount_native: invoice.amount_native,
+        amount_usd_cents: invoice.amount_usd_cents,
+        plan: invoice.plan,
         expires_at: invoice.expires_at,
         confirmations_required: invoice.confirmations_required,
       },
@@ -954,7 +1001,7 @@
       if (!response.ok || result.status !== 'acknowledged') return false;
       saveCryptoCheckout({
         delivery: saved.delivery,
-        invoice: { invoice_id: invoice.invoice_id },
+        invoice: saved.invoice,
         acknowledged: true,
       });
       return true;
@@ -1021,16 +1068,17 @@
           continue;
         }
         if (response.ok && result.encrypted_license) {
-          const code = await decryptActivationCode(result.encrypted_license, delivery.privateJwk);
+          const code = await decryptCryptoActivationEnvelope(
+            result.encrypted_license,
+            delivery.privateJwk,
+            invoice,
+          );
           const recoverable = {
             delivery: {
               privateJwk: delivery.privateJwk,
               encryptedLicense: result.encrypted_license,
             },
-            invoice: {
-              invoice_id: invoice.invoice_id,
-              claim_token: invoice.claim_token,
-            },
+            invoice,
             acknowledged: false,
           };
           saveCryptoCheckout(recoverable);
@@ -1085,9 +1133,10 @@
     const saved = readCryptoCheckout();
     if (saved?.delivery?.encryptedLicense && saved?.delivery?.privateJwk) {
       try {
-        const code = await decryptActivationCode(
+        const code = await decryptCryptoActivationEnvelope(
           saved.delivery.encryptedLicense,
           saved.delivery.privateJwk,
+          saved.invoice,
         );
         showActivationCode(code, document.getElementById('crypto-activation-panel'));
         paymentDialog.showModal();
