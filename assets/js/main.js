@@ -723,6 +723,19 @@
     btc: /^bc1[023456789acdefghjklmnpqrstuvwxyz]{11,87}$/,
     xmr: /^[48][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$/,
   };
+  const CRYPTO_DECIMALS = { btc: 8, xmr: 12 };
+  const CRYPTO_CONFIRMATIONS = { btc: 2, xmr: 10 };
+  const CRYPTO_QUOTE_KEYS = [
+    'invoice_id', 'claim_token', 'payment_method', 'address', 'amount_native',
+    'amount_atomic', 'amount_usd_cents', 'price_locked_at', 'expires_at',
+    'confirmations_required',
+  ];
+  const CRYPTO_RETAINED_INVOICE_KEYS = [...CRYPTO_QUOTE_KEYS, 'plan'];
+  const CRYPTO_RECOVERY_INVOICE_KEYS = [
+    'invoice_id', 'payment_method', 'address', 'amount_native', 'amount_atomic',
+    'amount_usd_cents', 'price_locked_at', 'expires_at',
+    'confirmations_required', 'plan',
+  ];
   const PRIVATE_JWK_KEYS = [
     'alg', 'd', 'dp', 'dq', 'e', 'ext', 'key_ops', 'kty', 'n', 'p', 'q', 'qi',
   ];
@@ -739,6 +752,7 @@
     const invoice = validateCryptoInvoice(
       quotedInvoice,
       quotedInvoice?.payment_method,
+      true,
       true,
     );
     const key = await crypto.subtle.importKey(
@@ -840,25 +854,53 @@
     });
   }
 
-  function validateCryptoInvoice(value, expectedMethod, allowExpired = false) {
-    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+  function atomicFromNative(amountNative, decimals) {
+    const match = typeof amountNative === 'string'
+      ? amountNative.match(new RegExp(`^(\\d+)\\.(\\d{${decimals}})$`))
+      : null;
+    if (!match) return null;
+    try {
+      return BigInt(`${match[1]}${match[2]}`).toString();
+    } catch {
+      return null;
+    }
+  }
+
+  function validateCryptoInvoice(
+    value,
+    expectedMethod,
+    allowExpired = false,
+    requireRetained = false,
+  ) {
+    const expectedKeys = requireRetained
+      ? CRYPTO_RETAINED_INVOICE_KEYS
+      : CRYPTO_QUOTE_KEYS;
+    if (!hasExactKeys(value, expectedKeys)) {
       throw new Error('The payment service returned an invalid invoice. No payment was started.');
     }
-    const decimals = expectedMethod === 'btc' ? 8 : expectedMethod === 'xmr' ? 12 : 0;
-    const amountPattern = decimals > 0 ? new RegExp(`^\\d+\\.\\d{${decimals}}$`) : null;
+    const decimals = CRYPTO_DECIMALS[expectedMethod];
+    const amountAtomic = atomicFromNative(value.amount_native, decimals);
     const now = Math.floor(Date.now() / 1000);
     if (
-      !CRYPTO_INVOICE_ID.test(value.invoice_id)
+      !decimals
+      || !CRYPTO_INVOICE_ID.test(value.invoice_id)
       || !CRYPTO_CLAIM_TOKEN.test(value.claim_token)
       || value.payment_method !== expectedMethod
-      || (value.plan !== undefined && value.plan !== 'pro')
+      || (requireRetained && value.plan !== 'pro')
       || !CRYPTO_ADDRESSES[expectedMethod]?.test(value.address)
-      || !amountPattern?.test(value.amount_native)
+      || typeof value.amount_atomic !== 'string'
+      || !/^[1-9]\d*$/.test(value.amount_atomic)
+      || amountAtomic !== value.amount_atomic
       || value.amount_usd_cents !== 500
+      || !Number.isSafeInteger(value.price_locked_at)
+      || (!allowExpired && value.price_locked_at < now - 15 * 60)
+      || (!allowExpired && value.price_locked_at > now + 60)
       || !Number.isSafeInteger(value.expires_at)
       || (!allowExpired && value.expires_at <= now)
-      || !Number.isSafeInteger(value.confirmations_required)
-      || value.confirmations_required <= 0
+      || (!allowExpired && value.expires_at > now + 35 * 60)
+      || value.expires_at <= value.price_locked_at
+      || value.expires_at - value.price_locked_at > 45 * 60
+      || value.confirmations_required !== CRYPTO_CONFIRMATIONS[expectedMethod]
     ) {
       throw new Error('The payment service returned an invalid invoice. No payment was started.');
     }
@@ -868,7 +910,9 @@
       payment_method: value.payment_method,
       address: value.address,
       amount_native: value.amount_native,
+      amount_atomic: value.amount_atomic,
       amount_usd_cents: value.amount_usd_cents,
+      price_locked_at: value.price_locked_at,
       plan: 'pro',
       expires_at: value.expires_at,
       confirmations_required: value.confirmations_required,
@@ -894,16 +938,13 @@
     ) {
       throw new Error('Recovery file belongs to a different site or version.');
     }
-    if (!hasExactKeys(recovery.invoice, [
-      'invoice_id', 'payment_method', 'address', 'amount_native', 'expires_at',
-      'confirmations_required', 'amount_usd_cents', 'plan',
-    ])) {
+    if (!hasExactKeys(recovery.invoice, CRYPTO_RECOVERY_INVOICE_KEYS)) {
       throw new Error('Recovery file invoice schema is invalid.');
     }
     const invoice = validateCryptoInvoice({
       ...recovery.invoice,
       claim_token: recovery.claim_token,
-    }, recovery.invoice.payment_method, true);
+    }, recovery.invoice.payment_method, true, true);
     const now = Math.floor(Date.now() / 1000);
     if (now >= invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS) {
       throw new Error('Recovery file has expired.');
@@ -913,7 +954,12 @@
   }
 
   async function buildCryptoRecovery(saved) {
-    const invoice = validateCryptoInvoice(saved?.invoice, saved?.invoice?.payment_method, true);
+    const invoice = validateCryptoInvoice(
+      saved?.invoice,
+      saved?.invoice?.payment_method,
+      true,
+      true,
+    );
     const now = Math.floor(Date.now() / 1000);
     if (now >= invoice.expires_at + CRYPTO_CONFIRMATION_GRACE_SECONDS) {
       throw new Error('This invoice is too old to recover.');
@@ -928,7 +974,9 @@
         payment_method: invoice.payment_method,
         address: invoice.address,
         amount_native: invoice.amount_native,
+        amount_atomic: invoice.amount_atomic,
         amount_usd_cents: invoice.amount_usd_cents,
+        price_locked_at: invoice.price_locked_at,
         plan: invoice.plan,
         expires_at: invoice.expires_at,
         confirmations_required: invoice.confirmations_required,
@@ -1161,7 +1209,7 @@
     if (saved?.invoice?.invoice_id && saved?.invoice?.claim_token && saved?.delivery?.privateJwk) {
       let invoice;
       try {
-        invoice = validateCryptoInvoice(saved.invoice, saved.invoice.payment_method, true);
+        invoice = validateCryptoInvoice(saved.invoice, saved.invoice.payment_method, true, true);
       } catch {
         clearCryptoCheckout();
         return;
