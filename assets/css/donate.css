@@ -715,3 +715,29 @@
     opacity: 1;
   }
 }
+
+/* ==========================================================================
+   Lucide icon pass — the mission shield is now Lucide's "shield".
+   The artwork moved from a 96x112 viewBox to Lucide's 24-unit grid, so the
+   box becomes square and the stroke width is scaled down to keep the rendered
+   stroke at roughly 2px instead of blowing up with the viewBox.
+   ========================================================================== */
+
+.mission-shield {
+  width: 7rem;
+  height: 7rem;
+}
+
+.mission-shield-outline {
+  stroke-width: .45;
+}
+
+@media (max-width: 760px) {
+  .mission-shield {
+    width: 4.8rem;
+    height: 4.8rem;
+  }
+  .mission-shield-outline {
+    stroke-width: .62;
+  }
+}

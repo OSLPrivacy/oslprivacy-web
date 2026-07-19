@@ -8805,3 +8805,118 @@ body::before {
   fill: none;
   stroke: currentColor;
 }
+
+/* ==========================================================================
+   Lucide icon pass — replaces the remaining hand-drawn CSS glyphs
+   Each icon is now an inline Lucide SVG that keeps its original class, so the
+   existing layout hooks and animation selectors still match. The old glyphs
+   were drawn with borders, clip-paths, masks and ::before/::after, so that
+   appearance has to be neutralized here.
+   Stroke widths are tuned per icon: Lucide is authored on a 24-unit grid, so
+   a large render box would otherwise scale the 2px stroke up with it.
+   ========================================================================== */
+
+.server-icon,
+.badge-icon,
+.warning-send-symbol,
+.danger-symbol,
+.evidence-lock,
+.simple-lock-icon {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  -webkit-mask: none;
+  mask: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.server-icon::before, .server-icon::after,
+.badge-icon::before, .badge-icon::after,
+.warning-send-symbol::before, .warning-send-symbol::after,
+.danger-symbol::before, .danger-symbol::after,
+.evidence-lock::before, .evidence-lock::after,
+.simple-lock-icon::before, .simple-lock-icon::after { content: none; }
+
+/* Features — "Stored records" server */
+.server-icon {
+  display: block;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: var(--s-4);
+  stroke-width: .9;
+}
+
+/* Features — "Record opened" shield-check */
+.badge-icon {
+  flex: 0 0 2.9rem;
+  width: 2.9rem;
+  height: 2.9rem;
+  color: var(--text-muted);
+}
+.badge-icon path:first-child,
+.badge-icon path:last-child {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: .9;
+}
+
+/* Features — before-send warning composer */
+.warning-send-symbol {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--text);
+  /* cinema-send flashes a background colour; the SVG must stay transparent. */
+  background: none !important;
+}
+
+/* Home — hostile-server marker */
+.danger-symbol {
+  display: block;
+  top: -26px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  color: var(--danger);
+}
+
+/* Site-wide locks: evidence -> lock-keyhole, simple -> lock */
+.evidence-lock,
+.simple-lock-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+}
+
+.attachment-clean-checklist footer .simple-lock-icon {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  transform: none;
+}
+
+/* The masked solid lock in the Attachment Guard result becomes a Lucide lock,
+   sitting below centre so it reads as a badge on the file rather than a
+   bullseye over it. */
+.attachment-guard-demo .simple-lock-icon {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  -webkit-mask: none;
+  mask: none;
+}
+.attachment-guard-demo .attachment-result-file .simple-lock-icon {
+  top: 64%;
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
+  transform: translate(-50%, -50%);
+}

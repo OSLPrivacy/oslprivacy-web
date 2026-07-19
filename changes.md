@@ -1,23 +1,47 @@
 # Small changes to the oslprivacy website
 
-All changes must be done until they look as close as possible to our reference
-
-### Aesthetical changes:
-
-- ~~Add a subtle grid effect behind all webpages like the one shown in grid.png (in our root directory)~~
-
-- ~~Additionally, in the grid.png image, we can also appreciate a subtle glow behind major text headings; please **replicate** this effect~~
+All changes must be done until they look as close as possible to our reference instructions
 
 
 
-### Plans for next changes:
+### Changes to icons globally (using lucide icons):
 
-- find online a good icons library that is completely free to use that we can replace some of our vectors on our website with; some of the icons for things like BTC or XMR and some file icons don't look the best and I'm sure there's better online. However, don't make any changes to icons just yet
+#### Features page (from our icons to lucide icons):
+
+- concept-icon server-icon -> server
+
+- concept-icon badge-icon -> shield-check
+
+- warning-send-symbol -> send-horizontal
+
+- move "simple lock icon" that is on top of "simple file icon" a bit lower so it isn't completely in the middle
+
+#### Donations page:
+
+- switch "mission shield outline" for shield
+
+#### Homepage:
+
+- switch danger-symbol for triangle alert
+
+#### Site-wide changes:
+
+- switch **all** evidence-lock -> lock-keyhole
+
+- switch **all** lock icons "simple lock icon" for lucide's lock icon
+
+- warning-send-symbol -> send-horizontal
 
 
 
-### Next changes:
+###### Additional changes/tasks:
 
-- Do the plans from next changes and apply then very well; tell me what you want to change and i will approve
+let me know of any other icon changes you see viable to make our webpage design more consistent
+
+
+
+the next time i simply type "write commit" type out a commit for all the changes like you have done previously
+
+
 
 
