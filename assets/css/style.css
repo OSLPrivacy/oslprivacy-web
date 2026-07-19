@@ -7172,8 +7172,8 @@ h2:hover .anchor-link,
 .activation-method-card svg { width:3.7rem; }
 .activation-method-disabled { opacity:.38; border-color:var(--border); }
 .activation-method-disabled small::after { display:block; margin-top:.2rem; color:var(--text-muted); font-size:.46rem; letter-spacing:.08em; text-transform:uppercase; content:"Soon"; }
-.activation-method .bitcoin-mark text { fill:var(--text); stroke:none; font:700 18px var(--font-terminal); text-anchor:middle; }
-.activation-method .monero-mark path { fill:var(--text); stroke:none; }
+.activation-method .bitcoin-mark,
+.activation-method .monero-mark { fill:var(--text); stroke:none; }
 .payment-brand-button {
   display:grid;
   grid-template-columns:2rem 1fr;
@@ -7183,11 +7183,9 @@ h2:hover .anchor-link,
   justify-items:start;
   text-align:left;
 }
-.payment-brand-button svg { grid-row:1 / 3; width:2rem; height:2rem; fill:none; stroke:currentColor; stroke-width:1.5; }
+.payment-brand-button svg { grid-row:1 / 3; width:2rem; height:2rem; fill:currentColor; stroke:none; }
 .payment-brand-button strong { font-size:.78rem; }
 .payment-brand-button span { font-size:.54rem; letter-spacing:.08em; text-transform:uppercase; }
-.payment-brand-button .bitcoin-mark text { fill:currentColor; stroke:none; font:700 18px var(--font-terminal); text-anchor:middle; }
-.payment-brand-button .monero-mark path { fill:currentColor; stroke:none; }
 .activation-return-mark { width:3.5rem !important; height:3.5rem !important; }
 .activation-app-plane > header img { filter:drop-shadow(0 0 7px rgba(6,182,212,.5)); }
 .activation-checkout-state { inset:3.5rem .8rem 1rem; }
@@ -8723,4 +8721,87 @@ h2:hover .anchor-link,
   [data-product-animation="message-flow"].is-running .local-source-message { animation:local-source-v14 3.4s ease 5.65s both !important; }
   [data-product-animation="message-flow"].is-running .local-result-pair :is(.split-carrier,.split-locked) { animation:local-output-v14 3.4s ease 5.65s both !important; }
   [data-product-animation="message-flow"].is-running .local-result-pair .split-locked { animation-delay:5.65s !important; }
+}
+
+/* ==========================================================================
+   Ambient backdrop — subtle grid + heading glow
+   Replicates grid.png: a faint square grid behind every page (fixed and
+   vignetted so it fades toward the edges) plus a soft cool glow behind the
+   major page/hero headings. Both are static (no motion), so they render the
+   same regardless of prefers-reduced-motion.
+   ========================================================================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(133, 187, 205, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(133, 187, 205, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(125% 100% at 50% 30%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 84%);
+  mask-image: radial-gradient(125% 100% at 50% 30%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 84%);
+}
+
+.hero h1,
+.donate-hero h1,
+.page-heading,
+.display-heading {
+  position: relative;
+  text-shadow:
+    0 0 34px rgba(150, 214, 232, 0.20),
+    0 0 9px rgba(150, 214, 232, 0.12);
+}
+
+.hero h1::before,
+.donate-hero h1::before,
+.page-heading::before,
+.display-heading::before {
+  content: "";
+  position: absolute;
+  inset: -45% -10%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 60% 115% at 50% 50%,
+    rgba(120, 205, 228, 0.17),
+    rgba(120, 205, 228, 0.05) 44%,
+    transparent 72%
+  );
+  filter: blur(28px);
+}
+
+/* ==========================================================================
+   File glyphs — Lucide "image" icon (replaces the CSS-drawn file boxes)
+   The animated demo containers keep their classes and keyframes; only the
+   inner glyph is now an inline SVG. Neutralize the old drawn appearance and
+   size the SVG within each container.
+   ========================================================================== */
+
+.simple-file-icon {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+}
+.simple-file-icon::before,
+.simple-file-icon::after { content: none; }
+.simple-file-icon .file-glyph {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.pricing-pro-file-pick .file-glyph { width: .95rem; height: .95rem; }
+.pricing-pro-attachment .file-glyph { width: 1rem; height: 1rem; }
+.pricing-pro-file-pick .file-glyph,
+.pricing-pro-attachment .file-glyph {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
 }
