@@ -7759,3 +7759,106 @@ h2:hover .anchor-link,
   from { opacity:0; letter-spacing:.08em; }
   to { opacity:1; letter-spacing:.02em; }
 }
+
+/* Motion polish v12: one crisp geometry system for the homepage story. */
+#how-it-works .cinema-viewport { height:37rem; overflow:hidden; background:var(--bg); border:0; perspective:none; box-shadow:none; }
+#how-it-works .cinema-world { top:0; left:50%; width:1320px; height:560px; max-width:none; transform:translateX(-50%); transform-style:flat; }
+#how-it-works .cinema-routes { display:block !important; width:1320px; height:560px; }
+#how-it-works .cinema-routes .route { opacity:.82; stroke:rgba(255,255,255,.34); stroke-width:2; stroke-dasharray:6 8; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+#how-it-works .cinema-routes :is(.route-danger,.route-danger-out) { stroke:rgba(248,113,113,.52); }
+#how-it-works .cinema-routes :is(.route-lock,.route-lock-out) { stroke:rgba(6,182,212,.68); }
+#how-it-works :is(.cinema-composer,.local-cinema-device,.danger-server,.osl-server,.friend-cinema-device,.chat-history-3d,.computer-screen,.cinema-server,.osl-bar-3d,.service-bar-3d) { backface-visibility:visible; filter:none; text-shadow:none; transform-style:flat; -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision; }
+#how-it-works :is(.computer-screen,.friend-cinema-device .computer-screen,.cinema-server) { transform:none; }
+#how-it-works .cinema-floor { display:none; }
+#how-it-works .cinema-composer { left:10px; width:310px; }
+#how-it-works .local-cinema-device { top:178px; left:470px; width:200px; }
+#how-it-works .danger-server { top:90px; left:800px; width:140px; transform:none; }
+#how-it-works .osl-server { top:400px; left:800px; width:140px; transform:none; }
+#how-it-works .friend-cinema-device { left:1100px; width:210px; }
+#how-it-works .chat-history-3d { height:232px; padding:16px; background:#111416; border:1px solid rgba(255,255,255,.32); border-radius:12px; box-shadow:5px 6px 0 rgba(255,255,255,.055),0 18px 42px rgba(0,0,0,.38); }
+#how-it-works .social-chat-header { margin:-5px -5px 12px; }
+#how-it-works .chat-bubble { max-width:78%; margin-bottom:9px; padding:8px 11px; border-radius:12px; font-size:10px; line-height:1.38; }
+
+/* The native composer is only a quiet outline behind the trusted OSL overlay. */
+#how-it-works .cinema-composer .service-bar-3d { z-index:1; right:13px; bottom:-8px; left:13px; height:64px; padding:0 13px; opacity:.22; background:transparent; border:1px solid rgba(255,255,255,.34); border-radius:14px; box-shadow:none; transform:none; }
+#how-it-works .cinema-composer .osl-bar-3d { z-index:3; right:5px; bottom:3px; left:5px; min-height:78px; padding:18px 54px 14px 15px; overflow:hidden; background:#171a1c; border:1px solid rgba(255,255,255,.78); border-top:3px solid var(--accent); border-radius:13px; box-shadow:4px 5px 0 rgba(255,255,255,.07),0 14px 28px rgba(0,0,0,.38); transform:none; }
+#how-it-works .osl-bar-3d::before { top:8px; left:14px; width:16px; height:16px; filter:none; }
+#how-it-works .osl-bar-3d p { margin-top:20px; font-size:11px; line-height:1.35; }
+#how-it-works .osl-bar-3d button { right:13px; bottom:13px; width:30px; height:30px; color:var(--bg); background:var(--text); border-radius:50%; }
+
+/* One clean envelope drawing, centered by its own midpoint on every route. */
+#how-it-works :is(.cinema-envelope,.route-envelope,.fake-to-friend,.lock-to-friend) { top:0 !important; left:0 !important; z-index:60; display:block !important; width:58px; height:38px; overflow:visible; background-color:#f4f6f6; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 38'%3E%3Crect x='1' y='1' width='56' height='36' rx='4' fill='%23f4f6f6' stroke='%23ffffff' stroke-width='2'/%3E%3Cpath d='M3 35 21 20M55 35 37 20' fill='none' stroke='%2370787d' stroke-width='1.5'/%3E%3C/svg%3E"); background-position:center; background-repeat:no-repeat; background-size:100% 100%; border:0; border-radius:4px; box-shadow:0 9px 18px rgba(0,0,0,.38); offset-anchor:50% 50%; offset-position:0 0; offset-rotate:0deg; transform:none; }
+#how-it-works :is(.cinema-envelope,.route-envelope,.fake-to-friend,.lock-to-friend)::before,
+#how-it-works :is(.cinema-envelope,.route-envelope,.fake-to-friend,.lock-to-friend)::after { display:none; }
+#how-it-works :is(.cinema-envelope-flap,.route-envelope-flap) { position:absolute; inset:0 0 auto; z-index:4; display:block; width:58px; height:25px; background:#dfe3e4; border:1px solid #fff; border-radius:4px 4px 2px 2px; clip-path:polygon(0 0,100% 0,50% 78%); transform-origin:top center; backface-visibility:visible; }
+#how-it-works .envelope-payload { position:absolute; top:13px; left:50%; z-index:2; width:44px; overflow:hidden; color:#0a0c0d; font:700 5px/1.1 Inter,sans-serif; text-align:center; white-space:nowrap; opacity:0; transform:translateX(-50%); }
+#how-it-works :is(.locked-envelope,.lock-to-friend) { background-color:#101416; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 38'%3E%3Crect x='1' y='1' width='56' height='36' rx='4' fill='%23101416' stroke='%2306b6d4' stroke-width='2'/%3E%3Cpath d='M3 35 21 20M55 35 37 20' fill='none' stroke='%2306b6d4' stroke-width='1.5'/%3E%3C/svg%3E"); }
+#how-it-works :is(.locked-envelope,.lock-to-friend) .route-envelope-flap { background:#101416; border-color:var(--accent); }
+#how-it-works :is(.locked-envelope,.lock-to-friend) .envelope-payload { color:var(--accent); }
+
+/* A single bold cyan lock silhouette; routes cannot show through it. */
+#how-it-works :is(.lock-symbol,.packet-lock) { display:block; background:var(--accent); border:0; border-radius:0; box-shadow:0 0 0 5px var(--bg),0 0 14px rgba(6,182,212,.3); -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7 10V7a5 5 0 0 1 10 0v3h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2Zm3 0h4V7a2 2 0 1 0-4 0v3Z'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7 10V7a5 5 0 0 1 10 0v3h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2Zm3 0h4V7a2 2 0 1 0-4 0v3Z'/%3E%3C/svg%3E") center/contain no-repeat; }
+#how-it-works :is(.lock-symbol,.packet-lock)::before,
+#how-it-works :is(.lock-symbol,.packet-lock)::after { display:none; }
+#how-it-works .lock-symbol { top:-30px; right:18px; width:44px; height:44px; }
+#how-it-works .packet-lock { position:absolute; top:9px; left:20px; z-index:6; width:18px; height:18px; box-shadow:none; }
+
+/* Visible SVG and CSS motion paths use identical coordinates. */
+#how-it-works .cinema-intake-envelope { offset-path:path("M320 300 C375 300 415 300 470 300"); }
+#how-it-works .cover-envelope { offset-path:path("M670 270 C720 238 750 155 800 155"); }
+#how-it-works .locked-envelope { offset-path:path("M670 340 C720 375 750 462 800 462"); }
+#how-it-works .fake-to-friend { offset-path:path("M940 155 C995 178 1045 265 1100 285"); }
+#how-it-works .lock-to-friend { offset-path:path("M940 462 C995 438 1045 365 1100 345"); }
+
+@media (min-width:900px) and (prefers-reduced-motion:no-preference) {
+  [data-product-animation="message-flow"].is-running :is(.danger-server,.osl-server) { animation:none !important; opacity:.68; }
+  [data-product-animation="message-flow"].is-running .cinema-composer { animation:message-focus-composer-v12 4.8s var(--motion-ease) both !important; }
+  [data-product-animation="message-flow"].is-running .cinema-composer .osl-bar-3d p { animation:composer-message-intake-v12 4.8s var(--motion-ease) both !important; }
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope { animation:message-intake-envelope-v12 2.25s var(--motion-ease) 3.45s both !important; }
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope .cinema-envelope-flap { animation:envelope-flap-v12 2.25s ease 3.45s both !important; }
+  [data-product-animation="message-flow"].is-running .cinema-intake-envelope .envelope-payload { animation:payload-load-v12 2.25s ease 3.45s both !important; }
+  [data-product-animation="message-flow"].is-running .local-cinema-device { animation:message-focus-local-v12 3.4s var(--motion-ease) 5.65s both !important; }
+  [data-product-animation="message-flow"].is-running .local-source-message { animation:local-source-clean-v12 3.4s var(--motion-ease) 5.65s both !important; }
+  [data-product-animation="message-flow"].is-running .local-result-pair { animation:none !important; }
+  [data-product-animation="message-flow"].is-running .local-result-pair :is(.split-carrier,.split-locked) { animation:local-output-clean-v12 3.4s var(--motion-ease) 5.65s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.cover-envelope,.locked-envelope) { animation:route-envelope-v12 2.3s var(--motion-ease) 9.1s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.cover-envelope,.locked-envelope) .route-envelope-flap { animation:envelope-flap-v12 2.3s ease 9.1s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.cover-envelope,.locked-envelope) .envelope-payload { animation:payload-load-v12 2.3s ease 9.1s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.fake-to-friend,.lock-to-friend) { animation:outbound-envelope-v12 1.35s var(--motion-ease) 11.65s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.fake-to-friend,.lock-to-friend) .route-envelope-flap { animation:outbound-flap-v12 1.35s ease 11.65s both !important; }
+  [data-product-animation="message-flow"].is-running :is(.fake-to-friend,.lock-to-friend) .envelope-payload { animation:outbound-payload-v12 1.35s ease 11.65s both !important; }
+  [data-product-animation="message-flow"].is-running .friend-cinema-device { animation:message-focus-friend-v12 4.8s var(--motion-ease) 13.05s both !important; }
+  #how-it-works[data-product-animation="message-flow"].is-running .friend-receive-slot :is(.native-carrier-message,.restored-message-3d) { display:grid !important; }
+  [data-product-animation="message-flow"].is-running .native-carrier-message { animation:cover-place-v12 .5s ease 13.58s both !important; }
+  [data-product-animation="message-flow"].is-running .restored-message-3d { animation:real-overlay-v12 .55s var(--motion-ease) 14.02s both !important; }
+}
+@keyframes message-focus-composer-v12 { 0% { z-index:3;top:128px;left:10px;opacity:.62;transform:none; } 10%,78% { z-index:40;top:76px;left:50%;opacity:1;transform:translateX(-50%); } 100% { z-index:3;top:128px;left:10px;opacity:.68;transform:none; } }
+@keyframes composer-message-intake-v12 { 0%,72% { opacity:1;transform:none; } 84% { opacity:.9;transform:translateX(30%) scaleX(.62); } 96%,100% { opacity:0;transform:translateX(63%) scale(.08); } }
+@keyframes message-intake-envelope-v12 { 0% { opacity:0;offset-distance:0%; } 8%,58% { opacity:1;offset-distance:0%; } 68%,94% { opacity:1; } 100% { opacity:0;offset-distance:100%; } }
+@keyframes envelope-flap-v12 { 0%,47% { transform:rotateX(180deg); } 62%,100% { transform:rotateX(0); } }
+@keyframes payload-load-v12 { 0%,28% { opacity:0;transform:translateX(-50%) translateY(-18px) scale(.7); } 42%,56% { opacity:1;transform:translateX(-50%); } 66%,100% { opacity:0;transform:translateX(-50%) scale(.2); } }
+@keyframes message-focus-local-v12 { 0% { z-index:3;top:178px;left:470px;opacity:.48;transform:none; } 12%,70% { z-index:41;top:150px;left:50%;opacity:1;transform:translateX(-50%); } 100% { z-index:3;top:178px;left:470px;opacity:.68;transform:none; } }
+@keyframes local-source-clean-v12 { 0%,14% { opacity:0;transform:translateY(5px); } 22%,32% { opacity:1;transform:none; } 43%,100% { opacity:0;transform:scaleX(.86); } }
+@keyframes local-output-clean-v12 { 0%,38% { opacity:0;transform:scaleX(.9); } 50%,76% { opacity:1;transform:none; } 100% { opacity:0;transform:translateX(42px) scale(.08); } }
+@keyframes route-envelope-v12 { 0% { opacity:0;offset-distance:0%; } 7%,46% { opacity:1;offset-distance:0%; } 55%,94% { opacity:1; } 100% { opacity:0;offset-distance:100%; } }
+@keyframes message-focus-friend-v12 { 0% { z-index:3;top:128px;left:1100px;opacity:.48;transform:none; } 12%,100% { z-index:44;top:76px;left:50%;opacity:1;transform:translateX(-50%); } }
+@keyframes outbound-envelope-v12 { 0% { opacity:0;offset-distance:0%; } 9%,88% { opacity:1; } 100% { opacity:0;offset-distance:100%; } }
+@keyframes outbound-flap-v12 { 0%,20% { transform:rotateX(180deg); } 38%,100% { transform:rotateX(0); } }
+@keyframes outbound-payload-v12 { 0% { opacity:0;transform:translateX(-50%) translateY(-16px) scale(.7); } 14%,28% { opacity:1;transform:translateX(-50%); } 40%,100% { opacity:0;transform:translateX(-50%) scale(.2); } }
+@keyframes cover-place-v12 { from { opacity:0;transform:translateY(-5px); } to { opacity:1;transform:none; } }
+@keyframes real-overlay-v12 { from { opacity:0;transform:translateY(7px); } to { opacity:1;transform:none; } }
+
+@media (max-width:1299px) {
+  #how-it-works .cinema-world { left:50%; transform:translateX(-50%) scale(.94); transform-origin:top center; }
+}
+
+@media (max-width:899px) {
+  #how-it-works .cinema-viewport { height:31rem; overflow:hidden; }
+  #how-it-works .cinema-world { left:0; width:100%; height:31rem; transform:none; }
+  #how-it-works .cinema-routes,
+  #how-it-works :is(.cinema-envelope,.route-envelope,.fake-to-friend,.lock-to-friend) { display:none !important; }
+  #how-it-works :is(.cinema-composer,.local-cinema-device,.friend-cinema-device) { top:3.5rem; left:50%; width:min(22rem,90%); height:330px; transform:translateX(-50%); }
+  #how-it-works :is(.danger-server,.osl-server) { top:8.5rem; width:min(10rem,42%); }
+  #how-it-works .danger-server { left:5%; }
+  #how-it-works .osl-server { right:5%; left:auto; }
+}

@@ -82,12 +82,12 @@
       <div class="cinema-viewport" aria-hidden="true">
         <div class="cinema-world">
           <div class="cinema-floor"></div>
-          <svg class="cinema-routes" viewBox="0 0 1380 560" preserveAspectRatio="none">
-            <path class="route route-compose" d="M350 300 C382 300 398 300 430 300"></path>
-            <path class="route route-danger" d="M670 270 C700 238 710 155 718 155"></path>
-            <path class="route route-lock" d="M670 340 C700 375 710 462 718 462"></path>
-            <path class="route route-danger-out" d="M962 155 C980 178 990 265 998 285"></path>
-            <path class="route route-lock-out" d="M962 462 C980 438 990 365 998 345"></path>
+          <svg class="cinema-routes" viewBox="0 0 1320 560" preserveAspectRatio="none">
+            <path class="route route-compose" d="M320 300 C375 300 415 300 470 300"></path>
+            <path class="route route-danger" d="M670 270 C720 238 750 155 800 155"></path>
+            <path class="route route-lock" d="M670 340 C720 375 750 462 800 462"></path>
+            <path class="route route-danger-out" d="M940 155 C995 178 1045 265 1100 285"></path>
+            <path class="route route-lock-out" d="M940 462 C995 438 1045 365 1100 345"></path>
           </svg>
 
           <article class="cinema-composer cinema-object">
@@ -107,7 +107,10 @@
             </div>
           </article>
 
-          <div class="cinema-envelope cinema-intake-envelope cinema-object"><span class="cinema-envelope-flap"></span></div>
+          <div class="cinema-envelope cinema-intake-envelope cinema-object">
+            <span class="envelope-payload">I'll bring an umbrella.</span>
+            <span class="cinema-envelope-flap"></span>
+          </div>
 
           <article class="cinema-device local-cinema-device cinema-object">
             <div class="computer-shell">
@@ -138,10 +141,10 @@
           </article>
 
           <div class="cinema-packet packet-to-device"><span class="envelope-mini"></span></div>
-          <div class="route-envelope cover-envelope"><span class="route-envelope-copy">Cover</span><i class="route-envelope-flap"></i></div>
-          <div class="route-envelope locked-envelope"><span class="packet-lock"></span><i class="route-envelope-flap"></i></div>
-          <div class="cinema-packet fake-to-friend"><span>COVER</span></div>
-          <div class="cinema-packet lock-to-friend"><span class="packet-lock"></span></div>
+          <div class="route-envelope cover-envelope"><span class="envelope-payload">The weather looks clear here.</span><i class="route-envelope-flap"></i></div>
+          <div class="route-envelope locked-envelope"><span class="envelope-payload">OSL::9F3A7C...</span><span class="packet-lock"></span><i class="route-envelope-flap"></i></div>
+          <div class="cinema-packet fake-to-friend"><span class="envelope-payload">The weather looks clear here.</span><i class="route-envelope-flap"></i></div>
+          <div class="cinema-packet lock-to-friend"><span class="envelope-payload">OSL::9F3A7C...</span><span class="packet-lock"></span><i class="route-envelope-flap"></i></div>
           <article class="friend-cinema-device cinema-object">
             <div class="chat-history-3d friend-chat-history">
               <header class="social-chat-header"><i class="social-avatar"></i><span class="social-recipient"></span></header>
@@ -149,7 +152,6 @@
               <p class="chat-bubble chat-bubble-out">Yes. The north entrance still works.</p>
               <div class="friend-receive-slot">
                 <div class="native-carrier-message"><p>The weather looks clear here.</p></div>
-                <div class="decrypt-stream"><code>7M9K·Q2AF·81C...</code><span>umbrella · north entrance · five</span></div>
                 <div class="restored-message-3d"><span><b>OSL</b></span><p>I'll bring an umbrella. Meet by the north entrance at five.</p></div>
               </div>
             </div>
