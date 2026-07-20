@@ -43,12 +43,12 @@ function validQuote(asset = 'btc') {
   };
 }
 
-test('crypto payment buttons remain release-gated', () => {
+test('Bitcoin checkout is live while Monero remains release-gated', () => {
   const paymentBlock = html.match(/<div class="coming-payment-options"[\s\S]*?<\/div>/)?.[0] ?? '';
-  assert.match(paymentBlock, /Bitcoin[\s\S]*Coming soon/);
+  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Pay once/);
   assert.match(paymentBlock, /Monero[\s\S]*Coming soon/);
-  assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 2);
-  assert.doesNotMatch(paymentBlock, /data-crypto-method/);
+  assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 1);
+  assert.doesNotMatch(paymentBlock, /data-crypto-method="xmr"/);
 });
 
 test('invoice details are semantic, copyable, and expire visibly', () => {
