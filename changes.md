@@ -1,47 +1,23 @@
-# Small changes to the oslprivacy website
+# Changes to the oslprivacy website 7/21/26
 
-All changes must be done until they look as close as possible to our reference instructions
+### Task list:
+- merge the changes that I made (present in the root directory) with the /update folder which contains the repository of another branch. by merge, i don't actually mean to merge to github, just to combine both versions as well as possible
 
-
-
-### Changes to icons globally (using lucide icons):
-
-#### Features page (from our icons to lucide icons):
-
-- concept-icon server-icon -> server
-
-- concept-icon badge-icon -> shield-check
-
-- warning-send-symbol -> send-horizontal
-
-- move "simple lock icon" that is on top of "simple file icon" a bit lower so it isn't completely in the middle
-
-#### Donations page:
-
-- switch "mission shield outline" for shield
-
-#### Homepage:
-
-- switch danger-symbol for triangle alert
-
-#### Site-wide changes:
-
-- switch **all** evidence-lock -> lock-keyhole
-
-- switch **all** lock icons "simple lock icon" for lucide's lock icon
-
-- warning-send-symbol -> send-horizontal
+- Once finished the first task, make some UI improvements listed below:
 
 
+### UI Improvements:
 
-###### Additional changes/tasks:
-
-let me know of any other icon changes you see viable to make our webpage design more consistent
-
+- Under the "Download" page of our website the buttons to purchase using cryptocurrency look grayed out despite being completely interactable. this is a small flaw in the design, make these buttons constrast just as much as the "Download free" button on the left of the page
 
 
-the next time i simply type "write commit" type out a commit for all the changes like you have done previously
+### Additional information
 
+- Use CLAUDE.md to help yourself through the repository (I know you're not claude, I just switch to codex because it's better and i couldn't be bothered to change anything lol)
+- Make No mistakes and try your very best
+- Make sure that everything is completed.
+
+Good luck!
 
 
 

@@ -80,12 +80,14 @@ test('status validation accepts only the matching donation receipt', () => {
   );
 });
 
-test('public crypto donation controls remain release-gated', () => {
+test('Bitcoin and Monero donations are live', () => {
   const methods = [...html.matchAll(/<button[^>]+data-crypto-donation-method="(btc|xmr)"[^>]*>/g)];
   assert.equal(methods.length, 2);
-  methods.forEach(([button]) => assert.match(button, /\bdisabled\b/));
-  assert.match(html, /Bitcoin[\s\S]*Coming soon/);
-  assert.match(html, /Monero[\s\S]*Coming soon/);
+  const methodByAsset = new Map(methods.map(([button, asset]) => [asset, button]));
+  assert.doesNotMatch(methodByAsset.get('btc'), /\bdisabled\b/);
+  assert.doesNotMatch(methodByAsset.get('xmr'), /\bdisabled\b/);
+  assert.match(html, /Bitcoin[\s\S]*Donate once/);
+  assert.match(html, /Monero[\s\S]*Donate once/);
 });
 
 test('donation invoice UI is copyable and contains no entitlement recovery', () => {

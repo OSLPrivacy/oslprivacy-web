@@ -16,3 +16,4 @@ build/
 !.dev.vars.example
 !.env.example
 grid.png
+changes.md

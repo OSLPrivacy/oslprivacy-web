@@ -57,10 +57,10 @@ check," not "the test is stale." Key rules:
 - Recovery files are versioned and same-origin-checked (`recovery.origin !== window.location.origin`).
 - Checkout redirect host is pinned to `checkout.stripe.com`.
 
-### Release gating
-The Bitcoin/Monero buttons on `download.html` and `donate.html` are intentionally `disabled`
-("Coming soon") and must **not** carry active `data-crypto-method` / `data-crypto-donation-method`
-attributes. Tests enforce this; don't enable them without also updating the release-gate tests.
+### Live crypto methods
+Bitcoin and Monero are live on both `download.html` and `donate.html`. Their controls must carry the
+appropriate `data-crypto-method` / `data-crypto-donation-method` attributes and must remain enabled.
+Tests enforce the live methods and their payment-flow bindings.
 
 ## Conventions
 

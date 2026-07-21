@@ -438,9 +438,7 @@ main {
   min-width: 0;
   padding-right: var(--s-2);
   padding-left: var(--s-2);
-  color: var(--text-muted);
-  cursor: not-allowed;
-  opacity: 0.7;
+  color: var(--text);
 }
 
 .coming-payment-options span,
@@ -7164,14 +7162,12 @@ h2:hover .anchor-link,
 .setup-send-arrow,.setup-native-send,.pricing-send-symbol { background:var(--text); border:0; clip-path:polygon(0 0,100% 50%,0 100%,25% 54%); transform:none; }
 .setup-native-send { width:.82rem; height:.7rem; }
 
-/* Activation: card is live; recognizable vector crypto marks stay visibly disabled. */
+/* Activation: card and crypto are live, with recognizable vector crypto marks. */
 .activation-payment-choices { display:grid; grid-template-columns:repeat(3,minmax(4.5rem,1fr)); width:min(24rem,100%); gap:.8rem; }
 .activation-method { display:grid; gap:.45rem; min-height:6.5rem; padding:.8rem .55rem; place-content:center; justify-items:center; border:1px solid var(--motion-stroke); }
 .activation-method svg { width:3.25rem; height:2.7rem; overflow:visible; fill:none; stroke:var(--text); stroke-width:1.5; }
 .activation-method small { color:var(--text); font-size:.62rem; }
 .activation-method-card svg { width:3.7rem; }
-.activation-method-disabled { opacity:.38; border-color:var(--border); }
-.activation-method-disabled small::after { display:block; margin-top:.2rem; color:var(--text-muted); font-size:.46rem; letter-spacing:.08em; text-transform:uppercase; content:"Soon"; }
 .activation-method .bitcoin-mark,
 .activation-method .monero-mark { fill:var(--text); stroke:none; }
 .payment-brand-button {
