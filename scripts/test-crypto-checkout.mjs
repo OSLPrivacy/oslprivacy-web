@@ -52,6 +52,11 @@ test('Bitcoin and Monero checkout methods are live and visually active', () => {
   assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 0);
   assert.match(paymentRule, /color:\s*var\(--text\)/);
   assert.doesNotMatch(paymentRule, /cursor:\s*not-allowed|opacity\s*:/);
+test('Bitcoin and Monero checkout methods are live', () => {
+  const paymentBlock = html.match(/<div class="coming-payment-options"[\s\S]*?<\/div>/)?.[0] ?? '';
+  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Pay once/);
+  assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*Pay once/);
+  assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 0);
 });
 
 test('invoice details are semantic, copyable, and expire visibly', () => {
