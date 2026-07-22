@@ -7172,8 +7172,8 @@ h2:hover .anchor-link,
 .activation-method-card svg { width:3.7rem; }
 .activation-method-disabled { opacity:.38; border-color:var(--border); }
 .activation-method-disabled small::after { display:block; margin-top:.2rem; color:var(--text-muted); font-size:.46rem; letter-spacing:.08em; text-transform:uppercase; content:"Soon"; }
-.activation-method .bitcoin-mark text { fill:var(--text); stroke:none; font:700 18px var(--font-terminal); text-anchor:middle; }
-.activation-method .monero-mark path { fill:var(--text); stroke:none; }
+.activation-method .bitcoin-mark,
+.activation-method .monero-mark { fill:var(--text); stroke:none; }
 .payment-brand-button {
   display:grid;
   grid-template-columns:2rem 1fr;
@@ -7183,11 +7183,9 @@ h2:hover .anchor-link,
   justify-items:start;
   text-align:left;
 }
-.payment-brand-button svg { grid-row:1 / 3; width:2rem; height:2rem; fill:none; stroke:currentColor; stroke-width:1.5; }
+.payment-brand-button svg { grid-row:1 / 3; width:2rem; height:2rem; fill:currentColor; stroke:none; }
 .payment-brand-button strong { font-size:.78rem; }
 .payment-brand-button span { font-size:.54rem; letter-spacing:.08em; text-transform:uppercase; }
-.payment-brand-button .bitcoin-mark text { fill:currentColor; stroke:none; font:700 18px var(--font-terminal); text-anchor:middle; }
-.payment-brand-button .monero-mark path { fill:currentColor; stroke:none; }
 .activation-return-mark { width:3.5rem !important; height:3.5rem !important; }
 .activation-app-plane > header img { filter:drop-shadow(0 0 7px rgba(6,182,212,.5)); }
 .activation-checkout-state { inset:3.5rem .8rem 1rem; }

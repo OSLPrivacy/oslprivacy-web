@@ -4,8 +4,9 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const root = new URL('../', import.meta.url);
-const [html, script] = await Promise.all([
+const [html, donationHtml, script] = await Promise.all([
   readFile(new URL('download.html', root), 'utf8'),
+  readFile(new URL('donate.html', root), 'utf8'),
   readFile(new URL('assets/js/main.js', root), 'utf8'),
 ]);
 
@@ -48,6 +49,18 @@ test('Bitcoin and Monero checkout methods are live', () => {
   assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Pay once/);
   assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*Pay once/);
   assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 0);
+  assert.equal((paymentBlock.match(/data-crypto-method="btc"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/data-crypto-method="xmr"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/class="bitcoin-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/class="monero-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
+});
+
+test('Bitcoin and Monero donation methods appear exactly once', () => {
+  const paymentBlock = donationHtml.match(/<div class="payment-actions" role="group" aria-label="Crypto donation methods">[\s\S]*?<\/div>/)?.[0] ?? '';
+  assert.equal((paymentBlock.match(/data-crypto-donation-method="btc"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/data-crypto-donation-method="xmr"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/class="bitcoin-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
+  assert.equal((paymentBlock.match(/class="monero-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
 });
 
 test('invoice details are semantic, copyable, and expire visibly', () => {
