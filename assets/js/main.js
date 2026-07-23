@@ -494,10 +494,55 @@
     });
   }
 
+  function buildCheckoutConfirmDialog() {
+    const existing = document.getElementById('checkout-confirm-dialog');
+    if (existing instanceof HTMLDialogElement) return existing;
+    const dialog = document.createElement('dialog');
+    if (!(dialog instanceof HTMLDialogElement)) return null;
+    dialog.className = 'payment-dialog checkout-confirm-dialog';
+    dialog.id = 'checkout-confirm-dialog';
+    dialog.setAttribute('aria-labelledby', 'checkout-confirm-title');
+    dialog.innerHTML = [
+      '<div class="payment-dialog-inner checkout-confirm-inner">',
+      '<p class="eyebrow">Confirm purchase</p>',
+      '<h2 id="checkout-confirm-title">Continue to secure checkout?</h2>',
+      '<p>You will be taken to Stripe\'s secure checkout to start <strong>OSL Pro</strong> at <strong>$5 / month</strong>. Nothing is charged until you finish paying on Stripe.</p>',
+      '<div class="checkout-confirm-actions">',
+      '<button type="button" class="button button-primary" data-checkout-confirm>Continue to Stripe</button>',
+      '<button type="button" class="button button-secondary" data-checkout-cancel>Cancel</button>',
+      '</div>',
+      '</div>',
+    ].join('');
+    document.body.appendChild(dialog);
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close('cancel');
+    });
+    dialog.querySelector('[data-checkout-cancel]')?.addEventListener('click', () => dialog.close('cancel'));
+    return dialog;
+  }
+
+  function openCheckoutConfirm(dialog, onConfirm) {
+    const confirmButton = dialog.querySelector('[data-checkout-confirm]');
+    if (!confirmButton) { onConfirm(); return; }
+    if (dialog.checkoutConfirmHandler) {
+      confirmButton.removeEventListener('click', dialog.checkoutConfirmHandler);
+    }
+    const handler = () => {
+      confirmButton.removeEventListener('click', handler);
+      dialog.checkoutConfirmHandler = null;
+      dialog.close('confirm');
+      onConfirm();
+    };
+    dialog.checkoutConfirmHandler = handler;
+    confirmButton.addEventListener('click', handler);
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    confirmButton.focus?.();
+  }
+
   const subscribeButtons = [...document.querySelectorAll('.cta-subscribe')];
   const checkoutStatus = document.getElementById('checkout-status');
   if (subscribeButtons.length > 0) {
-    subscribeButtons.forEach((subscribeButton) => subscribeButton.addEventListener('click', async () => {
+    const runProCheckout = async (subscribeButton) => {
       const labels = subscribeButtons.map((button) => button.textContent);
       subscribeButtons.forEach((button) => { button.disabled = true; });
       subscribeButton.textContent = 'Opening Stripe...';
@@ -538,6 +583,15 @@
           button.disabled = false;
           button.textContent = labels[index];
         });
+      }
+    };
+
+    const confirmDialog = buildCheckoutConfirmDialog();
+    subscribeButtons.forEach((subscribeButton) => subscribeButton.addEventListener('click', () => {
+      if (confirmDialog instanceof HTMLDialogElement) {
+        openCheckoutConfirm(confirmDialog, () => { void runProCheckout(subscribeButton); });
+      } else {
+        void runProCheckout(subscribeButton);
       }
     }));
   }

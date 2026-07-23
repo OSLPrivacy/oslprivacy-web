@@ -8353,22 +8353,22 @@ h2:hover .anchor-link,
     animation:none !important;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(1) code {
-    animation:scrub-code-v13 .72s steps(12,end) 4.4s both;
+    animation:scrub-code-v13 .72s cubic-bezier(.62,.04,.34,1) 4.4s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(2) code {
-    animation:scrub-code-v13 .72s steps(12,end) 5.05s both;
+    animation:scrub-code-v13 .72s cubic-bezier(.62,.04,.34,1) 5.05s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(3) code {
-    animation:scrub-code-v13 .72s steps(12,end) 5.7s both;
+    animation:scrub-code-v13 .72s cubic-bezier(.62,.04,.34,1) 5.7s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(1) .scrub-eraser {
-    animation:scrub-eraser-v13 .72s linear 4.4s both;
+    animation:scrub-eraser-v13 .72s cubic-bezier(.62,.04,.34,1) 4.4s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(2) .scrub-eraser {
-    animation:scrub-eraser-v13 .72s linear 5.05s both;
+    animation:scrub-eraser-v13 .72s cubic-bezier(.62,.04,.34,1) 5.05s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(3) .scrub-eraser {
-    animation:scrub-eraser-v13 .72s linear 5.7s both;
+    animation:scrub-eraser-v13 .72s cubic-bezier(.62,.04,.34,1) 5.7s both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(1) i::before,
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(1) i::after { animation-delay:5.1s; }
@@ -8377,10 +8377,10 @@ h2:hover .anchor-link,
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(3) i::before,
   [data-product-animation="scrub-flow"].is-running .scrub-hit:nth-of-type(3) i::after { animation-delay:6.4s; }
   [data-product-animation="scrub-flow"].is-running .scrub-hit i::before {
-    animation:scrub-warning-out-v13 .18s ease both;
+    animation:scrub-warning-out-v13 .32s ease both;
   }
   [data-product-animation="scrub-flow"].is-running .scrub-hit i::after {
-    animation:scrub-check-in-v13 .18s ease both;
+    animation:scrub-check-in-v13 .32s ease both;
   }
 }
 @keyframes scrub-scan-v13 { 0%,31% { opacity:1; } 38%,100% { opacity:0; } }
@@ -8733,12 +8733,21 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(133, 187, 205, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(133, 187, 205, 0.05) 1px, transparent 1px);
-  background-size: 72px 72px;
+  background-image: radial-gradient(circle at center, rgba(133, 187, 205, 0.11) 1px, transparent 1.7px);
+  background-size: 28px 28px;
   -webkit-mask-image: radial-gradient(125% 100% at 50% 30%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 84%);
   mask-image: radial-gradient(125% 100% at 50% 30%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 84%);
+}
+
+/* The dot field drifts slowly so the backdrop feels alive without the busy
+   ruled grid. Motion is one full tile on each axis, so the loop is seamless;
+   reduced-motion users get the same dots, held still. */
+@media (prefers-reduced-motion: no-preference) {
+  body::before { animation: bg-dot-drift 34s linear infinite; }
+}
+@keyframes bg-dot-drift {
+  from { background-position: 0 0; }
+  to { background-position: 28px 56px; }
 }
 
 .hero h1,
@@ -8915,4 +8924,689 @@ body::before {
   height: 30px;
   color: var(--accent);
   transform: translate(-50%, -50%);
+}
+
+/* ==========================================================================
+   Home cinematic — "Protecting locally" encrypt beat.
+   As the local device turns the plaintext into a cover + locked pair, the
+   status label sweeps blue -> red -> white with a soft glow and an
+   "Encrypting" caption with cycling dots. Decorative only, so it is gated to
+   users who allow motion; reduced-motion users keep the static label.
+   ========================================================================== */
+.local-processing { position: relative; }
+.local-processing .local-encrypting {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 7px;
+  color: var(--accent);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.local-processing .local-encrypting i {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-product-animation="message-flow"].is-running .local-processing .local-processing-label {
+    animation: local-encrypt-shift 2600ms ease 5200ms both;
+  }
+  [data-product-animation="message-flow"].is-running .local-processing .local-encrypting {
+    animation: local-encrypt-caption 2600ms ease 5200ms both;
+  }
+  [data-product-animation="message-flow"].is-running .local-processing .local-encrypting i {
+    animation: local-encrypt-dot 900ms steps(1, end) 5200ms infinite;
+  }
+  [data-product-animation="message-flow"].is-running .local-processing .local-encrypting i:nth-child(2) { animation-delay: 5500ms; }
+  [data-product-animation="message-flow"].is-running .local-processing .local-encrypting i:nth-child(3) { animation-delay: 5800ms; }
+  [data-product-animation="message-flow"].is-running .local-processing .local-device-icon {
+    animation: local-encrypt-icon 2600ms ease 5200ms both;
+  }
+}
+
+@keyframes local-encrypt-shift {
+  0%   { color: var(--text); text-shadow: none; }
+  16%  { color: var(--accent); text-shadow: 0 0 11px rgba(6, 182, 212, .6); }
+  48%  { color: var(--danger); text-shadow: 0 0 13px rgba(248, 113, 113, .6); }
+  76%  { color: var(--accent); text-shadow: 0 0 11px rgba(6, 182, 212, .5); }
+  100% { color: var(--text); text-shadow: 0 0 14px rgba(255, 255, 255, .32); }
+}
+@keyframes local-encrypt-caption {
+  0%   { opacity: 0; }
+  16%  { opacity: 1; color: var(--accent); }
+  48%  { color: var(--danger); }
+  76%  { color: var(--accent); }
+  88%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes local-encrypt-dot {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: .2; }
+}
+@keyframes local-encrypt-icon {
+  0%   { border-color: var(--accent); }
+  48%  { border-color: var(--danger); }
+  100% { border-color: var(--accent); }
+}
+
+/* ==========================================================================
+   Task polish pass: rounder chat bubbles, even Attachment-Guard rows, and a
+   frameless "Locked" record. Appended last so it wins the layered cascade.
+   ========================================================================== */
+
+/* Round the square message bubbles across the demos so they read as real chat
+   bubbles instead of hard rectangles. Kept uniform for a consistent look on
+   every page. */
+.chat-bubble { border-radius: 12px; }
+.setup-bubble { border-radius: 12px; }
+.expiry-message-bubble,
+.expiry-final-state { border-radius: 14px; }
+.native-carrier-message,
+.restored-message-3d { border-radius: 10px; }
+.pricing-chat-history p { border-radius: 11px; }
+
+/* Attachment Guard "Clean first. Lock second." — give the GPS/Camera/Filename
+   rows a uniform height so the column is evenly spaced on the Y axis. */
+.attachment-guard-demo .attachment-clean-checklist li {
+  min-height: 2.7rem;
+  padding: 0;
+  align-items: center;
+}
+
+/* Center the "Encrypted" + Pro badge as one group so the badge sits in line
+   with the word instead of drifting to the right edge. */
+.attachment-guard-demo .attachment-chat-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .45rem;
+  min-width: 0;
+}
+.attachment-guard-demo .attachment-chat-status strong,
+.attachment-guard-demo .attachment-chat-status .motion-pro-badge {
+  grid-column: auto;
+  justify-self: auto;
+  margin: 0;
+}
+
+/* Features seizure demo — drop the boxed frame around the "Locked" record so
+   the lock icon and label read as a plain marker, not a card. */
+.seizure-server .stored-locked {
+  padding: .15rem 0;
+  background: none;
+  border: 0;
+}
+
+/* The "Locked" / "Encrypted item" marks are real Lucide padlock SVGs. A legacy
+   higher-specificity rule (`.product-demo :is(… .evidence-lock …)`) still draws
+   a CSS box + a `::before` shackle on top of them, which no SVG edit can
+   remove. Override it (with !important) so the CSS-drawn lock is neutralized and
+   only the SVG padlock renders. `.evidence-lock` is used only for these two
+   seizure-demo marks, so this is safe. */
+.product-demo .evidence-lock {
+  width: 20px !important;
+  height: 20px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+.product-demo .evidence-lock::before,
+.product-demo .evidence-lock::after {
+  content: none !important;
+  border: 0 !important;
+  background: none !important;
+}
+
+/* Topnav wordmark — the mark was towering well above the short all-caps "OSL",
+   which read as sitting too high. Size it closer to the text and keep it
+   box-centered so the lockup is balanced on every page. */
+.topnav-brand { gap: .5rem; align-items: center; }
+.topnav-brand-mark { width: 1.85rem; height: 1.85rem; transform: none; }
+
+/* Pre-checkout confirmation dialog (built in main.js) — a compact modal shown
+   before the Stripe tab opens, so a purchase is never one accidental click. */
+.checkout-confirm-dialog { width: min(30rem, calc(100% - 2rem)); }
+.checkout-confirm-inner p { margin: 0 0 1.4rem; }
+.checkout-confirm-inner strong { color: var(--text); }
+.checkout-confirm-actions { display: grid; grid-template-columns: 1fr; gap: .6rem; }
+.checkout-confirm-actions .button { width: 100%; }
+@media (min-width: 30rem) {
+  .checkout-confirm-actions { grid-template-columns: 1.35fr 1fr; }
+}
+
+/* Download Pro card — even vertical rhythm for the payment-method choices, and
+   a labelled divider so "pay with card" vs. Bitcoin/Monero reads as one clear
+   selection group. */
+.download-choice { gap: var(--s-3); }
+.download-choice-heading { margin-bottom: 0; }
+.coming-payment-options { margin-top: 0; }
+.download-features { margin-top: var(--s-1); }
+.crypto-pay-divider {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.crypto-pay-divider span { flex: 0 0 auto; }
+.crypto-pay-divider::before,
+.crypto-pay-divider::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Scrub demo panel: the mock "Scrub" app toolbar is replaced by a plain
+   heading sitting at the top of the animated panel. */
+.scrub-panel-title {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  margin: 0;
+  padding: .9rem .5rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -.01em;
+  text-align: center;
+}
+
+/* Attachment Guard checklist — lay the rows out as a clean table: labels
+   left-aligned in one column, values right-aligned in the other, so uneven
+   label lengths no longer look ragged. */
+.attachment-guard-demo .attachment-clean-checklist li {
+  grid-template-columns: 1fr auto;
+  justify-content: stretch;
+  gap: 1rem;
+}
+.attachment-guard-demo .attachment-clean-checklist li span {
+  justify-self: start;
+  text-align: left;
+}
+.attachment-guard-demo .attachment-clean-checklist li b {
+  justify-self: end;
+  text-align: right;
+}
+
+/* Chat / app window containers rounded so the demo "chatboxes" read as modern
+   chat UIs instead of hard rectangles (site-wide, incl. the features demos). */
+.expiry-chat-window,
+.warning-compose-card,
+.warning-alert-card,
+.link-clean-card,
+.setup-social-window,
+.chat-history-3d,
+.friend-chat-history,
+.pricing-card-demo,
+.expiry-native-composer,
+.warning-history { border-radius: 16px; }
+.expiry-chat-window { overflow: hidden; }
+.warning-alert-card,
+.expiry-native-composer { border-radius: 12px; }
+
+/* Download Pro — the payment-method selection is grouped into a clearly
+   labelled panel: a prominent card option, a divider, then the crypto methods,
+   so choosing how to pay reads as one deliberate step. */
+.pro-pay-panel {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: var(--s-3);
+  background: rgba(255, 255, 255, .025);
+  border-radius: var(--radius);
+}
+.pro-pay-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.pro-pay-card {
+  display: flex;
+  gap: .7rem;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+.pro-pay-card-mark { display: flex; flex: 0 0 auto; }
+.pro-pay-card-mark svg { width: 1.8rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 2; }
+.pro-pay-card-text { display: grid; gap: .05rem; }
+.pro-pay-card-text strong { font-size: .95rem; line-height: 1.1; }
+.pro-pay-card-text small { font-size: .66rem; font-weight: 600; letter-spacing: .04em; opacity: .82; }
+.pro-pay-panel .coming-payment-options { margin: 0; }
+
+/* Before-send warning composer — dress the plain draft box up as a real chat
+   composer: rounded conversation bubbles, a soft raised input field, and an
+   accent send button, so it reads as a message about to leave. */
+.warning-compose-card {
+  background: linear-gradient(180deg, #15191c, #0f1214);
+  border-color: rgba(255, 255, 255, .12);
+  box-shadow: 0 26px 50px rgba(0, 0, 0, .45);
+}
+.warning-history {
+  padding: 1.6rem 1.6rem 5.75rem;
+  gap: .85rem;
+  align-content: start;
+}
+.warning-history i {
+  width: 60%;
+  height: 2.15rem;
+  background: rgba(255, 255, 255, .06);
+  border-radius: 15px 15px 15px 5px;
+}
+.warning-history i:nth-child(2) {
+  width: 47%;
+  margin-left: auto;
+  background: rgba(6, 182, 212, .15);
+  border: 1px solid rgba(6, 182, 212, .28);
+  border-radius: 15px 15px 5px 15px;
+}
+.warning-history i:nth-child(3) { width: 52%; }
+.warning-draft {
+  right: 1.1rem;
+  bottom: 1.1rem;
+  left: 1.1rem;
+  min-height: 3.5rem;
+  padding: 1rem 4rem 1rem 1.15rem;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 16px;
+}
+.warning-draft p { font-size: .92rem; line-height: 1.35; color: var(--text); }
+/* Positioned with `bottom` (not transform) because the cinema-send animation
+   owns `transform` with `both` fill and would otherwise wipe the centering. */
+.warning-draft .warning-send-symbol {
+  right: 1.4rem;
+  bottom: 1.15rem;
+  color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 .62rem rgba(6, 182, 212, .16);
+}
+
+/* Expiry chat window — bring it in line with the composer above: same card
+   surface, rounded conversation bubbles (neutral incoming / accent outgoing),
+   a soft raised input field, and a matching round accent send button. */
+.expiry-chat-window {
+  background: linear-gradient(180deg, #15191c, #0f1214);
+  border-color: rgba(255, 255, 255, .12);
+  box-shadow: 0 26px 50px rgba(0, 0, 0, .45);
+}
+.expiry-history-line {
+  width: 60%;
+  height: 2.15rem;
+  margin: 0;
+  background: rgba(255, 255, 255, .06);
+  border-radius: 15px 15px 15px 5px;
+}
+.expiry-history-line-two {
+  width: 47%;
+  margin-left: auto;
+  background: rgba(6, 182, 212, .15);
+  border: 1px solid rgba(6, 182, 212, .28);
+  border-radius: 15px 15px 5px 15px;
+}
+.expiry-message-bubble {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 15px 15px 15px 5px;
+}
+.expiry-final-state {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 15px;
+}
+.expiry-native-composer {
+  gap: .75rem;
+  min-height: 3.2rem;
+  height: auto;
+  padding: .8rem 1rem;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 16px;
+}
+.expiry-native-composer span {
+  flex: 0 1 auto;
+  width: 9rem;
+  max-width: 55%;
+  height: .5rem;
+  background: rgba(255, 255, 255, .13);
+  border-radius: 999px;
+}
+/* Round accent send button matching the composer's, with the chevron redrawn
+   inside so the button reads the same on both chat boxes. */
+.expiry-native-composer i {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin-left: auto;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, .16);
+  transform: none;
+}
+.expiry-native-composer i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: .46rem;
+  height: .46rem;
+  margin: auto;
+  border-top: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  transform: translateX(-1px) rotate(45deg);
+}
+
+/* Attachment Guard result — the encrypted file. The old treatment slapped a
+   big cyan padlock dead-centre over the photo, so the mountain/lens strokes
+   cut through the lock and it read as cluttered. Instead, keep the photo file
+   clean and tuck a tidy round lock badge into its bottom-right corner, the way
+   a "protected file" is normally marked. */
+.attachment-guard-demo .attachment-result-file { overflow: visible; }
+.attachment-guard-demo .attachment-result-file .simple-lock-icon {
+  top: auto;
+  left: auto;
+  right: -0.2rem;
+  bottom: -0.35rem;
+  z-index: 3;
+  width: 2.05rem;
+  height: 2.05rem;
+  margin: 0;
+  padding: 0.42rem;
+  box-sizing: border-box;
+  transform: none;
+  filter: none;
+  color: #0b0d0e;                 /* dark lock strokes on the badge */
+  background: var(--accent);      /* cyan circular badge */
+  border: 2.5px solid #0f1214;    /* ring separates the badge from the file */
+  border-radius: 50%;
+  stroke-width: 2.2;
+  -webkit-mask: none;
+  mask: none;
+  box-shadow: 0 5px 15px rgba(6, 182, 212, .5);
+}
+
+/* ==========================================================================
+   Download — "Pay monthly. Paste the code." rebuilt.
+   The old activation demo stacked two absolutely-positioned browser planes in
+   the same grid cell, so they overlapped into a broken jumble. That markup is
+   now hidden and replaced by a clean, static three-step flow: Pay -> Code ->
+   Unlock, using the same card surface and lock language as the features demos.
+   ========================================================================== */
+.activation-legacy-hidden { display: none !important; }
+
+.activation-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 58rem;
+  margin: 0 auto;
+}
+.activation-step {
+  /* Reset a pre-existing `.activation-step` rule (an old absolutely-positioned
+     step label) so these cards flow normally instead of stacking in the corner. */
+  position: static;
+  top: auto;
+  left: auto;
+  display: flex;
+  flex: 1 1 15rem;
+  max-width: 17rem;
+  flex-direction: column;
+  align-items: center;
+  gap: .85rem;
+  color: inherit;
+  font: inherit;
+  letter-spacing: normal;
+  text-align: center;
+}
+.activation-step-card {
+  position: relative;
+  display: grid;
+  gap: .95rem;
+  place-items: center;
+  align-content: center;
+  width: 100%;
+  min-height: 11.5rem;
+  padding: 2rem 1.2rem 1.4rem;
+  background: linear-gradient(180deg, #15191c, #0f1214);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 16px;
+  box-shadow: 0 20px 42px rgba(0, 0, 0, .42);
+}
+.activation-step-num {
+  position: absolute;
+  top: .8rem;
+  left: .9rem;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--accent);
+  background: rgba(6, 182, 212, .12);
+  border: 1px solid rgba(6, 182, 212, .35);
+  border-radius: 50%;
+  font-size: .74rem;
+  font-weight: 700;
+}
+.activation-step-kicker {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.activation-step-title {
+  font-size: 1.02rem;
+  line-height: 1.15;
+  color: var(--text);
+}
+.activation-step-name {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .82rem;
+  line-height: 1.4;
+}
+.activation-pay-row { display: flex; gap: .55rem; }
+.activation-pay-chip {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 11px;
+}
+.activation-pay-chip svg { width: 1.45rem; height: 1.45rem; }
+.activation-pay-chip .bitcoin-mark,
+.activation-pay-chip .monero-mark { width: 1.5rem; height: 1.5rem; fill: currentColor; stroke: none; }
+.activation-code-chip {
+  padding: .68rem 1rem;
+  color: var(--accent);
+  background: rgba(6, 182, 212, .08);
+  border: 1px solid rgba(6, 182, 212, .32);
+  border-radius: 9px;
+  font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: .86rem;
+  letter-spacing: .08em;
+}
+.activation-unlock-badge {
+  display: grid;
+  place-items: center;
+  width: 3.3rem;
+  height: 3.3rem;
+  color: #04161a;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(6, 182, 212, .5);
+}
+.activation-unlock-badge svg { width: 1.75rem; height: 1.75rem; }
+.activation-step-arrow {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.activation-step-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: .6rem;
+  height: .6rem;
+  margin: auto;
+  border-top: 2px solid var(--text-muted);
+  border-right: 2px solid var(--text-muted);
+  transform: translateX(-2px) rotate(45deg);
+}
+@media (max-width: 640px) {
+  .activation-steps { flex-direction: column; align-items: center; }
+  .activation-step { max-width: 22rem; width: 100%; }
+  .activation-step-arrow { transform: rotate(90deg); }
+}
+
+/* ==========================================================================
+   Download chat demos aligned with the features composer look: gradient card
+   surfaces, rounded conversation bubbles (neutral incoming / accent outgoing),
+   and accent send buttons.
+   ========================================================================== */
+.pricing-card-demo,
+.setup-social-window {
+  background: linear-gradient(180deg, #15191c, #0f1214);
+}
+
+/* Pricing card conversation bubbles */
+.pricing-chat-history p { border-radius: 14px 14px 14px 5px; }
+.pricing-chat-history p:nth-of-type(2) {
+  background: rgba(6, 182, 212, .15);
+  border-color: rgba(6, 182, 212, .3);
+  border-radius: 14px 14px 5px 14px;
+}
+
+/* Setup window conversation bubbles */
+.setup-bubble { border-radius: 14px 14px 14px 5px; }
+.setup-bubble-out {
+  background: rgba(6, 182, 212, .15);
+  border-color: rgba(6, 182, 212, .3);
+  border-radius: 14px 14px 5px 14px;
+}
+
+/* Setup OSL composer send button — a filled accent circle like the features
+   composer, with a dark arrow inside. */
+.setup-osl-composer button {
+  background: var(--accent) !important;
+  border: 0 !important;
+}
+.setup-osl-composer button .setup-send-arrow {
+  background: #04161a;
+  border-color: #04161a;
+}
+
+/* GitHub glyph in the top-right Source nav link. */
+/* Source nav link: force a horizontal icon + label row (beats `.topnav-links a`
+   which is display:block, otherwise the glyph stacks on top of the word). */
+.topnav-links a.source-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  white-space: nowrap;
+}
+.source-nav-icon { flex: none; width: 1rem; height: 1rem; fill: currentColor; }
+
+/* Download page locks are now the same Lucide padlock SVG as the features page.
+   A legacy `:is(… .pricing-motion-lock …)` rule still tries to draw a bordered
+   box + ::before shackle on top; neutralise it so only the SVG renders (this is
+   the outline that was showing around the icon). */
+svg.pricing-motion-lock,
+svg.setup-osl-lock {
+  width: 15px !important;
+  height: 15px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  fill: none;
+  stroke: currentColor;
+  color: var(--accent);
+}
+svg.pricing-motion-lock::before,
+svg.pricing-motion-lock::after,
+svg.setup-osl-lock::before,
+svg.setup-osl-lock::after { content: none !important; }
+
+/* All download chat composers use the features-style round accent send button:
+   a filled cyan circle with a dark chevron. */
+.pricing-osl-composer .pricing-send-symbol,
+.setup-native-composer .setup-native-send,
+.pricing-native-composer i {
+  position: absolute;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  clip-path: none !important;
+  transform: none;
+}
+.setup-native-composer .setup-native-send,
+.pricing-native-composer i { position: relative; }
+.pricing-osl-composer .pricing-send-symbol { right: .85rem; bottom: .85rem; }
+.pricing-osl-composer .pricing-send-symbol::after,
+.setup-native-composer .setup-native-send::after,
+.pricing-native-composer i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: .4rem;
+  height: .4rem;
+  margin: auto;
+  border-top: 2px solid #04161a;
+  border-right: 2px solid #04161a;
+  transform: translateX(-1px) rotate(45deg);
+}
+
+/* Pricing FREE/PRO cards — rounder cards, softer borders, and tidy feature
+   chips with a check so they read as a clean plan summary. */
+.pricing-tier-grid .pricing-motion-card {
+  border-radius: 16px;
+  border-color: rgba(255, 255, 255, .12);
+}
+.pricing-tier-grid .pricing-motion-pro { border-color: rgba(6, 182, 212, .5); }
+.pricing-card-demo { border-radius: 14px; }
+.pricing-tier-grid .pricing-motion-features li {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .03);
+  border-color: rgba(255, 255, 255, .1);
+}
+.pricing-motion-features-pro li {
+  background: rgba(6, 182, 212, .05);
+  border-color: rgba(6, 182, 212, .22) !important;
+}
+.pricing-motion-features li::before {
+  content: "✓";
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 800;
 }
