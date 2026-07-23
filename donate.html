@@ -20,7 +20,7 @@
     <a class="topnav-brand" href="/"><img class="topnav-brand-mark app-logo" src="/assets/img/osl-app-icon-v2.png" alt="" width="34" height="34"><span>OSL</span></a>
     <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
-      <ul class="topnav-links"><li><a href="/download">Download</a></li><li><a href="/features">Features</a></li><li><a href="/donate" aria-current="page">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">Source</a></li></ul>
+      <ul class="topnav-links"><li><a href="/download">Download</a></li><li><a href="/features">Features</a></li><li><a href="/donate" aria-current="page">Donate</a></li><li><a href="/audit">Audit</a></li><li><a class="source-nav-link" href="https://github.com/OSLPrivacy" target="_blank" rel="noopener"><svg class="source-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Source</a></li></ul>
     </nav>
   </header>
 
@@ -52,9 +52,9 @@
 
         <div class="mission-center">
           <small>Open source</small>
-          <svg class="mission-shield" viewBox="0 0 96 112" focusable="false" aria-hidden="true">
-            <path class="mission-shield-outline" d="M48 4 88 20v31c0 26-15.6 44.6-40 57C23.6 95.6 8 77 8 51V20L48 4Z"></path>
-            <image class="mission-shield-logo" href="/assets/img/osl-app-icon-v2.png" x="29" y="34" width="38" height="38"></image>
+          <svg class="mission-shield" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path class="mission-shield-outline" d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+            <image class="mission-shield-logo" href="/assets/img/osl-app-icon-v2.png" x="7.6" y="7.4" width="8.8" height="8.8"></image>
           </svg>
           <strong>Protected</strong>
         </div>
@@ -73,37 +73,21 @@
       <p class="mission-caption">The record can be requested. Your message cannot be recovered.</p>
     </section>
 
-    <section class="donate-checkout reveal" aria-labelledby="card-donation-heading">
+    <section class="donate-checkout reveal" aria-labelledby="donation-heading">
       <div class="donate-checkout-copy">
         <p class="eyebrow">Donate once</p>
-        <h2 id="card-donation-heading">Choose an amount.</h2>
+        <h2 id="donation-heading">Support the mission.</h2>
+        <p class="donate-checkout-lead">Pick how you want to give, choose an amount, then continue.</p>
       </div>
-      <div class="payment-actions" role="group" aria-label="Choose a one-time donation amount">
-        <button class="button button-secondary" type="button" data-donation-amount="5" aria-label="Donate 5 dollars once">$5</button>
-        <button class="button button-primary" type="button" data-donation-amount="20" aria-label="Donate 20 dollars once">$20</button>
-        <button class="button button-secondary" type="button" data-donation-amount="50" aria-label="Donate 50 dollars once">$50</button>
-        <button class="button button-secondary" type="button" data-donation-custom-toggle aria-expanded="false" aria-controls="custom-donation-form">Other</button>
-      </div>
-      <form class="custom-donation-form" id="custom-donation-form" hidden>
-        <label for="custom-donation-amount">Amount in US dollars</label>
-        <div><span aria-hidden="true">$</span><input id="custom-donation-amount" name="amount" type="number" min="1" max="10000" step="1" inputmode="numeric" required><button class="button button-primary" type="submit">Donate once</button></div>
-      </form>
-      <p class="form-status" id="checkout-status" role="status" aria-live="polite"></p>
-      <p class="donate-privacy-line"><span aria-hidden="true">✓</span> No OSL donor profile</p>
-    </section>
 
-    <section class="donate-crypto reveal" aria-labelledby="crypto-donation-heading">
-      <div>
-        <p class="eyebrow">Crypto</p>
-        <h2 id="crypto-donation-heading">Bitcoin or Monero.</h2>
-        <p class="crypto-donation-selection">Selected: <strong id="crypto-donation-selected-amount">$20.00</strong></p>
-      </div>
-      <div class="crypto-donation-controls">
-        <div class="crypto-donation-amounts" role="group" aria-label="Choose a crypto donation amount">
-          <button class="button button-secondary" type="button" data-crypto-donation-amount-cents="500">$5</button>
-          <button class="button button-primary" type="button" data-crypto-donation-amount-cents="2000" aria-pressed="true">$20</button>
-          <button class="button button-secondary" type="button" data-crypto-donation-amount-cents="5000">$50</button>
-          <button class="button button-secondary" type="button" data-crypto-donation-custom-toggle aria-expanded="false" aria-controls="crypto-donation-custom-form">Other</button>
+      <div class="donation-flow">
+        <div class="donation-step">
+          <p class="donation-step-title"><span class="donation-step-index" aria-hidden="true">1</span>Payment method</p>
+          <div class="donation-methods" role="group" aria-label="Choose a payment method">
+            <button class="button button-secondary donation-method payment-brand-button donation-method-active" type="button" data-donation-method="card" aria-pressed="true"><svg class="method-card-mark" viewBox="0 0 36 28" aria-hidden="true"><rect x="1" y="1" width="34" height="26" rx="3"></rect><path d="M1 8h34M6 20h9"></path></svg><strong>Card</strong><span>Donate once</span></button>
+            <button class="button button-secondary donation-method payment-brand-button" type="button" data-crypto-donation-method="btc" aria-pressed="false"><svg class="bitcoin-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.638 14.904c-1.602 6.43-8.113 10.34-14.542 8.736C2.67 22.05-1.244 15.525.362 9.105 1.962 2.67 8.475-1.243 14.9.358c6.43 1.605 10.342 8.115 8.738 14.548v-.002zm-6.35-4.613c.24-1.59-.974-2.45-2.64-3.03l.54-2.153-1.315-.33-.525 2.107c-.345-.087-.705-.167-1.064-.25l.526-2.127-1.32-.33-.54 2.165c-.285-.067-.565-.132-.84-.2l-1.815-.45-.35 1.407s.975.225.955.236c.535.136.63.486.615.766l-1.477 5.92c-.075.166-.24.406-.614.314.015.02-.96-.24-.96-.24l-.66 1.51 1.71.426.93.242-.54 2.19 1.32.327.54-2.17c.36.1.705.19 1.05.273l-.51 2.154 1.32.33.545-2.19c2.24.427 3.93.257 4.64-1.774.57-1.637-.03-2.58-1.217-3.196.854-.193 1.5-.76 1.68-1.93h.01zm-3.01 4.22c-.404 1.64-3.157.75-4.05.53l.72-2.9c.896.23 3.757.67 3.33 2.37zm.41-4.24c-.37 1.49-2.662.735-3.405.55l.654-2.64c.744.18 3.137.524 2.75 2.084v.006z"/></svg><strong>Bitcoin</strong><span>Donate once</span></button>
+            <button class="button button-secondary donation-method payment-brand-button" type="button" data-crypto-donation-method="xmr" aria-pressed="false"><svg class="monero-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.365 0 0 5.373 0 12.015c0 1.335.228 2.607.618 3.81h3.577V5.729L12 13.545l7.805-7.815v10.095h3.577c.389-1.203.618-2.475.618-3.81C24 5.375 18.635 0 12 0zm-1.788 15.307l-3.417-3.421v6.351H1.758C3.87 21.689 7.678 24 12 24s8.162-2.311 10.245-5.764h-5.04v-6.351l-3.386 3.421-1.788 1.79-1.814-1.79h-.005z"/></svg><strong>Monero</strong><span>Donate once</span></button>
+          </div>
         </div>
         <form class="crypto-donation-custom-form" id="crypto-donation-custom-form" hidden>
           <label for="crypto-donation-custom-amount">Amount in US dollars</label>
@@ -150,7 +134,7 @@
     <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=c952f603" defer></script>
   <script src="/assets/js/crypto-donation.js" type="module"></script>
 </body>
 </html>
