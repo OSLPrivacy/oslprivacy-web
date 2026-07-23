@@ -33,6 +33,8 @@ scripts/**
 
 # Working and reference files that must not be published.
 change.md
+changes.md
+grid.png
 fear.png
 brave_*.png
 *.mp4

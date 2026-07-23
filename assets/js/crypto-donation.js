@@ -218,16 +218,27 @@ async function copyText(value, button) {
   window.setTimeout(() => { button.textContent = prior; }, 1400);
 }
 
+function bytesToBase64Url(bytes) {
+  let binary = '';
+  bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
 function initializeCryptoDonations() {
   const dialog = document.getElementById('crypto-donation-dialog');
-  const methodButtons = [...document.querySelectorAll('[data-crypto-donation-method]')];
-  const liveMethodButtons = methodButtons.filter((button) => !button.disabled);
+  const cardMethodButton = document.querySelector('[data-donation-method="card"]');
+  const cryptoMethodButtons = [...document.querySelectorAll('[data-crypto-donation-method]')];
+  const allMethodButtons = [cardMethodButton, ...cryptoMethodButtons].filter(Boolean);
+  const liveCryptoMethods = cryptoMethodButtons.filter((button) => !button.disabled);
   const amountButtons = [...document.querySelectorAll('[data-crypto-donation-amount-cents]')];
   const customToggle = document.querySelector('[data-crypto-donation-custom-toggle]');
   const customForm = document.getElementById('crypto-donation-custom-form');
   const customInput = document.getElementById('crypto-donation-custom-amount');
   const amountStatus = document.getElementById('crypto-donation-amount-status');
   const selectedAmount = document.getElementById('crypto-donation-selected-amount');
+  const selectedMethodLabel = document.getElementById('donation-selected-method');
+  const proceedButton = document.querySelector('[data-donation-proceed]');
+  const checkoutStatus = document.getElementById('checkout-status');
   const status = document.getElementById('crypto-donation-status');
   const expired = document.getElementById('crypto-donation-expired');
   const confirmed = document.getElementById('crypto-donation-confirmed');
@@ -237,11 +248,25 @@ function initializeCryptoDonations() {
   const asset = document.getElementById('crypto-donation-asset');
   const confirmations = document.getElementById('crypto-donation-confirmations');
   const expires = document.getElementById('crypto-donation-expires');
-  if (!dialog || !status || methodButtons.length === 0) return;
+  if (!dialog || !status || !proceedButton || allMethodButtons.length === 0) return;
 
+  const METHOD_LABELS = { card: 'Card', btc: 'Bitcoin', xmr: 'Monero' };
+  let selectedMethod = 'card';
   let selectedUsdCents = 2000;
   let quoteBusy = false;
   let activePoll = null;
+
+  const selectMethod = (method, matchingButton = null) => {
+    if (!METHOD_LABELS[method]) return;
+    selectedMethod = method;
+    allMethodButtons.forEach((button) => {
+      const active = button === matchingButton;
+      button.setAttribute('aria-pressed', String(active));
+      button.classList.toggle('donation-method-active', active);
+    });
+    if (selectedMethodLabel) selectedMethodLabel.textContent = METHOD_LABELS[method];
+    setStatus(checkoutStatus, '');
+  };
 
   const selectAmount = (cents, matchingButton = null) => {
     selectedUsdCents = cents;
@@ -375,50 +400,98 @@ function initializeCryptoDonations() {
     customToggle?.setAttribute('aria-expanded', 'false');
   });
 
-  liveMethodButtons.forEach((button) => {
-    button.addEventListener('click', async () => {
-      const saved = readSession();
-      if (saved?.invoice) {
-        try {
-          const invoice = validateDonationInvoice(
-            saved.invoice,
-            saved.invoice.payment_method,
-            saved.invoice.amount_usd_cents,
-            Math.floor(Date.now() / 1000),
-            true,
-          );
-          showInvoice(invoice);
-          setStatus(status, 'This is your active invoice. OSL will not create another one yet.');
-          void poll(invoice);
-        } catch {
-          clearSession();
-        }
-        return;
+  cardMethodButton?.addEventListener('click', () => selectMethod('card', cardMethodButton));
+  cryptoMethodButtons.forEach((button) => {
+    button.addEventListener('click', () => selectMethod(button.dataset.cryptoDonationMethod, button));
+  });
+
+  const startCardDonation = async () => {
+    const cents = selectedUsdCents;
+    if (!Number.isSafeInteger(cents) || cents < MIN_USD_CENTS || cents > MAX_USD_CENTS) {
+      setStatus(checkoutStatus, 'Choose an amount from $1.00 to $10,000.00.', 'error');
+      return;
+    }
+    proceedButton.disabled = true;
+    setStatus(checkoutStatus, 'Opening secure card checkout...');
+    try {
+      const requestTokenBytes = new Uint8Array(32);
+      window.crypto.getRandomValues(requestTokenBytes);
+      const response = await postJson('/v1/donations/stripe/session', {
+        amount_usd_cents: cents,
+        request_token: bytesToBase64Url(requestTokenBytes),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || typeof result.url !== 'string') {
+        throw new Error(typeof result.error === 'string' ? result.error : 'Donations are temporarily unavailable.');
       }
-      if (quoteBusy) return;
-      const paymentMethod = button.dataset.cryptoDonationMethod;
-      quoteBusy = true;
-      liveMethodButtons.forEach((candidate) => { candidate.disabled = true; });
-      setStatus(amountStatus, 'Creating a unique payment address...');
-      try {
-        const response = await postJson(QUOTE_PATH, {
-          payment_method: paymentMethod,
-          amount_usd_cents: selectedUsdCents,
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(response.status === 429 ? 'Too many invoice attempts. Try again shortly.' : 'Crypto donations are temporarily unavailable.');
-        const invoice = validateDonationInvoice(result, paymentMethod, selectedUsdCents);
-        saveSession(invoice);
-        showInvoice(invoice);
-        setStatus(status, 'Send the exact amount once. OSL will confirm it here.');
-        void poll(invoice);
-      } catch (error) {
-        setStatus(amountStatus, error instanceof Error ? error.message : 'Crypto donations are temporarily unavailable.', 'error');
-      } finally {
-        quoteBusy = false;
-        liveMethodButtons.forEach((candidate) => { candidate.disabled = false; });
+      const checkoutUrl = new URL(result.url);
+      if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
+        throw new Error('The card processor returned an unexpected address. No payment was opened.');
       }
-    });
+      window.location.assign(checkoutUrl.href);
+    } catch (error) {
+      setStatus(checkoutStatus, error instanceof Error ? error.message : 'Donations are temporarily unavailable.', 'error');
+      proceedButton.disabled = false;
+    }
+  };
+
+  const resumeSavedCrypto = () => {
+    const saved = readSession();
+    if (!saved?.invoice) return false;
+    try {
+      const invoice = validateDonationInvoice(
+        saved.invoice,
+        saved.invoice.payment_method,
+        saved.invoice.amount_usd_cents,
+        Math.floor(Date.now() / 1000),
+        true,
+      );
+      showInvoice(invoice);
+      setStatus(status, 'This is your active invoice. OSL will not create another one yet.');
+      void poll(invoice);
+      return true;
+    } catch {
+      clearSession();
+      return false;
+    }
+  };
+
+  const startCryptoDonation = async () => {
+    if (resumeSavedCrypto()) return;
+    if (quoteBusy) return;
+    const paymentMethod = selectedMethod;
+    quoteBusy = true;
+    proceedButton.disabled = true;
+    setStatus(checkoutStatus, 'Creating a unique payment address...');
+    try {
+      const response = await postJson(QUOTE_PATH, {
+        payment_method: paymentMethod,
+        amount_usd_cents: selectedUsdCents,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(response.status === 429 ? 'Too many invoice attempts. Try again shortly.' : 'Crypto donations are temporarily unavailable.');
+      const invoice = validateDonationInvoice(result, paymentMethod, selectedUsdCents);
+      saveSession(invoice);
+      showInvoice(invoice);
+      setStatus(checkoutStatus, '');
+      setStatus(status, 'Send the exact amount once. OSL will confirm it here.');
+      void poll(invoice);
+    } catch (error) {
+      setStatus(checkoutStatus, error instanceof Error ? error.message : 'Crypto donations are temporarily unavailable.', 'error');
+    } finally {
+      quoteBusy = false;
+      proceedButton.disabled = false;
+    }
+  };
+
+  proceedButton.addEventListener('click', () => {
+    if (selectedMethod === 'card') {
+      void startCardDonation();
+    } else if (liveCryptoMethods.some((button) => button.dataset.cryptoDonationMethod === selectedMethod)) {
+      void startCryptoDonation();
+    } else {
+      setStatus(checkoutStatus, 'Choose a payment method to continue.', 'error');
+    }
   });
 
   dialog.querySelectorAll('[data-crypto-donation-copy]').forEach((button) => {
@@ -430,6 +503,16 @@ function initializeCryptoDonations() {
   dialog.querySelectorAll('[data-crypto-donation-close]').forEach((button) => {
     button.addEventListener('click', () => dialog.close());
   });
+
+  if (selectedAmount) selectedAmount.textContent = formatUsd(selectedUsdCents);
+  if (selectedMethodLabel) selectedMethodLabel.textContent = METHOD_LABELS[selectedMethod];
+
+  const donationResult = new URLSearchParams(window.location.search).get('donation');
+  if (donationResult === 'complete') {
+    setStatus(checkoutStatus, 'Thank you. Card checkout finished. OSL counts the donation only after the processor confirms payment.', 'success');
+  } else if (donationResult === 'cancelled') {
+    setStatus(checkoutStatus, 'Donation cancelled. No payment was completed.');
+  }
 
   const saved = readSession();
   if (saved?.invoice) {

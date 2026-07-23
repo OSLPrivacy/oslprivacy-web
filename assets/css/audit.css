@@ -29,7 +29,6 @@
 
 #main .audit-intro > .eyebrow {
   margin-bottom: .75rem;
-  font-family: var(--font-terminal);
   font-size: .68rem;
   letter-spacing: .16em;
 }
@@ -53,14 +52,29 @@
   margin-top: 1.5rem;
 }
 
-#main .audit-intro .button,
+/* Source-map file buttons stay compact for the dense grid, but use the site's
+   Inter face instead of the terminal mono so type matches the rest of the site. */
 #main .audit-file .button {
   min-height: 2.55rem;
   padding: .68rem .9rem;
-  border-radius: 3px;
-  font-family: var(--font-terminal);
-  font-size: .76rem;
+  border-radius: var(--radius);
+  font-size: .82rem;
   letter-spacing: .01em;
+}
+
+/* Hero buttons match the standard site buttons (Inter, full size, rounded) and
+   carry an inline GitHub glyph since both link to source repositories. */
+#main .audit-intro .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+}
+#main .audit-intro .button .button-brand-icon {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: currentColor;
 }
 
 #main .section-heading {
@@ -173,9 +187,8 @@
 
 #main .grid-2 .card h3 {
   margin-bottom: .55rem;
-  font-family: var(--font-terminal);
-  font-size: .82rem;
-  letter-spacing: .01em;
+  font-size: .88rem;
+  letter-spacing: -.01em;
 }
 
 #main .grid-2 .card p {

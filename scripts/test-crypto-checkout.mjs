@@ -4,9 +4,10 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const root = new URL('../', import.meta.url);
-const [html, script] = await Promise.all([
+const [html, script, styles] = await Promise.all([
   readFile(new URL('download.html', root), 'utf8'),
   readFile(new URL('assets/js/main.js', root), 'utf8'),
+  readFile(new URL('assets/css/style.css', root), 'utf8'),
 ]);
 
 function loadCryptoInvoiceValidator() {
@@ -43,11 +44,14 @@ function validQuote(asset = 'btc') {
   };
 }
 
-test('Bitcoin and Monero checkout methods are live', () => {
+test('Bitcoin and Monero checkout methods are live and visually active', () => {
   const paymentBlock = html.match(/<div class="coming-payment-options"[\s\S]*?<\/div>/)?.[0] ?? '';
-  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Pay once/);
-  assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*Pay once/);
+  const paymentRule = styles.match(/\.coming-payment-options \.button\s*\{([\s\S]*?)\}/)?.[1] ?? '';
+  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Per month/);
+  assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*Per month/);
   assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 0);
+  assert.match(paymentRule, /color:\s*var\(--text\)/);
+  assert.doesNotMatch(paymentRule, /cursor:\s*not-allowed|opacity\s*:/);
 });
 
 test('invoice details are semantic, copyable, and expire visibly', () => {
