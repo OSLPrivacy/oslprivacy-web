@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>Technical audit | OSL Privacy</title>
   <meta name="description" content="Technical source map, cryptographic design, trust boundaries, payment delivery, limitations, and verification status for OSL Privacy.">
   <meta name="color-scheme" content="dark">
@@ -49,7 +50,8 @@
     <section class="section reveal" aria-labelledby="crypto-heading">
       <h2 id="crypto-heading" class="section-heading">Cryptographic design</h2>
       <div class="prose technical-prose">
-        <p>OSL combines X25519 with ML KEM 768 for hybrid key establishment. Message protection uses authenticated encryption. Direct messages use recipient specific encrypted slots. Group scopes use sender key chains with local mutable state.</p>
+        <p>OSL combines X25519 with ML KEM 768 for hybrid key establishment. Message protection uses authenticated encryption. Direct messages use recipient specific encrypted slots, sealed per message.</p>
+        <p>Group scope protection is <span class="osl-status" data-osl-feature="group-protection" data-osl-status="Planned">Planned</span> and is not what the shipping client does. Group chain code with locally held mutable state exists in the source, but the feature is disabled by default in the client and the construction carries no signature identifying the sender, so a receiver cannot bind a group message to the account that sent it. An independent review also found that the live native path does not use the sender keys the documentation previously claimed. Do not rely on group or channel protection until that is implemented, reviewed and re-stated here.</p>
         <p>Long term identity keys and private conversation state are kept on the device and sealed at rest. Public identity material and encrypted control messages may pass through the keyserver. A connected service receives the encrypted carrier and can still observe delivery metadata.</p>
         <p>Same account use on multiple machines remains a protocol risk. Independently initialized machines can have different identity keys, and mutable group sender state is not synchronized. Do not treat multi device group use as solved until device certificates and state coordination ship.</p>
       </div>
@@ -74,7 +76,8 @@
           <li>Stripe signs the live webhook. The Worker rejects events marked as test mode.</li>
           <li>The success page presents the claim capability and decrypts the returned activation code in the original browser tab.</li>
         </ol>
-        <p>The Bitcoin and Monero design derives a unique Bitcoin address from a watch only wallet and a unique Monero subaddress from a view only wallet. A local node watcher confirms payment and delivers an activation code encrypted for the checkout browser. The payment watcher holds no spending keys.</p>
+        <p>Bitcoin and Monero checkout is live and follows the same shape. It derives a unique Bitcoin address from a watch only wallet and a unique Monero subaddress from a view only wallet. A local node watcher confirms payment and delivers an activation code encrypted for the checkout browser. The payment watcher holds no spending keys.</p>
+        <p>Every purchase, on every rail, is a single charge that buys one month of Pro. There is no stored payment method, no customer profile, no recurring mandate and no account. A redemption record is a licence hash and a timestamp — no email, device fingerprint, install identifier or joined payment identifier. The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity, and the licence validation endpoint receives no conversation, group, recipient or connected service activity.</p>
         <p>The Telegram operator bot exposes aggregate payments, downloads, and activation counts only to approved operator accounts. It does not receive card details, customer email addresses, activation codes, wallet identities, or message data.</p>
       </div>
     </section>
@@ -83,6 +86,7 @@
       <h2 id="license-heading" class="section-heading">Licenses and reporting</h2>
       <div class="prose technical-prose">
         <p>The desktop client and backend repository use Apache 2.0. The website repository uses AGPL 3.0. Deployment secrets, payment credentials, release signing keys, and user private keys are not source code and are not published.</p>
+        <p>OSL is otherwise fully open source. The only exception is the optional AutoScrub module, which stays closed source purely to make trivial cloning harder. The exception does not extend to cryptography, trust and identity, deletion receipts, data formats, policy contracts, free Scrub, or the default client. The module is not installed by default, a Pro user consents to it after a plain closed-source warning, and a reproducible fully open-source build remains usable without it.</p>
         <p>To report a security issue, email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>. Do not include private keys, passwords, activation codes, or account tokens.</p>
       </div>
     </section>
@@ -93,6 +97,6 @@
     <nav class="footer-meta" aria-label="External and legal"><a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a></nav>
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

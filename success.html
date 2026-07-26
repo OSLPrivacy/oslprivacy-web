@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>Payment received | OSL Privacy</title>
   <meta name="description" content="Your OSL Privacy payment was received. Reveal your activation code securely in this browser.">
   <meta name="color-scheme" content="dark">
@@ -47,8 +48,10 @@
           <p class="security-note">The code was decrypted in this browser. OSL stores its hash, not the readable code.</p>
         </section>
 
+        <p>You paid <!--osl:tiers.pro.display-->$5<!--/osl--> for one month of Pro. Nothing renews, nothing was stored about how you paid, and there is nothing to cancel — to continue later, buy another code. The payment record contains no message text, no conversation names, no carrier text and no recipient identity.</p>
+
         <h2 class="section-heading">Already have OSL installed?</h2>
-        <p>Open Settings in OSL. Choose Account, paste the code, then choose Validate and Save. Paid features turn on immediately.</p>
+        <p>Open Settings in OSL. Choose Account, paste the code, then choose Validate and Save. Pro turns on immediately.</p>
 
         <h2 class="section-heading">Don't have OSL installed yet?</h2>
         <p>Download the installer, then use the activation code shown above. Keep this tab open until you have copied it.</p>
@@ -61,7 +64,9 @@
 
   </main>
 
-  <!-- W6.PORTAL: customer portal link will go here once we have a way to identify the returning user (deferred to v2 / account system) -->
+  <!-- Deliberately no billing-management page: master 7.14 makes Pro a prepaid one-month code
+       with no stored payment method, no account and nothing to cancel, so there is nothing
+       to manage and nothing to identify a returning buyer by. -->
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
@@ -81,6 +86,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

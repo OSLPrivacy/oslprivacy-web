@@ -38,3 +38,7 @@ brave_*.png
 *.mp4
 design-guide/
 design-guide/**
+data/
+data/**
+docs/evidence/
+docs/evidence/**

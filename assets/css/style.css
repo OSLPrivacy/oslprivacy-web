@@ -8722,3 +8722,42 @@ h2:hover .anchor-link,
   [data-product-animation="message-flow"].is-running .local-result-pair :is(.split-carrier,.split-locked) { animation:local-output-v14 3.4s ease 5.65s both !important; }
   [data-product-animation="message-flow"].is-running .local-result-pair .split-locked { animation-delay:5.65s !important; }
 }
+
+/* Capability status labels (master 8.2). Every status is spelled out in text so
+   the meaning never depends on colour alone; the tint is only reinforcement.
+   Generated from data/pricing.json -- never hand-write a status in HTML. */
+.osl-status {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  background: var(--surface-raised);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.osl-status[data-osl-status="Available"] { color: var(--success); border-color: color-mix(in srgb, var(--success) 45%, var(--border)); }
+.osl-status[data-osl-status="Beta"] { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.osl-status[data-osl-status="Experimental"] { color: #e9c46a; border-color: color-mix(in srgb, #e9c46a 45%, var(--border)); }
+.osl-status[data-osl-status="Planned"],
+.osl-status[data-osl-status="Illustration"] { color: var(--text-muted); }
+
+/* In a demo heading the label sits beside the eyebrow rather than on its own
+   line, so a 320px column does not gain an extra row of chrome. */
+.eyebrow .osl-status { margin-left: var(--s-2); letter-spacing: 0.08em; }
+.osl-status-note {
+  margin: var(--s-2) 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.download-features .osl-status,
+.pricing-motion-features .osl-status { margin-left: var(--s-2); }
+
+/* Keep "$5 / month" on one line: at 390px the rate wrapped after the slash. */
+.price-rate { white-space: nowrap; }

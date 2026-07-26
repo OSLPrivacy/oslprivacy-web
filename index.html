@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>OSL Privacy | Privacy for social media and email</title>
   <meta name="description" content="OSL is an open source privacy hub for social media and email. Protection happens locally on your computer.">
   <meta name="color-scheme" content="dark">
@@ -35,9 +36,9 @@
     <div class="privacy-warning-inner">
       <button class="dialog-close privacy-warning-close" type="button" data-privacy-warning-close aria-label="Close warning">&times;</button>
       <div class="privacy-warning-brand" aria-hidden="true"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><span>!</span></div>
-      <p class="eyebrow">Your location changes the risk</p>
+      <p class="eyebrow">Your location changes the risk <span class="osl-status" data-osl-feature="exposure-comparison" data-osl-status="Illustration">Illustration</span></p>
       <h2 id="privacy-warning-title">Who can reach your data?</h2>
-      <p id="privacy-warning-copy">Choose your country.</p>
+      <p id="privacy-warning-copy">Choose your country. This compares published agency and company practice for that country and links you to the official sources. It is not a scan of your device or your accounts, and it tells us nothing about you.</p>
 
       <button class="button button-danger privacy-location-button" id="privacy-location-button" type="button">Check my location</button>
       <p class="privacy-location-result" id="privacy-location-result" role="status" aria-live="polite">Checked only in this browser.</p>
@@ -73,12 +74,20 @@
       <h1>End mass&nbsp;<br>surveillance.</h1>
       <div class="hero-actions" role="group" aria-label="Download OSL">
         <a href="/download" class="button button-secondary">Download Free</a>
-        <button class="button button-primary cta-subscribe" type="button">Get Pro · $5</button>
+        <button class="button button-primary cta-subscribe" type="button">Get Pro · <!--osl:tiers.pro.display-->$5<!--/osl--> <!--osl:tiers.pro.period_display-->/ month<!--/osl--></button>
       </div>
+      <p class="osl-status-note"><!--osl:tiers.pro.no_renewal_note-->One month per code. Nothing renews, and OSL never stores your payment details.<!--/osl--></p>
       <p class="form-status hero-checkout-status" id="checkout-status" role="status" aria-live="polite"></p>
     </section>
 
-    <section class="section product-demo reveal" id="how-it-works" aria-label="Message protection" data-product-animation="message-flow" data-playback-rate="0.72">
+    <section class="section product-demo reveal" id="how-it-works" aria-labelledby="how-it-works-heading" data-product-animation="message-flow" data-playback-rate="0.72">
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Message protection <span class="osl-status" data-osl-feature="cover-carrier-text" data-osl-status="Beta">Beta</span></p>
+          <h2 id="how-it-works-heading" class="section-heading">Your words never<br>reach their server.</h2>
+          <p class="osl-status-note">You write in OSL on your own computer. OSL encrypts what you wrote and puts a harmless cover message into the social or email app instead. Your friend's copy of OSL turns it back into the real message on their computer. The service carries the cover text and the locked item, and can read neither. It still sees who you messaged and when. <a href="/docs/how-it-works">Read how the encryption works</a>.</p>
+        </div>
+      </div>
       <div class="cinema-viewport" aria-hidden="true">
         <div class="cinema-world">
           <div class="cinema-floor"></div>
@@ -164,15 +173,16 @@
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Scrub</p>
-          <h2 id="scrub-heading" class="section-heading">Protect your digital footprint.</h2>
-          <p class="scrub-promise">The scan stays on your device.</p>
+          <p class="eyebrow">Scrub <span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span> <span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></p>
+          <h2 id="scrub-heading" class="section-heading">Find what you left behind.</h2>
+          <p class="scrub-promise">The scan is designed to stay on your device.</p>
+          <p class="osl-status-note">Planned, and not in the shipping app yet. Scrub is designed to find the accounts and the exposure you left behind, then take you to the page where you delete it — it does not erase anything for you, and you stay the one who confirms every deletion. The scan is built to stay on your device. The drawing below shows the intended sequence. <a href="/features">See how Scrub is meant to work</a>.</p>
         </div>
       </div>
 
       <div class="scrub-flat-scene" aria-hidden="true">
         <article class="scrub-flat-panel">
-          <div class="scrub-drop-bar"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><strong>Scrub</strong><span class="scrub-drop-action"><i>Scan</i><b>Erase 3</b></span></div>
+          <div class="scrub-drop-bar"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><strong>Scrub</strong><span class="scrub-drop-action"><i>Scan</i><b>Review 3</b></span></div>
           <div class="scrub-flat-scan"><span class="scrub-scan-icon"></span><strong>Scanning locally</strong><div class="scrub-scan-field"><i></i></div></div>
           <div class="scrub-flat-findings">
             <strong>3 findings</strong>
@@ -191,8 +201,9 @@
       <h2 id="buy-heading">Start private.</h2>
       <div class="home-buy-actions">
         <a href="/download" class="button button-secondary">Download Free</a>
-        <button class="button button-primary cta-subscribe" type="button">Get Pro · $5</button>
+        <button class="button button-primary cta-subscribe" type="button">Get Pro · <!--osl:tiers.pro.display-->$5<!--/osl--> <!--osl:tiers.pro.period_display-->/ month<!--/osl--></button>
       </div>
+      <p class="osl-status-note"><!--osl:tiers.pro.no_renewal_note-->One month per code. Nothing renews, and OSL never stores your payment details.<!--/osl--> Pro is bought as an activation code, so there is nothing to cancel.</p>
       <a class="home-feature-link" href="/features">See every feature</a>
     </section>
   </main>
@@ -207,6 +218,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

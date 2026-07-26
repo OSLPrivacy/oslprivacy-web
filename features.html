@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>Features | OSL Privacy</title>
   <meta name="description" content="See how OSL protects messages, clears sensitive history, cleans attachments, and expires readable content.">
   <meta name="color-scheme" content="dark">
@@ -35,14 +36,16 @@
     <section class="hero section reveal" aria-labelledby="features-title">
       <p class="eyebrow">Features</p>
       <h1 id="features-title">Privacy, shown.</h1>
+      <p class="osl-status-note">Every feature below carries a label. <strong>Available</strong> works on the shipping build. <strong>Beta</strong> works but is not finished. <strong>Experimental</strong> can fail. <strong>Planned</strong> is not built into the app yet and is never sold as finished. Every animation on this page is an <span class="osl-status" data-osl-feature="product-animations" data-osl-status="Illustration">Illustration</span> drawn to explain the idea, not a recording of the app.</p>
     </section>
 
     <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Server protection</p>
+          <p class="eyebrow">Server protection <span class="osl-status" data-osl-feature="cover-carrier-text" data-osl-status="Beta">Beta</span></p>
           <h2 id="seizure-heading" class="section-heading">The server never has<br>the real message.</h2>
           <p class="section-subhead">Stored records reveal only the cover.</p>
+          <p class="osl-status-note">This is how protected text works today, verified on QA builds and not yet on the release build. The connected service stores the cover message and the encrypted item; it never receives the readable text. It does still see who you talked to and when. The drawing below shows what a stored record looks like when someone opens it.</p>
         </div>
       </div>
 
@@ -78,7 +81,13 @@
     </section>
 
     <section class="section product-demo warning-demo reveal" aria-labelledby="warning-heading" data-product-animation="warning-flow" data-playback-rate="0.8">
-      <div class="demo-heading-row"><div><p class="eyebrow">Before-send warning</p><h2 id="warning-heading" class="section-heading">Pause before it leaves.</h2></div></div>
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Before-send warning <span class="osl-status" data-osl-feature="exposure-warning" data-osl-status="Planned">Planned</span></p>
+          <h2 id="warning-heading" class="section-heading">Pause before it leaves.</h2>
+          <p class="osl-status-note">Planned, not built into the app yet. The detection code exists and is tested, but nothing in the shipping app calls it, so OSL does not warn you today. The drawing below shows the intended behaviour: catch a sensitive draft before it reaches an unencrypted composer, and leave the decision to you.</p>
+        </div>
+      </div>
       <div class="warning-scene" aria-hidden="true">
         <article class="warning-compose-card">
           <div class="warning-history"><i></i><i></i><i></i></div>
@@ -89,7 +98,13 @@
     </section>
 
     <section class="section product-demo link-demo reveal" aria-labelledby="link-heading" data-product-animation="link-flow" data-playback-rate="0.8">
-      <div class="demo-heading-row"><div><p class="eyebrow">Link protection</p><h2 id="link-heading" class="section-heading">Share the link. Lose the trackers.</h2></div></div>
+      <div class="demo-heading-row">
+        <div>
+          <p class="eyebrow">Link protection <span class="osl-status" data-osl-feature="link-protection" data-osl-status="Planned">Planned</span></p>
+          <h2 id="link-heading" class="section-heading">Share the link. Lose the trackers.</h2>
+          <p class="osl-status-note">Planned. There is no tracker-stripping code in OSL yet, so links you send today are unchanged. The drawing below shows the intended behaviour: strip the tracking parameters from a link before it is shared.</p>
+        </div>
+      </div>
       <div class="link-clean-scene" aria-hidden="true">
         <article class="link-clean-card">
           <div class="link-before"><span>Before</span><code>example.com/photo?utm_source=mail&amp;id=94</code></div>
@@ -103,15 +118,16 @@
     <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Scrub</p>
-          <h2 id="scrub-heading" class="section-heading">Protect your digital footprint.</h2>
-          <p class="scrub-promise">The scan stays on your device.</p>
+          <p class="eyebrow">Scrub <span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span> <span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></p>
+          <h2 id="scrub-heading" class="section-heading">Find what you left behind.</h2>
+          <p class="scrub-promise">The scan is designed to stay on your device.</p>
+          <p class="osl-status-note">Planned, and not in the shipping app yet. Scrub is designed to find the accounts and the exposure you left behind, then take you to the page where you delete it. It will not erase anything for you: you stay the one who confirms every deletion, on the service's own page. The guided handoff can fail on a service that changes its pages. The drawing below shows the intended sequence.</p>
         </div>
       </div>
 
       <div class="scrub-flat-scene" aria-hidden="true">
         <article class="scrub-flat-panel">
-          <div class="scrub-drop-bar"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><strong>Scrub</strong><span class="scrub-drop-action"><i>Scan</i><b>Erase 3</b></span></div>
+          <div class="scrub-drop-bar"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><strong>Scrub</strong><span class="scrub-drop-action"><i>Scan</i><b>Review 3</b></span></div>
           <div class="scrub-flat-scan"><span class="scrub-scan-icon"></span><strong>Scanning locally</strong><div class="scrub-scan-field"><i></i></div></div>
           <div class="scrub-flat-findings"><strong>3 findings</strong><span class="scrub-erase-line"></span><div class="scrub-hit"><i>!</i><code>••••••••••</code></div><div class="scrub-hit"><i>!</i><code>**********</code></div><div class="scrub-hit"><i>!</i><code>••••••••••</code></div></div>
           <div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
@@ -122,9 +138,10 @@
     <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-product-animation="attachment-guard-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Attachment Privacy Guard</p>
+          <p class="eyebrow">Attachment Privacy Guard <span class="osl-status" data-osl-feature="attachment-privacy-guard" data-osl-status="Planned">Planned</span></p>
           <h2 id="attachment-guard-heading" class="section-heading">Clean first.<br>Lock second.</h2>
-          <p class="section-subhead">Pro removes file details, encrypts it, and can make it view once.</p>
+          <p class="section-subhead">Planned: strip the hidden details out of a file before OSL encrypts it.</p>
+          <p class="osl-status-note">Planned. Nothing in the shipping app calls the metadata-stripping step yet, so assume a file you send still carries its original details. Encrypted image sending is separate and is in beta today; view once is also <span class="osl-status" data-osl-feature="view-once" data-osl-status="Planned">Planned</span>. The drawing below shows the intended sequence.</p>
         </div>
       </div>
 
@@ -143,9 +160,10 @@
     <section class="section product-demo expiry-demo reveal" aria-labelledby="expiry-heading" data-product-animation="expiry-flow" data-playback-rate="1">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Expiry</p>
+          <p class="eyebrow">Expiry <span class="osl-status" data-osl-feature="expiry" data-osl-status="Planned">Planned</span></p>
           <h2 id="expiry-heading" class="section-heading">Readable until expiry.</h2>
-          <p class="section-subhead">At zero, the key and readable message disappear.</p>
+          <p class="section-subhead">Planned: set how long a message stays readable in OSL.</p>
+          <p class="osl-status-note">Planned, and not wired into the app yet. When it does ship it will stop OSL from showing the readable message after the timer ends, leaving the cover text in place. It will not destroy a key, and it cannot make a copy, screenshot, export or backup that already left your device expire. The drawing below shows the intended behaviour.</p>
         </div>
       </div>
 
@@ -176,6 +194,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

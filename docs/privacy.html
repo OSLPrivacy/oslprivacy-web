@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>Privacy policy | OSL Privacy Docs</title>
   <meta name="description" content="OSL Privacy's privacy policy. What we collect, what we don't, and what we do with it.">
   <meta name="color-scheme" content="dark">
@@ -68,10 +69,10 @@
         <h2 id="what-we-collect">What we collect <a class="anchor-link" href="#what-we-collect" aria-label="Link to this section">#</a></h2>
         <p>We collect the minimum data needed to run the service:</p>
         <ul>
-          <li><strong>Email address:</strong> only if you choose to contact us. Card activation does not require OSL to email you a code. Crypto checkout is coming soon.</li>
+          <li><strong>Email address:</strong> only if you choose to contact us. Neither card nor crypto checkout requires OSL to email you a code — it is revealed in the checkout browser.</li>
           <li><strong>Website analytics:</strong> none. We don't use Google Analytics, Plausible, or any third-party analytics service. We don't set tracking cookies.</li>
           <li><strong>Server logs:</strong> Cloudflare, our CDN, retains standard request logs (IP address, user agent, requested URL, timestamp) for a short period for security and abuse detection.</li>
-          <li><strong>Payment information:</strong> Stripe receives card and billing details for a card purchase; OSL does not receive card numbers. OSL does not copy the returned email into its database or create an OSL customer profile for the one-time checkout. It stores the minimum opaque Stripe identifiers, payment status, and activation records needed to prove and deliver the purchase. When Bitcoin and Monero checkout launches, invoices will store the address, amount, status, confirmation facts, and encrypted activation delivery needed to complete the order.</li>
+          <li><strong>Payment information:</strong> we never store your payment details, including if you buy again. Stripe receives card and billing details for a card purchase; OSL does not receive card numbers, does not copy the returned email into its database, and does not create an OSL customer profile. There is no stored card and no recurring mandate, because every purchase is a separate charge for one month. OSL stores the minimum opaque Stripe identifiers, payment status, and activation records needed to prove and deliver the purchase. Bitcoin and Monero invoices store the address, amount, status, confirmation facts, and the encrypted activation delivery needed to complete the order.</li>
           <li><strong>Download counts:</strong> the download route records an anonymous event so OSL can count downloads. It does not create a user profile.</li>
           <li><strong>License validation:</strong> Pro users' OSL clients periodically check that their activation is valid. These requests include the license key and a timestamp.</li>
         </ul>
@@ -89,7 +90,8 @@
         <h2 id="how-we-use-data">How we use what we collect <a class="anchor-link" href="#how-we-use-data" aria-label="Link to this section">#</a></h2>
         <ul>
           <li><strong>Email:</strong> to answer a message you choose to send us. We do not require email to reveal an activation code in the checkout browser.</li>
-          <li><strong>Payment data:</strong> to process a purchase, handle refunds or disputes, and deliver an activation code. OSL stores activation code hashes rather than readable activation codes after issuance.</li>
+          <li><strong>Payment data:</strong> to process a purchase, handle refunds or disputes, and deliver an activation code. OSL stores activation code hashes rather than readable activation codes after issuance. A redemption record is a licence hash and a timestamp, with no account, email, device fingerprint, install identifier or joined payment identifier attached.</li>
+          <li><strong>What the payment records never contain:</strong> the payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity. Nothing you write, and nobody you write to, is linked to a payment. This holds for the planned processing credits too: if credits are ever sold, redemption is designed to use short-lived tokens rather than attaching each request to a billing identity.</li>
           <li><strong>License validation requests:</strong> to verify your paid tier is active. The validation server does not need your conversations, groups, recipients, or connected service activity.</li>
           <li><strong>Server logs:</strong> for security and abuse detection only. We don't analyze them for marketing or analytics purposes.</li>
         </ul>
@@ -98,7 +100,7 @@
         <p>We use the following third-party services:</p>
         <ul>
           <li><strong>Cloudflare:</strong> CDN and DDoS protection for oslprivacy.com.</li>
-          <li><strong>Stripe:</strong> card payment processing for one-time Pro purchases. Bitcoin and Monero payments are coming soon and will not go through Stripe or another payment processor.</li>
+          <li><strong>Stripe:</strong> card payment processing for Pro activation codes. Bitcoin and Monero payments do not go through Stripe or any other payment processor — OSL runs those invoices itself.</li>
         </ul>
         <p>We do not use Google Analytics, Facebook Pixel, ad-retargeting trackers, or any other cross-site tracking infrastructure.</p>
 
@@ -136,6 +138,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

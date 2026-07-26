@@ -1,0 +1,502 @@
+{
+  "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
+  "manifest_version": 5,
+  "decided_by": "Zhao",
+  "decided_on": "2026-07-26",
+  "currency": "USD",
+  "authority": "docs/design/osl-master-decision-2026-07-26.md sections 7.1, 7.6, 7.10, 7.14 and 8 (revision OSL-MASTER-2026-07-26-r4), plus docs/decisions/pro-prepaid-monthly-codes-2026-07-26.md, both in the discord-privacy-client repository.",
+
+  "model": {
+    "name": "Prepaid activation codes",
+    "summary": "$5 buys a code that unlocks Pro for one month. It is not a subscription: nothing auto-renews, no payment details are stored, and no account is required. To keep Pro, buy another code.",
+    "no_stored_payment_data": true,
+    "no_auto_renewal": true,
+    "no_account_required": true,
+    "period_starts_on_redemption": true,
+    "$redemption_note": "Owner decision 2026-07-26: the month does NOT start at purchase. It starts when the code is entered into the OSL client, so a code bought and left unused for months still delivers a full 30 days. Two separate clocks: shelf life (how long an unredeemed code may still be entered) and entitlement period (the 30 days of Pro). This is product truth, but see publication.not_publishable below -- the client does not implement it yet, so the WEBSITE must not claim it.",
+    "$why_this_matters": "Owner decision 2026-07-26: payment information is NEVER saved, including for repeat purchases. The website may state the $5-per-month rate, but must never imply a stored card, a recurring mandate, or a cancellation obligation."
+  },
+
+  "publication": {
+    "$note": "Master 7.14 draws the line explicitly: the website may publish the price and the nothing-renews / nothing-stored claims, but not the redemption-start claim, because the deployed client does not implement it. Publishing a shorter entitlement than the code currently grants understates what a buyer gets, which is the safe direction (master 0.2 rule 5); publishing a redemption-start promise the client cannot keep would be a false claim.",
+    "publishable": [
+      "$5 is the price of one month of Pro.",
+      "Nothing renews automatically and there is nothing to cancel.",
+      "OSL never stores payment details, including for repeat purchases.",
+      "No OSL account is required; Pro is unlocked by pasting an activation code.",
+      "Card, Bitcoin and Monero all work the same way: one payment, one month.",
+      "When Pro ends the app returns to Free and the encryption path keeps working."
+    ],
+    "not_publishable": [
+      {
+        "claim": "Your month starts when you enter the code.",
+        "reason": "Master 7.14: no redemption timestamp exists anywhere in the client or keyserver. A paid code currently grants lifetime access (subscription-state.ts: checkout.session.completed -> lifetime ACTIVE) and comp codes have their period fixed at mint.",
+        "unblocks_when": [
+          "the keyserver records a redemption timestamp on an explicit redeem call, not as a side effect of validation",
+          "the entitlement period is computed from that timestamp",
+          "/v1/license/validate returns EXPIRED after the period ends",
+          "the app degrades Pro features to Free at expiry without breaking the encryption path"
+        ],
+        "owner": "keyserver/app lane -- NOT the website lane"
+      },
+      {
+        "claim": "Processing credits are on sale.",
+        "reason": "Master 7.14 and 7.1: no credit purchase or balance endpoint exists on the deployed keyserver (verified 2026-07-26: nothing matching credits/compute in keyserver-cf/src/endpoints/). Credits may be EXPLAINED as Planned; they must not be offered for sale.",
+        "unblocks_when": [
+          "a credits purchase + balance endpoint is deployed",
+          "the ledger provably contains no message text, conversation names, carrier text or recipient identity"
+        ],
+        "owner": "keyserver lane"
+      }
+    ],
+    "$one_time_charge_is_correct": "The deployed checkout is already a single one-off charge, which is what a prepaid code needs: Stripe `mode: \"payment\"`, metadata `osl_purchase: \"one-time\"`, a single STRIPE_PRICE_ID_PRO. No Stripe subscription, webhook lifecycle, customer portal or stored payment method is required. The outstanding work is licence validity, not a billing-mode migration."
+  },
+
+  "tiers": {
+    "free": {
+      "name": "Free",
+      "display": "$0",
+      "period_display": "forever",
+      "amount_cents": 0,
+      "billing": "none",
+      "status": "Available",
+      "includes": [
+        "Protected text on supported connectors",
+        "No ads and no message limit",
+        "Receive and decrypt protected images sent by Pro users",
+        "Free Scrub: attended scan, review, confirm, verify, receipt"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "display": "$5",
+      "period_display": "/ month",
+      "rate_sentence": "$5 for one month",
+      "amount_cents": 500,
+      "billing": "prepaid_one_month_code",
+      "renews": false,
+      "stores_payment_method": false,
+      "requires_account": false,
+      "grant_days": 30,
+      "status": "Beta",
+      "no_renewal_note": "One month per code. Nothing renews, and OSL never stores your payment details.",
+      "$no_renewal_note_why": "Allowlist A6 rule 3: the limitation must ship with the price on the same page, in the same section, at comparable prominence -- a limitation in a linked FAQ does not count. index.html showed '$5 / month' on two checkout buttons with no renewal disclosure anywhere on the page, which reads as a subscription and contradicts master 7.14. Pinned in required_phrases for index.html and download.html so it cannot regress.",
+      "includes": [
+        "Early access to new privacy tools as they reach the beta channel"
+      ],
+      "$includes_note": "'Encrypted image sending' was removed from includes 2026-07-26 (truth lane): image-send is Planned, not Beta -- see the capability_registry entry. Until that is resolved, Pro's only currently-truthful benefit is early access, which is thin for a paid tier. Escalated to Zhao as action-needed.",
+      "planned_extras": [
+        "AutoScrub: an approved plan repeated with strict limits",
+        "Non-image file sending",
+        "AI-generated carrier text, local or cloud"
+      ]
+    }
+  },
+
+  "compute_credits": {
+    "name": "Processing credits",
+    "billing": "separate_purchase",
+    "recurring": false,
+    "stores_payment_method": false,
+    "status": "Planned",
+    "purpose": "Pay-as-you-go cloud processing for the optional AI features (context-aware carrier text, optional AI sensitivity classifier). Pro includes a small allowance; credits top it up.",
+    "honest_copy_rules": [
+      "Credits are bought separately and never renew.",
+      "Local processing is the privacy-preferred option and consumes no credits.",
+      "Cloud processing requires separate informed consent and a persistent visible indicator.",
+      "Never call cloud processing end-to-end encrypted: the service can see the context it processes.",
+      "Encryption must never stop working because credits ran out or a payment failed."
+    ],
+    "packs": []
+  },
+
+  "payment_methods": {
+    "card": {
+      "provider": "Stripe",
+      "status": "Available",
+      "stores_payment_method": false,
+      "note": "Stripe sees the card; OSL does not receive card numbers and keeps no customer profile, because every purchase is a separate one-off charge."
+    },
+    "crypto": {
+      "provider": "self-hosted invoice (Bitcoin, Monero)",
+      "status": "Available",
+      "stores_payment_method": false,
+      "note": "Works exactly like card: one invoice buys one month. Nothing to cancel, nothing stored. Live since commits 7e31408 (Bitcoin) and 6081eb1 (Monero)."
+    }
+  },
+
+  "ledger_privacy": {
+    "$authority": "Master 7.1.",
+    "excluded_from_payment_and_credit_ledgers": [
+      "message text",
+      "conversation names",
+      "carrier text",
+      "recipient identity"
+    ],
+    "redemption_record": "licence hash and timestamp only -- no account, email, device fingerprint, IP, install ID or joined payment identifier.",
+    "plain_sentence": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity."
+  },
+
+  "open_source": {
+    "$authority": "Master 7.6 and 7.10.",
+    "position": "OSL is fully open source except for one narrow, optional module.",
+    "exception_name": "AutoScrub",
+    "exception_sentence": "The only exception is the optional AutoScrub module, which stays closed source purely to make trivial cloning harder. It is not installed by default, you choose to download it, and a reproducible fully open-source build stays usable without it.",
+    "exception_does_not_cover": [
+      "cryptography",
+      "trust and identity",
+      "deletion receipts",
+      "data formats",
+      "policy contracts",
+      "free Scrub",
+      "the default client"
+    ]
+  },
+
+  "liability_cap_usd": 50,
+  "$liability_note": "The $50 in docs/terms.html is a LIABILITY CAP, not a price. The claim crawler must never treat it as a pricing contradiction.",
+
+  "capability_labels": ["Available", "Beta", "Experimental", "Planned", "Illustration"],
+  "$capability_label_meanings": {
+    "Available": "Proved on the shipping build and safe to market plainly.",
+    "Beta": "The runtime boundary works but the whole user promise is not yet proved on the release build.",
+    "Experimental": "Reaches real surfaces, is off by default or unproven, and may fail.",
+    "Planned": "Specified, and possibly built in source, but no proven production call path reaches it. Never marketed as working.",
+    "Illustration": "A drawing or animation of an idea, not a screenshot of a working build."
+  },
+
+  "capability_registry": [
+    {
+      "id": "per-message-sealing",
+      "name": "Per-message hybrid sealing",
+      "status": "Planned",
+      "evidence": "Downgraded from Available 2026-07-26 (truth lane). The scheme is real and live in source -- crates/ipc/src/wire_v2.rs:685-760 seals each direct message to the recipient's published X25519 and ML-KEM-768 keys with a fresh ephemeral key -- but allowlist A1 and A2 are implemented-unwired and carry a Planned badge until a NAMED release build proves the promise end to end. Allowlist section E also makes open-security-finding outrank everything on the same row, and master 9 lists live v3 crypto as open-security-finding (sender attribution). The descriptive sentence stays exactly as written and is pinned in required_phrases; only the badge changed.",
+      "surfaces": ["docs/how-it-works.html", "docs/faq.html", "audit.html"]
+    },
+    {
+      "id": "cover-carrier-text",
+      "name": "Cover text carrier",
+      "status": "Beta",
+      "evidence": "Downgraded from Available 2026-07-26 (truth lane). Bounded word-bank cover text with matched line count ships for the text lane (master 7.1), but the public claim it carries is allowlist row C1 -- 'Encrypted messages send through Discord as ordinary-looking text' -- which is runtime-proven, not verified-live, and therefore earns Beta. Its mandatory limitation is 'Verified on QA builds, not yet on the release build.' There is no allowlist row that grants the carrier an Available badge.",
+      "surfaces": ["index.html", "features.html"]
+    },
+    {
+      "id": "protected-text",
+      "name": "Protected text send and read",
+      "status": "Beta",
+      "evidence": "Master 9: Discord protected send is verified-live on dated QA builds with a current-tree recheck still required; the decrypted overlay is runtime-proven only. Discord is the reference connector; no other connector has a two-peer proof.",
+      "surfaces": ["index.html", "download.html", "docs/faq.html"]
+    },
+    {
+      "id": "image-send",
+      "name": "Encrypted image sending",
+      "status": "Planned",
+      "evidence": "Downgraded from Beta 2026-07-26 (truth lane). The picker does offer PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs:154, offered_image_extensions() == [jpg, jpeg, png]), but scope is not proof. Master 9 lists the whole attachment lane as implemented-unwired with open findings, master 10 critical class 4 has non-image attachments staged as durable plaintext, and allowlist section B puts 'View-once, timed deletion, attachments' at implemented-unwired -> Planned with an explicit master 8.2 ban on marketing attachments as available before the exact release build has evidence. Allowlist A3 additionally forbids the local-encrypted-storage claim on any page that markets attachments. THIS IS THE HEADLINE PRO BENEFIT: escalated to Zhao as action-needed, because Pro is sold today on a Planned capability.",
+      "surfaces": ["download.html", "docs/faq.html", "docs/terms.html"]
+    },
+    {
+      "id": "file-send",
+      "name": "Non-image file sending",
+      "status": "Planned",
+      "evidence": "Unavailable. The picker offers PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs), and master P0-4 records that protected non-image attachments are still staged as durable plaintext.",
+      "surfaces": ["download.html", "docs/faq.html"]
+    },
+    {
+      "id": "group-protection",
+      "name": "Group chat and server channel protection",
+      "status": "Planned",
+      "evidence": "False as previously written. The feature defaults off at crates/ipc/src/state.rs:280 and the construction carries no sender signature. The independent crypto review also found the live native path does not use the claimed sender keys.",
+      "surfaces": ["docs/faq.html", "docs/how-it-works.html", "audit.html"]
+    },
+    {
+      "id": "ratchet",
+      "name": "Ratcheting and forward secrecy",
+      "status": "Planned",
+      "evidence": "The live path is stateless per-message sealing. crates/ipc/src/commands.rs:2842 hard-disables the ratchet, and crates/osl-ratchet-next is built but deliberately unwired. Master 7.11 forbids any forward-secrecy claim that outruns the audited live path.",
+      "surfaces": ["docs/how-it-works.html", "docs/index.html"]
+    },
+    {
+      "id": "attachment-privacy-guard",
+      "name": "Attachment Privacy Guard",
+      "status": "Planned",
+      "evidence": "The metadata-stripping shipping seam is uncalled -- no production path invokes it.",
+      "surfaces": ["features.html"]
+    },
+    {
+      "id": "exposure-warning",
+      "name": "Before-send warning",
+      "status": "Planned",
+      "evidence": "crates/exposure-warning has no dependent at all. The root Cargo.toml:12-16 comment states plainly: 'UNWIRED -- no app depends on it yet'.",
+      "surfaces": ["features.html"]
+    },
+    {
+      "id": "expiry",
+      "name": "Timed expiry",
+      "status": "Planned",
+      "evidence": "Not wired, and there is no crypto-shred: the writer at crates/store/src/lib.rs:194 never populates wrapped_key, so no key can be destroyed at zero. All key-destruction wording was removed.",
+      "surfaces": ["features.html"]
+    },
+    {
+      "id": "view-once",
+      "name": "View once",
+      "status": "Planned",
+      "evidence": "Master 9: components built, production wiring incomplete. Two-party consent and proven capture protection before the first pixel are still required (master 3a).",
+      "surfaces": ["download.html", "features.html", "docs/faq.html"]
+    },
+    {
+      "id": "burn",
+      "name": "Burn",
+      "status": "Planned",
+      "evidence": "Master 9: components built, production wiring incomplete. Existing copy already refuses to promise that a platform, screenshot or backup forgot anything; that framing is kept.",
+      "surfaces": ["docs/faq.html"]
+    },
+    {
+      "id": "link-protection",
+      "name": "Link protection",
+      "status": "Planned",
+      "evidence": "No implementation found. There is no link/tracker crate, and no match for tracking-parameter handling anywhere in crates/ or apps/ (searched 2026-07-26). This item was NOT in the original strike list; it was found while labelling.",
+      "surfaces": ["features.html"]
+    },
+    {
+      "id": "scrub-discovery",
+      "name": "Scrub discovery",
+      "status": "Planned",
+      "evidence": "Downgraded from Beta 2026-07-26 (truth lane). Discovery is genuinely what Scrub does -- it finds accounts and exposure and takes the owner to the page where they delete -- but no evidence names an exact build. Master 9 says 'active dirty integration work' and still requires an exact-build walkthrough; the last live report (2026-07-25) was that pressing 'do scrub' detected 0 accounts, because browser import never creates an AccountRecord or hands anything to Scrub. Allowlist rule 5: evidence that does not name an exact build is unknown-recheck-required, which earns no claim. Planned is the strongest honest badge. The Scrub lane can earn Beta back by landing an exact-build walkthrough in docs/reports/.",
+      "surfaces": ["index.html", "features.html", "download.html"]
+    },
+    {
+      "id": "scrub-guided-deletion",
+      "name": "Guided deletion handoff",
+      "status": "Planned",
+      "evidence": "Downgraded from Experimental 2026-07-26 (truth lane): it depends on scrub-discovery, which does not yet produce accounts on any named build, so the handoff cannot be exercised end to end. Master 9: Free Scrub deletion is active implementation. Scrub does not erase: it discovers, then hands the owner off to the page where they delete. Every destructive flow stays Scan, Preview, Confirm, Execute, Verify, Receipt (master 7.5), and requested deletion is never shown as verified deletion.",
+      "surfaces": ["index.html", "features.html"]
+    },
+    {
+      "id": "autoscrub",
+      "name": "AutoScrub",
+      "status": "Planned",
+      "evidence": "Master 9: active implementation, optional-module packaging unresolved. It is the one closed-source exception (master 7.6) and is not installed by default.",
+      "surfaces": ["download.html", "docs/faq.html"]
+    },
+    {
+      "id": "ai-carrier-text",
+      "name": "AI-generated carrier text",
+      "status": "Planned",
+      "evidence": "Master 7.1 opt-in feature, gated behind processing credits that cannot yet be bought.",
+      "surfaces": ["docs/faq.html"]
+    },
+    {
+      "id": "processing-credits",
+      "name": "Processing credits",
+      "status": "Planned",
+      "evidence": "No purchase or balance endpoint exists on the deployed keyserver. Explained only, never sold.",
+      "surfaces": ["docs/faq.html", "docs/terms.html"]
+    },
+    {
+      "id": "pro-expiry-enforcement",
+      "name": "Automatic Pro expiry",
+      "status": "Planned",
+      "evidence": "A paid code currently grants lifetime access; no redemption timestamp exists. The website therefore sells one month and does not promise when the month begins.",
+      "surfaces": ["docs/terms.html"]
+    },
+    {
+      "id": "exposure-comparison",
+      "name": "Country exposure comparison",
+      "status": "Illustration",
+      "evidence": "The homepage dialog is a static, country-keyed comparison of published agency and company practice with links to official sources. It is not a live device or account scan (master 8.4).",
+      "surfaces": ["index.html"]
+    },
+    {
+      "id": "product-animations",
+      "name": "Product animations",
+      "status": "Illustration",
+      "evidence": "Every animated scene on the homepage, features page and download page is a drawing of the intended behaviour, not a recording of a build.",
+      "surfaces": ["index.html", "features.html", "download.html"]
+    }
+  ],
+
+  "required_labels": [
+    { "file": "features.html", "feature": "exposure-warning" },
+    { "file": "features.html", "feature": "link-protection" },
+    { "file": "features.html", "feature": "scrub-discovery" },
+    { "file": "features.html", "feature": "scrub-guided-deletion" },
+    { "file": "features.html", "feature": "attachment-privacy-guard" },
+    { "file": "features.html", "feature": "expiry" },
+    { "file": "features.html", "feature": "cover-carrier-text" },
+    { "file": "index.html", "feature": "scrub-discovery" },
+    { "file": "index.html", "feature": "scrub-guided-deletion" },
+    { "file": "index.html", "feature": "exposure-comparison" },
+    { "file": "index.html", "feature": "cover-carrier-text" },
+    { "file": "download.html", "feature": "protected-text" },
+    { "file": "download.html", "feature": "image-send" },
+    { "file": "download.html", "feature": "file-send" },
+    { "file": "download.html", "feature": "autoscrub" },
+    { "file": "download.html", "feature": "scrub-discovery" },
+    { "file": "download.html", "feature": "view-once" },
+    { "file": "docs/how-it-works.html", "feature": "per-message-sealing" },
+    { "file": "docs/how-it-works.html", "feature": "group-protection" },
+    { "file": "docs/how-it-works.html", "feature": "ratchet" },
+    { "file": "docs/faq.html", "feature": "group-protection" },
+    { "file": "docs/faq.html", "feature": "image-send" },
+    { "file": "docs/faq.html", "feature": "file-send" },
+    { "file": "docs/faq.html", "feature": "processing-credits" },
+    { "file": "docs/terms.html", "feature": "processing-credits" },
+    { "file": "audit.html", "feature": "group-protection" }
+  ],
+  "$required_labels_note": "The crawler requires each pair to exist as an element carrying BOTH data-osl-feature=\"<id>\" and data-osl-status=\"<registry status>\". This is what makes the labelling pass fail when someone quietly upgrades or deletes a status, and it is why the crawler can fail for the known defect instead of reporting green on a page full of unlabelled claims.",
+
+  "forbidden_phrases": [
+    {
+      "phrase": "use Sender Keys",
+      "reason": "Group/channel sender keys default off at crates/ipc/src/state.rs:280 and carry no sender signature.",
+      "replaced_by": "group-protection labelled Planned"
+    },
+    {
+      "phrase": "sender key chains with local mutable state",
+      "reason": "Same defect, stated as shipping behaviour on the audit page.",
+      "replaced_by": "group-protection labelled Planned"
+    },
+    {
+      "phrase": "forward secrecy",
+      "reason": "The live path is stateless per-message sealing; crates/ipc/src/commands.rs:2842 hard-disables the ratchet. Master 7.11 forbids the claim.",
+      "replaced_by": "per-message sealing wording"
+    },
+    {
+      "phrase": "Private text + files",
+      "reason": "Non-image sending is unavailable; the picker offers PNG/JPEG only.",
+      "replaced_by": "Private text + images"
+    },
+    {
+      "phrase": "Erase 3",
+      "reason": "Scrub discovers and hands off; it does not erase.",
+      "replaced_by": "Review 3"
+    },
+    {
+      "phrase": "the key and readable message disappear",
+      "reason": "No crypto-shred exists: crates/store/src/lib.rs:194 never populates wrapped_key.",
+      "replaced_by": "expiry labelled Planned, with no key-destruction wording"
+    },
+    {
+      "phrase": "Unlimited messages",
+      "reason": "Master 8.5 replaced this positioning with Scrub.",
+      "replaced_by": "Free Scrub"
+    },
+    {
+      "phrase": "Unlimited private messages",
+      "reason": "Same positioning, worded so it slipped past the two-word rule.",
+      "replaced_by": "Free Scrub"
+    },
+    {
+      "phrase": "images and files",
+      "reason": "Bundles the unavailable file lane with the working image lane.",
+      "replaced_by": "images, with files labelled Planned"
+    },
+    {
+      "phrase": "customer portal",
+      "reason": "Implies a stored payment method and a cancellation duty. Master 7.14 forbids both.",
+      "replaced_by": "nothing, the prepaid model needs no portal"
+    },
+    {
+      "phrase": "Crypto checkout is coming soon",
+      "reason": "Bitcoin and Monero checkout already ships.",
+      "replaced_by": "the live crypto description"
+    },
+    {
+      "phrase": "coming soon and will not go through Stripe",
+      "reason": "Same stale claim in the third-parties list.",
+      "replaced_by": "the live crypto description"
+    },
+    {
+      "phrase": "checkout launches",
+      "reason": "Same stale future tense in the payment-information bullet.",
+      "replaced_by": "present tense"
+    }
+  ],
+  "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident.",
+
+  "required_phrases": [
+    {
+      "file": "index.html",
+      "phrase": "Nothing renews, and OSL never stores your payment details",
+      "reason": "Allowlist A6 rule 3 and master 7.14. index.html carries two Get Pro checkout buttons showing the monthly rate; the no-renewal, no-stored-card limitation must appear on the same page at comparable prominence, not only in the FAQ."
+    },
+    {
+      "file": "docs/how-it-works.html",
+      "phrase": "fresh ephemeral key for every message, so each message stands on its own",
+      "reason": "KEEP EXACTLY. This is the one crypto sentence that is accurate for the live path. The crawler pins it so a later cleanup cannot delete the only true statement while removing the false ones around it."
+    },
+    {
+      "file": "docs/how-it-works.html",
+      "phrase": "The only exception is the optional AutoScrub module",
+      "reason": "Master 7.6 and 7.10 require the open-source exception to be stated wherever the site claims OSL is open source."
+    },
+    {
+      "file": "audit.html",
+      "phrase": "The only exception is the optional AutoScrub module",
+      "reason": "Same, on the licences section of the audit page."
+    },
+    {
+      "file": "docs/privacy.html",
+      "phrase": "no message text, no conversation names, no carrier text and no recipient identity",
+      "reason": "Master 7.1 requires the payment and credit ledger boundary to be stated plainly."
+    },
+    {
+      "file": "docs/terms.html",
+      "phrase": "nothing renews automatically",
+      "reason": "Master 7.14 requires the no-renewal fact wherever Pro is described."
+    },
+    {
+      "file": "download.html",
+      "phrase": "Nothing renews, and OSL never stores your payment details",
+      "reason": "Master 7.14, at the point of sale."
+    }
+  ],
+
+  "crawler_policy": {
+    "status_badge_attribute": "data-osl-status",
+    "feature_id_attribute": "data-osl-feature",
+    "$status_badge_note": "A capability badge is validated ONLY when it carries this explicit attribute, e.g. <span data-osl-feature=\"expiry\" data-osl-status=\"Planned\">Planned</span>. Do not infer status badges from CSS class names: 'Pro' is a tier name and 'Record opened' is a feature name, and guessing from classes flagged both. An opt-in marker cannot false-positive, and it makes the labelling pass deliberate.",
+    "donation_amount_files": ["donate.html"],
+    "$donation_note": "Donation amounts are freely chosen sums, not product prices, so the bare-price rule does not apply to them. They must still carry data-donation-amount, which assets/js/main.js already relies on.",
+    "donation_amount_attribute": "data-donation-amount",
+    "negation_aware": ["subscription", "renews", "renew", "auto-renew", "recurring"],
+    "negators": ["no ", "not ", "never", "n't", "without", "nothing", "neither"],
+    "negation_window": 48,
+    "$negation_note": "Denying a property is the honest copy, not a violation. 'No subscription.' and 'does not create a recurring subscription' must PASS, while 'Manage your subscription' must FAIL. A word in negation_aware is only a violation when no negator appears in the preceding negation_window characters. Without this the crawler blocks the very sentences master 7.14 requires."
+  },
+
+  "forbidden_claims": [
+    "one-time $5 purchase",
+    "$5 once",
+    "Pay once",
+    "lifetime",
+    "forever unlocked",
+    "one time",
+    "No renewal",
+    "Renews monthly",
+    "renews until you cancel",
+    "cancel any time",
+    "subscription",
+    "unlimited messages",
+    "better than Signal",
+    "Signal protocol",
+    "post-quantum authentication",
+    "military-grade",
+    "anti-spyware",
+    "unhackable",
+    "100% private",
+    "cannot be traced"
+  ],
+  "$forbidden_note": "Two families. (1) Billing wording that is now wrong in BOTH directions: the old permanent one-time framing ('$5 once', 'No renewal', 'one-time $5 purchase') AND any subscription framing ('Renews monthly', 'subscription', 'cancel any time') -- because a prepaid code neither renews nor is cancellable. Plus the 'unlimited messages' positioning Zhao replaced with Scrub. (2) Security/marketing claims master 7.11, 8.2 and 8.4 forbid until the audited live path earns them. The crawler fails on any hit outside data/ and scripts/.",
+
+  "required_disclosures": {
+    "pro_billing": "$5 unlocks Pro for one month. It is not a subscription — nothing renews automatically, and OSL never stores your payment details. When the month ends, buy another code to continue.",
+    "no_account": "No OSL account is needed. You paste an activation code into the app.",
+    "credits": "Processing credits are bought separately for optional cloud AI features. They never renew, and encryption keeps working without them.",
+    "crypto": "Bitcoin and Monero work the same way as card: one payment, one month, nothing stored.",
+    "free_forever": "Free stays free. Paying is never required for the basic encryption path to keep working.",
+    "expiry_behaviour": "When Pro ends, OSL returns to Free. Your keys, messages and notes are unaffected.",
+    "ledger_privacy": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity.",
+    "open_source": "OSL is fully open source. The only exception is the optional AutoScrub module, which is not installed by default."
+  }
+}

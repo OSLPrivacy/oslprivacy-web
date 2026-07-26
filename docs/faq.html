@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="d77709b3-dirty">
   <title>FAQ | OSL Privacy Docs</title>
   <meta name="description" content="Frequently asked questions about OSL Privacy.">
   <meta name="color-scheme" content="dark">
@@ -77,7 +78,7 @@
         <h2 id="privacy-security">Privacy &amp; Security <a class="anchor-link" href="#privacy-security" aria-label="Link to this section">#</a></h2>
 
         <h3>What encryption does OSL use?</h3>
-        <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation. Direct messages are sealed per-message to the recipient's published keys; group chats and server channels use Sender Keys. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
+        <p>X25519 elliptic-curve key exchange combined with ML-KEM-768 post-quantum key encapsulation. Direct messages are sealed per-message to the recipient's published keys. Protection for group chats and server channels is <span class="osl-status" data-osl-feature="group-protection" data-osl-status="Planned">Planned</span>: the group code exists in the repository but it is switched off in the shipping app, so treat anything you write in a group or a channel as unprotected. See <a href="/docs/how-it-works">how OSL works</a> for details.</p>
 
         <h3>Why is post-quantum encryption important?</h3>
         <p>State-level adversaries are recording encrypted traffic now to decrypt later, once quantum computers catch up. ML-KEM-768 is a post-quantum key-encapsulation mechanism designed to resist that. OSL pairs it with X25519 so your messages stay protected even if one of the two algorithms is later broken.</p>
@@ -86,7 +87,7 @@
         <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL, including the connected service or someone reading its stored message data, sees ciphertext only.</p>
 
         <h3>Can I encrypt voice/video calls?</h3>
-        <p>No. OSL protects supported text and attachments. Voice and video calls still use the connected service's normal infrastructure and security.</p>
+        <p>No. OSL protects supported text and images. Voice and video calls still use the connected service's normal infrastructure and security.</p>
 
         <h3>What if I forget my password?</h3>
         <p>OSL provides separate recovery material for the identity and password-protected local state. Save both during setup. OSL cannot recover them from its servers, and losing every recovery copy can make encrypted history permanently inaccessible.</p>
@@ -118,13 +119,20 @@
         <h2 id="pricing-support">Pricing &amp; Support <a class="anchor-link" href="#pricing-support" aria-label="Link to this section">#</a></h2>
 
         <h3>Is OSL free?</h3>
-        <p>Yes. Free includes unlimited protected text on supported connectors with no ads or message limit. Pro is a one-time $5 purchase that unlocks encrypted attachment sending and early access to beta privacy tools. Free users can still receive and decrypt protected attachments from Pro users.</p>
+        <p>Yes. Free includes protected text on supported connectors with no ads and no message limit, plus Free Scrub. Pro is <!--osl:tiers.pro.display-->$5<!--/osl--> for one month, bought as an activation code, and what it buys today is early access to new privacy tools as they reach the public beta channel. Encrypted image sending <span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span> is not in the shipping app yet. It is not a subscription — nothing renews, and we never store your payment details.</p>
 
         <h3>What does "burn" mean in OSL?</h3>
-        <p>Burn destroys or revokes OSL-managed local decryptability for the selected message, scope, or account and can send an authenticated deletion request to participating OSL clients. It cannot prove that a platform, screenshot, export, backup, offline device, or recipient has forgotten content. View-once and timed deletion are shown only where the active client can enforce and report their real outcome.</p>
+        <p>Burn deletes OSL's own copies. It erases the locally cached encrypted message on your device, deletes OSL's server-side state, and can send a cooperative deletion request to participating OSL clients. It does not destroy anyone's ability to decrypt: the encrypted item the connected service still holds stays readable to anyone who has the recipient's keys. Burn cleans up; it does not un-send. It cannot prove that a platform, screenshot, export, backup, offline device, or recipient has forgotten content. View-once and timed deletion are shown only where the active client can enforce and report their real outcome.</p>
 
         <h3>What exactly do I get for paying?</h3>
-        <p>Pro lets you send supported images and files after OSL encrypts them locally. Free recipients can still open those files. Pro also provides early access to new privacy tools after they reach the public beta channel. Planned tools are labeled as planned and are not sold as finished features.</p>
+        <p>Today, Pro buys one thing: new privacy tools early, as they reach the public beta channel. Encrypted image sending — PNG and JPEG — <span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span> is built but is not wired into the shipping app, so do not buy Pro today expecting to send images. It is the next thing Pro is meant to unlock, and it is labelled Planned until a released build proves it.</p>
+        <p>Not included yet, and clearly labelled everywhere on this site: sending other kinds of file <span class="osl-status" data-osl-feature="file-send" data-osl-status="Planned">Planned</span>, AutoScrub <span class="osl-status" data-osl-feature="autoscrub" data-osl-status="Planned">Planned</span> and AI-written cover text <span class="osl-status" data-osl-feature="ai-carrier-text" data-osl-status="Planned">Planned</span>. Planned tools are never sold as finished features.</p>
+
+        <h3>What are processing credits?</h3>
+        <p><span class="osl-status" data-osl-feature="processing-credits" data-osl-status="Planned">Planned</span>, and not on sale. When the optional AI features arrive, Pro will include a small allowance of cloud processing, and you will be able to buy more separately. Credits would be a separate purchase that never renews. Choosing local processing instead uses no credits and is the more private option, and cloud processing would always need its own explicit consent because the server has to see the text it is working on — that part is not end-to-end encrypted. Encryption never stops working because credits ran out or a payment failed.</p>
+
+        <h3>Is all of OSL open source?</h3>
+        <p>Almost all of it. The client, the cryptography, the wire formats, trust and identity, deletion receipts, local storage boundaries and Free Scrub are all public and inspectable. The only exception is the optional AutoScrub module, which stays closed source purely to make trivial cloning harder. It is not installed by default: a Pro user has to choose to download it and accept a plain closed-source warning first, and a fully open-source build of OSL stays usable without it.</p>
 
         <h3>How do I report a bug or request a feature?</h3>
         <p>Email <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a> with a description of what you saw and what you expected. Include the OSL version (visible in the about screen) and your OS version. For features, the more context on what problem you're trying to solve, the better.</p>
@@ -149,6 +157,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=182c9e8f" defer></script>
+  <script src="/assets/js/main.js?v=d77709b3" defer></script>
 </body>
 </html>

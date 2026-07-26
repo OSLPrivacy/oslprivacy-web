@@ -15,3 +15,6 @@ build/
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Screenshot-matrix evidence: keep the machine-readable verdict, not 70MB of PNGs.
+docs/evidence/website-matrix/**/*.png
