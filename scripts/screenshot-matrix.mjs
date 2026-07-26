@@ -17,7 +17,7 @@ const DEFAULT_OUT_DIR = path.join(REPO_ROOT, 'docs', 'evidence', 'website-matrix
 
 const DEFAULT_PAGES = [
   '/', '/download', '/features', '/audit', '/donate', '/success', '/cancel',
-  '/docs/', '/docs/faq', '/docs/how-it-works', '/docs/getting-started',
+  '/docs/', '/docs/faq', '/docs/status', '/docs/how-it-works', '/docs/getting-started',
   '/docs/privacy', '/docs/terms', '/docs/threat-model',
 ];
 const DEFAULT_WIDTHS = [320, 360, 390, 768, 1024, 1440];

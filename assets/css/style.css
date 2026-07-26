@@ -8761,3 +8761,95 @@ h2:hover .anchor-link,
 
 /* Keep "$5 / month" on one line: at 390px the rate wrapped after the slash. */
 .price-rate { white-space: nowrap; }
+
+/* Support matrix (docs/status.html). Generated page, so the styles must hold for
+   an arbitrary number of rows and must not clip at 320px — hence the scroll
+   wrapper, which is focusable so keyboard users can reach the overflow. */
+.status-table-scroll {
+  overflow-x: auto;
+  margin: var(--s-4) 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.status-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.status-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.status-table caption {
+  caption-side: top;
+  text-align: left;
+  padding: var(--s-3) var(--s-3) var(--s-2);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.status-table th,
+.status-table td {
+  padding: var(--s-3);
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--border);
+  line-height: 1.5;
+}
+.status-table thead th {
+  border-top: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-table tbody th[scope="row"] { color: var(--text); font-weight: 600; }
+.status-table td:last-child { color: var(--text-muted); min-width: 18rem; }
+
+/* Site-wide early-access frame. One honest global statement instead of a
+   disclaimer on every feature card. */
+.launch-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  align-items: baseline;
+  padding: var(--s-3) var(--s-4);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.launch-banner p { margin: 0; }
+.launch-banner a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.matrix-link { font-weight: 600; }
+.section-matrix-link {
+  margin-top: var(--s-2);
+  font-size: 0.95rem;
+}
+.section-matrix-link a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* Point of sale. The early-access statement and the two-list split must read as
+   part of the purchase, not as fine print, so they are not muted. */
+.checkout-early-access {
+  margin: var(--s-3) 0;
+  padding: var(--s-3);
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  line-height: 1.55;
+}
+.checkout-list-heading {
+  margin: var(--s-4) 0 var(--s-2);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.download-features-pending li { color: var(--text-muted); }

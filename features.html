@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="osl-build" content="d77709b3-dirty">
+  <meta name="osl-build" content="72213331-dirty">
   <title>Features | OSL Privacy</title>
   <meta name="description" content="See how OSL protects messages, clears sensitive history, cleans attachments, and expires readable content.">
   <meta name="color-scheme" content="dark">
@@ -32,11 +32,17 @@
     </nav>
   </header>
 
+  <div class="launch-banner" role="note">
+    <p><strong>Early access.</strong> OSL is being built toward its v1 launch, so some of what you see here is still being finished.</p>
+    <p><a class="matrix-link" href="/docs/status">See what works today</a></p>
+  </div>
+
+
   <main id="main" class="features-main">
     <section class="hero section reveal" aria-labelledby="features-title">
       <p class="eyebrow">Features</p>
       <h1 id="features-title">Privacy, shown.</h1>
-      <p class="osl-status-note">Every feature below carries a label. <strong>Available</strong> works on the shipping build. <strong>Beta</strong> works but is not finished. <strong>Experimental</strong> can fail. <strong>Planned</strong> is not built into the app yet and is never sold as finished. Every animation on this page is an <span class="osl-status" data-osl-feature="product-animations" data-osl-status="Illustration">Illustration</span> drawn to explain the idea, not a recording of the app.</p>
+      <p class="osl-status-note">This page describes OSL v1 — the product we are building. Some of it works today and some of it is still being finished, and we keep one dated page that says exactly which is which: <a href="/docs/status">see what works today</a>. Every animation here is an <span class="osl-status" data-osl-feature="product-animations" data-osl-status="Illustration">Illustration</span> drawn to explain the idea, not a recording of the app.</p>
     </section>
 
     <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow" data-playback-rate="0.8">
@@ -80,12 +86,14 @@
       </div>
     </section>
 
-    <section class="section product-demo warning-demo reveal" aria-labelledby="warning-heading" data-product-animation="warning-flow" data-playback-rate="0.8">
+    <section class="section product-demo warning-demo reveal" aria-labelledby="warning-heading" data-osl-feature="exposure-warning" data-product-animation="warning-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Before-send warning <span class="osl-status" data-osl-feature="exposure-warning" data-osl-status="Planned">Planned</span></p>
+          <p class="eyebrow">Before-send warning</p>
           <h2 id="warning-heading" class="section-heading">Pause before it leaves.</h2>
-          <p class="osl-status-note">Planned, not built into the app yet. The detection code exists and is tested, but nothing in the shipping app calls it, so OSL does not warn you today. The drawing below shows the intended behaviour: catch a sensitive draft before it reaches an unencrypted composer, and leave the decision to you.</p>
+          <p class="section-subhead">OSL catches a sensitive draft before it reaches an unencrypted box.</p>
+          <p class="osl-status-note">The check runs on your own machine and your draft never leaves it. The wording is plain about consequences rather than moral, and the decision is always yours — OSL pauses, it does not refuse. Arriving at v1.</p>
+          <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
       <div class="warning-scene" aria-hidden="true">
@@ -97,12 +105,14 @@
       </div>
     </section>
 
-    <section class="section product-demo link-demo reveal" aria-labelledby="link-heading" data-product-animation="link-flow" data-playback-rate="0.8">
+    <section class="section product-demo link-demo reveal" aria-labelledby="link-heading" data-osl-feature="link-protection" data-product-animation="link-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Link protection <span class="osl-status" data-osl-feature="link-protection" data-osl-status="Planned">Planned</span></p>
+          <p class="eyebrow">Link protection</p>
           <h2 id="link-heading" class="section-heading">Share the link. Lose the trackers.</h2>
-          <p class="osl-status-note">Planned. There is no tracker-stripping code in OSL yet, so links you send today are unchanged. The drawing below shows the intended behaviour: strip the tracking parameters from a link before it is shared.</p>
+          <p class="section-subhead">OSL strips the tracking parameters out of a link before you share it, so the person who receives it cannot be followed back to you.</p>
+          <p class="osl-status-note">Arriving at v1.</p>
+          <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
       <div class="link-clean-scene" aria-hidden="true">
@@ -115,13 +125,15 @@
       </div>
     </section>
 
-    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
+    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-osl-feature="scrub-discovery" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Scrub <span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span> <span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></p>
+          <p class="eyebrow">Scrub</p>
           <h2 id="scrub-heading" class="section-heading">Find what you left behind.</h2>
-          <p class="scrub-promise">The scan is designed to stay on your device.</p>
-          <p class="osl-status-note">Planned, and not in the shipping app yet. Scrub is designed to find the accounts and the exposure you left behind, then take you to the page where you delete it. It will not erase anything for you: you stay the one who confirms every deletion, on the service's own page. The guided handoff can fail on a service that changes its pages. The drawing below shows the intended sequence.</p>
+          <p class="scrub-promise">The scan stays on your device.</p>
+          <p class="section-subhead">Years of forgotten accounts, old posts and stale logins are still out there under your name. Scrub goes looking for them on your own machine — nothing is uploaded to find them.</p>
+          <p class="osl-status-note">Then it <span data-osl-feature="scrub-guided-deletion">takes you to the page where you delete each one</span>. Scrub never deletes on your behalf: you confirm every removal yourself, on the service's own page, and OSL only reports a deletion once the service confirms it. Arriving at v1.</p>
+          <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
 
@@ -135,13 +147,14 @@
       </div>
     </section>
 
-    <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-product-animation="attachment-guard-flow" data-playback-rate="0.8">
+    <section class="section product-demo attachment-guard-demo reveal" aria-labelledby="attachment-guard-heading" data-osl-feature="attachment-privacy-guard" data-product-animation="attachment-guard-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Attachment Privacy Guard <span class="osl-status" data-osl-feature="attachment-privacy-guard" data-osl-status="Planned">Planned</span></p>
+          <p class="eyebrow">Attachment Privacy Guard</p>
           <h2 id="attachment-guard-heading" class="section-heading">Clean first.<br>Lock second.</h2>
-          <p class="section-subhead">Planned: strip the hidden details out of a file before OSL encrypts it.</p>
-          <p class="osl-status-note">Planned. Nothing in the shipping app calls the metadata-stripping step yet, so assume a file you send still carries its original details. Encrypted image sending is separate and is in beta today; view once is also <span class="osl-status" data-osl-feature="view-once" data-osl-status="Planned">Planned</span>. The drawing below shows the intended sequence.</p>
+          <p class="section-subhead">A photo carries more than the picture: where it was taken, which device took it, and when. OSL strips those hidden details out first, then encrypts what is left.</p>
+          <p class="osl-status-note">Arriving at v1, along with <span data-osl-feature="view-once">view once</span>, which lets a picture be opened a single time. Until then, assume a file you send still carries its original details.</p>
+          <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
 
@@ -186,7 +199,7 @@
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/download">Download</a><a href="/features" aria-current="page">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
+      <a href="/download">Download</a><a href="/features" aria-current="page">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/status">What works today</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
@@ -194,6 +207,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=d77709b3" defer></script>
+  <script src="/assets/js/main.js?v=72213331" defer></script>
 </body>
 </html>

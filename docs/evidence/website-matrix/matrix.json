@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-26T23:29:13.530Z",
+  "generated_at": "2026-07-26T23:55:46.686Z",
   "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell",
   "browser_version": "HeadlessChrome/149.0.7827.55",
-  "server_port": 46365,
+  "server_port": 42147,
   "captures": [
     {
       "page": "/",
@@ -10,10 +10,10 @@
       "condition": "js-on",
       "fold_png": "home/320-js-on-fold.png",
       "full_png": "home/320-js-on-full.png",
-      "visible_text_chars": 624,
-      "scroll_height": 3258,
-      "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "visible_text_chars": 637,
+      "scroll_height": 3423,
+      "unrevealed_reveal_count": 3,
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -22,10 +22,10 @@
       "condition": "js-on",
       "fold_png": "home/360-js-on-fold.png",
       "full_png": "home/360-js-on-full.png",
-      "visible_text_chars": 629,
-      "scroll_height": 3123,
+      "visible_text_chars": 841,
+      "scroll_height": 3249,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -34,10 +34,10 @@
       "condition": "js-on",
       "fold_png": "home/390-js-on-fold.png",
       "full_png": "home/390-js-on-full.png",
-      "visible_text_chars": 631,
-      "scroll_height": 3060,
+      "visible_text_chars": 841,
+      "scroll_height": 3207,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -46,10 +46,10 @@
       "condition": "js-on",
       "fold_png": "home/768-js-on-fold.png",
       "full_png": "home/768-js-on-full.png",
-      "visible_text_chars": 679,
-      "scroll_height": 2333,
+      "visible_text_chars": 786,
+      "scroll_height": 2508,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -58,10 +58,10 @@
       "condition": "js-on",
       "fold_png": "home/1024-js-on-fold.png",
       "full_png": "home/1024-js-on-full.png",
-      "visible_text_chars": 781,
-      "scroll_height": 2424,
+      "visible_text_chars": 908,
+      "scroll_height": 2545,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -70,10 +70,10 @@
       "condition": "js-on",
       "fold_png": "home/1440-js-on-fold.png",
       "full_png": "home/1440-js-on-full.png",
-      "visible_text_chars": 816,
-      "scroll_height": 2367,
+      "visible_text_chars": 912,
+      "scroll_height": 2489,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -82,10 +82,10 @@
       "condition": "js-off",
       "fold_png": "home/320-js-off-fold.png",
       "full_png": "home/320-js-off-full.png",
-      "visible_text_chars": 492,
-      "scroll_height": 3258,
+      "visible_text_chars": 431,
+      "scroll_height": 3423,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -94,10 +94,10 @@
       "condition": "js-off",
       "fold_png": "home/360-js-off-fold.png",
       "full_png": "home/360-js-off-full.png",
-      "visible_text_chars": 551,
-      "scroll_height": 3123,
+      "visible_text_chars": 503,
+      "scroll_height": 3249,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -106,10 +106,10 @@
       "condition": "js-off",
       "fold_png": "home/390-js-off-fold.png",
       "full_png": "home/390-js-off-full.png",
-      "visible_text_chars": 551,
-      "scroll_height": 3060,
+      "visible_text_chars": 503,
+      "scroll_height": 3207,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -118,10 +118,10 @@
       "condition": "js-off",
       "fold_png": "home/768-js-off-fold.png",
       "full_png": "home/768-js-off-full.png",
-      "visible_text_chars": 606,
-      "scroll_height": 2333,
+      "visible_text_chars": 711,
+      "scroll_height": 2508,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -130,10 +130,10 @@
       "condition": "js-off",
       "fold_png": "home/1024-js-off-fold.png",
       "full_png": "home/1024-js-off-full.png",
-      "visible_text_chars": 584,
-      "scroll_height": 2424,
+      "visible_text_chars": 711,
+      "scroll_height": 2545,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -142,10 +142,10 @@
       "condition": "js-off",
       "fold_png": "home/1440-js-off-fold.png",
       "full_png": "home/1440-js-off-full.png",
-      "visible_text_chars": 547,
-      "scroll_height": 2367,
+      "visible_text_chars": 652,
+      "scroll_height": 2489,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -154,10 +154,10 @@
       "condition": "reduced",
       "fold_png": "home/320-reduced-fold.png",
       "full_png": "home/320-reduced-full.png",
-      "visible_text_chars": 866,
-      "scroll_height": 3258,
+      "visible_text_chars": 805,
+      "scroll_height": 3423,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -166,10 +166,10 @@
       "condition": "reduced",
       "fold_png": "home/360-reduced-fold.png",
       "full_png": "home/360-reduced-full.png",
-      "visible_text_chars": 908,
-      "scroll_height": 3123,
+      "visible_text_chars": 877,
+      "scroll_height": 3249,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -178,10 +178,10 @@
       "condition": "reduced",
       "fold_png": "home/390-reduced-fold.png",
       "full_png": "home/390-reduced-full.png",
-      "visible_text_chars": 908,
-      "scroll_height": 3060,
+      "visible_text_chars": 877,
+      "scroll_height": 3207,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -190,10 +190,10 @@
       "condition": "reduced",
       "fold_png": "home/768-reduced-fold.png",
       "full_png": "home/768-reduced-full.png",
-      "visible_text_chars": 970,
-      "scroll_height": 2333,
+      "visible_text_chars": 1075,
+      "scroll_height": 2508,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -202,10 +202,10 @@
       "condition": "reduced",
       "fold_png": "home/1024-reduced-fold.png",
       "full_png": "home/1024-reduced-full.png",
-      "visible_text_chars": 926,
-      "scroll_height": 2424,
+      "visible_text_chars": 1053,
+      "scroll_height": 2545,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -214,10 +214,10 @@
       "condition": "reduced",
       "fold_png": "home/1440-reduced-fold.png",
       "full_png": "home/1440-reduced-full.png",
-      "visible_text_chars": 911,
-      "scroll_height": 2367,
+      "visible_text_chars": 1016,
+      "scroll_height": 2489,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -226,10 +226,10 @@
       "condition": "js-on",
       "fold_png": "download/320-js-on-fold.png",
       "full_png": "download/320-js-on-full.png",
-      "visible_text_chars": 321,
-      "scroll_height": 6082,
+      "visible_text_chars": 404,
+      "scroll_height": 6782,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -238,10 +238,10 @@
       "condition": "js-on",
       "fold_png": "download/360-js-on-fold.png",
       "full_png": "download/360-js-on-full.png",
-      "visible_text_chars": 339,
-      "scroll_height": 5823,
+      "visible_text_chars": 420,
+      "scroll_height": 6442,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -250,10 +250,10 @@
       "condition": "js-on",
       "fold_png": "download/390-js-on-fold.png",
       "full_png": "download/390-js-on-full.png",
-      "visible_text_chars": 403,
-      "scroll_height": 5691,
+      "visible_text_chars": 420,
+      "scroll_height": 6307,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -262,10 +262,10 @@
       "condition": "js-on",
       "fold_png": "download/768-js-on-fold.png",
       "full_png": "download/768-js-on-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4863,
+      "visible_text_chars": 686,
+      "scroll_height": 5456,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -274,10 +274,10 @@
       "condition": "js-on",
       "fold_png": "download/1024-js-on-fold.png",
       "full_png": "download/1024-js-on-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -286,10 +286,10 @@
       "condition": "js-on",
       "fold_png": "download/1440-js-on-fold.png",
       "full_png": "download/1440-js-on-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -298,10 +298,10 @@
       "condition": "js-off",
       "fold_png": "download/320-js-off-fold.png",
       "full_png": "download/320-js-off-full.png",
-      "visible_text_chars": 321,
-      "scroll_height": 6082,
+      "visible_text_chars": 404,
+      "scroll_height": 6782,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -310,10 +310,10 @@
       "condition": "js-off",
       "fold_png": "download/360-js-off-fold.png",
       "full_png": "download/360-js-off-full.png",
-      "visible_text_chars": 339,
-      "scroll_height": 5823,
+      "visible_text_chars": 420,
+      "scroll_height": 6442,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -322,10 +322,10 @@
       "condition": "js-off",
       "fold_png": "download/390-js-off-fold.png",
       "full_png": "download/390-js-off-full.png",
-      "visible_text_chars": 403,
-      "scroll_height": 5691,
+      "visible_text_chars": 420,
+      "scroll_height": 6307,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -334,10 +334,10 @@
       "condition": "js-off",
       "fold_png": "download/768-js-off-fold.png",
       "full_png": "download/768-js-off-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4863,
+      "visible_text_chars": 686,
+      "scroll_height": 5456,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -346,10 +346,10 @@
       "condition": "js-off",
       "fold_png": "download/1024-js-off-fold.png",
       "full_png": "download/1024-js-off-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -358,10 +358,10 @@
       "condition": "js-off",
       "fold_png": "download/1440-js-off-fold.png",
       "full_png": "download/1440-js-off-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -370,10 +370,10 @@
       "condition": "reduced",
       "fold_png": "download/320-reduced-fold.png",
       "full_png": "download/320-reduced-full.png",
-      "visible_text_chars": 321,
-      "scroll_height": 6082,
+      "visible_text_chars": 404,
+      "scroll_height": 6782,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -382,10 +382,10 @@
       "condition": "reduced",
       "fold_png": "download/360-reduced-fold.png",
       "full_png": "download/360-reduced-full.png",
-      "visible_text_chars": 339,
-      "scroll_height": 5823,
+      "visible_text_chars": 420,
+      "scroll_height": 6442,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -394,10 +394,10 @@
       "condition": "reduced",
       "fold_png": "download/390-reduced-fold.png",
       "full_png": "download/390-reduced-full.png",
-      "visible_text_chars": 403,
-      "scroll_height": 5691,
+      "visible_text_chars": 420,
+      "scroll_height": 6307,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -406,10 +406,10 @@
       "condition": "reduced",
       "fold_png": "download/768-reduced-fold.png",
       "full_png": "download/768-reduced-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4863,
+      "visible_text_chars": 686,
+      "scroll_height": 5456,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -418,10 +418,10 @@
       "condition": "reduced",
       "fold_png": "download/1024-reduced-fold.png",
       "full_png": "download/1024-reduced-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -430,10 +430,10 @@
       "condition": "reduced",
       "fold_png": "download/1440-reduced-fold.png",
       "full_png": "download/1440-reduced-full.png",
-      "visible_text_chars": 823,
-      "scroll_height": 4084,
+      "visible_text_chars": 761,
+      "scroll_height": 4577,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -442,10 +442,10 @@
       "condition": "js-on",
       "fold_png": "features/320-js-on-fold.png",
       "full_png": "features/320-js-on-full.png",
-      "visible_text_chars": 741,
-      "scroll_height": 6897,
+      "visible_text_chars": 868,
+      "scroll_height": 7441,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -454,10 +454,10 @@
       "condition": "js-on",
       "fold_png": "features/360-js-on-fold.png",
       "full_png": "features/360-js-on-full.png",
-      "visible_text_chars": 755,
-      "scroll_height": 6713,
+      "visible_text_chars": 868,
+      "scroll_height": 7250,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -466,10 +466,10 @@
       "condition": "js-on",
       "fold_png": "features/390-js-on-fold.png",
       "full_png": "features/390-js-on-full.png",
-      "visible_text_chars": 755,
-      "scroll_height": 6656,
+      "visible_text_chars": 868,
+      "scroll_height": 7142,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -478,10 +478,10 @@
       "condition": "js-on",
       "fold_png": "features/768-js-on-fold.png",
       "full_png": "features/768-js-on-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 5074,
+      "visible_text_chars": 914,
+      "scroll_height": 5658,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -490,10 +490,10 @@
       "condition": "js-on",
       "fold_png": "features/1024-js-on-fold.png",
       "full_png": "features/1024-js-on-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4652,
+      "visible_text_chars": 941,
+      "scroll_height": 5182,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -502,10 +502,10 @@
       "condition": "js-on",
       "fold_png": "features/1440-js-on-fold.png",
       "full_png": "features/1440-js-on-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4678,
+      "visible_text_chars": 928,
+      "scroll_height": 5208,
       "unrevealed_reveal_count": 5,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -514,10 +514,10 @@
       "condition": "js-off",
       "fold_png": "features/320-js-off-fold.png",
       "full_png": "features/320-js-off-full.png",
-      "visible_text_chars": 741,
-      "scroll_height": 6897,
+      "visible_text_chars": 868,
+      "scroll_height": 7441,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -526,10 +526,10 @@
       "condition": "js-off",
       "fold_png": "features/360-js-off-fold.png",
       "full_png": "features/360-js-off-full.png",
-      "visible_text_chars": 741,
-      "scroll_height": 6713,
+      "visible_text_chars": 868,
+      "scroll_height": 7250,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -538,10 +538,10 @@
       "condition": "js-off",
       "fold_png": "features/390-js-off-fold.png",
       "full_png": "features/390-js-off-full.png",
-      "visible_text_chars": 755,
-      "scroll_height": 6656,
+      "visible_text_chars": 868,
+      "scroll_height": 7142,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -550,10 +550,10 @@
       "condition": "js-off",
       "fold_png": "features/768-js-off-fold.png",
       "full_png": "features/768-js-off-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 5074,
+      "visible_text_chars": 914,
+      "scroll_height": 5658,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -562,10 +562,10 @@
       "condition": "js-off",
       "fold_png": "features/1024-js-off-fold.png",
       "full_png": "features/1024-js-off-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4652,
+      "visible_text_chars": 956,
+      "scroll_height": 5182,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -574,10 +574,10 @@
       "condition": "js-off",
       "fold_png": "features/1440-js-off-fold.png",
       "full_png": "features/1440-js-off-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4678,
+      "visible_text_chars": 928,
+      "scroll_height": 5208,
       "unrevealed_reveal_count": 7,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -586,10 +586,10 @@
       "condition": "reduced",
       "fold_png": "features/320-reduced-fold.png",
       "full_png": "features/320-reduced-full.png",
-      "visible_text_chars": 741,
-      "scroll_height": 6897,
+      "visible_text_chars": 868,
+      "scroll_height": 7441,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -598,10 +598,10 @@
       "condition": "reduced",
       "fold_png": "features/360-reduced-fold.png",
       "full_png": "features/360-reduced-full.png",
-      "visible_text_chars": 741,
-      "scroll_height": 6713,
+      "visible_text_chars": 868,
+      "scroll_height": 7250,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -610,10 +610,10 @@
       "condition": "reduced",
       "fold_png": "features/390-reduced-fold.png",
       "full_png": "features/390-reduced-full.png",
-      "visible_text_chars": 755,
-      "scroll_height": 6656,
+      "visible_text_chars": 868,
+      "scroll_height": 7142,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -622,10 +622,10 @@
       "condition": "reduced",
       "fold_png": "features/768-reduced-fold.png",
       "full_png": "features/768-reduced-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 5074,
+      "visible_text_chars": 914,
+      "scroll_height": 5658,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -634,10 +634,10 @@
       "condition": "reduced",
       "fold_png": "features/1024-reduced-fold.png",
       "full_png": "features/1024-reduced-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4652,
+      "visible_text_chars": 956,
+      "scroll_height": 5182,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -646,10 +646,10 @@
       "condition": "reduced",
       "fold_png": "features/1440-reduced-fold.png",
       "full_png": "features/1440-reduced-full.png",
-      "visible_text_chars": 886,
-      "scroll_height": 4678,
+      "visible_text_chars": 928,
+      "scroll_height": 5208,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -658,10 +658,10 @@
       "condition": "js-on",
       "fold_png": "audit/320-js-on-fold.png",
       "full_png": "audit/320-js-on-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5791,
+      "visible_text_chars": 451,
+      "scroll_height": 5982,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -670,10 +670,10 @@
       "condition": "js-on",
       "fold_png": "audit/360-js-on-fold.png",
       "full_png": "audit/360-js-on-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5282,
+      "visible_text_chars": 451,
+      "scroll_height": 5435,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -682,10 +682,10 @@
       "condition": "js-on",
       "fold_png": "audit/390-js-on-fold.png",
       "full_png": "audit/390-js-on-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5040,
+      "visible_text_chars": 451,
+      "scroll_height": 5193,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -694,10 +694,10 @@
       "condition": "js-on",
       "fold_png": "audit/768-js-on-fold.png",
       "full_png": "audit/768-js-on-full.png",
-      "visible_text_chars": 766,
-      "scroll_height": 3363,
+      "visible_text_chars": 861,
+      "scroll_height": 3494,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -706,10 +706,10 @@
       "condition": "js-on",
       "fold_png": "audit/1024-js-on-fold.png",
       "full_png": "audit/1024-js-on-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3213,
+      "visible_text_chars": 767,
+      "scroll_height": 3290,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -718,10 +718,10 @@
       "condition": "js-on",
       "fold_png": "audit/1440-js-on-fold.png",
       "full_png": "audit/1440-js-on-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3355,
+      "visible_text_chars": 729,
+      "scroll_height": 3432,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -730,10 +730,10 @@
       "condition": "js-off",
       "fold_png": "audit/320-js-off-fold.png",
       "full_png": "audit/320-js-off-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5791,
+      "visible_text_chars": 451,
+      "scroll_height": 5982,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -742,10 +742,10 @@
       "condition": "js-off",
       "fold_png": "audit/360-js-off-fold.png",
       "full_png": "audit/360-js-off-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5282,
+      "visible_text_chars": 451,
+      "scroll_height": 5435,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -754,10 +754,10 @@
       "condition": "js-off",
       "fold_png": "audit/390-js-off-fold.png",
       "full_png": "audit/390-js-off-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5040,
+      "visible_text_chars": 451,
+      "scroll_height": 5193,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -766,10 +766,10 @@
       "condition": "js-off",
       "fold_png": "audit/768-js-off-fold.png",
       "full_png": "audit/768-js-off-full.png",
-      "visible_text_chars": 766,
-      "scroll_height": 3363,
+      "visible_text_chars": 861,
+      "scroll_height": 3494,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -778,10 +778,10 @@
       "condition": "js-off",
       "fold_png": "audit/1024-js-off-fold.png",
       "full_png": "audit/1024-js-off-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3213,
+      "visible_text_chars": 767,
+      "scroll_height": 3290,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -790,10 +790,10 @@
       "condition": "js-off",
       "fold_png": "audit/1440-js-off-fold.png",
       "full_png": "audit/1440-js-off-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3355,
+      "visible_text_chars": 729,
+      "scroll_height": 3432,
       "unrevealed_reveal_count": 6,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -802,10 +802,10 @@
       "condition": "reduced",
       "fold_png": "audit/320-reduced-fold.png",
       "full_png": "audit/320-reduced-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5791,
+      "visible_text_chars": 451,
+      "scroll_height": 5982,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -814,10 +814,10 @@
       "condition": "reduced",
       "fold_png": "audit/360-reduced-fold.png",
       "full_png": "audit/360-reduced-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5282,
+      "visible_text_chars": 451,
+      "scroll_height": 5435,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -826,10 +826,10 @@
       "condition": "reduced",
       "fold_png": "audit/390-reduced-fold.png",
       "full_png": "audit/390-reduced-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 5040,
+      "visible_text_chars": 451,
+      "scroll_height": 5193,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -838,10 +838,10 @@
       "condition": "reduced",
       "fold_png": "audit/768-reduced-fold.png",
       "full_png": "audit/768-reduced-full.png",
-      "visible_text_chars": 766,
-      "scroll_height": 3363,
+      "visible_text_chars": 861,
+      "scroll_height": 3494,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -850,10 +850,10 @@
       "condition": "reduced",
       "fold_png": "audit/1024-reduced-fold.png",
       "full_png": "audit/1024-reduced-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3213,
+      "visible_text_chars": 767,
+      "scroll_height": 3290,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -862,10 +862,10 @@
       "condition": "reduced",
       "fold_png": "audit/1440-reduced-fold.png",
       "full_png": "audit/1440-reduced-full.png",
-      "visible_text_chars": 849,
-      "scroll_height": 3355,
+      "visible_text_chars": 729,
+      "scroll_height": 3432,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -874,10 +874,10 @@
       "condition": "js-on",
       "fold_png": "donate/320-js-on-fold.png",
       "full_png": "donate/320-js-on-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2644,
+      "visible_text_chars": 275,
+      "scroll_height": 2836,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -886,10 +886,10 @@
       "condition": "js-on",
       "fold_png": "donate/360-js-on-fold.png",
       "full_png": "donate/360-js-on-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2597,
+      "visible_text_chars": 275,
+      "scroll_height": 2750,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -898,10 +898,10 @@
       "condition": "js-on",
       "fold_png": "donate/390-js-on-fold.png",
       "full_png": "donate/390-js-on-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2571,
+      "visible_text_chars": 295,
+      "scroll_height": 2725,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -910,10 +910,10 @@
       "condition": "js-on",
       "fold_png": "donate/768-js-on-fold.png",
       "full_png": "donate/768-js-on-full.png",
-      "visible_text_chars": 249,
-      "scroll_height": 1936,
+      "visible_text_chars": 319,
+      "scroll_height": 2067,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -922,10 +922,10 @@
       "condition": "js-on",
       "fold_png": "donate/1024-js-on-fold.png",
       "full_png": "donate/1024-js-on-full.png",
-      "visible_text_chars": 192,
-      "scroll_height": 2246,
+      "visible_text_chars": 281,
+      "scroll_height": 2323,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -934,10 +934,10 @@
       "condition": "js-on",
       "fold_png": "donate/1440-js-on-fold.png",
       "full_png": "donate/1440-js-on-full.png",
-      "visible_text_chars": 154,
-      "scroll_height": 2543,
+      "visible_text_chars": 281,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 2,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -946,10 +946,10 @@
       "condition": "js-off",
       "fold_png": "donate/320-js-off-fold.png",
       "full_png": "donate/320-js-off-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2644,
+      "visible_text_chars": 275,
+      "scroll_height": 2836,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -958,10 +958,10 @@
       "condition": "js-off",
       "fold_png": "donate/360-js-off-fold.png",
       "full_png": "donate/360-js-off-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2597,
+      "visible_text_chars": 275,
+      "scroll_height": 2750,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -970,10 +970,10 @@
       "condition": "js-off",
       "fold_png": "donate/390-js-off-fold.png",
       "full_png": "donate/390-js-off-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2571,
+      "visible_text_chars": 295,
+      "scroll_height": 2725,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -982,10 +982,10 @@
       "condition": "js-off",
       "fold_png": "donate/768-js-off-fold.png",
       "full_png": "donate/768-js-off-full.png",
-      "visible_text_chars": 249,
-      "scroll_height": 1936,
+      "visible_text_chars": 319,
+      "scroll_height": 2067,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -994,10 +994,10 @@
       "condition": "js-off",
       "fold_png": "donate/1024-js-off-fold.png",
       "full_png": "donate/1024-js-off-full.png",
-      "visible_text_chars": 192,
-      "scroll_height": 2246,
+      "visible_text_chars": 281,
+      "scroll_height": 2323,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1006,10 +1006,10 @@
       "condition": "js-off",
       "fold_png": "donate/1440-js-off-fold.png",
       "full_png": "donate/1440-js-off-full.png",
-      "visible_text_chars": 154,
-      "scroll_height": 2543,
+      "visible_text_chars": 281,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 4,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1018,10 +1018,10 @@
       "condition": "reduced",
       "fold_png": "donate/320-reduced-fold.png",
       "full_png": "donate/320-reduced-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2644,
+      "visible_text_chars": 275,
+      "scroll_height": 2836,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1030,10 +1030,10 @@
       "condition": "reduced",
       "fold_png": "donate/360-reduced-fold.png",
       "full_png": "donate/360-reduced-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2597,
+      "visible_text_chars": 275,
+      "scroll_height": 2750,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1042,10 +1042,10 @@
       "condition": "reduced",
       "fold_png": "donate/390-reduced-fold.png",
       "full_png": "donate/390-reduced-full.png",
-      "visible_text_chars": 179,
-      "scroll_height": 2571,
+      "visible_text_chars": 295,
+      "scroll_height": 2725,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1054,10 +1054,10 @@
       "condition": "reduced",
       "fold_png": "donate/768-reduced-fold.png",
       "full_png": "donate/768-reduced-full.png",
-      "visible_text_chars": 267,
-      "scroll_height": 1936,
+      "visible_text_chars": 319,
+      "scroll_height": 2067,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1066,10 +1066,10 @@
       "condition": "reduced",
       "fold_png": "donate/1024-reduced-fold.png",
       "full_png": "donate/1024-reduced-full.png",
-      "visible_text_chars": 192,
-      "scroll_height": 2246,
+      "visible_text_chars": 281,
+      "scroll_height": 2323,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1078,10 +1078,10 @@
       "condition": "reduced",
       "fold_png": "donate/1440-reduced-fold.png",
       "full_png": "donate/1440-reduced-full.png",
-      "visible_text_chars": 154,
-      "scroll_height": 2543,
+      "visible_text_chars": 281,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1090,10 +1090,10 @@
       "condition": "js-on",
       "fold_png": "success/320-js-on-fold.png",
       "full_png": "success/320-js-on-full.png",
-      "visible_text_chars": 696,
-      "scroll_height": 1444,
+      "visible_text_chars": 794,
+      "scroll_height": 1636,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1102,10 +1102,10 @@
       "condition": "js-on",
       "fold_png": "success/360-js-on-fold.png",
       "full_png": "success/360-js-on-full.png",
-      "visible_text_chars": 806,
-      "scroll_height": 1367,
+      "visible_text_chars": 794,
+      "scroll_height": 1521,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1114,10 +1114,10 @@
       "condition": "js-on",
       "fold_png": "success/390-js-on-fold.png",
       "full_png": "success/390-js-on-full.png",
-      "visible_text_chars": 818,
-      "scroll_height": 1254,
+      "visible_text_chars": 823,
+      "scroll_height": 1407,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1126,10 +1126,10 @@
       "condition": "js-on",
       "fold_png": "success/768-js-on-fold.png",
       "full_png": "success/768-js-on-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1110,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1138,10 +1138,10 @@
       "condition": "js-on",
       "fold_png": "success/1024-js-on-fold.png",
       "full_png": "success/1024-js-on-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1056,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1150,10 +1150,10 @@
       "condition": "js-on",
       "fold_png": "success/1440-js-on-fold.png",
       "full_png": "success/1440-js-on-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1056,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1162,10 +1162,10 @@
       "condition": "js-off",
       "fold_png": "success/320-js-off-fold.png",
       "full_png": "success/320-js-off-full.png",
-      "visible_text_chars": 701,
-      "scroll_height": 1372,
+      "visible_text_chars": 689,
+      "scroll_height": 1564,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1174,10 +1174,10 @@
       "condition": "js-off",
       "fold_png": "success/360-js-off-fold.png",
       "full_png": "success/360-js-off-full.png",
-      "visible_text_chars": 701,
-      "scroll_height": 1295,
+      "visible_text_chars": 718,
+      "scroll_height": 1449,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1186,10 +1186,10 @@
       "condition": "js-off",
       "fold_png": "success/390-js-off-fold.png",
       "full_png": "success/390-js-off-full.png",
-      "visible_text_chars": 713,
-      "scroll_height": 1206,
+      "visible_text_chars": 828,
+      "scroll_height": 1359,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1198,10 +1198,10 @@
       "condition": "js-off",
       "fold_png": "success/768-js-off-fold.png",
       "full_png": "success/768-js-off-full.png",
-      "visible_text_chars": 836,
-      "scroll_height": 955,
+      "visible_text_chars": 873,
+      "scroll_height": 1086,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1210,10 +1210,10 @@
       "condition": "js-off",
       "fold_png": "success/1024-js-off-fold.png",
       "full_png": "success/1024-js-off-full.png",
-      "visible_text_chars": 836,
-      "scroll_height": 955,
+      "visible_text_chars": 873,
+      "scroll_height": 1032,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1222,10 +1222,10 @@
       "condition": "js-off",
       "fold_png": "success/1440-js-off-fold.png",
       "full_png": "success/1440-js-off-full.png",
-      "visible_text_chars": 836,
-      "scroll_height": 955,
+      "visible_text_chars": 873,
+      "scroll_height": 1032,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1234,10 +1234,10 @@
       "condition": "reduced",
       "fold_png": "success/320-reduced-fold.png",
       "full_png": "success/320-reduced-full.png",
-      "visible_text_chars": 696,
-      "scroll_height": 1444,
+      "visible_text_chars": 794,
+      "scroll_height": 1636,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1246,10 +1246,10 @@
       "condition": "reduced",
       "fold_png": "success/360-reduced-fold.png",
       "full_png": "success/360-reduced-full.png",
-      "visible_text_chars": 806,
-      "scroll_height": 1367,
+      "visible_text_chars": 794,
+      "scroll_height": 1521,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1258,10 +1258,10 @@
       "condition": "reduced",
       "fold_png": "success/390-reduced-fold.png",
       "full_png": "success/390-reduced-full.png",
-      "visible_text_chars": 818,
-      "scroll_height": 1254,
+      "visible_text_chars": 823,
+      "scroll_height": 1407,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1270,10 +1270,10 @@
       "condition": "reduced",
       "fold_png": "success/768-reduced-fold.png",
       "full_png": "success/768-reduced-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1110,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1282,10 +1282,10 @@
       "condition": "reduced",
       "fold_png": "success/1024-reduced-fold.png",
       "full_png": "success/1024-reduced-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1056,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1294,10 +1294,10 @@
       "condition": "reduced",
       "fold_png": "success/1440-reduced-fold.png",
       "full_png": "success/1440-reduced-full.png",
-      "visible_text_chars": 941,
-      "scroll_height": 979,
+      "visible_text_chars": 978,
+      "scroll_height": 1056,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1306,10 +1306,10 @@
       "condition": "js-on",
       "fold_png": "cancel/320-js-on-fold.png",
       "full_png": "cancel/320-js-on-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 911,
+      "visible_text_chars": 460,
+      "scroll_height": 1065,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1318,10 +1318,10 @@
       "condition": "js-on",
       "fold_png": "cancel/360-js-on-fold.png",
       "full_png": "cancel/360-js-on-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 460,
+      "scroll_height": 1040,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1330,10 +1330,10 @@
       "condition": "js-on",
       "fold_png": "cancel/390-js-on-fold.png",
       "full_png": "cancel/390-js-on-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 506,
+      "scroll_height": 992,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1342,10 +1342,10 @@
       "condition": "js-on",
       "fold_png": "cancel/768-js-on-fold.png",
       "full_png": "cancel/768-js-on-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1354,10 +1354,10 @@
       "condition": "js-on",
       "fold_png": "cancel/1024-js-on-fold.png",
       "full_png": "cancel/1024-js-on-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1366,10 +1366,10 @@
       "condition": "js-on",
       "fold_png": "cancel/1440-js-on-fold.png",
       "full_png": "cancel/1440-js-on-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1378,10 +1378,10 @@
       "condition": "js-off",
       "fold_png": "cancel/320-js-off-fold.png",
       "full_png": "cancel/320-js-off-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 911,
+      "visible_text_chars": 460,
+      "scroll_height": 1065,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1390,10 +1390,10 @@
       "condition": "js-off",
       "fold_png": "cancel/360-js-off-fold.png",
       "full_png": "cancel/360-js-off-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 460,
+      "scroll_height": 1040,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1402,10 +1402,10 @@
       "condition": "js-off",
       "fold_png": "cancel/390-js-off-fold.png",
       "full_png": "cancel/390-js-off-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 506,
+      "scroll_height": 992,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1414,10 +1414,10 @@
       "condition": "js-off",
       "fold_png": "cancel/768-js-off-fold.png",
       "full_png": "cancel/768-js-off-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1426,10 +1426,10 @@
       "condition": "js-off",
       "fold_png": "cancel/1024-js-off-fold.png",
       "full_png": "cancel/1024-js-off-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1438,10 +1438,10 @@
       "condition": "js-off",
       "fold_png": "cancel/1440-js-off-fold.png",
       "full_png": "cancel/1440-js-off-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1450,10 +1450,10 @@
       "condition": "reduced",
       "fold_png": "cancel/320-reduced-fold.png",
       "full_png": "cancel/320-reduced-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 911,
+      "visible_text_chars": 460,
+      "scroll_height": 1065,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1462,10 +1462,10 @@
       "condition": "reduced",
       "fold_png": "cancel/360-reduced-fold.png",
       "full_png": "cancel/360-reduced-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 460,
+      "scroll_height": 1040,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1474,10 +1474,10 @@
       "condition": "reduced",
       "fold_png": "cancel/390-reduced-fold.png",
       "full_png": "cancel/390-reduced-full.png",
-      "visible_text_chars": 397,
-      "scroll_height": 900,
+      "visible_text_chars": 506,
+      "scroll_height": 992,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1486,10 +1486,10 @@
       "condition": "reduced",
       "fold_png": "cancel/768-reduced-fold.png",
       "full_png": "cancel/768-reduced-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1498,10 +1498,10 @@
       "condition": "reduced",
       "fold_png": "cancel/1024-reduced-fold.png",
       "full_png": "cancel/1024-reduced-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1510,10 +1510,10 @@
       "condition": "reduced",
       "fold_png": "cancel/1440-reduced-fold.png",
       "full_png": "cancel/1440-reduced-full.png",
-      "visible_text_chars": 428,
+      "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1522,10 +1522,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/320-js-on-fold.png",
       "full_png": "docs-index/320-js-on-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2428,
+      "visible_text_chars": 353,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1534,10 +1534,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/360-js-on-fold.png",
       "full_png": "docs-index/360-js-on-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2347,
+      "visible_text_chars": 353,
+      "scroll_height": 2500,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1546,10 +1546,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/390-js-on-fold.png",
       "full_png": "docs-index/390-js-on-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2292,
+      "visible_text_chars": 353,
+      "scroll_height": 2446,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1558,10 +1558,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/768-js-on-fold.png",
       "full_png": "docs-index/768-js-on-full.png",
-      "visible_text_chars": 658,
-      "scroll_height": 1589,
+      "visible_text_chars": 785,
+      "scroll_height": 1720,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1570,10 +1570,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/1024-js-on-fold.png",
       "full_png": "docs-index/1024-js-on-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1582,10 +1582,10 @@
       "condition": "js-on",
       "fold_png": "docs-index/1440-js-on-fold.png",
       "full_png": "docs-index/1440-js-on-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1594,10 +1594,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/320-js-off-fold.png",
       "full_png": "docs-index/320-js-off-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2428,
+      "visible_text_chars": 353,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1606,10 +1606,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/360-js-off-fold.png",
       "full_png": "docs-index/360-js-off-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2347,
+      "visible_text_chars": 353,
+      "scroll_height": 2500,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1618,10 +1618,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/390-js-off-fold.png",
       "full_png": "docs-index/390-js-off-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2292,
+      "visible_text_chars": 353,
+      "scroll_height": 2446,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1630,10 +1630,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/768-js-off-fold.png",
       "full_png": "docs-index/768-js-off-full.png",
-      "visible_text_chars": 658,
-      "scroll_height": 1589,
+      "visible_text_chars": 785,
+      "scroll_height": 1720,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1642,10 +1642,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/1024-js-off-fold.png",
       "full_png": "docs-index/1024-js-off-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1654,10 +1654,10 @@
       "condition": "js-off",
       "fold_png": "docs-index/1440-js-off-fold.png",
       "full_png": "docs-index/1440-js-off-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1666,10 +1666,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/320-reduced-fold.png",
       "full_png": "docs-index/320-reduced-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2428,
+      "visible_text_chars": 353,
+      "scroll_height": 2620,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1678,10 +1678,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/360-reduced-fold.png",
       "full_png": "docs-index/360-reduced-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2347,
+      "visible_text_chars": 353,
+      "scroll_height": 2500,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1690,10 +1690,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/390-reduced-fold.png",
       "full_png": "docs-index/390-reduced-full.png",
-      "visible_text_chars": 326,
-      "scroll_height": 2292,
+      "visible_text_chars": 353,
+      "scroll_height": 2446,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1702,10 +1702,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/768-reduced-fold.png",
       "full_png": "docs-index/768-reduced-full.png",
-      "visible_text_chars": 658,
-      "scroll_height": 1589,
+      "visible_text_chars": 785,
+      "scroll_height": 1720,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1714,10 +1714,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/1024-reduced-fold.png",
       "full_png": "docs-index/1024-reduced-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1726,10 +1726,10 @@
       "condition": "reduced",
       "fold_png": "docs-index/1440-reduced-fold.png",
       "full_png": "docs-index/1440-reduced-full.png",
-      "visible_text_chars": 693,
-      "scroll_height": 1344,
+      "visible_text_chars": 785,
+      "scroll_height": 1421,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1738,10 +1738,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/320-js-on-fold.png",
       "full_png": "docs-faq/320-js-on-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 8463,
+      "visible_text_chars": 334,
+      "scroll_height": 8655,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1750,10 +1750,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/360-js-on-fold.png",
       "full_png": "docs-faq/360-js-on-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7729,
+      "visible_text_chars": 334,
+      "scroll_height": 7882,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1762,10 +1762,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/390-js-on-fold.png",
       "full_png": "docs-faq/390-js-on-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7239,
+      "visible_text_chars": 334,
+      "scroll_height": 7393,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1774,10 +1774,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/768-js-on-fold.png",
       "full_png": "docs-faq/768-js-on-full.png",
-      "visible_text_chars": 963,
-      "scroll_height": 5964,
+      "visible_text_chars": 1050,
+      "scroll_height": 6094,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1786,10 +1786,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/1024-js-on-fold.png",
       "full_png": "docs-faq/1024-js-on-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1798,10 +1798,10 @@
       "condition": "js-on",
       "fold_png": "docs-faq/1440-js-on-fold.png",
       "full_png": "docs-faq/1440-js-on-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1810,10 +1810,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/320-js-off-fold.png",
       "full_png": "docs-faq/320-js-off-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 8463,
+      "visible_text_chars": 334,
+      "scroll_height": 8655,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1822,10 +1822,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/360-js-off-fold.png",
       "full_png": "docs-faq/360-js-off-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7729,
+      "visible_text_chars": 334,
+      "scroll_height": 7882,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1834,10 +1834,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/390-js-off-fold.png",
       "full_png": "docs-faq/390-js-off-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7239,
+      "visible_text_chars": 334,
+      "scroll_height": 7393,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1846,10 +1846,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/768-js-off-fold.png",
       "full_png": "docs-faq/768-js-off-full.png",
-      "visible_text_chars": 963,
-      "scroll_height": 5964,
+      "visible_text_chars": 1050,
+      "scroll_height": 6094,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1858,10 +1858,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/1024-js-off-fold.png",
       "full_png": "docs-faq/1024-js-off-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1870,10 +1870,10 @@
       "condition": "js-off",
       "fold_png": "docs-faq/1440-js-off-fold.png",
       "full_png": "docs-faq/1440-js-off-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1882,10 +1882,10 @@
       "condition": "reduced",
       "fold_png": "docs-faq/320-reduced-fold.png",
       "full_png": "docs-faq/320-reduced-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 8463,
+      "visible_text_chars": 334,
+      "scroll_height": 8655,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1894,10 +1894,10 @@
       "condition": "reduced",
       "fold_png": "docs-faq/360-reduced-fold.png",
       "full_png": "docs-faq/360-reduced-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7729,
+      "visible_text_chars": 334,
+      "scroll_height": 7882,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1906,10 +1906,10 @@
       "condition": "reduced",
       "fold_png": "docs-faq/390-reduced-fold.png",
       "full_png": "docs-faq/390-reduced-full.png",
-      "visible_text_chars": 504,
-      "scroll_height": 7239,
+      "visible_text_chars": 334,
+      "scroll_height": 7393,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1918,10 +1918,10 @@
       "condition": "reduced",
       "fold_png": "docs-faq/768-reduced-fold.png",
       "full_png": "docs-faq/768-reduced-full.png",
-      "visible_text_chars": 963,
-      "scroll_height": 5964,
+      "visible_text_chars": 1050,
+      "scroll_height": 6094,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1930,10 +1930,10 @@
       "condition": "reduced",
       "fold_png": "docs-faq/1024-reduced-fold.png",
       "full_png": "docs-faq/1024-reduced-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1942,10 +1942,226 @@
       "condition": "reduced",
       "fold_png": "docs-faq/1440-reduced-fold.png",
       "full_png": "docs-faq/1440-reduced-full.png",
-      "visible_text_chars": 1387,
-      "scroll_height": 4477,
+      "visible_text_chars": 1357,
+      "scroll_height": 4554,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 320,
+      "condition": "js-on",
+      "fold_png": "docs-status/320-js-on-fold.png",
+      "full_png": "docs-status/320-js-on-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 7232,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 360,
+      "condition": "js-on",
+      "fold_png": "docs-status/360-js-on-fold.png",
+      "full_png": "docs-status/360-js-on-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6948,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 390,
+      "condition": "js-on",
+      "fold_png": "docs-status/390-js-on-fold.png",
+      "full_png": "docs-status/390-js-on-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6697,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 768,
+      "condition": "js-on",
+      "fold_png": "docs-status/768-js-on-fold.png",
+      "full_png": "docs-status/768-js-on-full.png",
+      "visible_text_chars": 1101,
+      "scroll_height": 5890,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1024,
+      "condition": "js-on",
+      "fold_png": "docs-status/1024-js-on-fold.png",
+      "full_png": "docs-status/1024-js-on-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1440,
+      "condition": "js-on",
+      "fold_png": "docs-status/1440-js-on-fold.png",
+      "full_png": "docs-status/1440-js-on-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 320,
+      "condition": "js-off",
+      "fold_png": "docs-status/320-js-off-fold.png",
+      "full_png": "docs-status/320-js-off-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 7232,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 360,
+      "condition": "js-off",
+      "fold_png": "docs-status/360-js-off-fold.png",
+      "full_png": "docs-status/360-js-off-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6948,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 390,
+      "condition": "js-off",
+      "fold_png": "docs-status/390-js-off-fold.png",
+      "full_png": "docs-status/390-js-off-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6697,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 768,
+      "condition": "js-off",
+      "fold_png": "docs-status/768-js-off-fold.png",
+      "full_png": "docs-status/768-js-off-full.png",
+      "visible_text_chars": 1101,
+      "scroll_height": 5890,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1024,
+      "condition": "js-off",
+      "fold_png": "docs-status/1024-js-off-fold.png",
+      "full_png": "docs-status/1024-js-off-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1440,
+      "condition": "js-off",
+      "fold_png": "docs-status/1440-js-off-fold.png",
+      "full_png": "docs-status/1440-js-off-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 320,
+      "condition": "reduced",
+      "fold_png": "docs-status/320-reduced-fold.png",
+      "full_png": "docs-status/320-reduced-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 7232,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 360,
+      "condition": "reduced",
+      "fold_png": "docs-status/360-reduced-fold.png",
+      "full_png": "docs-status/360-reduced-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6948,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 390,
+      "condition": "reduced",
+      "fold_png": "docs-status/390-reduced-fold.png",
+      "full_png": "docs-status/390-reduced-full.png",
+      "visible_text_chars": 576,
+      "scroll_height": 6697,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 768,
+      "condition": "reduced",
+      "fold_png": "docs-status/768-reduced-fold.png",
+      "full_png": "docs-status/768-reduced-full.png",
+      "visible_text_chars": 1101,
+      "scroll_height": 5890,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1024,
+      "condition": "reduced",
+      "fold_png": "docs-status/1024-reduced-fold.png",
+      "full_png": "docs-status/1024-reduced-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
+      "verdict": "pass"
+    },
+    {
+      "page": "/docs/status",
+      "width": 1440,
+      "condition": "reduced",
+      "fold_png": "docs-status/1440-reduced-fold.png",
+      "full_png": "docs-status/1440-reduced-full.png",
+      "visible_text_chars": 1260,
+      "scroll_height": 5369,
+      "unrevealed_reveal_count": 0,
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1954,10 +2170,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/320-js-on-fold.png",
       "full_png": "docs-how-it-works/320-js-on-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 5259,
+      "visible_text_chars": 343,
+      "scroll_height": 5293,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1966,10 +2182,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/360-js-on-fold.png",
       "full_png": "docs-how-it-works/360-js-on-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4751,
+      "visible_text_chars": 343,
+      "scroll_height": 4746,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1978,10 +2194,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/390-js-on-fold.png",
       "full_png": "docs-how-it-works/390-js-on-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4429,
+      "visible_text_chars": 620,
+      "scroll_height": 4450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -1990,10 +2206,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/768-js-on-fold.png",
       "full_png": "docs-how-it-works/768-js-on-full.png",
-      "visible_text_chars": 1060,
-      "scroll_height": 3499,
+      "visible_text_chars": 1016,
+      "scroll_height": 3498,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2002,10 +2218,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/1024-js-on-fold.png",
       "full_png": "docs-how-it-works/1024-js-on-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2014,10 +2230,10 @@
       "condition": "js-on",
       "fold_png": "docs-how-it-works/1440-js-on-fold.png",
       "full_png": "docs-how-it-works/1440-js-on-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2026,10 +2242,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/320-js-off-fold.png",
       "full_png": "docs-how-it-works/320-js-off-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 5259,
+      "visible_text_chars": 343,
+      "scroll_height": 5293,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2038,10 +2254,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/360-js-off-fold.png",
       "full_png": "docs-how-it-works/360-js-off-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4751,
+      "visible_text_chars": 343,
+      "scroll_height": 4746,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2050,10 +2266,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/390-js-off-fold.png",
       "full_png": "docs-how-it-works/390-js-off-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4429,
+      "visible_text_chars": 620,
+      "scroll_height": 4450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2062,10 +2278,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/768-js-off-fold.png",
       "full_png": "docs-how-it-works/768-js-off-full.png",
-      "visible_text_chars": 1060,
-      "scroll_height": 3499,
+      "visible_text_chars": 1016,
+      "scroll_height": 3498,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2074,10 +2290,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/1024-js-off-fold.png",
       "full_png": "docs-how-it-works/1024-js-off-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2086,10 +2302,10 @@
       "condition": "js-off",
       "fold_png": "docs-how-it-works/1440-js-off-fold.png",
       "full_png": "docs-how-it-works/1440-js-off-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2098,10 +2314,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/320-reduced-fold.png",
       "full_png": "docs-how-it-works/320-reduced-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 5259,
+      "visible_text_chars": 343,
+      "scroll_height": 5293,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2110,10 +2326,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/360-reduced-fold.png",
       "full_png": "docs-how-it-works/360-reduced-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4751,
+      "visible_text_chars": 343,
+      "scroll_height": 4746,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2122,10 +2338,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/390-reduced-fold.png",
       "full_png": "docs-how-it-works/390-reduced-full.png",
-      "visible_text_chars": 493,
-      "scroll_height": 4429,
+      "visible_text_chars": 620,
+      "scroll_height": 4450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2134,10 +2350,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/768-reduced-fold.png",
       "full_png": "docs-how-it-works/768-reduced-full.png",
-      "visible_text_chars": 1060,
-      "scroll_height": 3499,
+      "visible_text_chars": 1016,
+      "scroll_height": 3498,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2146,10 +2362,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/1024-reduced-fold.png",
       "full_png": "docs-how-it-works/1024-reduced-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2158,10 +2374,10 @@
       "condition": "reduced",
       "fold_png": "docs-how-it-works/1440-reduced-fold.png",
       "full_png": "docs-how-it-works/1440-reduced-full.png",
-      "visible_text_chars": 1775,
-      "scroll_height": 2587,
+      "visible_text_chars": 1672,
+      "scroll_height": 2585,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2170,10 +2386,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/320-js-on-fold.png",
       "full_png": "docs-getting-started/320-js-on-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3654,
+      "visible_text_chars": 335,
+      "scroll_height": 3845,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2182,10 +2398,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/360-js-on-fold.png",
       "full_png": "docs-getting-started/360-js-on-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3378,
+      "visible_text_chars": 346,
+      "scroll_height": 3531,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2194,10 +2410,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/390-js-on-fold.png",
       "full_png": "docs-getting-started/390-js-on-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3296,
+      "visible_text_chars": 346,
+      "scroll_height": 3450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2206,10 +2422,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/768-js-on-fold.png",
       "full_png": "docs-getting-started/768-js-on-full.png",
-      "visible_text_chars": 895,
-      "scroll_height": 2564,
+      "visible_text_chars": 866,
+      "scroll_height": 2695,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2218,10 +2434,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/1024-js-on-fold.png",
       "full_png": "docs-getting-started/1024-js-on-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2230,10 +2446,10 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/1440-js-on-fold.png",
       "full_png": "docs-getting-started/1440-js-on-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2242,10 +2458,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/320-js-off-fold.png",
       "full_png": "docs-getting-started/320-js-off-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3654,
+      "visible_text_chars": 335,
+      "scroll_height": 3845,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2254,10 +2470,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/360-js-off-fold.png",
       "full_png": "docs-getting-started/360-js-off-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3378,
+      "visible_text_chars": 346,
+      "scroll_height": 3531,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2266,10 +2482,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/390-js-off-fold.png",
       "full_png": "docs-getting-started/390-js-off-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3296,
+      "visible_text_chars": 346,
+      "scroll_height": 3450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2278,10 +2494,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/768-js-off-fold.png",
       "full_png": "docs-getting-started/768-js-off-full.png",
-      "visible_text_chars": 895,
-      "scroll_height": 2564,
+      "visible_text_chars": 866,
+      "scroll_height": 2695,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2290,10 +2506,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/1024-js-off-fold.png",
       "full_png": "docs-getting-started/1024-js-off-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2302,10 +2518,10 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/1440-js-off-fold.png",
       "full_png": "docs-getting-started/1440-js-off-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2314,10 +2530,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/320-reduced-fold.png",
       "full_png": "docs-getting-started/320-reduced-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3654,
+      "visible_text_chars": 335,
+      "scroll_height": 3845,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2326,10 +2542,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/360-reduced-fold.png",
       "full_png": "docs-getting-started/360-reduced-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3378,
+      "visible_text_chars": 346,
+      "scroll_height": 3531,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2338,10 +2554,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/390-reduced-fold.png",
       "full_png": "docs-getting-started/390-reduced-full.png",
-      "visible_text_chars": 518,
-      "scroll_height": 3296,
+      "visible_text_chars": 346,
+      "scroll_height": 3450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2350,10 +2566,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/768-reduced-fold.png",
       "full_png": "docs-getting-started/768-reduced-full.png",
-      "visible_text_chars": 895,
-      "scroll_height": 2564,
+      "visible_text_chars": 866,
+      "scroll_height": 2695,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2362,10 +2578,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/1024-reduced-fold.png",
       "full_png": "docs-getting-started/1024-reduced-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2374,10 +2590,10 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/1440-reduced-fold.png",
       "full_png": "docs-getting-started/1440-reduced-full.png",
-      "visible_text_chars": 1256,
-      "scroll_height": 1994,
+      "visible_text_chars": 1356,
+      "scroll_height": 2071,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2386,10 +2602,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/320-js-on-fold.png",
       "full_png": "docs-privacy/320-js-on-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 5498,
+      "visible_text_chars": 423,
+      "scroll_height": 5690,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2398,10 +2614,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/360-js-on-fold.png",
       "full_png": "docs-privacy/360-js-on-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4997,
+      "visible_text_chars": 423,
+      "scroll_height": 5150,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2410,10 +2626,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/390-js-on-fold.png",
       "full_png": "docs-privacy/390-js-on-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4811,
+      "visible_text_chars": 423,
+      "scroll_height": 4965,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2422,10 +2638,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/768-js-on-fold.png",
       "full_png": "docs-privacy/768-js-on-full.png",
-      "visible_text_chars": 1562,
-      "scroll_height": 3812,
+      "visible_text_chars": 1020,
+      "scroll_height": 3942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2434,10 +2650,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/1024-js-on-fold.png",
       "full_png": "docs-privacy/1024-js-on-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2446,10 +2662,10 @@
       "condition": "js-on",
       "fold_png": "docs-privacy/1440-js-on-fold.png",
       "full_png": "docs-privacy/1440-js-on-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2458,10 +2674,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/320-js-off-fold.png",
       "full_png": "docs-privacy/320-js-off-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 5498,
+      "visible_text_chars": 423,
+      "scroll_height": 5690,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2470,10 +2686,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/360-js-off-fold.png",
       "full_png": "docs-privacy/360-js-off-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4997,
+      "visible_text_chars": 423,
+      "scroll_height": 5150,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2482,10 +2698,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/390-js-off-fold.png",
       "full_png": "docs-privacy/390-js-off-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4811,
+      "visible_text_chars": 423,
+      "scroll_height": 4965,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2494,10 +2710,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/768-js-off-fold.png",
       "full_png": "docs-privacy/768-js-off-full.png",
-      "visible_text_chars": 1562,
-      "scroll_height": 3812,
+      "visible_text_chars": 1020,
+      "scroll_height": 3942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2506,10 +2722,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/1024-js-off-fold.png",
       "full_png": "docs-privacy/1024-js-off-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2518,10 +2734,10 @@
       "condition": "js-off",
       "fold_png": "docs-privacy/1440-js-off-fold.png",
       "full_png": "docs-privacy/1440-js-off-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2530,10 +2746,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/320-reduced-fold.png",
       "full_png": "docs-privacy/320-reduced-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 5498,
+      "visible_text_chars": 423,
+      "scroll_height": 5690,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2542,10 +2758,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/360-reduced-fold.png",
       "full_png": "docs-privacy/360-reduced-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4997,
+      "visible_text_chars": 423,
+      "scroll_height": 5150,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2554,10 +2770,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/390-reduced-fold.png",
       "full_png": "docs-privacy/390-reduced-full.png",
-      "visible_text_chars": 366,
-      "scroll_height": 4811,
+      "visible_text_chars": 423,
+      "scroll_height": 4965,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2566,10 +2782,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/768-reduced-fold.png",
       "full_png": "docs-privacy/768-reduced-full.png",
-      "visible_text_chars": 1562,
-      "scroll_height": 3812,
+      "visible_text_chars": 1020,
+      "scroll_height": 3942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2578,10 +2794,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/1024-reduced-fold.png",
       "full_png": "docs-privacy/1024-reduced-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2590,10 +2806,10 @@
       "condition": "reduced",
       "fold_png": "docs-privacy/1440-reduced-fold.png",
       "full_png": "docs-privacy/1440-reduced-full.png",
-      "visible_text_chars": 1834,
-      "scroll_height": 2865,
+      "visible_text_chars": 1689,
+      "scroll_height": 2942,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2602,10 +2818,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/320-js-on-fold.png",
       "full_png": "docs-terms/320-js-on-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 6116,
+      "visible_text_chars": 418,
+      "scroll_height": 6308,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2614,10 +2830,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/360-js-on-fold.png",
       "full_png": "docs-terms/360-js-on-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5655,
+      "visible_text_chars": 418,
+      "scroll_height": 5808,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2626,10 +2842,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/390-js-on-fold.png",
       "full_png": "docs-terms/390-js-on-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5333,
+      "visible_text_chars": 418,
+      "scroll_height": 5486,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2638,10 +2854,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/768-js-on-fold.png",
       "full_png": "docs-terms/768-js-on-full.png",
-      "visible_text_chars": 910,
-      "scroll_height": 4379,
+      "visible_text_chars": 1011,
+      "scroll_height": 4509,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2650,10 +2866,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/1024-js-on-fold.png",
       "full_png": "docs-terms/1024-js-on-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2662,10 +2878,10 @@
       "condition": "js-on",
       "fold_png": "docs-terms/1440-js-on-fold.png",
       "full_png": "docs-terms/1440-js-on-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2674,10 +2890,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/320-js-off-fold.png",
       "full_png": "docs-terms/320-js-off-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 6116,
+      "visible_text_chars": 418,
+      "scroll_height": 6308,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2686,10 +2902,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/360-js-off-fold.png",
       "full_png": "docs-terms/360-js-off-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5655,
+      "visible_text_chars": 418,
+      "scroll_height": 5808,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2698,10 +2914,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/390-js-off-fold.png",
       "full_png": "docs-terms/390-js-off-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5333,
+      "visible_text_chars": 418,
+      "scroll_height": 5486,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2710,10 +2926,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/768-js-off-fold.png",
       "full_png": "docs-terms/768-js-off-full.png",
-      "visible_text_chars": 910,
-      "scroll_height": 4379,
+      "visible_text_chars": 1011,
+      "scroll_height": 4509,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2722,10 +2938,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/1024-js-off-fold.png",
       "full_png": "docs-terms/1024-js-off-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2734,10 +2950,10 @@
       "condition": "js-off",
       "fold_png": "docs-terms/1440-js-off-fold.png",
       "full_png": "docs-terms/1440-js-off-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2746,10 +2962,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/320-reduced-fold.png",
       "full_png": "docs-terms/320-reduced-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 6116,
+      "visible_text_chars": 418,
+      "scroll_height": 6308,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2758,10 +2974,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/360-reduced-fold.png",
       "full_png": "docs-terms/360-reduced-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5655,
+      "visible_text_chars": 418,
+      "scroll_height": 5808,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2770,10 +2986,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/390-reduced-fold.png",
       "full_png": "docs-terms/390-reduced-full.png",
-      "visible_text_chars": 352,
-      "scroll_height": 5333,
+      "visible_text_chars": 418,
+      "scroll_height": 5486,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2782,10 +2998,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/768-reduced-fold.png",
       "full_png": "docs-terms/768-reduced-full.png",
-      "visible_text_chars": 910,
-      "scroll_height": 4379,
+      "visible_text_chars": 1011,
+      "scroll_height": 4509,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2794,10 +3010,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/1024-reduced-fold.png",
       "full_png": "docs-terms/1024-reduced-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2806,10 +3022,10 @@
       "condition": "reduced",
       "fold_png": "docs-terms/1440-reduced-fold.png",
       "full_png": "docs-terms/1440-reduced-full.png",
-      "visible_text_chars": 1417,
-      "scroll_height": 3473,
+      "visible_text_chars": 1058,
+      "scroll_height": 3550,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2818,10 +3034,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/320-js-on-fold.png",
       "full_png": "docs-threat-model/320-js-on-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4435,
+      "visible_text_chars": 323,
+      "scroll_height": 4627,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2830,10 +3046,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/360-js-on-fold.png",
       "full_png": "docs-threat-model/360-js-on-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4090,
+      "visible_text_chars": 323,
+      "scroll_height": 4244,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2842,10 +3058,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/390-js-on-fold.png",
       "full_png": "docs-threat-model/390-js-on-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 3872,
+      "visible_text_chars": 397,
+      "scroll_height": 4026,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2854,10 +3070,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/768-js-on-fold.png",
       "full_png": "docs-threat-model/768-js-on-full.png",
-      "visible_text_chars": 1093,
-      "scroll_height": 3057,
+      "visible_text_chars": 965,
+      "scroll_height": 3187,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2866,10 +3082,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/1024-js-on-fold.png",
       "full_png": "docs-threat-model/1024-js-on-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2878,10 +3094,10 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/1440-js-on-fold.png",
       "full_png": "docs-threat-model/1440-js-on-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2890,10 +3106,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/320-js-off-fold.png",
       "full_png": "docs-threat-model/320-js-off-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4435,
+      "visible_text_chars": 323,
+      "scroll_height": 4627,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2902,10 +3118,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/360-js-off-fold.png",
       "full_png": "docs-threat-model/360-js-off-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4090,
+      "visible_text_chars": 323,
+      "scroll_height": 4244,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2914,10 +3130,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/390-js-off-fold.png",
       "full_png": "docs-threat-model/390-js-off-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 3872,
+      "visible_text_chars": 397,
+      "scroll_height": 4026,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2926,10 +3142,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/768-js-off-fold.png",
       "full_png": "docs-threat-model/768-js-off-full.png",
-      "visible_text_chars": 1093,
-      "scroll_height": 3057,
+      "visible_text_chars": 965,
+      "scroll_height": 3187,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2938,10 +3154,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/1024-js-off-fold.png",
       "full_png": "docs-threat-model/1024-js-off-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2950,10 +3166,10 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/1440-js-off-fold.png",
       "full_png": "docs-threat-model/1440-js-off-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2962,10 +3178,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/320-reduced-fold.png",
       "full_png": "docs-threat-model/320-reduced-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4435,
+      "visible_text_chars": 323,
+      "scroll_height": 4627,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2974,10 +3190,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/360-reduced-fold.png",
       "full_png": "docs-threat-model/360-reduced-full.png",
-      "visible_text_chars": 369,
-      "scroll_height": 4090,
+      "visible_text_chars": 323,
+      "scroll_height": 4244,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2986,10 +3202,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/390-reduced-fold.png",
       "full_png": "docs-threat-model/390-reduced-full.png",
-      "visible_text_chars": 452,
-      "scroll_height": 3872,
+      "visible_text_chars": 397,
+      "scroll_height": 4026,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -2998,10 +3214,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/768-reduced-fold.png",
       "full_png": "docs-threat-model/768-reduced-full.png",
-      "visible_text_chars": 1093,
-      "scroll_height": 3057,
+      "visible_text_chars": 965,
+      "scroll_height": 3187,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -3010,10 +3226,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/1024-reduced-fold.png",
       "full_png": "docs-threat-model/1024-reduced-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     },
     {
@@ -3022,10 +3238,10 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/1440-reduced-fold.png",
       "full_png": "docs-threat-model/1440-reduced-full.png",
-      "visible_text_chars": 1498,
-      "scroll_height": 2385,
+      "visible_text_chars": 1442,
+      "scroll_height": 2462,
       "unrevealed_reveal_count": 0,
-      "build_meta": "d77709b3-dirty",
+      "build_meta": "72213331-dirty",
       "verdict": "pass"
     }
   ]

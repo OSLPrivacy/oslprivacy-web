@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="osl-build" content="d77709b3-dirty">
+  <meta name="osl-build" content="72213331-dirty">
   <title>OSL Privacy | Privacy for social media and email</title>
   <meta name="description" content="OSL is an open source privacy hub for social media and email. Protection happens locally on your computer.">
   <meta name="color-scheme" content="dark">
@@ -31,6 +31,12 @@
       </ul>
     </nav>
   </header>
+
+  <div class="launch-banner" role="note">
+    <p><strong>Early access.</strong> OSL is being built toward its v1 launch, so some of what you see here is still being finished.</p>
+    <p><a class="matrix-link" href="/docs/status">See what works today</a></p>
+  </div>
+
 
   <dialog class="privacy-warning" id="privacy-warning" aria-labelledby="privacy-warning-title" aria-describedby="privacy-warning-copy">
     <div class="privacy-warning-inner">
@@ -170,13 +176,14 @@
       </div>
     </section>
 
-    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-product-animation="scrub-flow" data-playback-rate="0.8">
+    <section class="section product-demo scrub-demo reveal" aria-labelledby="scrub-heading" data-osl-feature="scrub-discovery" data-product-animation="scrub-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Scrub <span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span> <span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></p>
+          <p class="eyebrow">Scrub</p>
           <h2 id="scrub-heading" class="section-heading">Find what you left behind.</h2>
-          <p class="scrub-promise">The scan is designed to stay on your device.</p>
-          <p class="osl-status-note">Planned, and not in the shipping app yet. Scrub is designed to find the accounts and the exposure you left behind, then take you to the page where you delete it — it does not erase anything for you, and you stay the one who confirms every deletion. The scan is built to stay on your device. The drawing below shows the intended sequence. <a href="/features">See how Scrub is meant to work</a>.</p>
+          <p class="scrub-promise">The scan stays on your device.</p>
+          <p class="osl-status-note">Years of forgotten accounts and old posts are still out there under your name. Scrub finds them on your own machine, then <span data-osl-feature="scrub-guided-deletion">takes you to the page where you delete each one</span> — you confirm every removal yourself. Arriving at v1. <a href="/features">See how Scrub works</a>.</p>
+          <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
 
@@ -210,7 +217,7 @@
 
   <footer>
     <nav class="footer-pages" aria-label="Site pages">
-      <a href="/download">Download</a><a href="/features">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
+      <a href="/download">Download</a><a href="/features">Features</a><a href="/donate">Donate</a><a href="/docs/">Docs</a><a href="/docs/status">What works today</a><a href="/docs/privacy">Privacy</a><a href="/docs/terms">Terms</a>
     </nav>
     <nav class="footer-meta" aria-label="External and legal">
       <a href="/audit">Audit</a><a href="https://github.com/OSLPrivacy" target="_blank" rel="noopener">GitHub</a><a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
@@ -218,6 +225,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=d77709b3" defer></script>
+  <script src="/assets/js/main.js?v=72213331" defer></script>
 </body>
 </html>

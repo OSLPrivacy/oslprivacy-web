@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="osl-build" content="72213331-dirty">
+  <title>What works today | OSL Privacy Docs</title>
+  <meta name="description" content="The dated record of what OSL actually does in the shipping app today, and what is still being finished before v1.">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topnav">
+    <a class="topnav-brand" href="/"><img class="topnav-brand-mark app-logo" src="/assets/img/osl-app-icon-v2.png" alt="" width="34" height="34"><span>OSL</span></a>
+    <button class="topnav-toggle" type="button" aria-controls="topnav-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav-nav" id="topnav-menu" aria-label="Primary">
+      <ul class="topnav-links">
+        <li><a href="/download">Download</a></li>
+        <li><a href="/features">Features</a></li>
+        <li><a href="/docs/" aria-current="page">Docs</a></li>
+        <li><a href="/donate">Donate</a></li>
+        <li><a href="/audit">Audit</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <main id="main">
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation</summary>
+          <nav aria-label="Documentation">
+            <p class="docs-group-heading">Getting started</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/getting-started">Install OSL</a></li>
+              <li><a href="/docs/how-it-works">How OSL works</a></li>
+            </ul>
+            <p class="docs-group-heading">Reference</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/status" aria-current="page">What works today</a></li>
+              <li><a href="/docs/faq">FAQ</a></li>
+              <li><a href="/docs/threat-model">Threat model</a></li>
+            </ul>
+            <p class="docs-group-heading">Legal</p>
+            <ul class="docs-nav-list">
+              <li><a href="/docs/privacy">Privacy policy</a></li>
+              <li><a href="/docs/terms">Terms of service</a></li>
+            </ul>
+          </nav>
+        </details>
+      </aside>
+
+      <article class="docs-content">
+        <h1>What works today</h1>
+        <p class="lede">OSL is in early access before its v1 launch. This page is the honest, dated record of what the shipping app actually does. Every feature page on this site links here. Matrix version 2026-07-26.</p>
+        <p>The rest of this site describes OSL v1 — the product we are building toward. This page is the exception: nothing here is forward-looking. If a capability is not listed as working below, do not rely on it, and do not buy Pro expecting it.</p>
+        <h2 id="working">Working today <a class="anchor-link" href="#working" aria-label="Link to this section">#</a></h2>
+        <p>Proven on test builds against a real conversation. Not yet proven on a numbered release build, which is why none of these is labelled <em>Available</em>.</p>
+        <div class="status-table-scroll">
+        <table class="status-table">
+          <caption>Capabilities that work in the shipping app</caption>
+          <thead><tr><th scope="col">Capability</th><th scope="col">Status</th><th scope="col">Last verified</th><th scope="col">What that means</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Per-message hybrid sealing</th><td><span class="osl-status" data-osl-feature="per-message-sealing" data-osl-status="Beta">Beta</span></td><td>2026-07-26</td><td>Working. Every direct message is sealed to the recipient keys with a fresh key of its own, combining X25519 with post-quantum ML-KEM-768. Proven on test builds against a real conversation, not yet on a numbered release build.</td></tr>
+            <tr><th scope="row">Cover text carrier</th><td><span class="osl-status" data-osl-feature="cover-carrier-text" data-osl-status="Beta">Beta</span></td><td>2026-07-26</td><td>Working. OSL puts a harmless cover message into the connected service and keeps the real text encrypted. Proven on test builds.</td></tr>
+            <tr><th scope="row">Protected text send and read</th><td><span class="osl-status" data-osl-feature="protected-text" data-osl-status="Beta">Beta</span></td><td>2026-07-26</td><td>Working on Discord. Sending and reading protected text is proven on test builds. Discord is the only connector qualified so far.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <h2 id="not-yet">Not in the shipping app yet <a class="anchor-link" href="#not-yet" aria-label="Link to this section">#</a></h2>
+        <p>These are part of OSL v1 and are described elsewhere on this site as the product we are building. None of them is finished today.</p>
+        <div class="status-table-scroll">
+        <table class="status-table">
+          <caption>Capabilities still being finished before v1</caption>
+          <thead><tr><th scope="col">Capability</th><th scope="col">Status</th><th scope="col">Last verified</th><th scope="col">Where it actually stands</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Encrypted image sending</th><td><span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not in the shipping app yet. The encryption for images is written and the picker accepts PNG and JPEG, but nothing in the released app drives it end to end. This is not part of what a Pro purchase gives you today.</td></tr>
+            <tr><th scope="row">Non-image file sending</th><td><span class="osl-status" data-osl-feature="file-send" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Only PNG and JPEG are offered; other file types are not supported.</td></tr>
+            <tr><th scope="row">Group chat and server channel protection</th><td><span class="osl-status" data-osl-feature="group-protection" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Group and channel protection is switched off in the shipping app, and the messages it would build carry no signature identifying the sender. Treat anything you write in a group or channel as unprotected.</td></tr>
+            <tr><th scope="row">Ratcheting (protecting old messages)</th><td><span class="osl-status" data-osl-feature="ratchet" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. The mechanism that would keep old messages safe if a key is later stolen is written and tested but deliberately switched off pending independent review.</td></tr>
+            <tr><th scope="row">Attachment Privacy Guard</th><td><span class="osl-status" data-osl-feature="attachment-privacy-guard" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Stripping hidden details out of a file before encrypting it is written but nothing in the shipping app calls it. Assume a file you send still carries its original details.</td></tr>
+            <tr><th scope="row">Before-send warning</th><td><span class="osl-status" data-osl-feature="exposure-warning" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. The detection code exists and is tested, but nothing in the shipping app calls it, so OSL does not warn you today.</td></tr>
+            <tr><th scope="row">Timed expiry</th><td><span class="osl-status" data-osl-feature="expiry" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Timed deletion is not wired into the shipping app.</td></tr>
+            <tr><th scope="row">View once</th><td><span class="osl-status" data-osl-feature="view-once" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Components are built; the production wiring and the two-party consent it requires are incomplete.</td></tr>
+            <tr><th scope="row">Burn</th><td><span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet as a peer action. When it lands, burn deletes OSL local and server-side state and asks the other side to delete too. It does not destroy anyone ability to decrypt what the service already holds, and it cannot recall a screenshot.</td></tr>
+            <tr><th scope="row">Link protection</th><td><span class="osl-status" data-osl-feature="link-protection" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. This is a design intention with no code behind it.</td></tr>
+            <tr><th scope="row">Scrub discovery</th><td><span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>In progress, and the closest to landing. Scrub is designed to find the accounts and exposure you left behind, on your own machine. On the last measured run it found no accounts because the browser import does not yet hand its results to Scrub.</td></tr>
+            <tr><th scope="row">Guided deletion handoff</th><td><span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>In progress. The handoff takes you to the page where you delete; OSL never deletes for you. It cannot be exercised end to end until discovery produces accounts.</td></tr>
+            <tr><th scope="row">AutoScrub</th><td><span class="osl-status" data-osl-feature="autoscrub" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. AutoScrub repeats an approved plan with strict limits and a stop control. It is the one optional closed-source module, is not installed by default, and requires explicit consent to download.</td></tr>
+            <tr><th scope="row">AI-generated carrier text</th><td><span class="osl-status" data-osl-feature="ai-carrier-text" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Opt-in AI-written cover text. Cloud generation is never end-to-end private, because the service has to see the text it is working on.</td></tr>
+            <tr><th scope="row">Processing credits</th><td><span class="osl-status" data-osl-feature="processing-credits" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet, and not on sale. Credits would be bought separately and never renew.</td></tr>
+            <tr><th scope="row">Automatic Pro expiry</th><td><span class="osl-status" data-osl-feature="pro-expiry-enforcement" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. A purchased code currently unlocks Pro without a redemption clock, so the month does not yet start when you enter the code.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <h2 id="connectors">Connector support <a class="anchor-link" href="#connectors" aria-label="Link to this section">#</a></h2>
+        <p>A logo appearing anywhere on this site never implies support. This table is the only place that says which services are supported.</p>
+        <div class="status-table-scroll">
+        <table class="status-table">
+          <caption>Versioned connector support matrix</caption>
+          <thead><tr><th scope="col">Connector</th><th scope="col">Protected send</th><th scope="col">Protected receive</th><th scope="col">Attachments</th><th scope="col">Scrub</th><th scope="col">Last verified</th><th scope="col">Status</th><th scope="col">Provider policy risk</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Discord</th><td>Beta</td><td>Beta</td><td>Planned</td><td>Planned</td><td>2026-07-26</td><td><strong>Beta</strong></td><td>Using OSL may violate Discord Terms of Service and Discord may ban your account. No provider has tested, reviewed or approved OSL.</td></tr>
+            <tr><th scope="row">Signal</th><td>Planned</td><td>Planned</td><td>Planned</td><td>Not applicable</td><td>2026-07-26</td><td><strong>Coming soon</strong></td><td>Not qualified. No two-peer proof on any build.</td></tr>
+            <tr><th scope="row">WhatsApp</th><td>Planned</td><td>Planned</td><td>Planned</td><td>Not applicable</td><td>2026-07-26</td><td><strong>Coming soon</strong></td><td>Not qualified. No two-peer proof on any build.</td></tr>
+            <tr><th scope="row">Telegram</th><td>Externally blocked</td><td>Externally blocked</td><td>Externally blocked</td><td>Not applicable</td><td>2026-07-26</td><td><strong>Externally blocked</strong></td><td>Stable Telegram does not expose reliable accessible message rows. OSL will not fake support (master 7.8).</td></tr>
+            <tr><th scope="row">Outlook / OSL Mail</th><td>Planned</td><td>Planned</td><td>Planned</td><td>Planned</td><td>2026-07-26</td><td><strong>Coming soon</strong></td><td>Scoped as OSL Mail, not an ordinary chat overlay.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <h2 id="drawings">Illustrations, not measurements <a class="anchor-link" href="#drawings" aria-label="Link to this section">#</a></h2>
+        <ul>
+          <li><strong>Country exposure comparison</strong> <span class="osl-status" data-osl-feature="exposure-comparison" data-osl-status="Illustration">Illustration</span> — A drawing, not a measurement. The homepage comparison summarises published agency and company practice. It is not a scan of your device, and this site never shows a live protection score.</li>
+          <li><strong>Product animations</strong> <span class="osl-status" data-osl-feature="product-animations" data-osl-status="Illustration">Illustration</span> — Drawings, not recordings. Every animated scene on this site illustrates intended behaviour rather than showing the app running.</li>
+        </ul>
+        <h2 id="labels">How to read the labels <a class="anchor-link" href="#labels" aria-label="Link to this section">#</a></h2>
+        <ul>
+          <li><strong>Available</strong> — proven on a numbered release build. Nothing carries this label yet.</li>
+          <li><strong>Beta</strong> — the code does it and it has been exercised on a test build. Expect rough edges.</li>
+          <li><strong>Planned</strong> — part of v1, not finished. Some of it is written but not connected; some is design only.</li>
+          <li><strong>Externally blocked</strong> — a third party does not expose what OSL would need. We will not fake support.</li>
+          <li><strong>Illustration</strong> — a drawing of intended behaviour, not a recording or a measurement.</li>
+        </ul>
+        <h2 id="unaudited">Not independently audited <a class="anchor-link" href="#unaudited" aria-label="Link to this section">#</a></h2>
+        <p>OSL uses a custom encryption construction that has not been independently audited, and no provider has tested, reviewed or approved it. If your threat model is high-stakes — legal investigation or targeted surveillance — use Signal, Briar or Cwtch instead. An internal source review is published on the <a href="/audit">audit page</a>.</p>
+        <p>Protecting message content does not hide metadata. A connected service still sees who you talk to, when, and how often. OSL cannot change that.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <nav class="footer-pages" aria-label="Site pages">
+      <a href="/download">Download</a>
+      <a href="/features">Features</a>
+      <a href="/donate">Donate</a>
+      <a href="/docs/">Docs</a><a href="/docs/status">What works today</a>
+      <a href="/docs/privacy">Privacy</a>
+      <a href="/docs/terms">Terms</a>
+    </nav>
+    <nav class="footer-meta" aria-label="External and legal">
+      <a href="/audit">Audit</a>
+      <a href="mailto:OSLPrivacy@gmail.com">OSLPrivacy@gmail.com</a>
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">Site license AGPL 3.0</a>
+    </nav>
+    <p class="copyright">&copy; 2026 OSL Privacy</p>
+  </footer>
+
+  <script src="/assets/js/main.js?v=72213331" defer></script>
+</body>
+</html>

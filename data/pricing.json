@@ -5,7 +5,6 @@
   "decided_on": "2026-07-26",
   "currency": "USD",
   "authority": "docs/design/osl-master-decision-2026-07-26.md sections 7.1, 7.6, 7.10, 7.14 and 8 (revision OSL-MASTER-2026-07-26-r4), plus docs/decisions/pro-prepaid-monthly-codes-2026-07-26.md, both in the discord-privacy-client repository.",
-
   "model": {
     "name": "Prepaid activation codes",
     "summary": "$5 buys a code that unlocks Pro for one month. It is not a subscription: nothing auto-renews, no payment details are stored, and no account is required. To keep Pro, buy another code.",
@@ -16,7 +15,6 @@
     "$redemption_note": "Owner decision 2026-07-26: the month does NOT start at purchase. It starts when the code is entered into the OSL client, so a code bought and left unused for months still delivers a full 30 days. Two separate clocks: shelf life (how long an unredeemed code may still be entered) and entitlement period (the 30 days of Pro). This is product truth, but see publication.not_publishable below -- the client does not implement it yet, so the WEBSITE must not claim it.",
     "$why_this_matters": "Owner decision 2026-07-26: payment information is NEVER saved, including for repeat purchases. The website may state the $5-per-month rate, but must never imply a stored card, a recurring mandate, or a cancellation obligation."
   },
-
   "publication": {
     "$note": "Master 7.14 draws the line explicitly: the website may publish the price and the nothing-renews / nothing-stored claims, but not the redemption-start claim, because the deployed client does not implement it. Publishing a shorter entitlement than the code currently grants understates what a buyer gets, which is the safe direction (master 0.2 rule 5); publishing a redemption-start promise the client cannot keep would be a false claim.",
     "publishable": [
@@ -51,7 +49,6 @@
     ],
     "$one_time_charge_is_correct": "The deployed checkout is already a single one-off charge, which is what a prepaid code needs: Stripe `mode: \"payment\"`, metadata `osl_purchase: \"one-time\"`, a single STRIPE_PRICE_ID_PRO. No Stripe subscription, webhook lifecycle, customer portal or stored payment method is required. The outstanding work is licence validity, not a billing-mode migration."
   },
-
   "tiers": {
     "free": {
       "name": "Free",
@@ -63,8 +60,7 @@
       "includes": [
         "Protected text on supported connectors",
         "No ads and no message limit",
-        "Receive and decrypt protected images sent by Pro users",
-        "Free Scrub: attended scan, review, confirm, verify, receipt"
+        "Free Scrub, arriving at v1"
       ]
     },
     "pro": {
@@ -84,15 +80,27 @@
       "includes": [
         "Early access to new privacy tools as they reach the beta channel"
       ],
-      "$includes_note": "'Encrypted image sending' was removed from includes 2026-07-26 (truth lane): image-send is Planned, not Beta -- see the capability_registry entry. Until that is resolved, Pro's only currently-truthful benefit is early access, which is thin for a paid tier. Escalated to Zhao as action-needed.",
       "planned_extras": [
         "AutoScrub: an approved plan repeated with strict limits",
         "Non-image file sending",
         "AI-generated carrier text, local or cloud"
-      ]
+      ],
+      "purchase_type": "early_access",
+      "early_access_line": "Pro is an early-access purchase. Today it unlocks early access to new privacy tools as they reach the beta channel — not the v1 feature set, which is still being finished.",
+      "works_today": [
+        "Send protected text on Discord, with no message limit",
+        "New privacy tools first, as they reach the public beta channel"
+      ],
+      "arrives_at_v1": [
+        "Sending encrypted images",
+        "Sending other kinds of file",
+        "AutoScrub",
+        "View once, expiry and burn",
+        "AI-written cover text"
+      ],
+      "$includes_note": "Owner decision 2026-07-26: keep selling, but as a STATED early-access purchase. The purchase summary may only list capabilities with sellable:true in capability_registry, so encrypted image sending is never sold present-tense. works_today and arrives_at_v1 drive the checkout copy and are enforced by check-claims on checkout surfaces."
     }
   },
-
   "compute_credits": {
     "name": "Processing credits",
     "billing": "separate_purchase",
@@ -109,7 +117,6 @@
     ],
     "packs": []
   },
-
   "payment_methods": {
     "card": {
       "provider": "Stripe",
@@ -124,7 +131,6 @@
       "note": "Works exactly like card: one invoice buys one month. Nothing to cancel, nothing stored. Live since commits 7e31408 (Bitcoin) and 6081eb1 (Monero)."
     }
   },
-
   "ledger_privacy": {
     "$authority": "Master 7.1.",
     "excluded_from_payment_and_credit_ledgers": [
@@ -136,7 +142,6 @@
     "redemption_record": "licence hash and timestamp only -- no account, email, device fingerprint, IP, install ID or joined payment identifier.",
     "plain_sentence": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity."
   },
-
   "open_source": {
     "$authority": "Master 7.6 and 7.10.",
     "position": "OSL is fully open source except for one narrow, optional module.",
@@ -152,11 +157,15 @@
       "the default client"
     ]
   },
-
   "liability_cap_usd": 50,
   "$liability_note": "The $50 in docs/terms.html is a LIABILITY CAP, not a price. The claim crawler must never treat it as a pricing contradiction.",
-
-  "capability_labels": ["Available", "Beta", "Experimental", "Planned", "Illustration"],
+  "capability_labels": [
+    "Available",
+    "Beta",
+    "Experimental",
+    "Planned",
+    "Illustration"
+  ],
   "$capability_label_meanings": {
     "Available": "Proved on the shipping build and safe to market plainly.",
     "Beta": "The runtime boundary works but the whole user promise is not yet proved on the release build.",
@@ -164,187 +173,281 @@
     "Planned": "Specified, and possibly built in source, but no proven production call path reaches it. Never marketed as working.",
     "Illustration": "A drawing or animation of an idea, not a screenshot of a working build."
   },
-
   "capability_registry": [
     {
       "id": "per-message-sealing",
       "name": "Per-message hybrid sealing",
-      "status": "Planned",
-      "evidence": "Downgraded from Available 2026-07-26 (truth lane). The scheme is real and live in source -- crates/ipc/src/wire_v2.rs:685-760 seals each direct message to the recipient's published X25519 and ML-KEM-768 keys with a fresh ephemeral key -- but allowlist A1 and A2 are implemented-unwired and carry a Planned badge until a NAMED release build proves the promise end to end. Allowlist section E also makes open-security-finding outrank everything on the same row, and master 9 lists live v3 crypto as open-security-finding (sender attribution). The descriptive sentence stays exactly as written and is pinned in required_phrases; only the badge changed.",
-      "surfaces": ["docs/how-it-works.html", "docs/faq.html", "audit.html"]
+      "status": "Beta",
+      "evidence": "Restored to Beta 2026-07-26 after owner correction. The code does this: crates/ipc/src/wire_v2.rs:685-760 (encrypt_v3) seals every direct message to the recipient published X25519 and ML-KEM-768 keys with a fresh per-message ephemeral, and live encrypted sends have landed real cover text in a real Discord conversation. The earlier Planned label came from reading implemented-unwired as if it described the cryptography; it describes a call path. Beta, not Available, because it is proven on QA builds rather than a named release build, and because sender attribution remains an open finding (master 10 finding 2).",
+      "surfaces": [
+        "docs/how-it-works.html",
+        "docs/faq.html",
+        "audit.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": true,
+      "public_note": "Working. Every direct message is sealed to the recipient keys with a fresh key of its own, combining X25519 with post-quantum ML-KEM-768. Proven on test builds against a real conversation, not yet on a numbered release build."
     },
     {
       "id": "cover-carrier-text",
       "name": "Cover text carrier",
       "status": "Beta",
       "evidence": "Downgraded from Available 2026-07-26 (truth lane). Bounded word-bank cover text with matched line count ships for the text lane (master 7.1), but the public claim it carries is allowlist row C1 -- 'Encrypted messages send through Discord as ordinary-looking text' -- which is runtime-proven, not verified-live, and therefore earns Beta. Its mandatory limitation is 'Verified on QA builds, not yet on the release build.' There is no allowlist row that grants the carrier an Available badge.",
-      "surfaces": ["index.html", "features.html"]
+      "surfaces": [
+        "index.html",
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": true,
+      "public_note": "Working. OSL puts a harmless cover message into the connected service and keeps the real text encrypted. Proven on test builds."
     },
     {
       "id": "protected-text",
       "name": "Protected text send and read",
       "status": "Beta",
       "evidence": "Master 9: Discord protected send is verified-live on dated QA builds with a current-tree recheck still required; the decrypted overlay is runtime-proven only. Discord is the reference connector; no other connector has a two-peer proof.",
-      "surfaces": ["index.html", "download.html", "docs/faq.html"]
+      "surfaces": [
+        "index.html",
+        "download.html",
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": true,
+      "public_note": "Working on Discord. Sending and reading protected text is proven on test builds. Discord is the only connector qualified so far."
     },
     {
       "id": "image-send",
       "name": "Encrypted image sending",
       "status": "Planned",
       "evidence": "Downgraded from Beta 2026-07-26 (truth lane). The picker does offer PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs:154, offered_image_extensions() == [jpg, jpeg, png]), but scope is not proof. Master 9 lists the whole attachment lane as implemented-unwired with open findings, master 10 critical class 4 has non-image attachments staged as durable plaintext, and allowlist section B puts 'View-once, timed deletion, attachments' at implemented-unwired -> Planned with an explicit master 8.2 ban on marketing attachments as available before the exact release build has evidence. Allowlist A3 additionally forbids the local-encrypted-storage claim on any page that markets attachments. THIS IS THE HEADLINE PRO BENEFIT: escalated to Zhao as action-needed, because Pro is sold today on a Planned capability.",
-      "surfaces": ["download.html", "docs/faq.html", "docs/terms.html"]
+      "surfaces": [
+        "download.html",
+        "docs/faq.html",
+        "docs/terms.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not in the shipping app yet. The encryption for images is written and the picker accepts PNG and JPEG, but nothing in the released app drives it end to end. This is not part of what a Pro purchase gives you today."
     },
     {
       "id": "file-send",
       "name": "Non-image file sending",
       "status": "Planned",
       "evidence": "Unavailable. The picker offers PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs), and master P0-4 records that protected non-image attachments are still staged as durable plaintext.",
-      "surfaces": ["download.html", "docs/faq.html"]
+      "surfaces": [
+        "download.html",
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Only PNG and JPEG are offered; other file types are not supported."
     },
     {
       "id": "group-protection",
       "name": "Group chat and server channel protection",
       "status": "Planned",
       "evidence": "False as previously written. The feature defaults off at crates/ipc/src/state.rs:280 and the construction carries no sender signature. The independent crypto review also found the live native path does not use the claimed sender keys.",
-      "surfaces": ["docs/faq.html", "docs/how-it-works.html", "audit.html"]
+      "surfaces": [
+        "docs/faq.html",
+        "docs/how-it-works.html",
+        "audit.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Group and channel protection is switched off in the shipping app, and the messages it would build carry no signature identifying the sender. Treat anything you write in a group or channel as unprotected."
     },
     {
       "id": "ratchet",
-      "name": "Ratcheting and forward secrecy",
+      "name": "Ratcheting (protecting old messages)",
       "status": "Planned",
       "evidence": "The live path is stateless per-message sealing. crates/ipc/src/commands.rs:2842 hard-disables the ratchet, and crates/osl-ratchet-next is built but deliberately unwired. Master 7.11 forbids any forward-secrecy claim that outruns the audited live path.",
-      "surfaces": ["docs/how-it-works.html", "docs/index.html"]
+      "surfaces": [
+        "docs/how-it-works.html",
+        "docs/index.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. The mechanism that would keep old messages safe if a key is later stolen is written and tested but deliberately switched off pending independent review.",
+      "$name_note": "Must not be called \"forward secrecy\" anywhere public, even on the matrix where it is marked Not yet. The phrase is on the NOT-ELIGIBLE list and the ban is absolute rather than surface-dependent, so the capability is renamed instead of exempted."
     },
     {
       "id": "attachment-privacy-guard",
       "name": "Attachment Privacy Guard",
       "status": "Planned",
       "evidence": "The metadata-stripping shipping seam is uncalled -- no production path invokes it.",
-      "surfaces": ["features.html"]
+      "surfaces": [
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Stripping hidden details out of a file before encrypting it is written but nothing in the shipping app calls it. Assume a file you send still carries its original details."
     },
     {
       "id": "exposure-warning",
       "name": "Before-send warning",
       "status": "Planned",
       "evidence": "crates/exposure-warning has no dependent at all. The root Cargo.toml:12-16 comment states plainly: 'UNWIRED -- no app depends on it yet'.",
-      "surfaces": ["features.html"]
+      "surfaces": [
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. The detection code exists and is tested, but nothing in the shipping app calls it, so OSL does not warn you today."
     },
     {
       "id": "expiry",
       "name": "Timed expiry",
       "status": "Planned",
       "evidence": "Not wired, and there is no crypto-shred: the writer at crates/store/src/lib.rs:194 never populates wrapped_key, so no key can be destroyed at zero. All key-destruction wording was removed.",
-      "surfaces": ["features.html"]
+      "surfaces": [
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Timed deletion is not wired into the shipping app."
     },
     {
       "id": "view-once",
       "name": "View once",
       "status": "Planned",
       "evidence": "Master 9: components built, production wiring incomplete. Two-party consent and proven capture protection before the first pixel are still required (master 3a).",
-      "surfaces": ["download.html", "features.html", "docs/faq.html"]
+      "surfaces": [
+        "download.html",
+        "features.html",
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Components are built; the production wiring and the two-party consent it requires are incomplete."
     },
     {
       "id": "burn",
       "name": "Burn",
       "status": "Planned",
       "evidence": "Master 9: components built, production wiring incomplete. Existing copy already refuses to promise that a platform, screenshot or backup forgot anything; that framing is kept.",
-      "surfaces": ["docs/faq.html"]
+      "surfaces": [
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet as a peer action. When it lands, burn deletes OSL local and server-side state and asks the other side to delete too. It does not destroy anyone ability to decrypt what the service already holds, and it cannot recall a screenshot."
     },
     {
       "id": "link-protection",
       "name": "Link protection",
       "status": "Planned",
       "evidence": "No implementation found. There is no link/tracker crate, and no match for tracking-parameter handling anywhere in crates/ or apps/ (searched 2026-07-26). This item was NOT in the original strike list; it was found while labelling.",
-      "surfaces": ["features.html"]
+      "surfaces": [
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. This is a design intention with no code behind it."
     },
     {
       "id": "scrub-discovery",
       "name": "Scrub discovery",
       "status": "Planned",
       "evidence": "Downgraded from Beta 2026-07-26 (truth lane). Discovery is genuinely what Scrub does -- it finds accounts and exposure and takes the owner to the page where they delete -- but no evidence names an exact build. Master 9 says 'active dirty integration work' and still requires an exact-build walkthrough; the last live report (2026-07-25) was that pressing 'do scrub' detected 0 accounts, because browser import never creates an AccountRecord or hands anything to Scrub. Allowlist rule 5: evidence that does not name an exact build is unknown-recheck-required, which earns no claim. Planned is the strongest honest badge. The Scrub lane can earn Beta back by landing an exact-build walkthrough in docs/reports/.",
-      "surfaces": ["index.html", "features.html", "download.html"]
+      "surfaces": [
+        "index.html",
+        "features.html",
+        "download.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "In progress, and the closest to landing. Scrub is designed to find the accounts and exposure you left behind, on your own machine. On the last measured run it found no accounts because the browser import does not yet hand its results to Scrub."
     },
     {
       "id": "scrub-guided-deletion",
       "name": "Guided deletion handoff",
       "status": "Planned",
       "evidence": "Downgraded from Experimental 2026-07-26 (truth lane): it depends on scrub-discovery, which does not yet produce accounts on any named build, so the handoff cannot be exercised end to end. Master 9: Free Scrub deletion is active implementation. Scrub does not erase: it discovers, then hands the owner off to the page where they delete. Every destructive flow stays Scan, Preview, Confirm, Execute, Verify, Receipt (master 7.5), and requested deletion is never shown as verified deletion.",
-      "surfaces": ["index.html", "features.html"]
+      "surfaces": [
+        "index.html",
+        "features.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "In progress. The handoff takes you to the page where you delete; OSL never deletes for you. It cannot be exercised end to end until discovery produces accounts."
     },
     {
       "id": "autoscrub",
       "name": "AutoScrub",
       "status": "Planned",
       "evidence": "Master 9: active implementation, optional-module packaging unresolved. It is the one closed-source exception (master 7.6) and is not installed by default.",
-      "surfaces": ["download.html", "docs/faq.html"]
+      "surfaces": [
+        "download.html",
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. AutoScrub repeats an approved plan with strict limits and a stop control. It is the one optional closed-source module, is not installed by default, and requires explicit consent to download."
     },
     {
       "id": "ai-carrier-text",
       "name": "AI-generated carrier text",
       "status": "Planned",
       "evidence": "Master 7.1 opt-in feature, gated behind processing credits that cannot yet be bought.",
-      "surfaces": ["docs/faq.html"]
+      "surfaces": [
+        "docs/faq.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. Opt-in AI-written cover text. Cloud generation is never end-to-end private, because the service has to see the text it is working on."
     },
     {
       "id": "processing-credits",
       "name": "Processing credits",
       "status": "Planned",
       "evidence": "No purchase or balance endpoint exists on the deployed keyserver. Explained only, never sold.",
-      "surfaces": ["docs/faq.html", "docs/terms.html"]
+      "surfaces": [
+        "docs/faq.html",
+        "docs/terms.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet, and not on sale. Credits would be bought separately and never renew."
     },
     {
       "id": "pro-expiry-enforcement",
       "name": "Automatic Pro expiry",
       "status": "Planned",
       "evidence": "A paid code currently grants lifetime access; no redemption timestamp exists. The website therefore sells one month and does not promise when the month begins.",
-      "surfaces": ["docs/terms.html"]
+      "surfaces": [
+        "docs/terms.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Not yet. A purchased code currently unlocks Pro without a redemption clock, so the month does not yet start when you enter the code."
     },
     {
       "id": "exposure-comparison",
       "name": "Country exposure comparison",
       "status": "Illustration",
       "evidence": "The homepage dialog is a static, country-keyed comparison of published agency and company practice with links to official sources. It is not a live device or account scan (master 8.4).",
-      "surfaces": ["index.html"]
+      "surfaces": [
+        "index.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "A drawing, not a measurement. The homepage comparison summarises published agency and company practice. It is not a scan of your device, and this site never shows a live protection score."
     },
     {
       "id": "product-animations",
       "name": "Product animations",
       "status": "Illustration",
       "evidence": "Every animated scene on the homepage, features page and download page is a drawing of the intended behaviour, not a recording of a build.",
-      "surfaces": ["index.html", "features.html", "download.html"]
+      "surfaces": [
+        "index.html",
+        "features.html",
+        "download.html"
+      ],
+      "verified_on": "2026-07-26",
+      "sellable": false,
+      "public_note": "Drawings, not recordings. Every animated scene on this site illustrates intended behaviour rather than showing the app running."
     }
   ],
-
-  "required_labels": [
-    { "file": "features.html", "feature": "exposure-warning" },
-    { "file": "features.html", "feature": "link-protection" },
-    { "file": "features.html", "feature": "scrub-discovery" },
-    { "file": "features.html", "feature": "scrub-guided-deletion" },
-    { "file": "features.html", "feature": "attachment-privacy-guard" },
-    { "file": "features.html", "feature": "expiry" },
-    { "file": "features.html", "feature": "cover-carrier-text" },
-    { "file": "index.html", "feature": "scrub-discovery" },
-    { "file": "index.html", "feature": "scrub-guided-deletion" },
-    { "file": "index.html", "feature": "exposure-comparison" },
-    { "file": "index.html", "feature": "cover-carrier-text" },
-    { "file": "download.html", "feature": "protected-text" },
-    { "file": "download.html", "feature": "image-send" },
-    { "file": "download.html", "feature": "file-send" },
-    { "file": "download.html", "feature": "autoscrub" },
-    { "file": "download.html", "feature": "scrub-discovery" },
-    { "file": "download.html", "feature": "view-once" },
-    { "file": "docs/how-it-works.html", "feature": "per-message-sealing" },
-    { "file": "docs/how-it-works.html", "feature": "group-protection" },
-    { "file": "docs/how-it-works.html", "feature": "ratchet" },
-    { "file": "docs/faq.html", "feature": "group-protection" },
-    { "file": "docs/faq.html", "feature": "image-send" },
-    { "file": "docs/faq.html", "feature": "file-send" },
-    { "file": "docs/faq.html", "feature": "processing-credits" },
-    { "file": "docs/terms.html", "feature": "processing-credits" },
-    { "file": "audit.html", "feature": "group-protection" }
-  ],
-  "$required_labels_note": "The crawler requires each pair to exist as an element carrying BOTH data-osl-feature=\"<id>\" and data-osl-status=\"<registry status>\". This is what makes the labelling pass fail when someone quietly upgrades or deletes a status, and it is why the crawler can fail for the known defect instead of reporting green on a page full of unlabelled claims.",
-
   "forbidden_phrases": [
     {
       "phrase": "use Sender Keys",
@@ -413,7 +516,6 @@
     }
   ],
   "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident.",
-
   "required_phrases": [
     {
       "file": "index.html",
@@ -449,22 +551,46 @@
       "file": "download.html",
       "phrase": "Nothing renews, and OSL never stores your payment details",
       "reason": "Master 7.14, at the point of sale."
+    },
+    {
+      "file": "download.html",
+      "phrase": "Pro is an early-access purchase",
+      "reason": "Owner decision 2026-07-26. The point of sale must be unambiguous that this is early access, naming what works today versus what arrives at v1. This is a consumer-protection line and is the one place where softening is not allowed."
+    },
+    {
+      "file": "docs/status.html",
+      "phrase": "What works today",
+      "reason": "The support matrix is one of the two concentrated honesty surfaces; it must lead with what is proven now."
     }
   ],
-
   "crawler_policy": {
     "status_badge_attribute": "data-osl-status",
     "feature_id_attribute": "data-osl-feature",
     "$status_badge_note": "A capability badge is validated ONLY when it carries this explicit attribute, e.g. <span data-osl-feature=\"expiry\" data-osl-status=\"Planned\">Planned</span>. Do not infer status badges from CSS class names: 'Pro' is a tier name and 'Record opened' is a feature name, and guessing from classes flagged both. An opt-in marker cannot false-positive, and it makes the labelling pass deliberate.",
-    "donation_amount_files": ["donate.html"],
+    "donation_amount_files": [
+      "donate.html"
+    ],
     "$donation_note": "Donation amounts are freely chosen sums, not product prices, so the bare-price rule does not apply to them. They must still carry data-donation-amount, which assets/js/main.js already relies on.",
     "donation_amount_attribute": "data-donation-amount",
-    "negation_aware": ["subscription", "renews", "renew", "auto-renew", "recurring"],
-    "negators": ["no ", "not ", "never", "n't", "without", "nothing", "neither"],
+    "negation_aware": [
+      "subscription",
+      "renews",
+      "renew",
+      "auto-renew",
+      "recurring"
+    ],
+    "negators": [
+      "no ",
+      "not ",
+      "never",
+      "n't",
+      "without",
+      "nothing",
+      "neither"
+    ],
     "negation_window": 48,
     "$negation_note": "Denying a property is the honest copy, not a violation. 'No subscription.' and 'does not create a recurring subscription' must PASS, while 'Manage your subscription' must FAIL. A word in negation_aware is only a violation when no negator appears in the preceding negation_window characters. Without this the crawler blocks the very sentences master 7.14 requires."
   },
-
   "forbidden_claims": [
     "one-time $5 purchase",
     "$5 once",
@@ -488,7 +614,6 @@
     "cannot be traced"
   ],
   "$forbidden_note": "Two families. (1) Billing wording that is now wrong in BOTH directions: the old permanent one-time framing ('$5 once', 'No renewal', 'one-time $5 purchase') AND any subscription framing ('Renews monthly', 'subscription', 'cancel any time') -- because a prepaid code neither renews nor is cancellable. Plus the 'unlimited messages' positioning Zhao replaced with Scrub. (2) Security/marketing claims master 7.11, 8.2 and 8.4 forbid until the audited live path earns them. The crawler fails on any hit outside data/ and scripts/.",
-
   "required_disclosures": {
     "pro_billing": "$5 unlocks Pro for one month. It is not a subscription — nothing renews automatically, and OSL never stores your payment details. When the month ends, buy another code to continue.",
     "no_account": "No OSL account is needed. You paste an activation code into the app.",
@@ -498,5 +623,108 @@
     "expiry_behaviour": "When Pro ends, OSL returns to Free. Your keys, messages and notes are unaffected.",
     "ledger_privacy": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity.",
     "open_source": "OSL is fully open source. The only exception is the optional AutoScrub module, which is not installed by default."
+  },
+  "launch_frame": {
+    "stage": "pre-launch",
+    "banner": "OSL is in early access before its v1 launch. Some of what you see below is still being finished — the support matrix says exactly what works today.",
+    "matrix_url": "/docs/status",
+    "matrix_link_text": "See what works today",
+    "$why": "Owner decision 2026-07-26. The site is pre-launch marketing for v1, not a live status dashboard. Stamping Planned on every feature card made a product under construction read as vaporware, which is its own dishonesty. Honesty is concentrated in two unmissable places instead: the dated support matrix and the point of sale."
+  },
+  "surface_policy": {
+    "matrix_files": [
+      "docs/status.html"
+    ],
+    "checkout_files": [
+      "success.html",
+      "cancel.html"
+    ],
+    "checkout_region_start": "osl:checkout-summary",
+    "checkout_region_end": "/osl:checkout-summary",
+    "marketing_capability_files": [
+      "index.html",
+      "features.html",
+      "download.html",
+      "docs/faq.html",
+      "docs/how-it-works.html"
+    ],
+    "forward_looking_markers": [
+      "at v1",
+      "when v1",
+      "before v1",
+      "v1 launch",
+      "is designed to",
+      "are designed to",
+      "will ",
+      "not yet",
+      "still being finished",
+      "still being built",
+      "arrives",
+      "coming",
+      "in progress",
+      "early access"
+    ],
+    "$rule": "A marketing page may describe a v1 capability in forward-looking language. The support matrix and the checkout purchase summary may only state what current evidence supports. A present-tense capability claim outside those two surfaces still fails the gate: any marketing section naming a capability that is not Available or Beta must carry at least one forward-looking marker, and every marketing capability page must link to the matrix."
+  },
+  "connector_matrix": {
+    "version": "2026-07-26",
+    "$note": "Master 8.4. A logo never implies support; only this table does (master 7.8).",
+    "connectors": [
+      {
+        "name": "Discord",
+        "role": "Reference adapter",
+        "protected_send": "Beta",
+        "protected_receive": "Beta",
+        "attachments": "Planned",
+        "scrub": "Planned",
+        "verified_on": "2026-07-26",
+        "status": "Beta",
+        "provider_policy_risk": "Using OSL may violate Discord Terms of Service and Discord may ban your account. No provider has tested, reviewed or approved OSL."
+      },
+      {
+        "name": "Signal",
+        "role": "Planned connector",
+        "protected_send": "Planned",
+        "protected_receive": "Planned",
+        "attachments": "Planned",
+        "scrub": "Not applicable",
+        "verified_on": "2026-07-26",
+        "status": "Coming soon",
+        "provider_policy_risk": "Not qualified. No two-peer proof on any build."
+      },
+      {
+        "name": "WhatsApp",
+        "role": "Planned connector",
+        "protected_send": "Planned",
+        "protected_receive": "Planned",
+        "attachments": "Planned",
+        "scrub": "Not applicable",
+        "verified_on": "2026-07-26",
+        "status": "Coming soon",
+        "provider_policy_risk": "Not qualified. No two-peer proof on any build."
+      },
+      {
+        "name": "Telegram",
+        "role": "Blocked connector",
+        "protected_send": "Externally blocked",
+        "protected_receive": "Externally blocked",
+        "attachments": "Externally blocked",
+        "scrub": "Not applicable",
+        "verified_on": "2026-07-26",
+        "status": "Externally blocked",
+        "provider_policy_risk": "Stable Telegram does not expose reliable accessible message rows. OSL will not fake support (master 7.8)."
+      },
+      {
+        "name": "Outlook / OSL Mail",
+        "role": "Separate staged program",
+        "protected_send": "Planned",
+        "protected_receive": "Planned",
+        "attachments": "Planned",
+        "scrub": "Planned",
+        "verified_on": "2026-07-26",
+        "status": "Coming soon",
+        "provider_policy_risk": "Scoped as OSL Mail, not an ordinary chat overlay."
+      }
+    ]
   }
 }

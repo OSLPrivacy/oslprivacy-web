@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="osl-build" content="d77709b3-dirty">
+  <meta name="osl-build" content="72213331-dirty">
   <title>How OSL works | OSL Privacy Docs</title>
   <meta name="description" content="The cryptography behind OSL, explained without a crypto background. Post-quantum hybrid, per-message sealing, local-only keys.">
   <meta name="color-scheme" content="dark">
@@ -31,6 +31,12 @@
       </ul>
     </nav>
   </header>
+
+  <div class="launch-banner" role="note">
+    <p><strong>Early access.</strong> OSL is being built toward its v1 launch, so some of what you see here is still being finished.</p>
+    <p><a class="matrix-link" href="/docs/status">See what works today</a></p>
+  </div>
+
 
   <main id="main">
     <div class="docs-layout">
@@ -70,7 +76,7 @@
         <ul>
           <li><strong>X25519:</strong> a modern elliptic-curve key-exchange algorithm. It is battle-tested and used by Signal, WireGuard, and most contemporary secure-messaging systems.</li>
           <li><strong>ML-KEM-768:</strong> a post-quantum key-encapsulation mechanism standardized by NIST in 2024. It is designed to resist attacks from quantum computers that don't exist yet but might.</li>
-          <li><strong>Per-message hybrid sealing:</strong> direct messages are sealed to the recipient's published X25519 and ML-KEM-768 keys with a fresh ephemeral key for every message, so each message stands on its own. <span class="osl-status" data-osl-feature="per-message-sealing" data-osl-status="Planned">Planned</span> — this is what the code does today, and it is the one part of the cryptography we will state plainly. It is labelled Planned rather than Available because no released build has yet been proven end to end, and because sender attribution is an open security finding: the receive path authenticates a key but takes the sender's identity from the caller, so "who sent this" is not yet a cryptographic answer. It also protects contents against future quantum decryption, not identity verification, which is still classical.</li>
+          <li><strong>Per-message hybrid sealing:</strong> direct messages are sealed to the recipient's published X25519 and ML-KEM-768 keys with a fresh ephemeral key for every message, so each message stands on its own. <span class="osl-status" data-osl-feature="per-message-sealing" data-osl-status="Beta">Beta</span> — this is what the code does today. Two limits worth stating plainly: it protects the <em>contents</em> of a message against a future quantum computer, not identity verification, which is still classical; and sender attribution is an open security finding, so "who sent this" is not yet a cryptographic answer.</li>
           <li><strong>Group chats and server channels:</strong> <span class="osl-status" data-osl-feature="group-protection" data-osl-status="Planned">Planned</span> — the group encryption code is in the repository, but it is switched off in the shipping app and the messages it would build do not yet carry a signature identifying the sender. Until that is fixed and reviewed, treat anything you write in a group or a channel as unprotected.</li>
           <li><strong>Ratcheting:</strong> <span class="osl-status" data-osl-feature="ratchet" data-osl-status="Planned">Planned</span> — a ratchet that would keep old messages safe if a key is later stolen is written and tested in the repository, but it is deliberately switched off in the live path pending independent review. OSL does not claim it today.</li>
         </ul>
@@ -100,7 +106,7 @@
       <a href="/download">Download</a>
       <a href="/features">Features</a>
       <a href="/donate">Donate</a>
-      <a href="/docs/">Docs</a>
+      <a href="/docs/">Docs</a><a href="/docs/status">What works today</a>
       <a href="/docs/privacy">Privacy</a>
       <a href="/docs/terms">Terms</a>
     </nav>
@@ -112,6 +118,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=d77709b3" defer></script>
+  <script src="/assets/js/main.js?v=72213331" defer></script>
 </body>
 </html>
