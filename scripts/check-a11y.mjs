@@ -35,6 +35,10 @@ const PAGES = [
 // Nominal window widths. Each is checked at 100% and at 200% zoom.
 const WIDTHS = [320, 390, 768, 1280];
 const MIN_TAP = 44;
+// Floor proves the browser audit covered the intended matrix.
+const MIN_A11Y_COMBINATIONS = 100;
+// Floor proves selectors matched real interactive controls.
+const MIN_INTERACTIVE_CONTROLS = 20;
 
 function getFreePort() {
   return new Promise((resolve, reject) => {
@@ -179,10 +183,13 @@ function auditPage(minTap) {
   }
 
   const controlsMissingName = [];
-  for (const el of document.querySelectorAll('a[href], button, input, select, textarea, [role="button"]')) {
+  const interactiveControls = document.querySelectorAll('a[href], button, input, select, textarea, [role="button"]');
+  let interactiveControlCount = 0;
+  for (const el of interactiveControls) {
     if (!visible(el)) continue;
     if (el.getAttribute('aria-hidden') === 'true') continue;
     if (el.tabIndex < 0) continue;
+    interactiveControlCount += 1;
     if (el.tagName === 'INPUT') {
       const id = el.getAttribute('id');
       const hasLabel = id ? !!document.querySelector(`label[for="${CSS.escape(id)}"]`) : false;
@@ -233,6 +240,7 @@ function auditPage(minTap) {
     smallTapTargets,
     horizontalOverflow,
     overflowingElements: overflowingElements.slice(0, 8),
+    interactiveControlCount,
     landmarks: {
       main: document.querySelectorAll('main').length,
       h1: document.querySelectorAll('h1').length,
@@ -277,6 +285,7 @@ async function run() {
   const cdp = new CDPClient(ws);
 
   const results = [];
+  let interactiveControlsFound = 0;
   for (const page of PAGES) {
     const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
@@ -300,7 +309,9 @@ async function run() {
           if (evaluated.exceptionDetails) {
             throw new Error(evaluated.exceptionDetails.text || 'audit threw');
           }
-          results.push({ page, width, zoom, layout_width: layoutWidth, ...evaluated.result.value });
+          const { interactiveControlCount, ...audit } = evaluated.result.value;
+          interactiveControlsFound += interactiveControlCount;
+          results.push({ page, width, zoom, layout_width: layoutWidth, ...audit });
         }
       }
     } finally {
@@ -340,7 +351,18 @@ async function run() {
 
   const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length;
   console.log(`\ncheck-a11y: ${results.length} combinations, ${failed} blocking findings, ${sum('smallTapTargets')} tap-target findings.`);
-  process.exit(failed > 0 ? 1 : 0);
+
+  let floorFailed = false;
+  if (results.length < MIN_A11Y_COMBINATIONS) {
+    console.error(`check-a11y floor: expected at least ${MIN_A11Y_COMBINATIONS} audited combinations, actually audited ${results.length}.`);
+    floorFailed = true;
+  }
+  if (interactiveControlsFound < MIN_INTERACTIVE_CONTROLS) {
+    console.error(`check-a11y floor: expected at least ${MIN_INTERACTIVE_CONTROLS} interactive controls, actually found ${interactiveControlsFound}.`);
+    floorFailed = true;
+  }
+
+  process.exit(failed > 0 || floorFailed ? 1 : 0);
 }
 
 run().catch((error) => {

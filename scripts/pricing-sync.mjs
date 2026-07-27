@@ -5,6 +5,8 @@ const ROOT = process.cwd();
 const PRICING_PATH = path.join(ROOT, 'data', 'pricing.json');
 const CHECK_MODE = process.argv.includes('--check');
 const MARKER_RE = /<!--\s*osl:([A-Za-z0-9_$.-]+)\s*-->([\s\S]*?)<!--\s*\/osl\s*-->/g;
+// Floor proves pricing markers were present before the sync/check verdict.
+const MIN_OSL_MARKERS_FOUND = 12;
 
 async function htmlFiles() {
   const rootEntries = await readdir(ROOT, { withFileTypes: true });
@@ -91,6 +93,12 @@ if (CHECK_MODE && drift.length > 0) {
   for (const item of drift) console.error(`  ${item}`);
 }
 
-if (unknownPaths.length > 0 || (CHECK_MODE && drift.length > 0)) {
+let floorFailed = false;
+if (markersFound < MIN_OSL_MARKERS_FOUND) {
+  console.error(`pricing-sync floor: expected at least ${MIN_OSL_MARKERS_FOUND} osl: markers, actually found ${markersFound}.`);
+  floorFailed = true;
+}
+
+if (unknownPaths.length > 0 || (CHECK_MODE && drift.length > 0) || floorFailed) {
   process.exit(1);
 }

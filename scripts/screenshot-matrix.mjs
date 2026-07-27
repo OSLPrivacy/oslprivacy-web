@@ -23,6 +23,8 @@ const DEFAULT_PAGES = [
 const DEFAULT_WIDTHS = [320, 360, 390, 768, 1024, 1440];
 const CONDITIONS = ['js-on', 'js-off', 'reduced'];
 const VIEWPORT_HEIGHT = 900;
+// Floor proves the matrix covered the intended pages, widths, and modes.
+const MIN_SCREENSHOT_CAPTURES = 200;
 const CHROME_ARGS = [
   '--headless=new',
   '--remote-debugging-port=0',
@@ -430,7 +432,13 @@ async function run() {
   const unmeasurable = results.filter((r) => r.verdict === 'unmeasurable').length;
   console.log(`\nscreenshot-matrix: ${results.length} captures, ${failed} failed, ${unmeasurable} unmeasurable.`);
 
-  process.exit(failed > 0 || unmeasurable > 0 ? 1 : 0);
+  let floorFailed = false;
+  if (results.length < MIN_SCREENSHOT_CAPTURES) {
+    console.error(`screenshot-matrix floor: expected at least ${MIN_SCREENSHOT_CAPTURES} captures, actually produced ${results.length}.`);
+    floorFailed = true;
+  }
+
+  process.exit(failed > 0 || unmeasurable > 0 || floorFailed ? 1 : 0);
 }
 
 run().catch((error) => {

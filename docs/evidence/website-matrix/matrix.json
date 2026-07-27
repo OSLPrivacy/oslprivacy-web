@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-27T00:55:22.537Z",
+  "generated_at": "2026-07-27T01:13:03.399Z",
   "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell",
   "browser_version": "HeadlessChrome/149.0.7827.55",
-  "server_port": 43133,
+  "server_port": 37027,
   "captures": [
     {
       "page": "/",
@@ -46,7 +46,7 @@
       "condition": "js-on",
       "fold_png": "home/768-js-on-fold.png",
       "full_png": "home/768-js-on-full.png",
-      "visible_text_chars": 786,
+      "visible_text_chars": 787,
       "scroll_height": 2574,
       "unrevealed_reveal_count": 2,
       "build_meta": "72213331-dirty",
@@ -70,7 +70,7 @@
       "condition": "js-on",
       "fold_png": "home/1440-js-on-fold.png",
       "full_png": "home/1440-js-on-full.png",
-      "visible_text_chars": 919,
+      "visible_text_chars": 917,
       "scroll_height": 2555,
       "unrevealed_reveal_count": 2,
       "build_meta": "72213331-dirty",

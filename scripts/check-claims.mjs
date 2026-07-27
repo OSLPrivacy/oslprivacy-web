@@ -25,6 +25,12 @@ const SELF_TEST = process.argv.includes('--self-test');
 const PRICE_RE = /\$\s?\d+(\.\d{2})?/g;
 const MARKER_RE = /<!--\s*osl:[A-Za-z0-9_$.-]+\s*-->[\s\S]*?<!--\s*\/osl\s*-->/g;
 const PROVEN = new Set(['Available', 'Beta']);
+// Floor proves the crawler glob found the expected site surface.
+const MIN_CLAIM_HTML_FILES = 12;
+// Floor prevents an empty registry from making badge checks vacuous.
+const MIN_CAPABILITY_REGISTRY_ENTRIES = 1;
+// Floor prevents required sentence checks from disappearing silently.
+const MIN_REQUIRED_PHRASES = 1;
 
 async function htmlFiles() {
   const rootEntries = await readdir(ROOT, { withFileTypes: true });
@@ -603,6 +609,20 @@ for (const summary of fileSummaries) {
 const failedFiles = fileSummaries.filter((summary) => summary.verdict === 'fail').length;
 console.log(`\ncheck-claims: scanned ${files.length} files, ${failedFiles} failed.`);
 
-if (failedFiles > 0 || errors.length > 0) {
+let floorFailed = false;
+if (files.length < MIN_CLAIM_HTML_FILES) {
+  console.error(`check-claims floor: expected at least ${MIN_CLAIM_HTML_FILES} html files scanned, actually scanned ${files.length}.`);
+  floorFailed = true;
+}
+if (config.registryById.size < MIN_CAPABILITY_REGISTRY_ENTRIES) {
+  console.error(`check-claims floor: expected at least ${MIN_CAPABILITY_REGISTRY_ENTRIES} capability registry entries, actually found ${config.registryById.size}.`);
+  floorFailed = true;
+}
+if (config.requiredPhrases.length < MIN_REQUIRED_PHRASES) {
+  console.error(`check-claims floor: expected at least ${MIN_REQUIRED_PHRASES} required_phrases entries, actually found ${config.requiredPhrases.length}.`);
+  floorFailed = true;
+}
+
+if (failedFiles > 0 || errors.length > 0 || floorFailed) {
   process.exit(1);
 }
