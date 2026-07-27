@@ -77,7 +77,7 @@
       "intended_grant_days": 30,
       "$intended_grant_days_note": "This is the approved future entitlement length, not current implementation state. Paid codes currently grant lifetime access; checkout remains paused until explicit redemption and automatic expiry exist.",
       "status": "Beta",
-      "no_renewal_note": "One month per code. Nothing renews, and OSL never stores your payment details.",
+      "no_renewal_note": "$5 is the intended price for one month of Pro. Nothing renews, and OSL never stores your payment details.",
       "$no_renewal_note_why": "Allowlist A6 rule 3: the limitation must ship with the price on the same page, in the same section, at comparable prominence -- a limitation in a linked FAQ does not count. index.html showed '$5 / month' on two checkout buttons with no renewal disclosure anywhere on the page, which reads as a subscription and contradicts master 7.14. Pinned in required_phrases for index.html and download.html so it cannot regress.",
       "includes": [
         "Early access to new privacy tools as they reach the beta channel"
@@ -554,7 +554,7 @@
       "reason": "Automatic paid-code expiry is Planned and not implemented."
     }
   ],
-  "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident.",
+  "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident. The crawler additionally derives a semantic 30-day/one-month activation-code grant prohibition from tiers.pro.intended_grant_days, so equivalent duration promises cannot bypass this exact-phrase list.",
   "required_phrases": [
     {
       "file": "index.html",

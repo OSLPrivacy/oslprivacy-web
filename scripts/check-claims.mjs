@@ -32,6 +32,44 @@ const MIN_CAPABILITY_REGISTRY_ENTRIES = 1;
 // Floor prevents required sentence checks from disappearing silently.
 const MIN_REQUIRED_PHRASES = 1;
 
+function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
+  if (!Number.isInteger(intendedGrantDays) || intendedGrantDays <= 0) return [];
+
+  // Keep offsets stable for line reporting while excluding markup and comments
+  // from the public-copy rule.
+  const visible = content
+    .replace(/<!--[\s\S]*?-->/g, (value) => ' '.repeat(value.length))
+    .replace(/<[^>]*>/g, (value) => ' '.repeat(value.length));
+  const dayCount = escapeRegExp(String(intendedGrantDays));
+  const duration = new RegExp(
+    `(?:\\b(?:${dayCount}|thirty)\\s*(?:-|\\s)\\s*(?:calendar\\s+)?days?\\b|\\b(?:one|1|a)\\s*(?:-|\\s)\\s*(?:full\\s+)?month\\b|\\bmonth[-\\s]long\\b)`,
+    'i',
+  );
+  const code = /\b(?:activation|paid|prepaid|purchase[sd]?)?\s*codes?\b|\blicen[cs]es?\b/i;
+  const grant = /\b(?:grant(?:s|ed|ing)?|giv(?:e|es|en|ing)|provid(?:e|es|ed|ing)|unlock(?:s|ed|ing)?|activat(?:e|es|ed|ing)|entitl(?:e|es|ed|ement)|access|valid\s+for|good\s+for|last(?:s|ed|ing)?)\b/i;
+  const directRelation = new RegExp(
+    `(?:${duration.source}.{0,100}\\b(?:per|from|with|for\\s+(?:each|an?))\\s+(?:activation\\s+)?codes?\\b|\\b(?:activation|paid|prepaid|purchase[sd]?)?\\s*codes?\\b.{0,100}${duration.source})`,
+    'i',
+  );
+  const honestLimitation = /\b(?:not\s+(?:yet\s+)?implemented|does\s+not|doesn't|do\s+not|don't|cannot|can't|paused\s+until|without\s+(?:an?\s+)?(?:redemption|expiry|duration)\s+(?:record|clock|timestamp)?|currently\s+(?:grants?|unlocks?)\s+(?:pro\s+)?(?:for\s+)?lifetime)\b/i;
+  const errors = [];
+
+  for (const sentence of visible.matchAll(/[^.!?]+[.!?]?/g)) {
+    const text = sentence[0].replace(/\s+/g, ' ').trim();
+    if (!text || !duration.test(text) || !code.test(text)) continue;
+    if (!grant.test(text) && !directRelation.test(text)) continue;
+    if (honestLimitation.test(text)) continue;
+    errors.push({
+      kind: 'unimplemented grant-duration claim',
+      file: fileRel,
+      line: lineNumber(content, sentence.index),
+      text: `${shortText(text)} -- paid-code duration and expiry are not implemented`,
+    });
+  }
+
+  return errors;
+}
+
 async function htmlFiles() {
   const rootEntries = await readdir(ROOT, { withFileTypes: true });
   const files = rootEntries
@@ -199,6 +237,7 @@ function analyseFile(fileRel, content, config) {
     registryById,
     surfacePolicy,
     launchFrame,
+    intendedGrantDays,
   } = config;
   const errors = [];
   const spans = markerSpans(content);
@@ -235,6 +274,8 @@ function analyseFile(fileRel, content, config) {
       });
     }
   }
+
+  errors.push(...semanticGrantDurationErrors(fileRel, content, intendedGrantDays));
 
   const donationFiles = new Set(crawlerPolicy.donation_amount_files || []);
   const donationFile = donationFiles.has(fileRel);
@@ -370,6 +411,7 @@ function buildConfig(pricing) {
     registryById: new Map(registry.map((entry) => [entry.id, entry])),
     surfacePolicy: pricing.surface_policy ?? {},
     launchFrame: pricing.launch_frame ?? {},
+    intendedGrantDays: pricing.tiers?.pro?.intended_grant_days,
   };
 }
 
@@ -492,6 +534,12 @@ const SELF_TEST_CASES = [
     expect: 'false capability claim',
   },
   {
+    name: 'equivalent unimplemented 30-day activation-code grant',
+    file: 'pricing.html',
+    html: '<p>An activation code grants 30 days of Pro.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
     name: 'support matrix silently dropping a capability',
     file: 'docs/status.html',
     html: '<table><tr><td><span data-osl-feature="burn" data-osl-status="Planned">Planned</span></td></tr></table>',
@@ -521,6 +569,12 @@ const NEGATION_CASES = [
     kinds: ['forbidden billing', 'forbidden claim'],
   },
   {
+    name: 'honest unimplemented grant-duration limitation',
+    file: 'docs/terms.html',
+    html: '<p>An activation code does not grant 30 days of Pro because paid-code expiry is not implemented.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
     name: 'marketing may describe a v1 capability in forward-looking language',
     file: 'features.html',
     html: '<section><p class="eyebrow">Burn <span data-osl-feature="burn"></span></p><p>At v1, burn will delete OSL copies and ask the other side to delete too.</p><p><a href="/docs/status">See what works today</a></p></section>',
@@ -548,6 +602,10 @@ const NEGATION_CASES = [
 
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
 const config = buildConfig(pricing);
+if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0) {
+  console.error('check-claims floor: tiers.pro.intended_grant_days must be a positive integer so the semantic grant-duration prohibition cannot become vacuous.');
+  process.exit(1);
+}
 
 if (SELF_TEST) {
   let failures = 0;
@@ -586,7 +644,7 @@ for (const file of files) {
   fileSummaries.push({
     file: fileRel,
     barePrices: count('bare price'),
-    forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim'),
+    forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim', 'unimplemented grant-duration claim'),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
     missingText: count('missing required sentence'),
