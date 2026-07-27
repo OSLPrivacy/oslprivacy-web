@@ -22,6 +22,7 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const PRICING_PATH = path.join(ROOT, 'data', 'pricing.json');
 const SELF_TEST = process.argv.includes('--self-test');
+const AS_OF = parseAsOf(process.argv);
 const PRICE_RE = /\$\s?\d+(\.\d{2})?/g;
 const MARKER_RE = /<!--\s*osl:[A-Za-z0-9_$.-]+\s*-->[\s\S]*?<!--\s*\/osl\s*-->/g;
 const PROVEN = new Set(['Available', 'Beta']);
@@ -31,6 +32,61 @@ const MIN_CLAIM_HTML_FILES = 12;
 const MIN_CAPABILITY_REGISTRY_ENTRIES = 1;
 // Floor prevents required sentence checks from disappearing silently.
 const MIN_REQUIRED_PHRASES = 1;
+const H7_DIMENSION_IDS = [
+  'scope',
+  'price',
+  'ongoing_monitoring',
+  'removals',
+  'data_handling',
+  'completion_reporting',
+  'limitations',
+];
+const H7_SOURCE_TYPES = new Set([
+  'pricing',
+  'plan_coverage',
+  'monitoring_reporting',
+  'removal_process',
+  'privacy_policy',
+  'terms',
+  'limitations',
+]);
+const H7_REQUIRED_SOURCE_TYPES = [
+  'pricing',
+  'plan_coverage',
+  'monitoring_reporting',
+  'privacy_policy',
+  'terms',
+];
+const H7_ALLOWED_HOSTS = new Set([
+  'joindeleteme.com',
+  'help.joindeleteme.com',
+  'privacy.joindeleteme.com',
+  'abine.com',
+]);
+const H7_CONFIDENCE = new Set(['high', 'medium', 'low']);
+const H7_COMPARABILITY = new Set(['not_equivalent', 'narrowly_comparable']);
+const H7_MAX_SOURCE_AGE_DAYS = 90;
+
+function parseAsOf(argv) {
+  const matches = argv.filter((arg) => arg.startsWith('--as-of='));
+  if (matches.length > 1) {
+    console.error('check-claims: --as-of may be supplied only once.');
+    process.exit(1);
+  }
+  const value = matches.length === 1
+    ? matches[0].slice('--as-of='.length)
+    : new Date().toISOString().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    console.error('check-claims: --as-of must be an ISO date (YYYY-MM-DD).');
+    process.exit(1);
+  }
+  const parsed = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== value) {
+    console.error('check-claims: --as-of must be a real calendar date.');
+    process.exit(1);
+  }
+  return value;
+}
 
 const BLOCK_TEXT_TAGS = new Set([
   'address', 'article', 'aside', 'blockquote', 'br', 'dd', 'details', 'dialog',
@@ -652,6 +708,383 @@ function analyseFile(fileRel, content, config) {
       line: 0,
       text: `"${requirement.phrase}" -- ${requirement.reason || 'required by the manifest'}`,
     });
+  }
+
+  return errors;
+}
+
+function validateH7Comparison(pricing, asOf) {
+  const errors = [];
+  const add = (code, detail) => errors.push(`H7_${code}: ${detail}`);
+  const isNonempty = (value) => typeof value === 'string' && value.trim().length > 0;
+  const list = (value) => (Array.isArray(value) ? value : []);
+  const unique = (values) => new Set(values).size === values.length;
+  const asOfDate = new Date(`${asOf}T00:00:00Z`);
+
+  if (pricing.manifest_version !== 7) {
+    add('VERSION', 'manifest_version must be exactly 7');
+  }
+
+  const research = pricing.research_comparisons;
+  if (!research || typeof research !== 'object' || Array.isArray(research)) {
+    add('SCHEMA', 'research_comparisons must be an object');
+  }
+  if (research?.schema_version !== 1) {
+    add('VERSION', 'research_comparisons.schema_version must be exactly 1');
+  }
+
+  const comparison = research?.h7_deleteme;
+  if (!comparison || typeof comparison !== 'object' || Array.isArray(comparison)) {
+    add('SCHEMA', 'research_comparisons.h7_deleteme must be an object');
+  }
+  if (comparison?.comparison_version !== 1) {
+    add('VERSION', 'h7_deleteme.comparison_version must be exactly 1');
+  }
+  if (comparison?.id !== 'h7-deleteme-us-consumer') {
+    add('IDENTITY', 'comparison id must be h7-deleteme-us-consumer');
+  }
+  if (!isNonempty(comparison?.reviewed_on)) {
+    add('METADATA', 'reviewed_on is required');
+  }
+
+  const market = comparison?.market_scope;
+  if (market?.country !== 'US'
+    || market?.audience !== 'consumer'
+    || JSON.stringify(market?.plans) !== JSON.stringify(['Standard', 'Premium'])
+    || JSON.stringify(market?.excluded) !== JSON.stringify(['business', 'international'])) {
+    add('MARKET_SCOPE', 'market scope must remain US consumer Standard/Premium, excluding business and international');
+  }
+
+  const sources = list(comparison?.sources);
+  if (sources.length < 8) {
+    add('SOURCE_FLOOR', `at least 8 official sources are required; found ${sources.length}`);
+  }
+  const sourceIds = sources.map((source) => source?.id).filter(isNonempty);
+  if (sourceIds.length !== sources.length || !unique(sourceIds)) {
+    add('SOURCE_ID', 'every source needs a unique nonempty id');
+  }
+  const sourceById = new Map(sources.map((source) => [source?.id, source]));
+  const seenSourceTypes = new Set();
+  let datedSources = 0;
+
+  for (const [index, source] of sources.entries()) {
+    const label = isNonempty(source?.id) ? source.id : `source[${index}]`;
+    for (const field of [
+      'publisher',
+      'source_type',
+      'url',
+      'title',
+      'section',
+      'published_or_effective_on',
+      'accessed_on',
+    ]) {
+      if (!isNonempty(source?.[field])) {
+        add('SOURCE_METADATA', `${label}.${field} must be nonempty`);
+      }
+    }
+    if (source?.publisher !== 'DeleteMe / Abine') {
+      add('SOURCE_PUBLISHER', `${label} must name DeleteMe / Abine as publisher`);
+    }
+    if (!H7_SOURCE_TYPES.has(source?.source_type)) {
+      add('SOURCE_TYPE', `${label} has unsupported source_type ${JSON.stringify(source?.source_type)}`);
+    } else {
+      seenSourceTypes.add(source.source_type);
+    }
+
+    try {
+      const url = new URL(source?.url);
+      if (url.protocol !== 'https:' || !H7_ALLOWED_HOSTS.has(url.hostname)) {
+        add('SOURCE_DOMAIN', `${label} must use HTTPS on an official DeleteMe/Abine host`);
+      }
+    } catch {
+      add('SOURCE_DOMAIN', `${label} has an invalid URL`);
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(source?.accessed_on ?? '')) {
+      add('SOURCE_DATE', `${label}.accessed_on must be an ISO date`);
+      continue;
+    }
+    const accessed = new Date(`${source.accessed_on}T00:00:00Z`);
+    if (Number.isNaN(accessed.getTime())
+      || accessed.toISOString().slice(0, 10) !== source.accessed_on) {
+      add('SOURCE_DATE', `${label}.accessed_on must be a real calendar date`);
+      continue;
+    }
+    datedSources += 1;
+    const ageDays = Math.floor((asOfDate - accessed) / 86_400_000);
+    if (ageDays < 0) {
+      add('SOURCE_FUTURE', `${label} was accessed after --as-of=${asOf}`);
+    } else if (ageDays > H7_MAX_SOURCE_AGE_DAYS) {
+      add('SOURCE_STALE', `${label} is ${ageDays} days old at --as-of=${asOf}; maximum is ${H7_MAX_SOURCE_AGE_DAYS}`);
+    }
+  }
+  if (datedSources === 0 && sources.length > 0) {
+    add('SOURCE_DATE', 'no source has a valid access date');
+  }
+  for (const sourceType of H7_REQUIRED_SOURCE_TYPES) {
+    if (!seenSourceTypes.has(sourceType)) {
+      add('SOURCE_CLASS', `required source class ${sourceType} is absent`);
+    }
+  }
+
+  const dimensions = list(comparison?.dimensions);
+  const dimensionIds = dimensions.map((dimension) => dimension?.id).filter(isNonempty);
+  if (dimensions.length !== H7_DIMENSION_IDS.length
+    || !H7_DIMENSION_IDS.every((id) => dimensionIds.includes(id))) {
+    add('DIMENSION_SET', `dimensions must be exactly: ${H7_DIMENSION_IDS.join(', ')}`);
+  }
+  if (dimensionIds.length !== dimensions.length || !unique(dimensionIds)) {
+    add('DIMENSION_ID', 'every dimension needs a unique nonempty id');
+  }
+  const dimensionById = new Map(dimensions.map((dimension) => [dimension?.id, dimension]));
+  const factIds = [];
+  let unknownCount = 0;
+  let conflictCount = 0;
+  let limitationCount = 0;
+
+  const capabilityById = new Map(
+    list(pricing.capability_registry).map((entry) => [entry?.id, entry]),
+  );
+  for (const capabilityId of ['scrub-discovery', 'scrub-guided-deletion', 'autoscrub']) {
+    const capability = capabilityById.get(capabilityId);
+    if (!capability || capability.status !== 'Planned') {
+      add('OSL_STATUS', `${capabilityId} must resolve to exact status Planned`);
+    }
+  }
+
+  for (const [index, dimension] of dimensions.entries()) {
+    const label = isNonempty(dimension?.id) ? dimension.id : `dimension[${index}]`;
+    if (!['established', 'conflicted'].includes(dimension?.status)) {
+      add('DIMENSION_STATUS', `${label}.status must be established or conflicted`);
+    }
+
+    const facts = list(dimension?.deleteme_facts);
+    if (facts.length === 0) {
+      add('FACT_FLOOR', `${label} needs at least one established, source-bound fact`);
+    }
+    for (const [factIndex, fact] of facts.entries()) {
+      const factLabel = isNonempty(fact?.id) ? fact.id : `${label}.fact[${factIndex}]`;
+      if (!isNonempty(fact?.id)) {
+        add('FACT_ID', `${factLabel} needs a nonempty id`);
+      } else {
+        factIds.push(fact.id);
+      }
+      for (const field of ['paraphrase', 'qualifiers']) {
+        if (!isNonempty(fact?.[field])) {
+          add('FACT_METADATA', `${factLabel}.${field} must be nonempty`);
+        }
+      }
+      if (!H7_CONFIDENCE.has(fact?.confidence)) {
+        add('FACT_CONFIDENCE', `${factLabel}.confidence must be high, medium, or low`);
+      }
+      const factSources = list(fact?.source_ids);
+      if (factSources.length === 0) {
+        add('FACT_SOURCE', `${factLabel} must cite at least one source`);
+      }
+      for (const sourceId of factSources) {
+        if (!sourceById.has(sourceId)) {
+          add('DANGLING_SOURCE', `${factLabel} cites missing source ${JSON.stringify(sourceId)}`);
+        }
+      }
+    }
+
+    const unknowns = list(dimension?.unknowns);
+    unknownCount += unknowns.length;
+    for (const [unknownIndex, unknown] of unknowns.entries()) {
+      const unknownLabel = `${label}.unknown[${unknownIndex}]`;
+      if (!isNonempty(unknown?.field) || !isNonempty(unknown?.reason)) {
+        add('UNKNOWN_METADATA', `${unknownLabel} needs field and reason`);
+      }
+      const attempted = list(unknown?.attempted_source_ids);
+      if (attempted.length === 0) {
+        add('UNKNOWN_SOURCES', `${unknownLabel} needs attempted_source_ids`);
+      }
+      for (const sourceId of attempted) {
+        if (!sourceById.has(sourceId)) {
+          add('DANGLING_SOURCE', `${unknownLabel} cites missing attempted source ${JSON.stringify(sourceId)}`);
+        }
+      }
+    }
+
+    if (dimension?.status === 'conflicted') {
+      conflictCount += 1;
+      const cited = new Set(facts.flatMap((fact) => list(fact?.source_ids)));
+      if (!isNonempty(dimension?.conflict_explanation) || cited.size < 2) {
+        add('CONFLICT', `${label} needs a nonempty conflict explanation and at least two sources`);
+      }
+    }
+
+    const refs = list(dimension?.osl_manifest_refs);
+    if (refs.length === 0) {
+      add('OSL_REF', `${label} needs at least one OSL manifest reference`);
+    }
+    for (const [refIndex, ref] of refs.entries()) {
+      const refLabel = `${label}.osl_manifest_refs[${refIndex}]`;
+      const match = /^\/capability_registry\/([a-z0-9-]+)$/.exec(ref?.json_pointer ?? '');
+      if (!match) {
+        add('OSL_REF', `${refLabel} must use /capability_registry/<stable-id>, never a numeric array index`);
+        continue;
+      }
+      const capability = capabilityById.get(match[1]);
+      if (!capability) {
+        add('OSL_REF', `${refLabel} points to missing capability ${match[1]}`);
+      } else if (ref?.expected_status !== capability.status) {
+        add('OSL_STATUS', `${refLabel} expected ${JSON.stringify(ref?.expected_status)} but manifest says ${capability.status}`);
+      }
+    }
+
+    if (!isNonempty(dimension?.osl_limitation)) {
+      add('OSL_LIMITATION', `${label}.osl_limitation must be nonempty`);
+    } else {
+      limitationCount += 1;
+    }
+    if (!isNonempty(dimension?.bounded_conclusion)) {
+      add('CONCLUSION', `${label}.bounded_conclusion must be nonempty`);
+    }
+    if (!H7_COMPARABILITY.has(dimension?.comparability)) {
+      add('COMPARABILITY', `${label}.comparability must be not_equivalent or narrowly_comparable`);
+    }
+  }
+
+  if (!unique(factIds)) {
+    add('FACT_ID', 'fact ids must be unique across the comparison');
+  }
+  if (unknownCount < 1) {
+    add('UNKNOWN_FLOOR', 'at least one explicit unknown is required');
+  }
+  if (conflictCount < 1) {
+    add('CONFLICT_FLOOR', 'at least one conflicted dimension is required');
+  }
+  if (limitationCount !== H7_DIMENSION_IDS.length) {
+    add('OSL_LIMITATION', `all ${H7_DIMENSION_IDS.length} dimensions need an OSL limitation`);
+  }
+
+  const scope = dimensionById.get('scope');
+  const scopeFacts = new Map(list(scope?.deleteme_facts).map((fact) => [fact?.id, fact]));
+  const standardScope = scopeFacts.get('standard-us-87')?.paraphrase ?? '';
+  const broaderScope = scopeFacts.get('broader-catalog-976')?.paraphrase ?? '';
+  if (scope?.status !== 'conflicted'
+    || !/\b87\b/.test(standardScope)
+    || !/\bStandard[- ]US\b/i.test(standardScope)
+    || !/\b976\b/.test(broaderScope)
+    || !/\bnot\b[^.]{0,80}\bStandard[- ]US\b/i.test(broaderScope)) {
+    add('SCOPE_SEMANTICS', 'scope must preserve 87 as the Standard-US named list, 976 as a separate non-Standard-US catalog, and the conflict');
+  }
+  if (!list(scope?.unknowns).some((unknown) => unknown?.field === 'single_current_global_coverage_count')) {
+    add('SCOPE_CONFLICT', 'scope must preserve the unresolved global coverage count');
+  }
+
+  const price = dimensionById.get('price');
+  const priceFacts = new Map(list(price?.deleteme_facts).map((fact) => [fact?.id, fact]));
+  const standardPrice = priceFacts.get('standard-one-person-year')?.paraphrase ?? '';
+  const premiumPrice = priceFacts.get('premium-one-person-year')?.paraphrase ?? '';
+  if (!/\$129\b/.test(standardPrice)
+    || !/\bper year\b/i.test(standardPrice)
+    || !/\brenews automatically\b/i.test(standardPrice)
+    || !/\$180\b/.test(premiumPrice)
+    || !/\bper year\b/i.test(premiumPrice)
+    || !/\brenews automatically\b/i.test(premiumPrice)) {
+    add('PRICE_SEMANTICS', 'price must preserve Standard $129/year and Premium $180/year as US auto-renewing one-person plans');
+  }
+
+  const monitoring = dimensionById.get('ongoing_monitoring');
+  const monitoringFacts = new Map(
+    list(monitoring?.deleteme_facts).map((fact) => [fact?.id, fact]),
+  );
+  const monitoringFactTexts = [...monitoringFacts.values()]
+    .map((fact) => `${fact?.paraphrase ?? ''} ${fact?.qualifiers ?? ''}`);
+  const continuousUnknown = list(monitoring?.unknowns)
+    .find((unknown) => unknown?.field === 'continuous_monitoring');
+  const hasAffirmativeContinuousClaim = monitoringFactTexts.some((text) => {
+    const match = /\b(?:continuous(?:ly)?|24\s*\/\s*7|around[- ]the[- ]clock)\b/i.exec(text);
+    if (!match) return false;
+    const before = text.slice(Math.max(0, match.index - 45), match.index);
+    const after = text.slice(match.index + match[0].length, match.index + match[0].length + 55);
+    const negatedBefore = /\b(?:no|not|does not|doesn't|isn't|without)\b[^.!?]{0,35}$/i.test(before);
+    const unknownAfter = /^[^.!?]{0,35}\b(?:unknown|not stated|not specified)\b/i.test(after);
+    return !negatedBefore && !unknownAfter;
+  });
+  if (hasAffirmativeContinuousClaim) {
+    add('MONITORING_CLAIM', 'literal continuous or 24-hour monitoring must not be claimed');
+  }
+  if (!continuousUnknown
+    || !/\b(?:does not establish|unknown|not stated|does not specify)\b/i.test(continuousUnknown.reason ?? '')) {
+    add('MONITORING_UNKNOWN', 'continuous monitoring must remain explicitly unknown');
+  }
+  if (!/\bfour\b/i.test(monitoringFacts.get('standard-four-reports')?.paraphrase ?? '')
+    || !/\bsix\b/i.test(monitoringFacts.get('premium-six-reports')?.paraphrase ?? '')) {
+    add('MONITORING_CADENCE', 'monitoring must preserve Standard four and Premium six scans/reports per year');
+  }
+
+  const removals = dimensionById.get('removals');
+  const removalFacts = new Map(list(removals?.deleteme_facts).map((fact) => [fact?.id, fact]));
+  const memberFact = removalFacts.get('member-confirmation-required');
+  if (!memberFact
+    || !/\bmember\b/i.test(memberFact.paraphrase ?? '')
+    || !/\b(?:confirm|confirmation|authentication|action)\b/i.test(memberFact.paraphrase ?? '')) {
+    add('MEMBER_CONFIRMATION', 'the member-confirmation limitation must be preserved');
+  }
+  const guaranteeFact = removalFacts.get('no-guaranteed-completion');
+  if (!guaranteeFact
+    || !/\bnot\b[^.]{0,80}\b(?:guarantee|every third party|honor)\b/i.test(guaranteeFact.paraphrase ?? '')) {
+    add('REMOVAL_GUARANTEE', 'third-party removal must remain expressly unguaranteed');
+  }
+  const processFact = removalFacts.get('submits-and-checks-opt-outs')?.paraphrase ?? '';
+  if (!/\bsubmits?\b/i.test(processFact)
+    || !/\b(?:checks?|reappear)\b/i.test(processFact)
+    || !/\b(?:immediate|weeks)\b/i.test(processFact)) {
+    add('REMOVAL_PROCESS', 'removals must preserve opt-out submission, follow-up/reappearance checks, and immediate-to-weeks timing');
+  }
+
+  const completion = dimensionById.get('completion_reporting');
+  const firstReport = list(completion?.deleteme_facts)
+    .find((fact) => fact?.id === 'first-report-status-only');
+  if (!firstReport
+    || !/\bnot\b[^.]{0,80}\bproof\b/i.test(firstReport.paraphrase ?? '')) {
+    add('COMPLETION_PROOF', 'the first report must remain a status update, not completion proof');
+  }
+
+  const dataHandling = dimensionById.get('data_handling');
+  const dataFacts = new Map(list(dataHandling?.deleteme_facts).map((fact) => [fact?.id, fact]));
+  const disclosures = dataFacts.get('broker-and-provider-disclosures')?.paraphrase ?? '';
+  const retention = dataFacts.get('retention-windows')?.paraphrase ?? '';
+  if (!/\bbroker sites?\b/i.test(disclosures)
+    || !/\bdoes not sell\b/i.test(disclosures)
+    || !/\bplus six months\b/i.test(retention)
+    || !/\bat least seven years\b/i.test(retention)) {
+    add('DATA_HANDLING_SEMANTICS', 'data handling must preserve broker/provider disclosure, no-sale, membership-plus-six-month, and seven-year-payment facts');
+  }
+
+  const limitations = dimensionById.get('limitations');
+  const limitationFacts = new Map(list(limitations?.deleteme_facts).map((fact) => [fact?.id, fact]));
+  const thirdPartyLimit = limitationFacts.get('third-party-no-guarantee')?.paraphrase ?? '';
+  if (!/\bdoes not guarantee\b/i.test(thirdPartyLimit)
+    || !/\bdoes not claim to remove all\b/i.test(thirdPartyLimit)
+    || !limitationFacts.has('no-opt-out-public-records')
+    || !limitationFacts.has('google-source-first')
+    || !limitationFacts.has('social-user-action')) {
+    add('LIMITATION_SEMANTICS', 'limitations must preserve no-guarantee, incomplete-internet, public-record/no-opt-out, Google, and social-platform boundaries');
+  }
+
+  const exactOslLimitations = new Map([
+    ['scope', [/\bPlanned\b/, /\bno named build\b/i, /\b(?:accounts|browser import)\b/i]],
+    ['price', [/\$5\b/, /\bcheckout is paused\b/i, /\b(?:redemption|automatic expiry)\b/i, /\bAutoScrub\b/]],
+    ['ongoing_monitoring', [/\bPlanned\b/, /\bscaffolding\b/i, /\bno proved recurring\b/i]],
+    ['removals', [/\bPlanned\b/, /\bholds every candidate\b/i, /\bowner must confirm\b/i]],
+    ['data_handling', [/\bdesign intention\b/i, /\bclosed source\b/i, /\bunavailable\b/i]],
+    ['completion_reporting', [/\bPlanned\b/, /\bno completed-removal status\b/i, /\bdeletion receipt\b/i]],
+    ['limitations', [/\ball Planned\b/i, /\bzero accounts\b/i, /\bno efficacy claim\b/i]],
+  ]);
+  for (const [dimensionId, patterns] of exactOslLimitations) {
+    const limitation = dimensionById.get(dimensionId)?.osl_limitation ?? '';
+    if (!patterns.every((pattern) => pattern.test(limitation))) {
+      add('OSL_LIMITATION_SEMANTICS', `${dimensionId} must preserve its exact current OSL limitation`);
+    }
+  }
+
+  const allComparisonText = JSON.stringify(comparison ?? {});
+  if (/\b(?:cheaper\s+replacement|better\s+than|best|winner|wins|superior|equivalent\s+replacement)\b/i.test(allComparisonText)) {
+    add('WINNER_LANGUAGE', 'winner, superiority, or replacement marketing is forbidden');
   }
 
   return errors;
@@ -1403,16 +1836,255 @@ const NEGATION_CASES = [
   },
 ];
 
+const H7_SELF_TEST_MUTATIONS = [
+  {
+    name: 'missing required dimension',
+    expect: 'H7_DIMENSION_SET',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.dimensions.pop();
+    },
+  },
+  {
+    name: 'duplicate dimension id',
+    expect: 'H7_DIMENSION_ID',
+    mutate(pricing) {
+      const dimensions = pricing.research_comparisons.h7_deleteme.dimensions;
+      dimensions.push(structuredClone(dimensions[0]));
+    },
+  },
+  {
+    name: 'empty source list',
+    expect: 'H7_SOURCE_FLOOR',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.sources = [];
+    },
+  },
+  {
+    name: 'third-party source domain',
+    expect: 'H7_SOURCE_DOMAIN',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.sources[0].url = 'https://example.com/deleteme-review';
+    },
+  },
+  {
+    name: 'missing source title and section',
+    expect: 'H7_SOURCE_METADATA',
+    mutate(pricing) {
+      const source = pricing.research_comparisons.h7_deleteme.sources[0];
+      delete source.title;
+      delete source.section;
+    },
+  },
+  {
+    name: 'future access date',
+    expect: 'H7_SOURCE_FUTURE',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.sources[0].accessed_on = '2026-07-28';
+    },
+  },
+  {
+    name: 'all access dates stale',
+    expect: 'H7_SOURCE_STALE',
+    mutate(pricing) {
+      for (const source of pricing.research_comparisons.h7_deleteme.sources) {
+        source.accessed_on = '2026-01-01';
+      }
+    },
+  },
+  {
+    name: 'dangling fact source id',
+    expect: 'H7_DANGLING_SOURCE',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.dimensions[0]
+        .deleteme_facts[0].source_ids = ['missing-official-source'];
+    },
+  },
+  {
+    name: 'every established fact changed to unknown',
+    expect: 'H7_FACT_FLOOR',
+    mutate(pricing) {
+      for (const dimension of pricing.research_comparisons.h7_deleteme.dimensions) {
+        dimension.deleteme_facts = [];
+        dimension.unknowns.push({
+          field: `${dimension.id}_all_unknown`,
+          reason: 'Mutation removes every established fact.',
+          attempted_source_ids: ['terms-service'],
+        });
+      }
+    },
+  },
+  {
+    name: '976 presented as Standard-US included scope',
+    expect: 'H7_SCOPE_SEMANTICS',
+    mutate(pricing) {
+      const scope = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'scope');
+      scope.deleteme_facts
+        .find((fact) => fact.id === 'broader-catalog-976')
+        .paraphrase = 'DeleteMe includes 976 sites in the Standard-US plan.';
+    },
+  },
+  {
+    name: 'scope conflict removed',
+    expect: 'H7_SCOPE_SEMANTICS',
+    mutate(pricing) {
+      const scope = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'scope');
+      scope.status = 'established';
+      delete scope.conflict_explanation;
+    },
+  },
+  {
+    name: 'literal continuous monitoring claimed',
+    expect: 'H7_MONITORING_CLAIM',
+    mutate(pricing) {
+      const monitoring = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'ongoing_monitoring');
+      const fact = monitoring.deleteme_facts
+        .find((entry) => entry.id === 'reappearance-checks');
+      fact.paraphrase = 'DeleteMe continuously monitors every broker 24/7.';
+      fact.qualifiers = 'Guaranteed around-the-clock coverage.';
+    },
+  },
+  {
+    name: 'first report promoted to completion proof',
+    expect: 'H7_COMPLETION_PROOF',
+    mutate(pricing) {
+      const completion = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'completion_reporting');
+      completion.deleteme_facts
+        .find((fact) => fact.id === 'first-report-status-only')
+        .paraphrase = 'The first privacy report proves that every item has been removed.';
+    },
+  },
+  {
+    name: 'third-party removal guaranteed',
+    expect: 'H7_REMOVAL_GUARANTEE',
+    mutate(pricing) {
+      const removals = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'removals');
+      removals.deleteme_facts
+        .find((fact) => fact.id === 'no-guaranteed-completion')
+        .paraphrase = 'DeleteMe guarantees that every third party will remove the data.';
+    },
+  },
+  {
+    name: 'member-confirmation limitation removed',
+    expect: 'H7_MEMBER_CONFIRMATION',
+    mutate(pricing) {
+      const removals = pricing.research_comparisons.h7_deleteme.dimensions
+        .find((dimension) => dimension.id === 'removals');
+      removals.deleteme_facts = removals.deleteme_facts
+        .filter((fact) => fact.id !== 'member-confirmation-required');
+    },
+  },
+  {
+    name: 'missing capability reference',
+    expect: 'H7_OSL_REF',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.dimensions[0]
+        .osl_manifest_refs[0].json_pointer = '/capability_registry/missing-capability';
+    },
+  },
+  {
+    name: 'autoscrub promoted above Planned',
+    expect: 'H7_OSL_STATUS',
+    mutate(pricing) {
+      pricing.capability_registry
+        .find((capability) => capability.id === 'autoscrub')
+        .status = 'Beta';
+    },
+  },
+  {
+    name: 'comparability changed to equivalent',
+    expect: 'H7_COMPARABILITY',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.dimensions[0].comparability = 'equivalent';
+    },
+  },
+  {
+    name: 'winner or cheaper-replacement wording added',
+    expect: 'H7_WINNER_LANGUAGE',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.dimensions[0]
+        .bounded_conclusion += ' OSL is the cheaper replacement and clear winner.';
+    },
+  },
+  {
+    name: 'manifest and comparison versions unsupported',
+    expect: 'H7_VERSION',
+    mutate(pricing) {
+      pricing.manifest_version = 0;
+      pricing.research_comparisons.h7_deleteme.comparison_version = 2;
+    },
+  },
+];
+
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
 const config = buildConfig(pricing);
 if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0) {
   console.error('check-claims floor: tiers.pro.intended_grant_days must be a positive integer so the semantic grant-duration prohibition cannot become vacuous.');
   process.exit(1);
 }
+const h7ValidationErrors = validateH7Comparison(pricing, AS_OF);
 
 if (SELF_TEST) {
   let failures = 0;
-  console.log('check-claims self-test (each fixture must be caught):');
+  console.log(`check-claims self-test (H7 DeleteMe manifest, as of ${AS_OF}):`);
+  const comparison = pricing.research_comparisons?.h7_deleteme;
+  const h7Assertions = [
+    {
+      name: 'valid fixture passes the full H7 validator',
+      pass: h7ValidationErrors.length === 0,
+      detail: h7ValidationErrors.join('; '),
+    },
+    {
+      name: 'exactly seven comparison dimensions',
+      pass: comparison?.dimensions?.length === 7,
+    },
+    {
+      name: 'at least eight official sources',
+      pass: comparison?.sources?.length >= 8,
+    },
+    {
+      name: 'seven nonempty OSL limitations',
+      pass: comparison?.dimensions?.filter((dimension) => dimension.osl_limitation?.trim()).length === 7,
+    },
+    {
+      name: 'at least one explicit unknown',
+      pass: comparison?.dimensions?.some((dimension) => dimension.unknowns?.length > 0),
+    },
+    {
+      name: 'at least one source conflict',
+      pass: comparison?.dimensions?.some((dimension) => dimension.status === 'conflicted'
+        && dimension.conflict_explanation?.trim()),
+    },
+    {
+      name: 'exactly 20 named H7 mutations',
+      pass: H7_SELF_TEST_MUTATIONS.length === 20,
+    },
+  ];
+  for (const assertion of h7Assertions) {
+    if (!assertion.pass) failures += 1;
+    console.log(`  ${assertion.pass ? 'passed ' : 'FAILED '} ${assertion.name}${assertion.detail ? ` -> ${assertion.detail}` : ''}`);
+  }
+
+  const mutationRuns = new Map();
+  for (const mutation of H7_SELF_TEST_MUTATIONS) {
+    const mutated = structuredClone(pricing);
+    mutation.mutate(mutated);
+    mutationRuns.set(mutation.name, (mutationRuns.get(mutation.name) ?? 0) + 1);
+    const mutationErrors = validateH7Comparison(mutated, AS_OF);
+    const caught = mutationErrors.some((error) => error.startsWith(`${mutation.expect}:`));
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name} (expected ${mutation.expect})`);
+  }
+  const allMutationsRanExactlyOnce = mutationRuns.size === H7_SELF_TEST_MUTATIONS.length
+    && [...mutationRuns.values()].every((runs) => runs === 1);
+  if (!allMutationsRanExactlyOnce) failures += 1;
+  console.log(`  ${allMutationsRanExactlyOnce ? 'passed ' : 'FAILED '} each named H7 mutation executed exactly once`);
+
+  console.log('\ncheck-claims self-test (each HTML fixture must be caught):');
   for (const testCase of SELF_TEST_CASES) {
     const errors = analyseFile(testCase.file, testCase.html, config);
     const caught = errors.some((error) => error.kind === testCase.expect);
@@ -1475,14 +2147,25 @@ if (SELF_TEST) {
     console.log(`  ${mutationCaught ? 'caught ' : 'MISSED '} ${testCase.file} exact broad-claim mutation`);
   }
 
-  const total = SELF_TEST_CASES.length + NEGATION_CASES.length + 2 + (productionAtRestCases.length * 2);
+  const total = h7Assertions.length
+    + H7_SELF_TEST_MUTATIONS.length
+    + 1
+    + SELF_TEST_CASES.length
+    + NEGATION_CASES.length
+    + 2
+    + (productionAtRestCases.length * 2);
   console.log(`\ncheck-claims self-test: ${total} fixtures, ${failures} failed.`);
   process.exit(failures > 0 ? 1 : 0);
 }
 
 const files = await htmlFiles();
 const fileSummaries = [];
-const errors = [];
+const errors = h7ValidationErrors.map((text) => ({
+  kind: 'H7 research comparison',
+  file: 'data/pricing.json',
+  line: 0,
+  text,
+}));
 const crawledFiles = new Set(files.map((file) => rel(file)));
 
 for (const file of files) {

@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "manifest_version": 6,
+  "manifest_version": 7,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
   "currency": "USD",
@@ -704,6 +704,540 @@
     "expiry_behaviour": "Automatic Pro expiry is not implemented. Checkout remains paused.",
     "ledger_privacy": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity.",
     "open_source": "OSL is fully open source. The only exception is the optional AutoScrub module, which is not installed by default."
+  },
+  "research_comparisons": {
+    "schema_version": 1,
+    "h7_deleteme": {
+      "comparison_version": 1,
+      "id": "h7-deleteme-us-consumer",
+      "reviewed_on": "2026-07-27",
+      "market_scope": {
+        "country": "US",
+        "audience": "consumer",
+        "plans": [
+          "Standard",
+          "Premium"
+        ],
+        "excluded": [
+          "business",
+          "international"
+        ]
+      },
+      "sources": [
+        {
+          "id": "pricing-standard",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "pricing",
+          "url": "https://joindeleteme.com/pricing/",
+          "title": "Pricing – DeleteMe",
+          "section": "Standard Protection; All DeleteMe Plans Include",
+          "published_or_effective_on": "2026-04-10",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "pricing-premium",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "pricing",
+          "url": "https://joindeleteme.com/pricing/?premium=true",
+          "title": "Pricing – DeleteMe, premium view",
+          "section": "Premium Protection; Compare all plans",
+          "published_or_effective_on": "2026-04-10",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "standard-us-sites",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "plan_coverage",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/38908862627091-Sites-we-remove-from-on-the-Standard-US-plan",
+          "title": "Sites we remove from on the Standard US plan",
+          "section": "Main named-site list",
+          "published_or_effective_on": "2025-07-03",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "broader-broker-catalog",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "plan_coverage",
+          "url": "https://joindeleteme.com/sites-we-remove-from/",
+          "title": "Sites We Remove From",
+          "section": "List of Data Brokers We Have Found and Removed Data From",
+          "published_or_effective_on": "2026-02-04",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "monitoring-cadence",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "monitoring_reporting",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/8171611866899-Do-you-constantly-monitor-my-info-around-the-clock",
+          "title": "Do you constantly monitor my info around the clock?",
+          "section": "Main answer",
+          "published_or_effective_on": "not stated",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "removal-timing",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "removal_process",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/8171803033491-How-long-before-my-information-is-removed",
+          "title": "How long before my information is removed?",
+          "section": "What affects timing; What you'll see; Why things can reappear",
+          "published_or_effective_on": "not stated",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "member-opt-outs",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "removal_process",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/13663869546643-Member-Opt-Outs",
+          "title": "Member Opt-Outs",
+          "section": "Overview; Data Broker Secondary Opt-Out",
+          "published_or_effective_on": "2026-02-25",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "privacy-report",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "monitoring_reporting",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/8585306360083-Your-DeleteMe-Privacy-Report",
+          "title": "Your DeleteMe Privacy Report",
+          "section": "Overview; Definitions; Site Specific; Removing Personal Information",
+          "published_or_effective_on": "2026-05-29",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "privacy-collect-use",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "privacy_policy",
+          "url": "https://privacy.joindeleteme.com/policies?name=privacy-policy#personal-information-we-collect",
+          "title": "DeleteMe Privacy Center – Privacy Policy",
+          "section": "Personal Information We Collect; How We Use Your Personal Information",
+          "published_or_effective_on": "2025-05-21",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "privacy-sharing",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "privacy_policy",
+          "url": "https://privacy.joindeleteme.com/policies?name=privacy-policy#how-we-share-your-personal-information",
+          "title": "DeleteMe Privacy Center – Privacy Policy",
+          "section": "Datasheet Data Disclosures; General Data Disclosures",
+          "published_or_effective_on": "2025-05-21",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "privacy-retention-security",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "privacy_policy",
+          "url": "https://privacy.joindeleteme.com/policies?name=privacy-policy#notice-to-european-uk-users-visitors",
+          "title": "DeleteMe Privacy Center – Privacy Policy",
+          "section": "Retention; Security Practices; International Data Transfers",
+          "published_or_effective_on": "2025-05-21",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "terms-service",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "terms",
+          "url": "https://privacy.joindeleteme.com/policies?name=terms-of-service#using-delete-me-all-delete-me-users",
+          "title": "DeleteMe Privacy Center – Terms of Service",
+          "section": "Using DeleteMe – All DeleteMe Users",
+          "published_or_effective_on": "2023-10-26",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "unsupported-sites",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "limitations",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/8170825111699-What-sites-can-t-DeleteMe-remove-me-from",
+          "title": "What sites can't DeleteMe remove me from?",
+          "section": "Main answer",
+          "published_or_effective_on": "not stated",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "google-results",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "limitations",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/8171487675027-Can-you-delete-Google-search-results-for-me",
+          "title": "Can you delete Google search results for me?",
+          "section": "Main answer",
+          "published_or_effective_on": "not stated",
+          "accessed_on": "2026-07-27"
+        },
+        {
+          "id": "social-media",
+          "publisher": "DeleteMe / Abine",
+          "source_type": "limitations",
+          "url": "https://help.joindeleteme.com/hc/en-us/articles/28524503617171-How-do-I-get-my-information-removed-from-Social-Media",
+          "title": "How do I get my information removed from Social Media?",
+          "section": "Main answer",
+          "published_or_effective_on": "not stated",
+          "accessed_on": "2026-07-27"
+        }
+      ],
+      "dimensions": [
+        {
+          "id": "scope",
+          "status": "conflicted",
+          "conflict_explanation": "The official Standard-US article enumerates 87 included domain entries, while the 976 figure is a broader historical catalog of brokers DeleteMe says it has found and removed data from. These scopes are not interchangeable, and the official pages do not establish one current global coverage count.",
+          "deleteme_facts": [
+            {
+              "id": "standard-us-87",
+              "paraphrase": "The Standard US help article enumerated 87 domain entries when accessed; that named plan list is the bounded source for Standard-US included scope.",
+              "source_ids": [
+                "standard-us-sites"
+              ],
+              "confidence": "high",
+              "qualifiers": "The list can change, and an invitation to report an unlisted broker is not a promise that the broker will be accepted or removable."
+            },
+            {
+              "id": "broader-catalog-976",
+              "paraphrase": "DeleteMe's separate catalog says it has found and removed data from 976 brokers; this broader historical figure is not the Standard-US included-site count.",
+              "source_ids": [
+                "broader-broker-catalog"
+              ],
+              "confidence": "high",
+              "qualifiers": "The page describes a broader found-and-removed-from catalog, not a current plan entitlement."
+            },
+            {
+              "id": "premium-additional-sites",
+              "paraphrase": "Premium advertises 15 additional broker sites beyond Standard.",
+              "source_ids": [
+                "pricing-premium"
+              ],
+              "confidence": "high",
+              "qualifiers": "US consumer Premium only."
+            }
+          ],
+          "unknowns": [
+            {
+              "field": "single_current_global_coverage_count",
+              "reason": "Official pages publish differently scoped and dated figures, so one global included-site count cannot be inferred.",
+              "attempted_source_ids": [
+                "standard-us-sites",
+                "broader-broker-catalog",
+                "pricing-premium"
+              ]
+            },
+            {
+              "field": "future_broker_set",
+              "reason": "The broker set is contractually subject to change.",
+              "attempted_source_ids": [
+                "terms-service",
+                "standard-us-sites"
+              ]
+            }
+          ],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/scrub-discovery",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL Scrub discovery is Planned: no named build produces accounts end to end, and the last measured browser import did not hand results to Scrub.",
+          "comparability": "narrowly_comparable",
+          "bounded_conclusion": "DeleteMe publishes a maintained Standard-US plan list. OSL has only a Planned discovery design, so no broker-count or live-coverage equivalence is supported."
+        },
+        {
+          "id": "price",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "standard-one-person-year",
+              "paraphrase": "Standard costs $129 per year for one US resident and renews automatically unless canceled.",
+              "source_ids": [
+                "pricing-standard"
+              ],
+              "confidence": "high",
+              "qualifiers": "US consumer one-person annual plan."
+            },
+            {
+              "id": "premium-one-person-year",
+              "paraphrase": "Premium costs $180 per year for one US resident and renews automatically unless canceled.",
+              "source_ids": [
+                "pricing-premium"
+              ],
+              "confidence": "high",
+              "qualifiers": "US consumer one-person annual plan."
+            }
+          ],
+          "unknowns": [],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/autoscrub",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL's $5 is only the intended price for one month of Pro; checkout is paused because redemption and automatic expiry are unimplemented, and Planned AutoScrub is unavailable and not sellable.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe's live annual auto-renewing removal service and OSL's paused prepaid early-access offer are not equivalent price units or service commitments."
+        },
+        {
+          "id": "ongoing_monitoring",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "standard-four-reports",
+              "paraphrase": "Standard provides four scans and privacy reports per year.",
+              "source_ids": [
+                "pricing-standard",
+                "monitoring-cadence"
+              ],
+              "confidence": "high",
+              "qualifiers": "Plan-level cadence; not a per-broker interval."
+            },
+            {
+              "id": "premium-six-reports",
+              "paraphrase": "Premium provides six scans and privacy reports per year.",
+              "source_ids": [
+                "pricing-premium"
+              ],
+              "confidence": "high",
+              "qualifiers": "US Premium plan."
+            },
+            {
+              "id": "reappearance-checks",
+              "paraphrase": "DeleteMe says it checks brokers on a reliable cadence and resubmits when information reappears.",
+              "source_ids": [
+                "monitoring-cadence",
+                "removal-timing"
+              ],
+              "confidence": "high",
+              "qualifiers": "No literal continuous scan or exact per-broker interval is stated."
+            }
+          ],
+          "unknowns": [
+            {
+              "field": "per_broker_scan_interval",
+              "reason": "The official sources state plan report cadence but not an exact interval for each broker.",
+              "attempted_source_ids": [
+                "monitoring-cadence",
+                "pricing-standard",
+                "pricing-premium"
+              ]
+            },
+            {
+              "field": "continuous_monitoring",
+              "reason": "The official answer does not establish literal around-the-clock scanning.",
+              "attempted_source_ids": [
+                "monitoring-cadence"
+              ]
+            }
+          ],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/autoscrub",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL AutoScrub is Planned, switched-off interface scaffolding; it is not installed by default and has no proved recurring scan or report cadence.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe states plan-level recurring scan/report cadences. OSL has no operational recurring-monitoring service to compare."
+        },
+        {
+          "id": "removals",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "submits-and-checks-opt-outs",
+              "paraphrase": "DeleteMe submits opt-out requests, checks outcomes and reappearances, and says broker action may be immediate or take weeks.",
+              "source_ids": [
+                "removal-timing"
+              ],
+              "confidence": "high",
+              "qualifiers": "Timing depends on verification, manual review, broker policy, and workload."
+            },
+            {
+              "id": "member-confirmation-required",
+              "paraphrase": "Some removals require the member to complete a confirmation email, authentication, or other secondary action before the broker will finalize the opt-out.",
+              "source_ids": [
+                "member-opt-outs"
+              ],
+              "confidence": "high",
+              "qualifiers": "DeleteMe can submit the initial request but cannot perform the member-only confirmation."
+            },
+            {
+              "id": "no-guaranteed-completion",
+              "paraphrase": "DeleteMe promises reasonable efforts, not that every third party will honor an opt-out or remove the data.",
+              "source_ids": [
+                "terms-service"
+              ],
+              "confidence": "high",
+              "qualifiers": "Successful-removal count, completion date, and permanence are not guaranteed."
+            }
+          ],
+          "unknowns": [
+            {
+              "field": "guaranteed_successful_removals",
+              "reason": "The terms expressly decline a guarantee that third parties will honor requests.",
+              "attempted_source_ids": [
+                "terms-service",
+                "removal-timing"
+              ]
+            }
+          ],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/scrub-guided-deletion",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL guided deletion is Planned and currently holds every candidate: it does not open the broker page, choose deletion, confirm it, verify it, or produce a receipt; the owner must confirm each future removal.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe operates an opt-out submission and follow-up process with member-action and third-party limits. OSL has no end-to-end removal flow."
+        },
+        {
+          "id": "data_handling",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "datasheet-data-purpose",
+              "paraphrase": "DeleteMe may collect detailed identity and contact Datasheet Data to search broker sites and request removals.",
+              "source_ids": [
+                "privacy-collect-use"
+              ],
+              "confidence": "high",
+              "qualifiers": "The policy also describes account, device, usage, IP, approximate-location, marketing, and interaction data."
+            },
+            {
+              "id": "broker-and-provider-disclosures",
+              "paraphrase": "Datasheet Data may be sent to broker sites for searches and removals; other personal information may be shared with listed service-provider, affiliate, legal, integration, and transaction categories. DeleteMe says it does not sell personal information.",
+              "source_ids": [
+                "privacy-sharing"
+              ],
+              "confidence": "high",
+              "qualifiers": "The policy distinguishes Datasheet Data from general personal information."
+            },
+            {
+              "id": "retention-windows",
+              "paraphrase": "Identifying member data is retained for the membership plus six months, while payment data is retained for at least seven years.",
+              "source_ids": [
+                "privacy-retention-security"
+              ],
+              "confidence": "high",
+              "qualifiers": "Datasheet Data is stored in the US; other personal information may be processed elsewhere."
+            }
+          ],
+          "unknowns": [],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/scrub-discovery",
+              "expected_status": "Planned"
+            },
+            {
+              "json_pointer": "/capability_registry/autoscrub",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL's local discovery is a design intention, not a proved named-build behavior; optional AutoScrub is Planned, closed source, unavailable, and not installed by default, so OSL has no comparable operational handling record.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe's policy documents service-side collection, disclosures, and retention. OSL's present manifest supports only Planned local tooling, not a runtime-equivalent service."
+        },
+        {
+          "id": "completion_reporting",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "first-report-status-only",
+              "paraphrase": "The first privacy report arrives within seven days and is a status update, not proof that everything has been removed.",
+              "source_ids": [
+                "privacy-report"
+              ],
+              "confidence": "high",
+              "qualifiers": "The first report can contain in-progress and completed site-level statuses."
+            },
+            {
+              "id": "site-level-statuses",
+              "paraphrase": "Reports describe exposed data and distinguish removals in progress from successfully completed removals.",
+              "source_ids": [
+                "privacy-report"
+              ],
+              "confidence": "high",
+              "qualifiers": "The official source does not establish an independently audited artifact for every displayed status."
+            }
+          ],
+          "unknowns": [
+            {
+              "field": "independent_audit_artifact",
+              "reason": "The public report documentation does not establish that every displayed removal status is independently auditable proof.",
+              "attempted_source_ids": [
+                "privacy-report",
+                "terms-service"
+              ]
+            }
+          ],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/scrub-guided-deletion",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL guided deletion is Planned and produces no completed-removal status or deletion receipt because no end-to-end deletion is wired.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe documents status reporting, but its first report is not completion proof. OSL has no removal-report artifact to compare."
+        },
+        {
+          "id": "limitations",
+          "status": "established",
+          "deleteme_facts": [
+            {
+              "id": "third-party-no-guarantee",
+              "paraphrase": "DeleteMe does not guarantee that a third party will honor an opt-out or remove data, and it does not claim to remove all information from the internet.",
+              "source_ids": [
+                "terms-service"
+              ],
+              "confidence": "high",
+              "qualifiers": "The broker list depends on third-party practices and can change."
+            },
+            {
+              "id": "no-opt-out-public-records",
+              "paraphrase": "Sites without a legitimate opt-out path and public records such as property, marriage or business licenses, voter records, and some court records can remain outside complete removal.",
+              "source_ids": [
+                "unsupported-sites"
+              ],
+              "confidence": "high",
+              "qualifiers": "Source-specific and legal-process limits apply."
+            },
+            {
+              "id": "google-source-first",
+              "paraphrase": "DeleteMe cannot directly delete Google results; the source content must first be removed or changed before indexing may update.",
+              "source_ids": [
+                "google-results"
+              ],
+              "confidence": "high",
+              "qualifiers": "Search indexing is controlled by a third party."
+            },
+            {
+              "id": "social-user-action",
+              "paraphrase": "DeleteMe cannot directly scrub social-platform content where the platform requires the user to act.",
+              "source_ids": [
+                "social-media"
+              ],
+              "confidence": "high",
+              "qualifiers": "Platform-specific user action is required."
+            }
+          ],
+          "unknowns": [],
+          "osl_manifest_refs": [
+            {
+              "json_pointer": "/capability_registry/scrub-discovery",
+              "expected_status": "Planned"
+            },
+            {
+              "json_pointer": "/capability_registry/scrub-guided-deletion",
+              "expected_status": "Planned"
+            },
+            {
+              "json_pointer": "/capability_registry/autoscrub",
+              "expected_status": "Planned"
+            }
+          ],
+          "osl_limitation": "OSL discovery, guided deletion, and AutoScrub are all Planned; the last measured run found zero accounts, no removal is wired, and no efficacy claim is supported.",
+          "comparability": "not_equivalent",
+          "bounded_conclusion": "DeleteMe documents material third-party and source limits despite operating a live service. OSL cannot be presented as a replacement because its comparable capabilities remain Planned."
+        }
+      ]
+    }
   },
   "launch_frame": {
     "stage": "pre-launch",
