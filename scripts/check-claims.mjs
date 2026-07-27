@@ -755,7 +755,7 @@ function falseIdentityPasswordMechanism(text) {
       'i',
     );
     const passwordDerivedEncryptionRelationship = new RegExp(
-      `\\b(?:main[-\\s]+password|password|passphrase)[-\\s]+derived\\s+`
+      `\\b(?:main[-\\s]+password|password|passphrase)[-\\s]+(?:derived|based)\\s+`
         + `(?:encryption|sealing|protection|security)\\s+`
         + `(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))`
         + `(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
@@ -763,7 +763,7 @@ function falseIdentityPasswordMechanism(text) {
     );
     const identityUsesPasswordBasedEncryption = new RegExp(
       `${identity}\\s+(?:uses?|relies\\s+on|depends\\s+on)\\s+(?:a\\s+|the\\s+)?`
-        + `(?:main[-\\s]+password|password|passphrase)[-\\s]+based\\s+`
+        + `(?:main[-\\s]+password|password|passphrase)[-\\s]+(?:derived|based)\\s+`
         + `(?:encryption|sealing|protection|security)`,
       'i',
     );
@@ -935,13 +935,28 @@ function stripJavaScriptComments(content) {
 function stripTemplateInterpolationComments(body) {
   let result = '';
   let depth = 0;
+  let expressionQuote = '';
+  let expressionEscaped = false;
   for (let index = 0; index < body.length; index += 1) {
     const char = body[index];
     const next = body[index + 1];
+    if (depth > 0 && expressionQuote) {
+      result += char;
+      if (!expressionEscaped && char === expressionQuote) expressionQuote = '';
+      if (!expressionEscaped && char === '\\') expressionEscaped = true;
+      else expressionEscaped = false;
+      continue;
+    }
     if (char === '$' && next === '{') {
       depth += 1;
       result += '${';
       index += 1;
+      continue;
+    }
+    if (depth > 0 && (char === '"' || char === "'")) {
+      expressionQuote = char;
+      expressionEscaped = false;
+      result += char;
       continue;
     }
     if (depth > 0 && char === '}') depth -= 1;
@@ -1317,6 +1332,24 @@ function staticJavaScriptTextSinkValues(content) {
     }
   }
   const createdNodeBindings = new Set(emptyNodeBindings);
+  const createdNodeAliases = new Map(
+    [...createdNodeBindings].map((binding) => [binding, binding]),
+  );
+  for (let pass = 0; pass <= declarations.length; pass += 1) {
+    let changed = false;
+    for (const declaration of declarations) {
+      if (createdNodeAliases.has(declaration.name)) continue;
+      const canonical = createdNodeAliases.get(declaration.expression.trim());
+      if (!canonical) continue;
+      createdNodeAliases.set(declaration.name, canonical);
+      createdNodeBindings.add(declaration.name);
+      changed = true;
+    }
+    if (!changed) break;
+  }
+  const canonicalCreatedNode = (expression) => (
+    createdNodeAliases.get(expression.trim()) ?? expression.trim()
+  );
   for (let pass = 0; pass <= declarations.length; pass += 1) {
     let changed = false;
     for (const declaration of declarations) {
@@ -1337,48 +1370,57 @@ function staticJavaScriptTextSinkValues(content) {
       populatedNodeBindings.add(binding);
     }
   }
-  for (const binding of [...emptyNodeBindings]) {
+  for (const binding of [...createdNodeAliases.keys()]) {
+    const canonical = canonicalCreatedNode(binding);
+    if (binding !== canonical) continue;
     const escaped = escapeRegExp(binding);
-    const computedTextWrites = [...source.matchAll(new RegExp(
-      `\\b${escaped}\\s*\\[\\s*([A-Za-z_$][A-Za-z0-9_$]*)\\s*\\]\\s*=\\s*([^;]+)`,
+    const aliases = [...createdNodeAliases]
+      .filter(([, target]) => target === canonical)
+      .map(([alias]) => escapeRegExp(alias));
+    const receiver = `(?:${aliases.join('|')})`;
+    const mutations = [];
+    for (const assignment of source.matchAll(new RegExp(
+      `\\b${receiver}\\s*(?:\\.\\s*(textContent|innerText|innerHTML)|\\[\\s*("(?:\\\\.|[^"\\\\])*"|'(?:\\\\.|[^'\\\\])*'|\\x60(?:\\\\.|[^\\x60\\\\])*\\x60|[A-Za-z_$][A-Za-z0-9_$]*)\\s*\\])\\s*=\\s*([^;]+)`,
       'g',
-    ))].filter((assignment) => (
-      ['textContent', 'innerText', 'innerHTML'].includes(bindings.get(assignment[1]))
-    ));
-    const populated = new RegExp(
-      `\\b${escaped}\\s*(?:(?:\\?\\.)?\\.\\s*(?:textContent|innerText|innerHTML|append|prepend|replaceChildren|replaceWith|insertAdjacentText|insertAdjacentHTML)\\b|\\[\\s*["'\`](?:textContent|innerText|innerHTML|append|prepend|replaceChildren|replaceWith|insertAdjacentText|insertAdjacentHTML)["'\`]\\s*\\])`,
-    ).test(source) || computedTextWrites.some((assignment) => (
-      evaluateStaticJavaScriptExpression(assignment[2], bindings) !== ''
-    ));
-    if (populated) {
-      emptyNodeBindings.delete(binding);
-      populatedNodeBindings.add(binding);
+    ))) {
+      const property = assignment[1]
+        ?? evaluateStaticJavaScriptExpression(assignment[2] ?? '', bindings);
+      if (!['textContent', 'innerText', 'innerHTML'].includes(property)) continue;
+      const value = evaluateStaticJavaScriptExpression(assignment[3], bindings);
+      mutations.push({
+        index: assignment.index ?? 0,
+        populated: value !== '',
+      });
     }
-  }
-  for (const binding of [...populatedNodeBindings]) {
-    const escaped = escapeRegExp(binding);
-    const assignments = [...source.matchAll(new RegExp(
-      `\\b${escaped}\\s*(?:\\.\\s*(?:textContent|innerText|innerHTML)|\\[\\s*["'\`](?:textContent|innerText|innerHTML)["'\`]\\s*\\])\\s*=\\s*([^;]+)`,
+    const callRe = new RegExp(
+      `\\b${receiver}\\s*(?:\\?\\.)?\\.\\s*(append|prepend|replaceChildren|insertAdjacentText|insertAdjacentHTML)\\s*\\(`,
       'g',
-    ))];
-    const lastValue = assignments.length > 0
-      ? evaluateStaticJavaScriptExpression(assignments.at(-1)[1], bindings)
-      : null;
-    const computedAssignments = [...source.matchAll(new RegExp(
-      `\\b${escaped}\\s*\\[\\s*([A-Za-z_$][A-Za-z0-9_$]*)\\s*\\]\\s*=\\s*([^;]+)`,
-      'g',
-    ))].filter((assignment) => (
-      ['textContent', 'innerText', 'innerHTML'].includes(bindings.get(assignment[1]))
-    ));
-    const lastComputedValue = computedAssignments.length > 0
-      ? evaluateStaticJavaScriptExpression(computedAssignments.at(-1)[2], bindings)
-      : null;
-    const clearsChildren = new RegExp(
-      `\\b${escaped}\\s*(?:\\?\\.)?\\.\\s*replaceChildren\\s*\\(\\s*\\)`,
-    ).test(source);
-    if (lastValue === '' || lastComputedValue === '' || clearsChildren) {
-      populatedNodeBindings.delete(binding);
-      emptyNodeBindings.add(binding);
+    );
+    for (const call of source.matchAll(callRe)) {
+      const args = balancedCallArguments(source, call.index ?? 0);
+      if (args === null) continue;
+      const candidates = splitTopLevelJavaScriptArguments(args).filter((arg) => arg.trim());
+      if (call[1] === 'replaceChildren') {
+        mutations.push({
+          index: call.index ?? 0,
+          populated: candidates.some((candidate) => (
+            evaluateStaticJavaScriptExpression(candidate, bindings) !== ''
+          )),
+        });
+      } else if (candidates.length > 0) {
+        mutations.push({ index: call.index ?? 0, populated: true });
+      }
+    }
+    const initialPopulated = populatedNodeBindings.has(canonical);
+    const finalPopulated = mutations.length > 0
+      ? mutations.sort((left, right) => left.index - right.index).at(-1).populated
+      : initialPopulated;
+    for (const [alias, target] of createdNodeAliases) {
+      if (target !== canonical) continue;
+      emptyNodeBindings.delete(alias);
+      populatedNodeBindings.delete(alias);
+      if (finalPopulated) populatedNodeBindings.add(alias);
+      else emptyNodeBindings.add(alias);
     }
   }
   const receiverAliases = new Map();
@@ -1444,6 +1486,7 @@ function staticJavaScriptTextSinkValues(content) {
   const sinkOperations = [];
   const attachmentEdges = [];
   const removalIndexes = new Map();
+  const childClearIndexes = new Map();
   const textPropertyNames = new Set(['textContent', 'innerText', 'innerHTML']);
   for (const assignment of source.matchAll(
     /(?:\b(textContent|innerText|innerHTML)\b|\[\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\])\s*(\+?=)\s*([^;]+)/g,
@@ -1468,6 +1511,7 @@ function staticJavaScriptTextSinkValues(content) {
         operation: assignment[3] === '+=' ? 'append' : 'replace',
         rendered: value,
       });
+      if (assignment[3] === '=') childClearIndexes.set(target, assignment.index ?? 0);
     } else if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
       const rendered = value.join(',');
       sinkOperations.push({
@@ -1476,6 +1520,7 @@ function staticJavaScriptTextSinkValues(content) {
         operation: assignment[3] === '+=' ? 'append' : 'replace',
         rendered,
       });
+      if (assignment[3] === '=') childClearIndexes.set(target, assignment.index ?? 0);
     }
   }
   const textSinkMethods = new Set([
@@ -1519,13 +1564,16 @@ function staticJavaScriptTextSinkValues(content) {
       continue;
     }
     if (method === 'removeChild') {
-      const removed = args[0]?.trim();
+      const removed = canonicalCreatedNode(args[0] ?? '');
       if (removed && createdNodeBindings.has(removed)) {
         removalIndexes.set(removed, call.index ?? 0);
       }
       continue;
     }
     if (method === 'replaceWith') removalIndexes.set(target, call.index ?? 0);
+    if (method === 'replaceChildren') {
+      childClearIndexes.set(target, call.index ?? 0);
+    }
     const candidates = method.startsWith('insertAdjacent')
       ? (method === 'insertAdjacentElement' ? args.slice(1, 2) : args.slice(1))
       : (method === 'insertBefore' || method === 'replaceChild'
@@ -1575,11 +1623,12 @@ function staticJavaScriptTextSinkValues(content) {
       const resolved = spread && Array.isArray(value)
         ? value
         : (typeof value === 'string' ? [value] : []);
-      if (createdNodeBindings.has(expression)) {
+      const attachedNode = canonicalCreatedNode(expression);
+      if (createdNodeBindings.has(expression) || createdNodeBindings.has(attachedNode)) {
         attachmentEdges.push({
           index: call.index ?? 0,
           parent: target,
-          child: expression,
+          child: attachedNode,
         });
       }
       if (resolved.length > 0
@@ -1631,6 +1680,7 @@ function staticJavaScriptTextSinkValues(content) {
     for (const edge of attachmentEdges) {
       if (publicTargets.has(edge.parent)
           && edge.index > (removalIndexes.get(edge.child) ?? -1)
+          && edge.index > (childClearIndexes.get(edge.parent) ?? -1)
           && !publicTargets.has(edge.child)) {
         publicTargets.add(edge.child);
         changed = true;
@@ -2983,6 +3033,18 @@ const SELF_TEST_CASES = [
     name: 'password-derived adjective mechanism for identity keys',
     file: 'docs/faq.html',
     html: '<p>Private identity keys are encrypted with a main-password-derived key.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password-based encryption protects identity keys',
+    file: 'docs/faq.html',
+    html: '<p>Password-based encryption protects private identity keys.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'identity keys use main-password-derived encryption',
+    file: 'docs/faq.html',
+    html: '<p>Private identity keys use main-password-derived encryption.</p>',
     expect: 'at-rest overclaim',
   },
   {
@@ -4714,6 +4776,13 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_CREATED_NODE_ALIAS_ATTACHMENT',
+      'index.html',
+      '<script>const output = document.createElement("div"); const alias = output; output.append("All local data is "); output.append("password-protected."); document.body.append(alias);</script>',
+      '<script>const output = document.createElement("div"); const alias = output; output.append("Account "); output.append("settings."); document.body.append(alias);</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_ATTACHED_NODE_BEFORE_WRITES',
       'index.html',
       '<script>const output = document.createElement("div"); document.body.append(output); output.append("All local data is "); output.append("password-protected.");</script>',
@@ -5032,6 +5101,51 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_ALIAS_REMOVE_CHILD_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const output = document.createElement("div"); const alias = output; document.body.append(output); document.body.removeChild(alias); output.append("All local data is "); output.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_PARENT_REPLACE_CHILDREN_DETACH_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const output = document.createElement("div"); document.body.append(output); document.body.replaceChildren(); output.append("All local data is "); output.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_CLEAR_THEN_REPOPULATE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const separator = document.createElement("span"); separator.textContent = "not "; separator.textContent = ""; separator.textContent = "still not "; document.body.append("All local data is ", separator, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_DIRECT_CLEAR_COMPUTED_REPOPULATE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const property = "textContent", separator = document.createElement("span"); separator.textContent = "not "; separator.textContent = ""; separator[property] = "still not "; document.body.append("All local data is ", separator, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_COMPUTED_CLEAR_DIRECT_REPOPULATE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const property = "textContent", separator = document.createElement("span"); separator.textContent = "not "; separator[property] = ""; separator.textContent = "still not "; document.body.append("All local data is ", separator, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
       name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_WITH_DISTINCTION',
       caught() {
         return publicAtRestChannelErrors(
@@ -5055,6 +5169,15 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = `${a}// Account settings\\n${b}`;</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_INTERPOLATED_BLOCK_COMMENT_STRING_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = `${a}${"/* Account settings */"}${b}`;</script>',
         ).length === 0;
       },
     },
