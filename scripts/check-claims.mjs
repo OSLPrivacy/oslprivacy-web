@@ -1337,7 +1337,11 @@ function staticJavaScriptTextSinkValues(content) {
       const match = declarator.match(
         /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([\s\S]+?)\s*$/,
       );
-      if (match) declarations.push({ name: match[1], expression: match[2] });
+      if (match) declarations.push({
+        name: match[1],
+        expression: match[2],
+        index: statement.index ?? 0,
+      });
     }
   }
   for (const statement of source.matchAll(/\b(?:const|let|var)\s+([^\n;]+)/g)) {
@@ -1345,15 +1349,23 @@ function staticJavaScriptTextSinkValues(content) {
       const match = declarator.match(
         /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([\s\S]+?)\s*$/,
       );
-      if (match) declarations.push({ name: match[1], expression: match[2] });
+      if (match) declarations.push({
+        name: match[1],
+        expression: match[2],
+        index: statement.index ?? 0,
+      });
     }
   }
   for (const assignment of source.matchAll(
-    /\b([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*;/g,
+    /\b([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*(?:;|(?=\r?\n|$))/g,
   )) {
     const prefix = source.slice(Math.max(0, (assignment.index ?? 0) - 12), assignment.index);
     if (/\b(?:const|let|var)\s*$/.test(prefix)) continue;
-    declarations.push({ name: assignment[1], expression: assignment[2] });
+    declarations.push({
+      name: assignment[1],
+      expression: assignment[2],
+      index: assignment.index ?? 0,
+    });
   }
   for (const declaration of declarations) {
     const textNode = declaration.expression.match(
@@ -1368,24 +1380,44 @@ function staticJavaScriptTextSinkValues(content) {
       if (textNode) createdTextNodeValues.set(declaration.name, textNode[1]);
     }
   }
-  const createdNodeBindings = new Set(emptyNodeBindings);
+  const baseCreatedNodeBindings = new Set(emptyNodeBindings);
+  const createdNodeAliasEvents = new Map();
+  for (const declaration of declarations) {
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(declaration.expression.trim())) continue;
+    const events = createdNodeAliasEvents.get(declaration.name) ?? [];
+    events.push({
+      index: declaration.index ?? 0,
+      target: declaration.expression.trim(),
+    });
+    createdNodeAliasEvents.set(declaration.name, events);
+  }
+  for (const events of createdNodeAliasEvents.values()) {
+    events.sort((left, right) => left.index - right.index);
+  }
+  const canonicalCreatedNodeAt = (expression, index = Number.POSITIVE_INFINITY, seen = new Set()) => {
+    const name = expression.trim();
+    if (baseCreatedNodeBindings.has(name)) return name;
+    if (seen.has(name)) return name;
+    seen.add(name);
+    const event = (createdNodeAliasEvents.get(name) ?? [])
+      .filter((candidate) => candidate.index <= index)
+      .at(-1);
+    return event
+      ? canonicalCreatedNodeAt(event.target, event.index, seen)
+      : name;
+  };
+  const createdNodeBindings = new Set(baseCreatedNodeBindings);
   const createdNodeAliases = new Map(
-    [...createdNodeBindings].map((binding) => [binding, binding]),
+    [...baseCreatedNodeBindings].map((binding) => [binding, binding]),
   );
-  for (let pass = 0; pass <= declarations.length; pass += 1) {
-    let changed = false;
-    for (const declaration of declarations) {
-      if (createdNodeAliases.has(declaration.name)) continue;
-      const canonical = createdNodeAliases.get(declaration.expression.trim());
-      if (!canonical) continue;
-      createdNodeAliases.set(declaration.name, canonical);
-      createdNodeBindings.add(declaration.name);
-      changed = true;
-    }
-    if (!changed) break;
+  for (const name of createdNodeAliasEvents.keys()) {
+    const canonical = canonicalCreatedNodeAt(name);
+    if (!baseCreatedNodeBindings.has(canonical)) continue;
+    createdNodeAliases.set(name, canonical);
+    createdNodeBindings.add(name);
   }
   const canonicalCreatedNode = (expression) => (
-    createdNodeAliases.get(expression.trim()) ?? expression.trim()
+    canonicalCreatedNodeAt(expression)
   );
   for (let pass = 0; pass <= declarations.length; pass += 1) {
     let changed = false;
@@ -1428,6 +1460,7 @@ function staticJavaScriptTextSinkValues(content) {
       mutations.push({
         index: assignment.index ?? 0,
         populated: value !== '',
+        replace: true,
       });
     }
     const callRe = new RegExp(
@@ -1442,33 +1475,45 @@ function staticJavaScriptTextSinkValues(content) {
       if (!['append', 'prepend', 'replaceChildren', 'insertAdjacentText', 'insertAdjacentHTML']
         .includes(method)) continue;
       const candidates = splitTopLevelJavaScriptArguments(args).filter((arg) => arg.trim());
+      const childNodes = candidates
+        .map((candidate) => canonicalCreatedNodeAt(candidate, call.index ?? 0))
+        .filter((candidate) => baseCreatedNodeBindings.has(candidate));
+      const staticPopulation = candidates.some((candidate) => (
+        !baseCreatedNodeBindings.has(canonicalCreatedNodeAt(candidate, call.index ?? 0))
+          && evaluateStaticJavaScriptExpression(candidate, bindings) !== ''
+      ));
       if (method === 'replaceChildren') {
-        const childNodes = candidates
-          .map((candidate) => canonicalCreatedNode(candidate))
-          .filter((candidate) => createdNodeBindings.has(candidate));
         mutations.push({
           index: call.index ?? 0,
-          populated: candidates.some((candidate) => (
-            !createdNodeBindings.has(canonicalCreatedNode(candidate))
-              && evaluateStaticJavaScriptExpression(candidate, bindings) !== ''
-          )),
+          populated: staticPopulation,
           childNodes,
+          replace: true,
         });
       } else if (candidates.length > 0) {
-        mutations.push({ index: call.index ?? 0, populated: true });
+        mutations.push({
+          index: call.index ?? 0,
+          populated: staticPopulation,
+          childNodes,
+          replace: false,
+        });
       }
     }
     const initialPopulated = populatedNodeBindings.has(canonical);
-    const finalMutation = mutations.length > 0
-      ? mutations.sort((left, right) => left.index - right.index).at(-1)
-      : null;
-    const finalPopulated = finalMutation
-      ? finalMutation.populated
-      : initialPopulated;
-    if (finalMutation?.childNodes?.length > 0) {
+    let finalPopulated = initialPopulated;
+    let finalChildNodes = [];
+    for (const mutation of mutations.sort((left, right) => left.index - right.index)) {
+      if (mutation.replace) {
+        finalPopulated = mutation.populated;
+        finalChildNodes = [...(mutation.childNodes ?? [])];
+      } else {
+        finalPopulated ||= mutation.populated;
+        finalChildNodes.push(...(mutation.childNodes ?? []));
+      }
+    }
+    if (finalChildNodes.length > 0) {
       nodePopulationDependencies.set(canonical, {
-        basePopulated: finalMutation.populated,
-        childNodes: finalMutation.childNodes,
+        basePopulated: finalPopulated,
+        childNodes: [...new Set(finalChildNodes)],
       });
     }
     for (const [alias, target] of createdNodeAliases) {
@@ -1661,8 +1706,8 @@ function staticJavaScriptTextSinkValues(content) {
       continue;
     }
     if (method === 'removeChild') {
-      const removed = canonicalCreatedNode(args[0] ?? '');
-      if (removed && createdNodeBindings.has(removed)) {
+      const removed = canonicalCreatedNodeAt(args[0] ?? '', call.index ?? 0);
+      if (removed && baseCreatedNodeBindings.has(removed)) {
         recordEvent(removalEvents, removalIndexes, removed, call.index ?? 0);
       }
       continue;
@@ -1670,7 +1715,13 @@ function staticJavaScriptTextSinkValues(content) {
     if (method === 'replaceWith') {
       recordEvent(removalEvents, removalIndexes, target, call.index ?? 0);
       const replacementText = args.map((candidate) => (
-        evaluateStaticJavaScriptExpression(candidate, bindings)
+        (() => {
+          const child = canonicalCreatedNodeAt(candidate, call.index ?? 0);
+          if (baseCreatedNodeBindings.has(child)) {
+            return emptyNodeBindings.has(child) ? '' : null;
+          }
+          return evaluateStaticJavaScriptExpression(candidate, bindings);
+        })()
       ));
       if (replacementText.length > 0
           && replacementText.every((value) => typeof value === 'string')) {
@@ -1681,8 +1732,8 @@ function staticJavaScriptTextSinkValues(content) {
         });
       }
       for (const candidate of args) {
-        const child = canonicalCreatedNode(candidate);
-        if (createdNodeBindings.has(child)) {
+        const child = canonicalCreatedNodeAt(candidate, call.index ?? 0);
+        if (baseCreatedNodeBindings.has(child)) {
           replacementEdges.push({
             index: call.index ?? 0,
             replaced: target,
@@ -1692,8 +1743,8 @@ function staticJavaScriptTextSinkValues(content) {
       }
     }
     if (method === 'replaceChild') {
-      const removed = canonicalCreatedNode(args[1] ?? '');
-      if (removed && createdNodeBindings.has(removed)) {
+      const removed = canonicalCreatedNodeAt(args[1] ?? '', call.index ?? 0);
+      if (removed && baseCreatedNodeBindings.has(removed)) {
         recordEvent(removalEvents, removalIndexes, removed, call.index ?? 0);
       }
     }
@@ -1749,8 +1800,8 @@ function staticJavaScriptTextSinkValues(content) {
       const resolved = spread && Array.isArray(value)
         ? value
         : (typeof value === 'string' ? [value] : []);
-      const attachedNode = canonicalCreatedNode(expression);
-      if (createdNodeBindings.has(expression) || createdNodeBindings.has(attachedNode)) {
+      const attachedNode = canonicalCreatedNodeAt(expression, call.index ?? 0);
+      if (baseCreatedNodeBindings.has(attachedNode)) {
         attachmentEdges.push({
           index: call.index ?? 0,
           parent: target,
@@ -4942,6 +4993,20 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_ASI_ASSIGNED_NODE_ALIAS_ATTACHMENT',
+      'index.html',
+      '<script>const output = document.createElement("div"); let alias\nalias = output\noutput.append("All local data is "); output.append("password-protected."); document.body.append(alias);</script>',
+      '<script>const output = document.createElement("div"); let alias\nalias = output\noutput.append("Account "); output.append("settings."); document.body.append(alias);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_REASSIGNED_NODE_ALIAS_ATTACHMENT',
+      'index.html',
+      '<script>const first = document.createElement("div"), second = document.createElement("div"); let alias; alias = first; alias = second; second.append("All local data is "); second.append("password-protected."); document.body.append(alias);</script>',
+      '<script>const first = document.createElement("div"), second = document.createElement("div"); let alias; alias = first; alias = second; second.append("Account "); second.append("settings."); document.body.append(alias);</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_ATTACHED_NODE_BEFORE_WRITES',
       'index.html',
       '<script>const output = document.createElement("div"); document.body.append(output); output.append("All local data is "); output.append("password-protected.");</script>',
@@ -5044,6 +5109,20 @@ if (SELF_TEST) {
       'index.html',
       '<script>const oldNode = document.createElement("div"); document.body.append(oldNode); oldNode.replaceWith("All local data is ", "password-protected.");</script>',
       '<script>const oldNode = document.createElement("div"); document.body.append(oldNode); oldNode.replaceWith("Account ", "settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_WITH_LITERAL_EMPTY_NODE_REACHABILITY',
+      'index.html',
+      '<script>const oldNode = document.createElement("div"), empty = document.createElement("span"); document.body.append(oldNode); oldNode.replaceWith("All local data is ", empty, "password-protected.");</script>',
+      '<script>const oldNode = document.createElement("div"), empty = document.createElement("span"); document.body.append(oldNode); oldNode.replaceWith("Account ", empty, "settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_APPEND_EMPTY_NODE',
+      'index.html',
+      '<script>const outer = document.createElement("span"), empty = document.createElement("em"); outer.append(empty); document.body.append("All local data is ", outer, "password-protected.");</script>',
+      '<script>const outer = document.createElement("span"); outer.append("not "); document.body.append("All local data is ", outer, "password-protected.");</script>',
       'html',
     ],
     [
@@ -5309,6 +5388,15 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>const output = document.createElement("div"); let alias; alias = output; document.body.append(output); document.body.removeChild(alias); output.append("All local data is "); output.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_ASI_ASSIGNED_ALIAS_REMOVE_CHILD_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const output = document.createElement("div"); let alias\nalias = output\ndocument.body.append(output); document.body.removeChild(alias); output.append("All local data is "); output.append("password-protected.");</script>',
         ).length === 0;
       },
     },
