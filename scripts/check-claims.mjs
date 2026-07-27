@@ -1010,17 +1010,21 @@ function staticJavaScriptTextSinkValues(content) {
     if (source === null) continue;
     const args = splitTopLevelJavaScriptArguments(source);
     const candidates = call[0].startsWith('insertAdjacentText') ? args.slice(1) : args;
-    const resolved = [];
+    let contiguous = [];
+    const flushContiguous = () => {
+      if (contiguous.length > 1) values.push(contiguous.join(''));
+      contiguous = [];
+    };
     for (const candidate of candidates) {
       const value = evaluateStaticJavaScriptExpression(candidate, bindings);
       if (value !== null) {
         values.push(value);
-        resolved.push(value);
+        contiguous.push(value);
+      } else {
+        flushContiguous();
       }
     }
-    if (resolved.length > 1 && resolved.length === candidates.length) {
-      values.push(resolved.join(''));
-    }
+    flushContiguous();
   }
   return values;
 }
@@ -3698,6 +3702,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = a + b;</script>',
       '<script>const a = "Account ", b = "settings."; document.body.textContent = a + b;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_STATIC_RUN_BEFORE_DYNAMIC_NODE',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; const marker = document.createElement("span"); document.body.append(a, b, marker);</script>',
+      '<script>const a = "Account "; const b = "settings."; const marker = document.createElement("span"); document.body.append(a, b, marker);</script>',
       'html',
     ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
