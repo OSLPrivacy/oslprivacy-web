@@ -351,15 +351,15 @@
       "id": "scrub-discovery",
       "name": "Scrub discovery",
       "status": "Planned",
-      "evidence": "Downgraded from Beta 2026-07-26 (truth lane). Discovery is genuinely what Scrub does -- it finds accounts and exposure and takes the owner to the page where they delete -- but no evidence names an exact build. Master 9 says 'active dirty integration work' and still requires an exact-build walkthrough; the last live report (2026-07-25) was that pressing 'do scrub' detected 0 accounts, because browser import never creates an AccountRecord or hands anything to Scrub. Allowlist rule 5: evidence that does not name an exact build is unknown-recheck-required, which earns no claim. Planned is the strongest honest badge. The Scrub lane can earn Beta back by landing an exact-build walkthrough in docs/reports/.",
+      "evidence": "Truth correction 2026-07-27. Exact immutable Scrub object 1766aaa154c77a179a02227fced2ce5634728890, tree face6d5d7e49ac155851cb1ad2cb78f68d3082b4, is independently REJECT +0 at source/test tier. Its raw-file handler reaches production, but provider-parser failure can fall through to generic JSON, allowing self-declared account, manifest, inventory and completeness fields and inline media that is not bound to archive members. Google, Discord, Meta, X and WhatsApp exports are not qualified end to end. Later mutable or unaudited successor bytes are excluded. Planned remains the strongest honest badge; no runtime, release or provider coverage is inferred.",
       "surfaces": [
         "index.html",
         "features.html",
         "download.html"
       ],
-      "verified_on": "2026-07-26",
+      "verified_on": "2026-07-27",
       "sellable": false,
-      "public_note": "In progress, and the closest to landing. Scrub is designed to find the accounts and exposure you left behind, on your own machine. On the last measured run it found no accounts because the browser import does not yet hand its results to Scrub."
+      "public_note": "Not yet. Current source can fall back to generic JSON when a provider parser refuses an export, so provider identity, archive inventory, media bytes and completeness are not reliably bound. Google, Discord, Meta, X and WhatsApp exports are not qualified end to end."
     },
     {
       "id": "scrub-guided-deletion",
@@ -934,7 +934,7 @@
               "expected_status": "Planned"
             }
           ],
-          "osl_limitation": "OSL Scrub discovery is Planned: no named build produces accounts end to end, and the last measured browser import did not hand results to Scrub.",
+          "osl_limitation": "OSL Scrub discovery is Planned: no named build qualifies Scrub end to end, provider exports are not qualified end to end, and exact 1766aaa independently failed because generic JSON fallback does not reliably bind provider identity, archive inventory, media bytes or completeness.",
           "comparability": "narrowly_comparable",
           "bounded_conclusion": "DeleteMe publishes a maintained Standard-US plan list. OSL has only a Planned discovery design, so no broker-count or live-coverage equivalence is supported."
         },

@@ -2994,8 +2994,8 @@ function validateH7Comparison(pricing, asOf) {
   }
   const exactCapabilityEvidence = new Map([
     ['scrub-discovery', {
-      evidence: [/\bno evidence names an exact build\b/i, /\bdetected 0 accounts\b/i, /\bbrowser import\b/i],
-      public_note: [/\bin progress\b/i, /\bfound no accounts\b/i, /\bbrowser import\b/i],
+      evidence: [/\b1766aaa154c77a179a02227fced2ce5634728890\b/i, /\bindependently REJECT \+0\b/i, /\bgeneric JSON\b/i, /\bnot qualified end to end\b/i],
+      public_note: [/\bnot yet\b/i, /\bgeneric JSON\b/i, /\bprovider identity\b/i, /\barchive inventory\b/i, /\bmedia bytes\b/i, /\bnot qualified end to end\b/i],
     }],
     ['scrub-guided-deletion', {
       evidence: [/\bcannot be exercised end to end\b/i, /\bnever shown as verified deletion\b/i],
@@ -3255,7 +3255,7 @@ function validateH7Comparison(pricing, asOf) {
   }
 
   const exactOslLimitations = new Map([
-    ['scope', [/\bPlanned\b/, /\bno named build\b/i, /\b(?:accounts|browser import)\b/i]],
+    ['scope', [/\bPlanned\b/, /\bno named build\b/i, /\bgeneric JSON\b/i, /\barchive inventory\b/i, /\bnot qualified end to end\b/i]],
     ['price', [/\$5\b/, /\bcheckout is paused\b/i, /\b(?:redemption|automatic expiry)\b/i, /\bAutoScrub\b/]],
     ['ongoing_monitoring', [/\bPlanned\b/, /\bscaffolding\b/i, /\bno proved recurring\b/i]],
     ['removals', [/\bPlanned\b/, /\bholds every candidate\b/i, /\bowner must confirm\b/i]],
