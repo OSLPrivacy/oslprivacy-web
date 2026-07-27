@@ -893,17 +893,30 @@ function validateH7Comparison(pricing, asOf) {
     }
   }
   const exactCapabilityEvidence = new Map([
-    ['scrub-discovery', [/\bfound no accounts\b/i, /\bbrowser import\b/i, /\bnot yet\b|\bin progress\b/i]],
-    ['scrub-guided-deletion', [/\bholds every candidate\b/i, /\bconfirm each removal\b/i, /\bnot yet\b/i]],
-    ['autoscrub', [/\bswitched-off interface scaffolding\b/i, /\bnot installed by default\b/i, /\bnot yet\b/i]],
+    ['scrub-discovery', {
+      evidence: [/\bno evidence names an exact build\b/i, /\bdetected 0 accounts\b/i, /\bbrowser import\b/i],
+      public_note: [/\bin progress\b/i, /\bfound no accounts\b/i, /\bbrowser import\b/i],
+    }],
+    ['scrub-guided-deletion', {
+      evidence: [/\bcannot be exercised end to end\b/i, /\bnever shown as verified deletion\b/i],
+      public_note: [/\bnot yet\b/i, /\bholds every candidate\b/i, /\bconfirm each removal\b/i],
+    }],
+    ['autoscrub', {
+      evidence: [/\bactive implementation\b/i, /\bpackaging unresolved\b/i, /\bnot installed by default\b/i],
+      public_note: [/\bnot yet\b/i, /\bswitched-off interface scaffolding\b/i, /\bnot installed by default\b/i],
+    }],
   ]);
-  for (const [capabilityId, patterns] of exactCapabilityEvidence) {
-    const capabilityText = [
-      capabilityById.get(capabilityId)?.evidence ?? '',
-      capabilityById.get(capabilityId)?.public_note ?? '',
-    ].join(' ');
-    if (!patterns.every((pattern) => pattern.test(capabilityText))) {
-      add('OSL_EVIDENCE', `${capabilityId} evidence/public_note must preserve its exact non-operational limitation`);
+  for (const [capabilityId, fieldContracts] of exactCapabilityEvidence) {
+    const capability = capabilityById.get(capabilityId);
+    for (const [field, patterns] of Object.entries(fieldContracts)) {
+      const text = capability?.[field] ?? '';
+      const operationalContradiction = hasAffirmative(
+        text,
+        /\b(?:available now|complete coverage|fully working|operational|shipping|working today)\b/i,
+      );
+      if (!patterns.every((pattern) => pattern.test(text)) || operationalContradiction) {
+        add('OSL_EVIDENCE', `${capabilityId}.${field} must independently preserve its exact non-operational limitation`);
+      }
     }
   }
 
