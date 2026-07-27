@@ -2497,24 +2497,21 @@ function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
 }
 
 function atRestUnboundClaimErrors(fileRel, content) {
-  const visible = visibleHtml(content);
   const boundElements = atRestClaimElements(content);
-  let unbound = visible;
+  let unbound = content;
   for (const element of boundElements) {
     unbound = unbound.replace(element.html, ' '.repeat(element.html.length));
   }
-
-  const errors = [];
-  const blockRe = /<(p|li|td)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
-  for (const block of unbound.matchAll(blockRe)) {
-    const text = shortText(renderedTextWithSourceMap(block[2]).text);
-    if (!atRestSemanticTripwire(text)) continue;
-    errors.push({
-      kind: 'unbound at-rest claim',
-      file: fileRel,
-      line: lineNumber(content, block.index ?? 0),
-      text: `${text} -- bind this visible claim to data/at-rest-census.json`,
-    });
+  const errors = publicAtRestChannelErrors(fileRel, unbound);
+  for (const comment of unbound.matchAll(/<!--([\s\S]*?)-->/g)) {
+    for (const error of atRestOverclaimErrors(fileRel, comment[1])) {
+      errors.push({
+        kind: 'unbound at-rest claim',
+        file: fileRel,
+        line: lineNumber(content, comment.index ?? 0),
+        text: `${error.text} -- bind this public comment claim to data/at-rest-census.json`,
+      });
+    }
   }
   return errors;
 }
@@ -2862,7 +2859,7 @@ function h4ExplainerErrors(fileRel, content) {
 }
 
 function atRestOverclaimErrors(fileRel, content) {
-  const rendered = renderedTextWithSourceMap(content);
+  const rendered = publicClaimTextWithSourceMap(content);
   const universalScope = /(?<!\bat\s)\ball\b|\b(?:each|every|everything|entire|entirety|whole|complete|totality|no|none|nothing|never|zero)\b|100\s*%/i;
   const absoluteUniversal = /\b(?:everything|nothing|entirety|totality)\b|100\s*%/i;
   const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|items?|things?|secrets?)\b/i;
@@ -2884,7 +2881,8 @@ function atRestOverclaimErrors(fileRel, content) {
   // Block boundaries keep an honest limitation attached to the claim it
   // qualifies without letting an unrelated limitation elsewhere on the page
   // excuse a broad promise. Inline markup and entities are already flattened
-  // by renderedTextWithSourceMap, so they cannot split the semantic match.
+  // by publicClaimTextWithSourceMap, so inline markup, entities, comments, and
+  // public data attributes cannot split or hide the semantic match.
   for (const segment of rendered.text.matchAll(/[^\n]+/g)) {
     const blockText = shortText(segment[0]);
     if (!blockText) continue;
@@ -4225,6 +4223,24 @@ const SELF_TEST_CASES = [
     name: 'reversed at-rest overclaim',
     file: 'audit.html',
     html: '<p>Encrypted at rest with your password: all private state on this device.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'public comment cannot hide an at-rest overclaim',
+    file: 'audit.html',
+    html: '<!-- All private state is encrypted at rest. -->',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'public data attribute cannot hide local password overclaim',
+    file: 'docs/faq.html',
+    html: '<div data-public-claim="Your password encrypts all local data."></div>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'entity inside public data attribute cannot hide recovery overclaim',
+    file: 'docs/faq.html',
+    html: '<div data-public-claim="OSL provides recovery material for password&#45;protected local state."></div>',
     expect: 'at-rest overclaim',
   },
   {
@@ -7081,6 +7097,28 @@ if (SELF_TEST) {
         return content.replace(
           faqClaim.text,
           `${faqClaim.text} Every local record is password&#45;protected.`,
+        );
+      },
+    },
+    {
+      name: 'broad public comment added to production audit page',
+      file: 'audit.html',
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<!-- Every private record on this device is protected with your password. --></main>',
+        );
+      },
+    },
+    {
+      name: 'broad public data attribute added to production FAQ page',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<div data-public-claim="Encrypted at rest with your password: all private state on this device."></div></main>',
         );
       },
     },
