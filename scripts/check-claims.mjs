@@ -45,27 +45,61 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
     `(?:\\b(?:${dayCount}|thirty)\\s*(?:-|\\s)\\s*(?:calendar\\s+)?days?\\b|\\b(?:one|1|a)\\s*(?:-|\\s)\\s*(?:full\\s+)?month\\b|\\bmonth[-\\s]long\\b)`,
     'i',
   );
-  const code = /\b(?:(?:activation|paid|prepaid|purchase[sd]?)[-\s]*)?codes?\b|\blicen[cs]es?\b/i;
-  const explicitNonimplementation = /\b(?:not\s+(?:yet\s+)?implemented|does\s+not|doesn't|do\s+not|don't|cannot|can't|paused\s+until|without\s+(?:an?\s+)?(?:redemption|expiry|duration)\s+(?:record|clock|timestamp)?|currently\s+(?:grants?|unlocks?)\s+(?:pro\s+)?(?:for\s+)?lifetime)\b/i;
-  const plannedContract = /(?:\b(?:grant(?:ing)?|duration|entitlement|access)\b.{0,80}\b(?:is|remains)\s+planned\b|\bplanned\b.{0,80}\b(?:grant|duration|entitlement|access)\b)/i;
+  const credential = /\b(?:codes?|licen[cs]es?|(?:activation|paid(?:\s+pro)?|prepaid|purchase[sd]?)[-\s]+(?:keys?|vouchers?)|pro[-\s]+vouchers?)\b/i;
+  const explicitNonimplementation = /\b(?:unimplemented|not\s+(?:yet\s+)?implemented|does\s+not|doesn't|do\s+not|don't|cannot|can't|paused\s+until|without\s+(?:an?\s+)?(?:redemption|expiry|duration)\s+(?:record|clock|timestamp)?|currently\s+(?:grants?|unlocks?)\s+(?:pro\s+)?(?:for\s+)?lifetime)\b/i;
+  const plannedContract = /(?:\b(?:grant(?:ing)?|duration|entitlement|access|feature)\b.{0,80}\b(?:is|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract))?\b|\bplanned\b.{0,80}\b(?:grant|duration|entitlement|access|feature)\b)/i;
   const presentGrantAssertion = /\b(?:grants?|gives?|provides?|unlocks?|includes?|comes?\s+with|lasts?|(?:is|are)\s+valid\s+for)\b/i;
-  const genericPlannedContract = /\b(?:is|remains)\s+planned\b/i;
-  const conditionalOnImplementation = /\b(?:once|after|when)\s+(?:automatic\s+)?(?:expiry|redemption|duration)\b.{0,100}\b(?:is\s+)?implemented\b/i;
+  const genericPlannedContract = /\b(?:is|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract))?\b/i;
+  const conditionalOnImplementation = /\b(?:if|once|after|when)\s+(?:automatic\s+)?(?:expiry|redemption|duration)\b.{0,100}\b(?:is\s+)?implemented\b/i;
+  const adjacentContinuation = /^(?:it|they|each|one|that|the\s+(?:code|key|voucher|licen[cs]e))\b/i;
+  const ADJACENT_RAW_GAP_MAX = 240;
+  const ADJACENT_TEXT_MAX = 320;
   const errors = [];
 
-  for (const sentence of visible.matchAll(/[^.!?]+[.!?]?/g)) {
-    const text = sentence[0].replace(/\s+/g, ' ').trim();
-    if (!text || !duration.test(text) || !code.test(text)) continue;
-    if (explicitNonimplementation.test(text)) continue;
-    if (plannedContract.test(text)) continue;
-    if (genericPlannedContract.test(text) && !presentGrantAssertion.test(text)) continue;
-    if (conditionalOnImplementation.test(text)) continue;
+  function honestLimitation(text) {
+    if (explicitNonimplementation.test(text)) return true;
+    if (plannedContract.test(text)) return true;
+    if (genericPlannedContract.test(text) && !presentGrantAssertion.test(text)) return true;
+    if (conditionalOnImplementation.test(text)) return true;
+    return false;
+  }
+
+  function record(start, text) {
     errors.push({
       kind: 'unimplemented grant-duration claim',
       file: fileRel,
-      line: lineNumber(content, sentence.index),
+      line: lineNumber(content, start),
       text: `${shortText(text)} -- paid-code duration and expiry are not implemented`,
     });
+  }
+
+  const sentences = [...visible.matchAll(/[^.!?]+[.!?]?/g)].map((sentence) => ({
+    start: sentence.index,
+    end: sentence.index + sentence[0].length,
+    text: sentence[0].replace(/\s+/g, ' ').trim(),
+  })).filter((sentence) => sentence.text);
+
+  for (const sentence of sentences) {
+    if (!duration.test(sentence.text) || !credential.test(sentence.text)) continue;
+    if (honestLimitation(sentence.text)) continue;
+    record(sentence.start, sentence.text);
+  }
+
+  // Catch a credential assertion followed immediately by a bounded pronoun
+  // continuation, e.g. “An activation code grants Pro. It lasts 30 days.”
+  // Do not join arbitrary nearby sentences: that would conflate unrelated
+  // refund windows or documentation elsewhere on the page.
+  for (let i = 0; i + 1 < sentences.length; i += 1) {
+    const first = sentences[i];
+    const second = sentences[i + 1];
+    const gap = second.start - first.end;
+    if (gap < 0 || gap > ADJACENT_RAW_GAP_MAX) continue;
+    if (!credential.test(first.text) || duration.test(first.text)) continue;
+    if (!duration.test(second.text) || credential.test(second.text)) continue;
+    if (!adjacentContinuation.test(second.text)) continue;
+    const combined = `${first.text} ${second.text}`;
+    if (combined.length > ADJACENT_TEXT_MAX || honestLimitation(combined)) continue;
+    record(first.start, combined);
   }
 
   return errors;
@@ -559,6 +593,24 @@ const SELF_TEST_CASES = [
     expect: 'unimplemented grant-duration claim',
   },
   {
+    name: 'activation-key month grant synonym',
+    file: 'pricing.html',
+    html: '<p>Each activation key grants Pro for one month.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'paid-Pro-voucher 30-day synonym',
+    file: 'download.html',
+    html: '<p>A paid Pro voucher lasts 30 days.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'adjacent activation-code duration continuation',
+    file: 'docs/faq.html',
+    html: '<p>An activation code grants Pro.</p><p>It lasts 30 days.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
     name: 'support matrix silently dropping a capability',
     file: 'docs/status.html',
     html: '<table><tr><td><span data-osl-feature="burn" data-osl-status="Planned">Planned</span></td></tr></table>',
@@ -609,6 +661,24 @@ const NEGATION_CASES = [
     name: 'honest planned code-duration contract without grant verb',
     file: 'docs/terms.html',
     html: '<p>One month per activation code is planned.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest planned-feature limitation',
+    file: 'docs/terms.html',
+    html: '<p>A 30-day activation-code grant is a planned feature.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest unimplemented adjective limitation',
+    file: 'docs/terms.html',
+    html: '<p>A 30-day activation-code grant is unimplemented.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest if-implemented limitation',
+    file: 'docs/terms.html',
+    html: '<p>An activation key will grant Pro for one month if automatic expiry is implemented.</p>',
     kinds: ['unimplemented grant-duration claim'],
   },
   {
