@@ -191,15 +191,15 @@
     {
       "id": "cover-carrier-text",
       "name": "Cover text carrier",
-      "status": "Beta",
-      "evidence": "Downgraded from Available 2026-07-26 (truth lane). Bounded word-bank cover text with matched line count ships for the text lane (master 7.1), but the public claim it carries is allowlist row C1 -- 'Encrypted messages send through Discord as ordinary-looking text' -- which is runtime-proven, not verified-live, and therefore earns Beta. Its mandatory limitation is 'Verified on QA builds, not yet on the release build.' There is no allowlist row that grants the carrier an Available badge.",
+      "status": "Planned",
+      "evidence": "Downgraded Beta -> Planned 2026-07-27 after an adversarial audit finding, verified in source. crates/ipc/src/commands.rs:2640-2660 (9-MODE1-RETIRE) DISABLES Mode 1 template stego in V2 as unviable under the PQ-hybrid wire ~1190-byte wrap leg, and silently coerces legacy stego_mode=mode1 to Mode 0. Mode 0 emits a visible DPC0::base64 capsule (crates/stego/src/mode0.rs MODE0_PREFIX), so the connected service receives an obvious encrypted blob, NOT a harmless cover message. Confidentiality is unaffected; the stealth claim is not. Allowlist A2 and C1 wording is unsupported on this build.",
       "surfaces": [
         "index.html",
         "features.html"
       ],
       "verified_on": "2026-07-26",
-      "sellable": true,
-      "public_note": "Working. OSL puts a harmless cover message into the connected service and keeps the real text encrypted. Proven on test builds."
+      "sellable": false,
+      "public_note": "Not yet. The readable text never reaches the connected service, but what the service currently receives is an obvious encrypted block rather than an innocuous-looking message. The natural-language cover mode is switched off in the current build because the post-quantum wire is too large for it."
     },
     {
       "id": "protected-text",

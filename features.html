@@ -48,10 +48,10 @@
     <section class="section product-demo seizure-demo reveal" aria-labelledby="seizure-heading" data-product-animation="seizure-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>
-          <p class="eyebrow">Server protection <span class="osl-status" data-osl-feature="cover-carrier-text" data-osl-status="Beta">Beta</span></p>
+          <p class="eyebrow">Server protection <span class="osl-status" data-osl-feature="protected-text" data-osl-status="Beta">Beta</span></p>
           <h2 id="seizure-heading" class="section-heading">The server never has<br>the real message.</h2>
           <p class="section-subhead">Stored records reveal only the cover.</p>
-          <p class="osl-status-note">This is how protected text works today, verified on QA builds and not yet on the release build. The connected service stores the cover message and the encrypted item; it never receives the readable text. It does still see who you talked to and when. The drawing below shows what a stored record looks like when someone opens it.</p>
+          <p class="osl-status-note">This is how protected text works today, verified on QA builds and not yet on the release build. The connected service stores the encrypted item and never receives the readable text. Today that item is visibly an encrypted block; making it look like an ordinary message is <span data-osl-feature="cover-carrier-text">arriving at v1</span>. It does still see who you talked to and when. The drawing below shows what a stored record looks like when someone opens it.</p>
         </div>
       </div>
 
@@ -175,7 +175,7 @@
         <div>
           <p class="eyebrow">Expiry</p>
           <h2 id="expiry-heading" class="section-heading">Readable until expiry.</h2>
-          <p class="section-subhead">Set how long a message stays readable in OSL. When the timer ends, OSL stops showing the readable text and the harmless cover message stays in its place.</p>
+          <p class="section-subhead">Set how long a message stays readable in OSL. When the timer ends, OSL stops showing the readable text and what remains in the app is the encrypted item.</p>
           <p class="osl-status-note">Worth being precise about what a timer can and cannot do: it stops OSL from showing you the message. It does not destroy a key, and it cannot reach a copy, screenshot, export or backup that already left your device. Arriving at v1.</p>
           <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
