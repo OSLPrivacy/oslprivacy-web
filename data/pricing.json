@@ -513,6 +513,22 @@
       "phrase": "checkout launches",
       "reason": "Same stale future tense in the payment-information bullet.",
       "replaced_by": "present tense"
+    },
+    {
+      "phrase": "destroys keys, not messages",
+      "reason": "Exactly inverted: wrapped_key is never populated, so there is no key to destroy. Burn destroys OSL local copies of messages and destroys no keys. Was on README.md:78 until 2026-07-26."
+    },
+    {
+      "phrase": "permanent ciphertext",
+      "reason": "Asserts the carrier becomes undecryptable after a burn. v3 seals to the recipient long-term keys, so any holder of that key material still reads it."
+    },
+    {
+      "phrase": "permanent gibberish",
+      "reason": "Same overstatement as permanent ciphertext."
+    },
+    {
+      "phrase": "cryptographic erasure",
+      "reason": "Burn is state deletion, not cryptographic erasure. The per-message wrapped-key model that would earn the word is deliberately not built."
     }
   ],
   "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident.",
