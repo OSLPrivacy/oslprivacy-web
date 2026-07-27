@@ -976,16 +976,22 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
 
 function staticJavaScriptTextSinkValues(content) {
   const bindings = new Map();
-  const declarations = [...content.matchAll(
-    /\b(?:const|let|var)\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([^;\n]+)/g,
-  )];
+  const declarations = [];
+  for (const statement of content.matchAll(/\b(?:const|let|var)\s+([^;\n]+)/g)) {
+    for (const declarator of splitTopLevelJavaScriptArguments(statement[1])) {
+      const match = declarator.match(
+        /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([\s\S]+?)\s*$/,
+      );
+      if (match) declarations.push({ name: match[1], expression: match[2] });
+    }
+  }
   for (let pass = 0; pass <= declarations.length; pass += 1) {
     let changed = false;
     for (const declaration of declarations) {
-      if (bindings.has(declaration[1])) continue;
-      const value = evaluateStaticJavaScriptExpression(declaration[2], bindings);
+      if (bindings.has(declaration.name)) continue;
+      const value = evaluateStaticJavaScriptExpression(declaration.expression, bindings);
       if (value === null) continue;
-      bindings.set(declaration[1], value);
+      bindings.set(declaration.name, value);
       changed = true;
     }
     if (!changed) break;
@@ -3685,6 +3691,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a, b);</script>',
       '<script>const a = "Account "; const b = "settings."; document.body.append(a, b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_MULTI_DECLARATOR_COPY',
+      'index.html',
+      '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = a + b;</script>',
+      '<script>const a = "Account ", b = "settings."; document.body.textContent = a + b;</script>',
       'html',
     ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
