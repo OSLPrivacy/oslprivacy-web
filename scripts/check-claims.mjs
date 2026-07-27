@@ -704,7 +704,8 @@ function falseIdentityPasswordMechanism(text) {
     const protectedForm = String.raw`(?:encrypt(?:ed)?|seal(?:ed)?|protect(?:ed)?|secur(?:ed)?)`;
     const passiveRelationship = new RegExp(
       `${identity}\\s+(?:(?:is|are|was|were|be|been|remain(?:s|ed)?|stay(?:s|ed)?|get(?:s)?|got|become(?:s)?)\\s+)?`
-        + `${protectedForm}(?:\\s+at[-\\s]+rest)?\\s+(?:with|by|using|under)\\s+${password}`,
+        + `${protectedForm}(?:\\s+at[-\\s]+rest)?\\s+(?:(?:with|by|under)\\s+${password}`
+        + `|using\\s+(?:(?:a|the)\\s+)?(?:key\\s+derived\\s+from\\s+)?${password})`,
       'i',
     );
     const activeRelationship = new RegExp(
@@ -717,9 +718,15 @@ function falseIdentityPasswordMechanism(text) {
         + `(?:encrypt|seal|protect|secure)(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
       'i',
     );
+    const nounRelationship = new RegExp(
+      `\\b(?:encryption|sealing|protection|security)\\s+of\\s+(?:the\\s+)?${identity}`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:uses?|relies\\s+on|depends\\s+on)\\s+${password}`,
+      'i',
+    );
     return passiveRelationship.test(clause)
       || activeRelationship.test(clause)
-      || usedToRelationship.test(clause);
+      || usedToRelationship.test(clause)
+      || nounRelationship.test(clause);
   });
 }
 
@@ -819,7 +826,72 @@ function decodeJavaScriptString(raw) {
   );
 }
 
-function tokenizeStaticJavaScriptExpression(expression) {
+function stripJavaScriptComments(content) {
+  let result = '';
+  let quote = '';
+  let escaped = false;
+  for (let index = 0; index < content.length; index += 1) {
+    const char = content[index];
+    const next = content[index + 1];
+    if (quote) {
+      result += char;
+      if (!escaped && char === quote) quote = '';
+      if (!escaped && char === '\\') escaped = true;
+      else escaped = false;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+      result += char;
+      continue;
+    }
+    if (char === '/' && next === '/') {
+      result += '  ';
+      index += 2;
+      while (index < content.length && content[index] !== '\n') {
+        result += ' ';
+        index += 1;
+      }
+      if (index < content.length) result += '\n';
+      continue;
+    }
+    if (char === '/' && next === '*') {
+      result += '  ';
+      index += 2;
+      while (index < content.length
+          && !(content[index] === '*' && content[index + 1] === '/')) {
+        result += content[index] === '\n' ? '\n' : ' ';
+        index += 1;
+      }
+      if (index < content.length) {
+        result += '  ';
+        index += 1;
+      }
+      continue;
+    }
+    result += char;
+  }
+  return result;
+}
+
+function evaluateStaticTemplateLiteral(raw, bindings) {
+  const body = raw.slice(1, -1);
+  let result = '';
+  let cursor = 0;
+  const interpolationRe = /\$\{([^{}]+)\}/g;
+  for (const match of body.matchAll(interpolationRe)) {
+    const literal = decodeJavaScriptString(`\`${body.slice(cursor, match.index)}\``);
+    const value = evaluateStaticJavaScriptExpression(match[1], bindings);
+    if (literal === null || typeof value !== 'string') return null;
+    result += literal + value;
+    cursor = (match.index ?? 0) + match[0].length;
+  }
+  const tail = decodeJavaScriptString(`\`${body.slice(cursor)}\``);
+  if (tail === null || (body.includes('${') && cursor === 0)) return null;
+  return result + tail;
+}
+
+function tokenizeStaticJavaScriptExpression(expression, bindings) {
   const tokens = [];
   let index = 0;
   while (index < expression.length) {
@@ -840,7 +912,10 @@ function tokenizeStaticJavaScriptExpression(expression) {
         end += 1;
       }
       if (end >= expression.length) return null;
-      const value = decodeJavaScriptString(expression.slice(index, end + 1));
+      const raw = expression.slice(index, end + 1);
+      const value = quote === '`'
+        ? evaluateStaticTemplateLiteral(raw, bindings)
+        : decodeJavaScriptString(raw);
       if (value === null) return null;
       tokens.push({ type: 'string', value });
       index = end + 1;
@@ -852,7 +927,12 @@ function tokenizeStaticJavaScriptExpression(expression) {
       index += identifier[0].length;
       continue;
     }
-    if ('+.,()'.includes(char)) {
+    if (expression.startsWith('...', index)) {
+      tokens.push({ type: '...', value: '...' });
+      index += 3;
+      continue;
+    }
+    if ('+.,()[]'.includes(char)) {
       tokens.push({ type: char, value: char });
       index += 1;
       continue;
@@ -863,7 +943,7 @@ function tokenizeStaticJavaScriptExpression(expression) {
 }
 
 function evaluateStaticJavaScriptExpression(expression, bindings) {
-  const tokens = tokenizeStaticJavaScriptExpression(expression);
+  const tokens = tokenizeStaticJavaScriptExpression(expression, bindings);
   if (!tokens) return null;
   let index = 0;
   const accept = (type) => {
@@ -876,7 +956,7 @@ function evaluateStaticJavaScriptExpression(expression, bindings) {
     if (value === null) return null;
     while (accept('+')) {
       const right = parsePostfix();
-      if (right === null) return null;
+      if (typeof value !== 'string' || typeof right !== 'string') return null;
       value += right;
     }
     return value;
@@ -891,6 +971,18 @@ function evaluateStaticJavaScriptExpression(expression, bindings) {
       index += 1;
       return bindings.get(token.value);
     }
+    if (accept('[')) {
+      const value = [];
+      if (!accept(']')) {
+        do {
+          const item = parseExpression();
+          if (item === null) return null;
+          value.push(item);
+        } while (accept(','));
+        if (!accept(']')) return null;
+      }
+      return value;
+    }
     if (accept('(')) {
       const value = parseExpression();
       if (value === null || !accept(')')) return null;
@@ -903,16 +995,31 @@ function evaluateStaticJavaScriptExpression(expression, bindings) {
     if (value === null) return null;
     while (accept('.')) {
       const method = tokens[index];
-      if (method?.type !== 'identifier' || method.value !== 'concat') return null;
+      if (method?.type !== 'identifier'
+          || !['concat', 'join'].includes(method.value)) return null;
       index += 1;
       if (!accept('(')) return null;
+      const args = [];
       if (!accept(')')) {
         do {
           const argument = parseExpression();
           if (argument === null) return null;
-          value += argument;
+          args.push(argument);
         } while (accept(','));
         if (!accept(')')) return null;
+      }
+      if (method.value === 'join') {
+        if (!Array.isArray(value)
+            || args.length > 1
+            || args.some((argument) => typeof argument !== 'string')
+            || value.some((item) => typeof item !== 'string')) return null;
+        value = value.join(args[0] ?? ',');
+      } else if (Array.isArray(value)) {
+        value = value.concat(...args);
+      } else {
+        if (typeof value !== 'string'
+            || args.some((argument) => typeof argument !== 'string')) return null;
+        value += args.join('');
       }
     }
     return value;
@@ -963,8 +1070,8 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
       continue;
     }
     if (char === '"' || char === "'" || char === '`') quote = char;
-    else if (char === '(') depth += 1;
-    else if (char === ')') depth -= 1;
+    else if ('([{'.includes(char)) depth += 1;
+    else if (')]}'.includes(char)) depth -= 1;
     else if (char === ',' && depth === 0) {
       values.push(argumentsSource.slice(start, index));
       start = index + 1;
@@ -975,9 +1082,10 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
 }
 
 function staticJavaScriptTextSinkValues(content) {
+  const source = stripJavaScriptComments(content);
   const bindings = new Map();
   const declarations = [];
-  for (const statement of content.matchAll(/\b(?:const|let|var)\s+([^;\n]+)/g)) {
+  for (const statement of source.matchAll(/\b(?:const|let|var)\s+([^;]+)/g)) {
     for (const declarator of splitTopLevelJavaScriptArguments(statement[1])) {
       const match = declarator.match(
         /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([\s\S]+?)\s*$/,
@@ -998,33 +1106,59 @@ function staticJavaScriptTextSinkValues(content) {
   }
 
   const values = [];
-  for (const assignment of content.matchAll(
-    /\b(?:textContent|innerText)\s*=\s*([^;\n]+)/g,
+  const sinkRuns = [];
+  for (const assignment of source.matchAll(
+    /(?:\b(?:textContent|innerText|innerHTML)\b|\[\s*["'](?:textContent|innerText|innerHTML)["']\s*\])\s*=\s*([^;]+)/g,
   )) {
     const value = evaluateStaticJavaScriptExpression(assignment[1], bindings);
-    if (value !== null) values.push(value);
+    if (typeof value === 'string') values.push(value);
+    else if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
+      values.push(value.join(','));
+    }
   }
-  const textCallRe = /\b(?:insertAdjacentText|append|prepend|replaceChildren|write|writeln)\s*\(/g;
-  for (const call of content.matchAll(textCallRe)) {
-    const source = balancedCallArguments(content, call.index ?? 0);
-    if (source === null) continue;
-    const args = splitTopLevelJavaScriptArguments(source);
-    const candidates = call[0].startsWith('insertAdjacentText') ? args.slice(1) : args;
+  const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)|\[\s*["'](insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)["']\s*\])\s*(?:\?\.)?\s*\(/g;
+  for (const call of source.matchAll(textCallRe)) {
+    const argumentsSource = balancedCallArguments(source, call.index ?? 0);
+    if (argumentsSource === null) continue;
+    const method = call[1] ?? call[2];
+    const args = splitTopLevelJavaScriptArguments(argumentsSource);
+    const candidates = method.startsWith('insertAdjacent') ? args.slice(1) : args;
     let contiguous = [];
     const flushContiguous = () => {
-      if (contiguous.length > 1) values.push(contiguous.join(''));
+      if (contiguous.length > 0) {
+        const rendered = contiguous.join('');
+        sinkRuns.push({ index: call.index ?? 0, rendered });
+        if (contiguous.length > 1) values.push(rendered);
+      }
       contiguous = [];
     };
     for (const candidate of candidates) {
-      const value = evaluateStaticJavaScriptExpression(candidate, bindings);
-      if (value !== null) {
-        values.push(value);
-        contiguous.push(value);
+      const trimmed = candidate.trim();
+      const spread = trimmed.startsWith('...');
+      const expression = spread ? trimmed.slice(3) : trimmed;
+      const textNode = expression.match(
+        /^(?:document\.)?createTextNode\s*\(([\s\S]*)\)$/,
+      );
+      const value = evaluateStaticJavaScriptExpression(
+        textNode?.[1] ?? expression,
+        bindings,
+      );
+      const resolved = spread && Array.isArray(value)
+        ? value
+        : (typeof value === 'string' ? [value] : []);
+      if (resolved.length > 0
+          && resolved.every((item) => typeof item === 'string')) {
+        values.push(...resolved);
+        contiguous.push(...resolved);
       } else {
         flushContiguous();
       }
     }
     flushContiguous();
+  }
+  sinkRuns.sort((left, right) => left.index - right.index);
+  for (let index = 1; index < sinkRuns.length; index += 1) {
+    values.push(sinkRuns[index - 1].rendered + sinkRuns[index].rendered);
   }
   return values;
 }
@@ -3543,6 +3677,20 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_DERIVED_KEY_PHRASING',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Private identity keys are encrypted using a key derived from your main password.';
+      },
+    },
+    {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_NOUN_PHRASING',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Encryption of private identity keys uses your main password.';
+      },
+    },
+    {
       name: 'AT_REST_UNREACHABLE_NOTES_CLAIM',
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
@@ -3709,6 +3857,97 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; const marker = document.createElement("span"); document.body.append(a, b, marker);</script>',
       '<script>const a = "Account "; const b = "settings."; const marker = document.createElement("span"); document.body.append(a, b, marker);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_MULTILINE_DECLARATORS',
+      'index.html',
+      '<script>const a = "All local data is ",\n b = "password-protected."; document.body.textContent = a + b;</script>',
+      '<script>const a = "Account ",\n b = "settings."; document.body.textContent = a + b;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_COMMENTED_DECLARATORS',
+      'index.html',
+      '<script>const a = "All local data is ", /* second */ b = "password-protected."; document.body.textContent = a + b;</script>',
+      '<script>const a = "Account ", /* second */ b = "settings."; document.body.textContent = a + b;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEMPLATE_INTERPOLATION',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.textContent = `${a}${b}`;</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.textContent = `${a}${b}`;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_ARRAY_JOIN',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.textContent = [a, b].join("");</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.textContent = [a, b].join("");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_BRACKETED_TEXT_PROPERTY',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body["textContent"] = a + b;</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body["textContent"] = a + b;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_SPREAD_ARGUMENTS',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(...[a, b]);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.append(...[a, b]);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_INSERT_ADJACENT_HTML',
+      'index.html',
+      '<script>const a = "<p>All local data is "; const b = "password-protected.</p>"; document.body.insertAdjacentHTML("beforeend", a + b);</script>',
+      '<script>const a = "<p>Account "; const b = "settings.</p>"; document.body.insertAdjacentHTML("beforeend", a + b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEXT_NODE',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.appendChild(document.createTextNode(a + b));</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.appendChild(document.createTextNode(a + b));</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_INNER_HTML',
+      'index.html',
+      '<script>const a = "<p>All local data is "; const b = "password-protected.</p>"; document.body.innerHTML = a + b;</script>',
+      '<script>const a = "<p>Account "; const b = "settings.</p>"; document.body.innerHTML = a + b;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_COMPUTED_SINK',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body["append"](a, b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body["append"](a, b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_OPTIONAL_SINK',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.append?.(a, b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.append?.(a, b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_EMPTY_TEXT_NODE',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a, document.createTextNode(""), b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.append(a, document.createTextNode(""), b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_SEQUENTIAL_SINKS',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a); document.body.append(b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.append(a); document.body.append(b);</script>',
       'html',
     ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
