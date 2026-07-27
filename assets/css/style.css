@@ -8894,9 +8894,14 @@ h2:hover .anchor-link,
 .footer-pages a,
 .footer-meta a,
 .docs-nav-list a {
+  /* master 8.5 asks for 44x44, not just 44 tall. Short labels like "Docs"
+     were 33-41px wide — WCAG 2.5.8 AA at 24x24, but under our own rule. The
+     extra width lands as spacing between links, which helps touch anyway. */
   min-height: 44px;
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
 }
 
 /* Some pages (notably /audit) carry a more specific em-based min-height that

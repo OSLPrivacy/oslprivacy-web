@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T00:34:23.951Z",
+  "generated_at": "2026-07-27T00:52:42.435Z",
   "browser_version": "HeadlessChrome/149.0.7827.55",
   "min_tap_px": 44,
   "results": [
@@ -10,11 +10,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -29,11 +25,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -48,11 +40,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -67,11 +55,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -86,11 +70,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -105,11 +85,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -124,11 +100,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -143,11 +115,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -162,11 +130,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -181,11 +145,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -200,11 +160,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -219,11 +175,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -238,11 +190,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -257,11 +205,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -276,11 +220,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -295,11 +235,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -314,11 +250,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -333,11 +265,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -352,11 +280,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -371,11 +295,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -390,11 +310,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -409,11 +325,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -428,11 +340,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -447,11 +355,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -466,11 +370,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -485,11 +385,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -504,11 +400,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -523,11 +415,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -542,11 +430,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -561,11 +445,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -580,11 +460,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -599,11 +475,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -618,11 +490,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -637,11 +505,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -656,11 +520,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -675,11 +535,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -694,11 +550,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -713,11 +565,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -732,11 +580,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -751,11 +595,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -770,11 +610,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -789,11 +625,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -808,11 +640,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -827,11 +655,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -846,11 +670,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -865,11 +685,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -884,11 +700,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -903,11 +715,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -922,11 +730,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -941,11 +745,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -960,11 +760,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -979,11 +775,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -998,11 +790,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1017,11 +805,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1036,11 +820,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1055,11 +835,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1074,11 +850,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1093,11 +865,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1112,11 +880,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1131,11 +895,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1150,11 +910,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1169,11 +925,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1188,11 +940,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1207,11 +955,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1226,11 +970,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1245,11 +985,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1264,11 +1000,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1283,11 +1015,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1302,11 +1030,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1321,11 +1045,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1340,11 +1060,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1359,11 +1075,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1378,11 +1090,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1397,11 +1105,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1416,11 +1120,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1435,11 +1135,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1454,11 +1150,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1473,11 +1165,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1492,11 +1180,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1511,11 +1195,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1530,11 +1210,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1549,11 +1225,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1568,11 +1240,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1587,11 +1255,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1606,11 +1270,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1625,11 +1285,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1644,11 +1300,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1663,11 +1315,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1682,11 +1330,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1701,11 +1345,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1720,11 +1360,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1739,11 +1375,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1758,11 +1390,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1777,11 +1405,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1796,11 +1420,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1815,11 +1435,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1834,11 +1450,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1853,11 +1465,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1872,11 +1480,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1891,11 +1495,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1910,11 +1510,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1929,11 +1525,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1948,11 +1540,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1967,11 +1555,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -1986,11 +1570,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2005,11 +1585,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2024,11 +1600,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2043,11 +1615,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2062,11 +1630,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2081,11 +1645,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2100,11 +1660,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2119,11 +1675,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2138,11 +1690,7 @@
       "layout_width": 320,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2157,11 +1705,7 @@
       "layout_width": 160,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2176,11 +1720,7 @@
       "layout_width": 390,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2195,11 +1735,7 @@
       "layout_width": 195,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2214,11 +1750,7 @@
       "layout_width": 768,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2233,11 +1765,7 @@
       "layout_width": 384,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2252,11 +1780,7 @@
       "layout_width": 1280,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
@@ -2271,11 +1795,7 @@
       "layout_width": 640,
       "imagesMissingAlt": [],
       "controlsMissingName": [],
-      "smallTapTargets": [
-        "a 34x44",
-        "a 41x44",
-        "a 33x44"
-      ],
+      "smallTapTargets": [],
       "horizontalOverflow": 0,
       "overflowingElements": [],
       "landmarks": {
