@@ -717,10 +717,9 @@ function falseIdentityPasswordMechanism(text) {
         + `(?:encrypt|seal|protect|secure)(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
       'i',
     );
-    return !/\brather\s+than\b/i.test(clause)
-      && (passiveRelationship.test(clause)
-        || activeRelationship.test(clause)
-        || usedToRelationship.test(clause));
+    return passiveRelationship.test(clause)
+      || activeRelationship.test(clause)
+      || usedToRelationship.test(clause);
   });
 }
 
@@ -1005,9 +1004,16 @@ function staticJavaScriptTextSinkValues(content) {
     if (source === null) continue;
     const args = splitTopLevelJavaScriptArguments(source);
     const candidates = call[0].startsWith('insertAdjacentText') ? args.slice(1) : args;
+    const resolved = [];
     for (const candidate of candidates) {
       const value = evaluateStaticJavaScriptExpression(candidate, bindings);
-      if (value !== null) values.push(value);
+      if (value !== null) {
+        values.push(value);
+        resolved.push(value);
+      }
+    }
+    if (resolved.length > 1 && resolved.length === candidates.length) {
+      values.push(resolved.join(''));
     }
   }
   return values;
@@ -2899,6 +2905,12 @@ const NEGATION_CASES = [
     kinds: ['at-rest overclaim'],
   },
   {
+    name: 'honest identity sealer rather than password relationship',
+    file: 'audit.html',
+    html: '<p>Private identity keys are sealed by the operating-system credential store rather than your main password.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
     name: 'honest status metadata does-not-mean limitation',
     file: 'docs/faq.html',
     html: '<p>Status metadata reports whether an identity-key storage key is installed; it does not mean all local records are encrypted.</p>',
@@ -3514,6 +3526,13 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_WITH_UNRELATED_RATHER_THAN',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Private identity keys are encrypted with your main password rather than the backup password.';
+      },
+    },
+    {
       name: 'AT_REST_UNREACHABLE_NOTES_CLAIM',
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
@@ -3659,6 +3678,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; document.body.insertAdjacentText("beforeend", a + b);</script>',
       '<script>const a = "Account "; const b = "settings."; document.body.insertAdjacentText("beforeend", a + b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_MULTI_ARGUMENT_COPY',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a, b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.append(a, b);</script>',
       'html',
     ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
