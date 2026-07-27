@@ -13,6 +13,7 @@ import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const PRICING_PATH = path.join(ROOT, 'data', 'pricing.json');
+const AT_REST_CENSUS_PATH = path.join(ROOT, 'data', 'at-rest-census.json');
 const TEMPLATE_PATH = path.join(ROOT, 'docs', 'threat-model.html');
 const OUT_PATH = path.join(ROOT, 'docs', 'status.html');
 const CHECK_MODE = process.argv.includes('--check');
@@ -37,7 +38,24 @@ function statusText(status) {
   return `<strong>${esc(status)}</strong>`;
 }
 
-function buildBody(pricing) {
+function atRestClaim(census, id) {
+  const claims = census.public_claims ?? [];
+  const matches = claims.filter((claim) => claim.id === id);
+  if (matches.length !== 1) {
+    throw new Error(`build-status: expected exactly one ${id} claim in data/at-rest-census.json`);
+  }
+  const claim = matches[0];
+  if (claim.file !== 'docs/status.html'
+      || !Array.isArray(claim.backend_refs)
+      || claim.backend_refs.length === 0
+      || typeof claim.text !== 'string'
+      || claim.text.trim() === '') {
+    throw new Error(`build-status: ${id} has an invalid status-page binding`);
+  }
+  return `<p data-osl-at-rest-claim="${esc(claim.id)}" data-osl-at-rest-backends="${esc(claim.backend_refs.join(' '))}">${esc(claim.text)}</p>`;
+}
+
+function buildBody(pricing, atRestCensus) {
   const registry = pricing.capability_registry ?? [];
   const frame = pricing.launch_frame ?? {};
   const matrix = pricing.connector_matrix ?? {};
@@ -50,6 +68,9 @@ function buildBody(pricing) {
   out.push(`        <p class="lede">OSL is in early access before its v1 launch. This page is the honest, dated record of what the shipping app actually does. Every feature page on this site links here. Matrix version ${esc(matrix.version ?? pricing.decided_on ?? '')}.</p>`);
 
   out.push('        <p>The rest of this site describes OSL v1 — the product we are building toward. This page is the exception: nothing here is forward-looking. If a capability is not listed as working below, do not rely on it, and do not buy Pro expecting it.</p>');
+
+  out.push('        <h2 id="at-rest">Local data at rest <a class="anchor-link" href="#at-rest" aria-label="Link to this section">#</a></h2>');
+  out.push(`        ${atRestClaim(atRestCensus, 'status-at-rest-boundary')}`);
 
   out.push('        <h2 id="working">Working today <a class="anchor-link" href="#working" aria-label="Link to this section">#</a></h2>');
   out.push('        <p>Proven on test builds against a real conversation. Not yet proven on a numbered release build, which is why none of these is labelled <em>Available</em>.</p>');
@@ -117,6 +138,7 @@ function buildBody(pricing) {
 }
 
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
+const atRestCensus = JSON.parse(await readFile(AT_REST_CENSUS_PATH, 'utf8'));
 const template = await readFile(TEMPLATE_PATH, 'utf8');
 
 const openTag = '<article class="docs-content">';
@@ -143,7 +165,7 @@ head = head
   .replace(' href="/docs/threat-model" aria-current="page"', ' href="/docs/threat-model"')
   .replace('<li><a href="/docs/faq">FAQ</a></li>', '<li><a href="/docs/status" aria-current="page">What works today</a></li>\n              <li><a href="/docs/faq">FAQ</a></li>');
 
-const generated = `${head}\n${buildBody(pricing)}\n      ${tail}`;
+const generated = `${head}\n${buildBody(pricing, atRestCensus)}\n      ${tail}`;
 
 if (CHECK_MODE) {
   let current = '';

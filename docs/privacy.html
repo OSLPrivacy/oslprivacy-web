@@ -86,7 +86,7 @@
         <p>From within OSL itself, we collect nothing:</p>
         <ul>
           <li>Readable social messages, email content, or contacts from connected services. Supported protected content is processed locally.</li>
-          <li>Your encryption keys. They live on your device, encrypted at rest with your password.</li>
+          <li data-osl-at-rest-claim="privacy-key-storage-boundary" data-osl-at-rest-backends="identity-private-key-file">Private identity keys: the reviewed Hub source requires a persistent TPM or operating-system credential-store sealer before identity creation. Public identity keys are published to the key server. The main password is a separate gate and file-storage-key source. This does not describe every local record and is not verification of installed release bytes.</li>
           <li>Usage analytics. OSL doesn't phone home with telemetry.</li>
           <li>Cross-site tracking via cookies.</li>
           <li>Device identifiers or fingerprints from inside the application.</li>

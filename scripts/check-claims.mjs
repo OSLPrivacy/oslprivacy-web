@@ -21,6 +21,7 @@ import path from 'node:path';
 // fail on every surface regardless of framing.
 const ROOT = process.cwd();
 const PRICING_PATH = path.join(ROOT, 'data', 'pricing.json');
+const AT_REST_CENSUS_PATH = path.join(ROOT, 'data', 'at-rest-census.json');
 const SELF_TEST = process.argv.includes('--self-test');
 const AS_OF = parseAsOf(process.argv);
 const PRICE_RE = /\$\s?\d+(\.\d{2})?/g;
@@ -66,6 +67,217 @@ const H7_ALLOWED_HOSTS = new Set([
 const H7_CONFIDENCE = new Set(['high', 'medium', 'low']);
 const H7_COMPARABILITY = new Set(['not_equivalent', 'narrowly_comparable']);
 const H7_MAX_SOURCE_AGE_DAYS = 90;
+const AT_REST_EVIDENCE_TIERS = new Set([
+  'source-inspected-only',
+  'test-proven-only',
+]);
+const AT_REST_PRODUCT_SOURCE = Object.freeze({
+  commit: 'b1e8c10a13622aa2afea39361ed5c4309e168ca5',
+  tree: '48c75ceb9b9fc241f0ee95fbc6f8dfe028e8e65b',
+});
+const AT_REST_BACKEND_CONTRACT = new Map(Object.entries({
+  'identity-private-key-file': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'source-inspected-only',
+    plaintext_possible_at_rest: false,
+  },
+  'message-store-rows': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'test-proven-only',
+    plaintext_possible_at_rest: false,
+  },
+  'message-store-structure': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'store-attachment-cache': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'test-proven-only',
+    plaintext_possible_at_rest: false,
+  },
+  'peer-map-json': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'membership-json': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'conditional-json-family': {
+    retention: 'durable',
+    reachability: 'mixed-source-paths',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'renderer-local-storage': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'hub-plaintext-config-family': {
+    retention: 'durable',
+    reachability: 'mixed-source-paths',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'active-identity-marker': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'provider-profile-storage': {
+    retention: 'durable',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'startup-trace-log': {
+    retention: 'durable-until-external-cleanup',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: true,
+  },
+  'hub-encrypted-record-family': {
+    retention: 'durable',
+    reachability: 'mixed-source-paths',
+    public_claimability: 'source-inspected-only',
+    plaintext_possible_at_rest: false,
+  },
+  'decrypted-ui-memory': {
+    retention: 'ephemeral',
+    reachability: 'production-source-path',
+    public_claimability: 'limitation-only',
+    plaintext_possible_at_rest: false,
+  },
+  'notes-json-backend': {
+    retention: 'durable-if-wired',
+    reachability: 'implemented-unwired',
+    public_claimability: 'not-claimable',
+    plaintext_possible_at_rest: false,
+  },
+  'scrub-encrypted-index': {
+    retention: 'durable-if-reached',
+    reachability: 'source-reachability-unknown',
+    public_claimability: 'not-claimable',
+    plaintext_possible_at_rest: false,
+  },
+  'protected-attachment-open': {
+    retention: 'ephemeral-if-wired',
+    reachability: 'production-source-path',
+    public_claimability: 'planned-only',
+    plaintext_possible_at_rest: false,
+  },
+  'qa-diagnostic-artifacts': {
+    retention: 'durable-when-qa-enabled',
+    reachability: 'qa-only-source-path',
+    public_claimability: 'not-claimable',
+    plaintext_possible_at_rest: true,
+  },
+}));
+const AT_REST_SOURCE_CONTRACT = new Map(Object.entries({
+  'identity-private-key-file': [
+    'crates/keystore/src/storage.rs',
+    'apps/osl-hub/src/password_lifecycle.rs',
+  ],
+  'message-store-rows': [
+    'crates/store/src/lib.rs',
+    'crates/store/src/cipher.rs',
+  ],
+  'message-store-structure': [
+    'crates/store/src/schema.rs',
+    'crates/store/src/cipher.rs',
+  ],
+  'store-attachment-cache': [
+    'crates/store/src/lib.rs',
+    'crates/ipc/src/commands.rs',
+  ],
+  'peer-map-json': [
+    'crates/ipc/src/peer_map.rs',
+    'crates/ipc/src/main_password.rs',
+  ],
+  'membership-json': [
+    'crates/ipc/src/membership.rs',
+    'crates/ipc/src/main_password.rs',
+  ],
+  'conditional-json-family': [
+    'crates/ipc/src/main_password.rs',
+    'crates/ipc/src/whitelist_state.rs',
+    'crates/ipc/src/app_preferences.rs',
+    'crates/ipc/src/control_inbox_dead_letter.rs',
+    'crates/ipc/src/scope_blobs_file.rs',
+    'crates/ipc/src/scope_ttl_file.rs',
+    'crates/ipc/src/sender_key_state.rs',
+  ],
+  'renderer-local-storage': [
+    'apps/osl-hub-ui/src/main.ts',
+    'apps/osl-hub-ui/src/theme-preference.ts',
+  ],
+  'hub-plaintext-config-family': [
+    'apps/osl-hub/src/preferences.rs',
+    'crates/ipc/src/fresh_start.rs',
+  ],
+  'active-identity-marker': [
+    'apps/osl-hub/src/identity_registry.rs',
+    'apps/osl-hub/src/main.rs',
+  ],
+  'provider-profile-storage': [
+    'apps/osl-hub/src/service_host.rs',
+    'apps/osl-hub/src/native_window_host.rs',
+    'apps/osl-hub/src/cleanup.rs',
+  ],
+  'startup-trace-log': [
+    'apps/osl-hub/src/main.rs',
+    'apps/osl-hub/src/native_window_host.rs',
+  ],
+  'hub-encrypted-record-family': [
+    'apps/osl-hub/src/security.rs',
+    'apps/osl-hub/src/services.rs',
+    'apps/osl-hub/src/service_scope_index.rs',
+    'apps/osl-hub/src/broker.rs',
+    'apps/osl-hub/src/message_expiry.rs',
+    'apps/osl-hub/src/peer_attachment_io.rs',
+  ],
+  'decrypted-ui-memory': [
+    'apps/osl-hub/src/external_overlay.rs',
+  ],
+  'notes-json-backend': [
+    'apps/osl-hub/src/osl_notes.rs',
+  ],
+  'scrub-encrypted-index': [
+    'apps/osl-hub/src/scrub_index.rs',
+  ],
+  'protected-attachment-open': [
+    'apps/osl-hub/src/peer_attachment_io.rs',
+    'apps/osl-hub/src/native_attachment_transport.rs',
+  ],
+  'qa-diagnostic-artifacts': [
+    'apps/osl-hub/src/discord_qa_inbound_receipt.rs',
+    'apps/osl-hub/src/discord_qa_identity.rs',
+    'apps/osl-hub/src/native_discord_adapter.rs',
+  ],
+}));
+const AT_REST_CLAIM_CONTRACT = new Map(Object.entries({
+  'audit-local-storage-boundary': ['audit.html', 'source-inspected-only'],
+  'faq-password-recovery-boundary': ['docs/faq.html', 'source-inspected-only'],
+  'faq-shutdown-retention-boundary': ['docs/faq.html', 'test-proven-only'],
+  'faq-uninstall-storage-boundary': ['docs/faq.html', 'test-proven-only'],
+  'status-at-rest-boundary': ['docs/status.html', 'test-proven-only'],
+  'getting-started-password-boundary': ['docs/getting-started.html', 'test-proven-only'],
+  'how-keys-live-boundary': ['docs/how-it-works.html', 'source-inspected-only'],
+  'privacy-key-storage-boundary': ['docs/privacy.html', 'source-inspected-only'],
+  'threat-model-at-rest-boundary': ['docs/threat-model.html', 'test-proven-only'],
+}));
 
 function parseAsOf(argv) {
   const matches = argv.filter((arg) => arg.startsWith('--as-of='));
@@ -353,6 +565,268 @@ function plainText(html) {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
 }
 
+function visibleHtml(content) {
+  return content
+    .replace(/<!--[\s\S]*?-->/g, (value) => ' '.repeat(value.length))
+    .replace(/<(script|style|template|noscript)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, (value) => ' '.repeat(value.length));
+}
+
+function atRestClaimElements(content) {
+  const visible = visibleHtml(content);
+  const elementRe = /<([a-z][a-z0-9:-]*)\b([^>]*\bdata-osl-at-rest-claim\s*=\s*["'][^"']+["'][^>]*)>([\s\S]*?)<\/\1\s*>/gi;
+  const idRe = /\bdata-osl-at-rest-claim\s*=\s*["']([^"']+)["']/i;
+  const refsRe = /\bdata-osl-at-rest-backends\s*=\s*["']([^"']*)["']/i;
+  const elements = [];
+  for (const match of visible.matchAll(elementRe)) {
+    const attrs = match[2];
+    elements.push({
+      id: attrs.match(idRe)?.[1]?.trim() ?? '',
+      backendRefs: shortText(attrs.match(refsRe)?.[1] ?? '').split(' ').filter(Boolean),
+      text: shortText(renderedTextWithSourceMap(match[3]).text),
+      index: match.index ?? 0,
+      html: match[0],
+      hidden: /\bhidden(?:\s|=|>|$)|\baria-hidden\s*=\s*["']true["']/i.test(attrs),
+    });
+  }
+  return elements;
+}
+
+function falseIdentityPasswordMechanism(text) {
+  const normalized = shortText(text);
+  if (/\b(?:does\s+not|doesn't|is\s+not|isn't|are\s+not|aren't|never|separate|rather\s+than)\b/i.test(normalized)) {
+    return false;
+  }
+  return /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(normalized)
+    && /\b(?:(?:your|the|main|OSL)\s+)?password\b|\bpassphrase\b/i.test(normalized)
+    && /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(normalized);
+}
+
+function atRestSemanticTripwire(text) {
+  const normalized = shortText(text);
+  if (!normalized) return false;
+  const explicitAtRest = /\bat[-\s]+rest\b|\bon[-\s]+disk\b|\bfilesystem\b|\bmessage[-\s]+store\b/i;
+  const localContext = /\b(?:local(?:ly)?\s+(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)|on[-\s]+device|on\s+(?:this|your|the)\s+(?:device|computer|machine)|on\s+your\s+own\s+computer|whole[-\s]+profile|localstorage)\b/i;
+  const protectionAssertion = /\b(?:(?:is|are|was|were|be|been|remain(?:s)?|stay(?:s)?|become(?:s)?|can\s+be|may\s+be)\s+(?:always\s+|never\s+|fully\s+|entirely\s+)?(?:encrypt(?:ed)?|decrypt(?:ed)?|seal(?:ed)?|ciphertext|cleartext|plain[-\s]*text|password[-\s]*(?:protected|sealed|gated)|protected\s+with\s+(?:a\s+)?password|unreadable|opaque|in\s+the\s+clear)|encrypt(?:s|ed|ing)?|decrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|never\s+(?:writes?|stores?|retains?)\s+.{0,60}\b(?:plaintext|cleartext|in\s+the\s+clear))\b/i;
+  const sentences = normalized.split(/[.!?;]+/).map(shortText).filter(Boolean);
+  return sentences.some((sentence) => (
+    falseIdentityPasswordMechanism(sentence)
+      || (explicitAtRest.test(sentence) && protectionAssertion.test(sentence))
+      || (localContext.test(sentence) && protectionAssertion.test(sentence))
+  ));
+}
+
+function atRestUnboundClaimErrors(fileRel, content) {
+  const visible = visibleHtml(content);
+  const boundElements = atRestClaimElements(content);
+  let unbound = visible;
+  for (const element of boundElements) {
+    unbound = unbound.replace(element.html, ' '.repeat(element.html.length));
+  }
+
+  const errors = [];
+  const blockRe = /<(p|li|td)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  for (const block of unbound.matchAll(blockRe)) {
+    const text = shortText(renderedTextWithSourceMap(block[2]).text);
+    if (!atRestSemanticTripwire(text)) continue;
+    errors.push({
+      kind: 'unbound at-rest claim',
+      file: fileRel,
+      line: lineNumber(content, block.index ?? 0),
+      text: `${text} -- bind this visible claim to data/at-rest-census.json`,
+    });
+  }
+  return errors;
+}
+
+function validateAtRestCensus(census) {
+  const errors = [];
+  const record = (code, text) => errors.push(`${code}: ${text}`);
+  if (census?.schema_version !== 1 || census?.census_id !== 'osl-at-rest-source-census') {
+    record('AT_REST_SCHEMA', 'unsupported or missing at-rest census identity/version');
+  }
+  if (census?.product_source?.commit !== AT_REST_PRODUCT_SOURCE.commit
+      || census?.product_source?.tree !== AT_REST_PRODUCT_SOURCE.tree
+      || census?.product_source?.runtime_release_verified !== false
+      || census?.product_source?.evidence_tier !== 'source-inspected-and-test-proven-only'
+      || !census?.product_source?.limitation?.trim()) {
+    record('AT_REST_PROVENANCE', 'the exact reviewed product commit/tree, bounded evidence tier, runtime=false, and limitation are required');
+  }
+
+  const backends = Array.isArray(census?.backends) ? census.backends : [];
+  const backendById = new Map();
+  for (const backend of backends) {
+    if (!backend?.id || backendById.has(backend.id)) {
+      record('AT_REST_BACKEND_ID', `missing or duplicate backend id ${backend?.id ?? '<empty>'}`);
+      continue;
+    }
+    backendById.set(backend.id, backend);
+    if (!backend.data_class?.trim()
+        || !backend.at_rest_form?.trim()
+        || typeof backend.plaintext_possible_at_rest !== 'boolean'
+        || !backend.plaintext_runtime_form?.trim()
+        || !backend.key_absent_behavior?.trim()
+        || !Array.isArray(backend.sources)
+        || backend.sources.length === 0
+        || backend.sources.some((source) => !source.path?.trim() || !source.symbol?.trim() || !source.proof?.trim())
+        || !Array.isArray(backend.limitations)
+        || backend.limitations.length === 0
+        || backend.limitations.some((limitation) => !limitation?.trim())) {
+      record('AT_REST_BACKEND_SHAPE', `${backend.id} lacks an exact data/form/key/source/limitation contract`);
+    }
+  }
+
+  const requiredIds = census?.required_backend_ids;
+  if (!Array.isArray(requiredIds)
+      || requiredIds.length !== AT_REST_BACKEND_CONTRACT.size
+      || new Set(requiredIds).size !== requiredIds.length
+      || requiredIds.some((id) => !AT_REST_BACKEND_CONTRACT.has(id))) {
+    record('AT_REST_BACKEND_CENSUS', 'required_backend_ids must contain the exact authoritative backend set');
+  }
+  for (const [id, expected] of AT_REST_BACKEND_CONTRACT) {
+    const backend = backendById.get(id);
+    if (!backend) {
+      record('AT_REST_BACKEND_CENSUS', `required backend ${id} is missing`);
+      continue;
+    }
+    for (const [field, value] of Object.entries(expected)) {
+      if (backend[field] !== value) {
+        record('AT_REST_BACKEND_TRUTH', `${id}.${field} must remain ${JSON.stringify(value)}, got ${JSON.stringify(backend[field])}`);
+      }
+    }
+    const expectedSourcePaths = AT_REST_SOURCE_CONTRACT.get(id);
+    const actualSourcePaths = backend.sources?.map((source) => source.path);
+    if (!expectedSourcePaths
+        || JSON.stringify(actualSourcePaths) !== JSON.stringify(expectedSourcePaths)) {
+      record('AT_REST_BACKEND_SOURCE', `${id} must retain its exact ordered source anchors`);
+    }
+  }
+  if (backends.length !== AT_REST_BACKEND_CONTRACT.size) {
+    record('AT_REST_BACKEND_CENSUS', `expected exactly ${AT_REST_BACKEND_CONTRACT.size} backends, got ${backends.length}`);
+  }
+
+  const claims = Array.isArray(census?.public_claims) ? census.public_claims : [];
+  const claimById = new Map();
+  for (const claim of claims) {
+    if (!claim?.id || claimById.has(claim.id)) {
+      record('AT_REST_CLAIM_ID', `missing or duplicate claim id ${claim?.id ?? '<empty>'}`);
+      continue;
+    }
+    claimById.set(claim.id, claim);
+    const expected = AT_REST_CLAIM_CONTRACT.get(claim.id);
+    if (!expected) {
+      record('AT_REST_CLAIM_CENSUS', `undeclared public claim ${claim.id}`);
+      continue;
+    }
+    if (claim.file !== expected[0] || claim.status_tier !== expected[1]
+        || !AT_REST_EVIDENCE_TIERS.has(claim.status_tier)
+        || !claim.text?.trim()
+        || !Array.isArray(claim.backend_refs)
+        || claim.backend_refs.length === 0
+        || new Set(claim.backend_refs).size !== claim.backend_refs.length) {
+      record('AT_REST_CLAIM_SHAPE', `${claim.id} has wrong file/tier/text/backend references`);
+      continue;
+    }
+    for (const ref of claim.backend_refs) {
+      const backend = backendById.get(ref);
+      if (!backend) {
+        record('AT_REST_CLAIM_BACKEND', `${claim.id} references missing backend ${ref}`);
+      } else if (['implemented-unwired', 'source-reachability-unknown', 'qa-only-source-path']
+        .includes(backend.reachability)
+          || backend.public_claimability === 'not-claimable'
+          || backend.public_claimability === 'planned-only') {
+        record('AT_REST_UNWIRED_CLAIM', `${claim.id} cites ${ref}, whose ${backend.reachability}/${backend.public_claimability} status cannot support public present-tense copy`);
+      }
+    }
+  }
+  for (const [id, expected] of AT_REST_CLAIM_CONTRACT) {
+    const claim = claimById.get(id);
+    if (!claim) {
+      record('AT_REST_CLAIM_CENSUS', `required public claim ${id} is missing`);
+    } else if (claim.file !== expected[0] || claim.status_tier !== expected[1]) {
+      record('AT_REST_CLAIM_TRUTH', `${id} must remain ${expected[0]}/${expected[1]}`);
+    }
+  }
+  if (claims.length !== AT_REST_CLAIM_CONTRACT.size) {
+    record('AT_REST_CLAIM_CENSUS', `expected exactly ${AT_REST_CLAIM_CONTRACT.size} public claims, got ${claims.length}`);
+  }
+  return errors;
+}
+
+function atRestClaimBindingErrors(fileRel, content, census) {
+  const errors = [];
+  const claims = (census.public_claims || []).filter((claim) => claim.file === fileRel);
+  const claimById = new Map((census.public_claims || []).map((claim) => [claim.id, claim]));
+  const visibleElements = atRestClaimElements(content);
+  const rawMarkerCount = [...content.matchAll(/\bdata-osl-at-rest-claim\s*=/gi)].length;
+  if (rawMarkerCount !== visibleElements.length) {
+    errors.push({
+      kind: 'unreachable at-rest claim',
+      file: fileRel,
+      line: 0,
+      text: `${rawMarkerCount - visibleElements.length} claim marker(s) exist only in comments, scripts, styles, templates, noscript, or malformed markup`,
+    });
+  }
+
+  for (const element of visibleElements) {
+    const claim = claimById.get(element.id);
+    if (!claim) {
+      errors.push({
+        kind: 'unknown at-rest claim',
+        file: fileRel,
+        line: lineNumber(content, element.index),
+        text: `${element.id} is not declared by data/at-rest-census.json`,
+      });
+      continue;
+    }
+    if (claim.file !== fileRel) {
+      errors.push({
+        kind: 'misplaced at-rest claim',
+        file: fileRel,
+        line: lineNumber(content, element.index),
+        text: `${element.id} belongs in ${claim.file}`,
+      });
+    }
+    if (element.hidden) {
+      errors.push({
+        kind: 'unreachable at-rest claim',
+        file: fileRel,
+        line: lineNumber(content, element.index),
+        text: `${element.id} is hidden from readers`,
+      });
+    }
+    if (element.text !== shortText(claim.text)) {
+      errors.push({
+        kind: 'at-rest claim drift',
+        file: fileRel,
+        line: lineNumber(content, element.index),
+        text: `${element.id} visible copy differs from its exact census text`,
+      });
+    }
+    if (element.backendRefs.join(' ') !== claim.backend_refs.join(' ')) {
+      errors.push({
+        kind: 'at-rest backend drift',
+        file: fileRel,
+        line: lineNumber(content, element.index),
+        text: `${element.id} backend binding differs from its exact census references`,
+      });
+    }
+  }
+
+  for (const claim of claims) {
+    const occurrences = visibleElements.filter((element) => element.id === claim.id).length;
+    if (occurrences !== 1) {
+      errors.push({
+        kind: 'missing or duplicate at-rest claim',
+        file: fileRel,
+        line: 0,
+        text: `${claim.id} must occur exactly once as visible bound copy; found ${occurrences}`,
+      });
+    }
+  }
+  errors.push(...atRestUnboundClaimErrors(fileRel, content));
+  return errors;
+}
+
 // Sections are the unit a reader actually perceives, so the forward-looking
 // requirement is scoped to the section that names the capability rather than to
 // the whole page. A page-wide check would let one "coming soon" at the bottom
@@ -500,6 +974,17 @@ function atRestOverclaimErrors(fileRel, content) {
         text: shortText(sentence[0]),
       }))
       .filter((sentence) => sentence.text);
+    const falseMechanism = sentences.find(({ text }) => falseIdentityPasswordMechanism(text));
+    if (falseMechanism) {
+      const sourceIndex = rendered.sourceIndexes[falseMechanism.start] ?? 0;
+      errors.push({
+        kind: 'at-rest overclaim',
+        file: fileRel,
+        line: lineNumber(content, sourceIndex),
+        text: `${falseMechanism.text} -- the reviewed Hub identity path uses a persistent TPM or operating-system credential-store sealer; the main password is separate`,
+      });
+      continue;
+    }
     // Scope is established inside one sentence. Its protection assertion may
     // appear elsewhere in the same rendered block, so arbitrary sentence
     // splitting cannot evade the check. Narrow identity-key and message-body
@@ -558,7 +1043,18 @@ function analyseFile(fileRel, content, config) {
 
   // ---- Global rules: these hold on every surface, whatever the framing.
   errors.push(...h4ExplainerErrors(fileRel, content));
-  errors.push(...atRestOverclaimErrors(fileRel, content));
+  // Census-bound visible copy is validated byte-for-byte by
+  // atRestClaimBindingErrors. The legacy broad-claim detector only inspects
+  // unbound copy; otherwise words such as "not every local record" can turn a
+  // narrow, explicitly limited census statement into a false positive.
+  let unboundAtRestContent = content;
+  for (const element of atRestClaimElements(content)) {
+    unboundAtRestContent = unboundAtRestContent.replace(
+      element.html,
+      ' '.repeat(element.html.length),
+    );
+  }
+  errors.push(...atRestOverclaimErrors(fileRel, unboundAtRestContent));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -1232,6 +1728,18 @@ const SELF_TEST_CASES = [
     expect: 'at-rest overclaim',
   },
   {
+    name: 'false password mechanism for private identity keys',
+    file: 'audit.html',
+    html: '<p>Private identity keys are encrypted at rest with your password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'reversed false password mechanism for identity keys',
+    file: 'docs/faq.html',
+    html: '<p>Your main password seals the identity private key.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
     name: 'all local state password-protected',
     file: 'docs/faq.html',
     html: '<p>All local state is password-protected.</p>',
@@ -1768,7 +2276,7 @@ const NEGATION_CASES = [
   {
     name: 'honest identity-key at-rest claim',
     file: 'audit.html',
-    html: '<p>Private identity keys are encrypted at rest with your password.</p>',
+    html: '<p>Private identity keys are sealed at rest by a persistent TPM or operating-system credential-store sealer.</p>',
     kinds: ['at-rest overclaim'],
   },
   {
@@ -1804,7 +2312,7 @@ const NEGATION_CASES = [
   {
     name: 'honest combined key claim and plaintext limitation',
     file: 'audit.html',
-    html: '<p>Private identity keys are encrypted at rest with your password, but password protection does not cover every local record.</p>',
+    html: '<p>Private identity keys use the operating-system credential sealer, but main-password protection does not cover every local record.</p>',
     kinds: ['at-rest overclaim'],
   },
   {
@@ -2111,15 +2619,182 @@ const H7_SELF_TEST_MUTATIONS = [
 ];
 
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
+const atRestCensus = JSON.parse(await readFile(AT_REST_CENSUS_PATH, 'utf8'));
 const config = buildConfig(pricing);
 if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0) {
   console.error('check-claims floor: tiers.pro.intended_grant_days must be a positive integer so the semantic grant-duration prohibition cannot become vacuous.');
   process.exit(1);
 }
 const h7ValidationErrors = validateH7Comparison(pricing, AS_OF);
+const atRestValidationErrors = validateAtRestCensus(atRestCensus);
 
 if (SELF_TEST) {
   let failures = 0;
+  console.log('check-claims self-test (authoritative at-rest census):');
+  const atRestAssertions = [
+    {
+      name: 'valid at-rest census passes the full validator',
+      pass: atRestValidationErrors.length === 0,
+      detail: atRestValidationErrors.join('; '),
+    },
+    {
+      name: 'exactly eighteen required storage backends',
+      pass: atRestCensus.backends?.length === 18
+        && atRestCensus.required_backend_ids?.length === 18,
+    },
+    {
+      name: 'exactly nine bound public claims',
+      pass: atRestCensus.public_claims?.length === 9,
+    },
+    {
+      name: 'runtime and release verification explicitly refused',
+      pass: atRestCensus.product_source?.runtime_release_verified === false,
+    },
+    {
+      name: 'plaintext, encrypted, and ephemeral classes are all represented',
+      pass: atRestCensus.backends?.some((backend) => backend.plaintext_possible_at_rest === true)
+        && atRestCensus.backends?.some((backend) => backend.at_rest_form.includes('ciphertext')
+          || backend.at_rest_form.includes('sealed'))
+        && atRestCensus.backends?.some((backend) => backend.retention === 'ephemeral'),
+    },
+    {
+      name: 'implemented-unwired backends are present but not claimable',
+      pass: atRestCensus.backends
+        ?.filter((backend) => backend.reachability === 'implemented-unwired')
+        .every((backend) => backend.public_claimability === 'not-claimable'),
+    },
+  ];
+  for (const assertion of atRestAssertions) {
+    if (!assertion.pass) failures += 1;
+    console.log(`  ${assertion.pass ? 'passed ' : 'FAILED '} ${assertion.name}${assertion.detail ? ` -> ${assertion.detail}` : ''}`);
+  }
+
+  const atRestCensusMutations = [
+    {
+      name: 'required plaintext backend removed',
+      expect: 'AT_REST_BACKEND_CENSUS',
+      mutate(census) {
+        census.backends = census.backends.filter((backend) => backend.id !== 'renderer-local-storage');
+      },
+    },
+    {
+      name: 'required backend id silently removed',
+      expect: 'AT_REST_BACKEND_CENSUS',
+      mutate(census) {
+        census.required_backend_ids = census.required_backend_ids.filter((id) => id !== 'membership-json');
+      },
+    },
+    {
+      name: 'plaintext backend relabelled encrypted',
+      expect: 'AT_REST_BACKEND_TRUTH',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'peer-map-json').plaintext_possible_at_rest = false;
+      },
+    },
+    {
+      name: 'active identity marker silently omitted',
+      expect: 'AT_REST_BACKEND_CENSUS',
+      mutate(census) {
+        census.backends = census.backends
+          .filter((backend) => backend.id !== 'active-identity-marker');
+      },
+    },
+    {
+      name: 'provider profile storage relabelled encrypted',
+      expect: 'AT_REST_BACKEND_TRUTH',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'provider-profile-storage')
+          .plaintext_possible_at_rest = false;
+      },
+    },
+    {
+      name: 'startup trace reachability downgraded to QA-only',
+      expect: 'AT_REST_BACKEND_TRUTH',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'startup-trace-log')
+          .reachability = 'qa-only-source-path';
+      },
+    },
+    {
+      name: 'provider profile source anchor removed',
+      expect: 'AT_REST_BACKEND_SOURCE',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'provider-profile-storage')
+          .sources.pop();
+      },
+    },
+    {
+      name: 'implemented-unwired Notes backend promoted',
+      expect: 'AT_REST_BACKEND_TRUTH',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'notes-json-backend').reachability = 'production-source-path';
+      },
+    },
+    {
+      name: 'public claim cites implemented-unwired Notes backend',
+      expect: 'AT_REST_UNWIRED_CLAIM',
+      mutate(census) {
+        census.public_claims.find((claim) => claim.id === 'status-at-rest-boundary')
+          .backend_refs.push('notes-json-backend');
+      },
+    },
+    {
+      name: 'public claim cites Planned-only attachment backend',
+      expect: 'AT_REST_UNWIRED_CLAIM',
+      mutate(census) {
+        census.public_claims.find((claim) => claim.id === 'faq-uninstall-storage-boundary')
+          .backend_refs.push('protected-attachment-open');
+      },
+    },
+    {
+      name: 'unsupported runtime verification asserted',
+      expect: 'AT_REST_PROVENANCE',
+      mutate(census) {
+        census.product_source.runtime_release_verified = true;
+      },
+    },
+    {
+      name: 'reviewed product commit silently changed',
+      expect: 'AT_REST_PROVENANCE',
+      mutate(census) {
+        census.product_source.commit = '0000000000000000000000000000000000000000';
+      },
+    },
+    {
+      name: 'required FAQ claim removed',
+      expect: 'AT_REST_CLAIM_CENSUS',
+      mutate(census) {
+        census.public_claims = census.public_claims
+          .filter((claim) => claim.id !== 'faq-password-recovery-boundary');
+      },
+    },
+    {
+      name: 'FAQ evidence tier promoted to runtime',
+      expect: 'AT_REST_CLAIM_SHAPE',
+      mutate(census) {
+        census.public_claims.find((claim) => claim.id === 'faq-password-recovery-boundary')
+          .status_tier = 'runtime-verified';
+      },
+    },
+  ];
+  const atRestCensusMutationRuns = new Map();
+  for (const mutation of atRestCensusMutations) {
+    const mutated = structuredClone(atRestCensus);
+    mutation.mutate(mutated);
+    atRestCensusMutationRuns.set(
+      mutation.name,
+      (atRestCensusMutationRuns.get(mutation.name) ?? 0) + 1,
+    );
+    const mutationErrors = validateAtRestCensus(mutated);
+    const caught = mutationErrors.some((error) => error.startsWith(`${mutation.expect}:`));
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name} (expected ${mutation.expect})`);
+  }
+  const everyAtRestCensusMutationRanOnce = atRestCensusMutationRuns.size === atRestCensusMutations.length
+    && [...atRestCensusMutationRuns.values()].every((runs) => runs === 1);
+  if (!everyAtRestCensusMutationRanOnce) failures += 1;
+  console.log(`  ${everyAtRestCensusMutationRanOnce ? 'passed ' : 'FAILED '} each at-rest census mutation executed exactly once`);
+
   console.log(`check-claims self-test (H7 DeleteMe manifest, as of ${AS_OF}):`);
   const comparison = pricing.research_comparisons?.h7_deleteme;
   const h7Assertions = [
@@ -2211,39 +2886,254 @@ if (SELF_TEST) {
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
     {
-      file: 'audit.html',
-      needle: 'That protection does not cover every local record: some private conversation metadata, including peer map and membership records, may remain plaintext when no main password storage key is installed; removing that storage key restores plaintext writes.',
+      claimId: 'audit-local-storage-boundary',
       replacement: 'All private state is encrypted at rest.',
     },
     {
-      file: 'docs/faq.html',
-      needle: 'The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes.',
+      claimId: 'faq-password-recovery-boundary',
       replacement: 'The entire on-disk database is encrypted at rest.',
     },
   ];
   for (const testCase of productionAtRestCases) {
-    const productionContent = await readFile(path.join(ROOT, testCase.file), 'utf8');
-    const occurrences = productionContent.split(testCase.needle).length - 1;
-    const baselineClean = !analyseFile(testCase.file, productionContent, config)
-      .some((error) => error.kind === 'at-rest overclaim');
+    const claim = atRestCensus.public_claims.find(({ id }) => id === testCase.claimId);
+    const productionContent = await readFile(path.join(ROOT, claim.file), 'utf8');
+    const occurrences = productionContent.split(claim.text).length - 1;
+    const baselineErrors = [
+      ...analyseFile(claim.file, productionContent, config),
+      ...atRestClaimBindingErrors(claim.file, productionContent, atRestCensus),
+    ].filter((error) => error.kind.includes('at-rest'));
+    const baselineClean = baselineErrors.length === 0;
+    const mutatedContent = productionContent.replace(claim.text, testCase.replacement);
     const mutationCaught = occurrences === 1
-      && analyseFile(
-        testCase.file,
-        productionContent.replace(testCase.needle, testCase.replacement),
-        config,
-      ).some((error) => error.kind === 'at-rest overclaim');
+      && [
+        ...analyseFile(claim.file, mutatedContent, config),
+        ...atRestClaimBindingErrors(claim.file, mutatedContent, atRestCensus),
+      ].some((error) => error.kind === 'at-rest claim drift');
     if (!baselineClean || !mutationCaught) failures += 1;
-    console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} ${testCase.file} production baseline`);
-    console.log(`  ${mutationCaught ? 'caught ' : 'MISSED '} ${testCase.file} exact broad-claim mutation`);
+    console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} ${claim.file} production baseline`);
+    console.log(`  ${mutationCaught ? 'caught ' : 'MISSED '} ${claim.file} exact broad-claim mutation`);
   }
 
-  const total = h7Assertions.length
+  console.log('\ncheck-claims self-test (production census bindings and semantic mutations):');
+  const atRestProductionFiles = [...new Set(atRestCensus.public_claims.map((claim) => claim.file))];
+  const atRestProductionContent = new Map();
+  let atRestProductionBaselineClean = true;
+  for (const file of atRestProductionFiles) {
+    const content = await readFile(path.join(ROOT, file), 'utf8');
+    atRestProductionContent.set(file, content);
+    const bindingErrors = atRestClaimBindingErrors(file, content, atRestCensus);
+    if (bindingErrors.length > 0) atRestProductionBaselineClean = false;
+  }
+  if (!atRestProductionBaselineClean) failures += 1;
+  console.log(`  ${atRestProductionBaselineClean ? 'passed ' : 'FAILED '} all nine production claim bindings`);
+
+  const statusClaim = atRestCensus.public_claims
+    .find((claim) => claim.id === 'status-at-rest-boundary');
+  const statusElement = `<p data-osl-at-rest-claim="${statusClaim.id}" data-osl-at-rest-backends="${statusClaim.backend_refs.join(' ')}">${statusClaim.text}</p>`;
+  const faqClaim = atRestCensus.public_claims
+    .find((claim) => claim.id === 'faq-password-recovery-boundary');
+  const atRestPageMutations = [
+    {
+      name: 'contradictory addition inside bound FAQ copy',
+      file: faqClaim.file,
+      expect: 'at-rest claim drift',
+      mutate(content) {
+        return content.replace(
+          faqClaim.text,
+          `${faqClaim.text} All local data is encrypted at rest.`,
+        );
+      },
+    },
+    {
+      name: 'contradictory broad paragraph added beside bound FAQ copy',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace('</main>', '<p>All private state is encrypted at rest.</p></main>');
+      },
+    },
+    {
+      name: 'unrelated not-yet sentence cannot excuse broad claim',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>All local data is encrypted at rest. Multi-device synchronization is not yet complete.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'destructive wording cannot excuse broad claim',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>You can delete all local data, which is encrypted at rest.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'anything alias cannot escape census binding',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>Anything OSL keeps on this machine is password-protected.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'full-set alias cannot escape census binding',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>The full set of local records is encrypted with your password.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'byte and datum aliases cannot escape census binding',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>Every byte and datum OSL retains on-device is encrypted.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'split inline markup cannot escape census binding',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>Each <em>one</em> of the local records is password&#45;protected.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'false identity-password mechanism cannot escape census binding',
+      file: faqClaim.file,
+      expect: 'unbound at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p>Private identity keys are encrypted at rest with your password.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'bound backend reference removed',
+      file: statusClaim.file,
+      expect: 'at-rest backend drift',
+      mutate(content) {
+        return content.replace(
+          statusClaim.backend_refs.join(' '),
+          statusClaim.backend_refs.filter((id) => id !== 'renderer-local-storage').join(' '),
+        );
+      },
+    },
+    {
+      name: 'bound claim duplicated',
+      file: statusClaim.file,
+      expect: 'missing or duplicate at-rest claim',
+      mutate(content) {
+        return content.replace(statusElement, `${statusElement}${statusElement}`);
+      },
+    },
+    {
+      name: 'truthful claim moved into unreachable template',
+      file: statusClaim.file,
+      expect: 'unreachable at-rest claim',
+      mutate(content) {
+        return content.replace(statusElement, `<template>${statusElement}</template>`);
+      },
+    },
+    {
+      name: 'truthful claim moved into unreachable script string',
+      file: statusClaim.file,
+      expect: 'unreachable at-rest claim',
+      mutate(content) {
+        return content.replace(
+          statusElement,
+          `<script type="application/json">${statusElement}</script>`,
+        );
+      },
+    },
+    {
+      name: 'truthful implemented-unwired Notes sentence added publicly',
+      file: statusClaim.file,
+      expect: 'unknown at-rest claim',
+      mutate(content) {
+        return content.replace(
+          '</main>',
+          '<p data-osl-at-rest-claim="notes-source-truth" data-osl-at-rest-backends="notes-json-backend">The Notes backend encrypts its file before writing.</p></main>',
+        );
+      },
+    },
+    {
+      name: 'bound visible text removed while marker survives',
+      file: statusClaim.file,
+      expect: 'at-rest claim drift',
+      mutate(content) {
+        return content.replace(statusClaim.text, '');
+      },
+    },
+    {
+      name: 'HTML-encoded contradiction inside bound copy',
+      file: faqClaim.file,
+      expect: 'at-rest claim drift',
+      mutate(content) {
+        return content.replace(
+          faqClaim.text,
+          `${faqClaim.text} Every local record is password&#45;protected.`,
+        );
+      },
+    },
+  ];
+  const atRestPageMutationRuns = new Map();
+  for (const mutation of atRestPageMutations) {
+    const baseline = atRestProductionContent.get(mutation.file);
+    const mutated = mutation.mutate(baseline);
+    atRestPageMutationRuns.set(
+      mutation.name,
+      (atRestPageMutationRuns.get(mutation.name) ?? 0) + 1,
+    );
+    const mutationErrors = atRestClaimBindingErrors(
+      mutation.file,
+      mutated,
+      atRestCensus,
+    );
+    const caught = mutated !== baseline
+      && mutationErrors.some((error) => error.kind === mutation.expect);
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name} (expected ${mutation.expect})`);
+  }
+  const everyAtRestPageMutationRanOnce = atRestPageMutationRuns.size === atRestPageMutations.length
+    && [...atRestPageMutationRuns.values()].every((runs) => runs === 1);
+  if (!everyAtRestPageMutationRanOnce) failures += 1;
+  console.log(`  ${everyAtRestPageMutationRanOnce ? 'passed ' : 'FAILED '} each at-rest page mutation executed exactly once`);
+
+  const total = atRestAssertions.length
+    + atRestCensusMutations.length
+    + 1
+    + h7Assertions.length
     + H7_SELF_TEST_MUTATIONS.length
     + 1
     + SELF_TEST_CASES.length
     + NEGATION_CASES.length
     + 2
-    + (productionAtRestCases.length * 2);
+    + (productionAtRestCases.length * 2)
+    + 1
+    + atRestPageMutations.length
+    + 1;
   console.log(`\ncheck-claims self-test: ${total} fixtures, ${failures} failed.`);
   process.exit(failures > 0 ? 1 : 0);
 }
@@ -2256,19 +3146,36 @@ const errors = h7ValidationErrors.map((text) => ({
   line: 0,
   text,
 }));
+errors.push(...atRestValidationErrors.map((text) => ({
+  kind: 'at-rest census',
+  file: 'data/at-rest-census.json',
+  line: 0,
+  text,
+})));
 const crawledFiles = new Set(files.map((file) => rel(file)));
 
 for (const file of files) {
   const fileRel = rel(file);
   const content = await readFile(file, 'utf8');
   const fileErrors = analyseFile(fileRel, content, config);
+  fileErrors.push(...atRestClaimBindingErrors(fileRel, content, atRestCensus));
   errors.push(...fileErrors);
 
   const count = (...kinds) => fileErrors.filter((error) => kinds.includes(error.kind)).length;
   fileSummaries.push({
     file: fileRel,
     barePrices: count('bare price'),
-    forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim', 'unimplemented grant-duration claim', 'at-rest overclaim'),
+    forbiddenHits: count(
+      'forbidden billing',
+      'forbidden claim',
+      'false capability claim',
+      'unimplemented grant-duration claim',
+      'at-rest overclaim',
+      'unbound at-rest claim',
+      'at-rest claim drift',
+      'at-rest backend drift',
+      'unreachable at-rest claim',
+    ),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
     missingText: count('missing required sentence', 'h4 explainer contract'),

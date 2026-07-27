@@ -1,0 +1,724 @@
+{
+  "$schema": "https://oslprivacy.com/schemas/at-rest-census-v1.json",
+  "schema_version": 1,
+  "census_id": "osl-at-rest-source-census",
+  "reviewed_on": "2026-07-27",
+  "product_source": {
+    "commit": "b1e8c10a13622aa2afea39361ed5c4309e168ca5",
+    "tree": "48c75ceb9b9fc241f0ee95fbc6f8dfe028e8e65b",
+    "evidence_tier": "source-inspected-and-test-proven-only",
+    "runtime_release_verified": false,
+    "limitation": "This census describes the reviewed source tree and focused static or unit-test evidence. It is not evidence about installed release bytes, an existing user profile, migration completeness, operating-system swap or crash dumps, backups, or runtime behavior on a named machine."
+  },
+  "required_backend_ids": [
+    "identity-private-key-file",
+    "message-store-rows",
+    "message-store-structure",
+    "store-attachment-cache",
+    "peer-map-json",
+    "membership-json",
+    "conditional-json-family",
+    "renderer-local-storage",
+    "hub-plaintext-config-family",
+    "active-identity-marker",
+    "provider-profile-storage",
+    "startup-trace-log",
+    "hub-encrypted-record-family",
+    "decrypted-ui-memory",
+    "notes-json-backend",
+    "scrub-encrypted-index",
+    "protected-attachment-open",
+    "qa-diagnostic-artifacts"
+  ],
+  "backends": [
+    {
+      "id": "identity-private-key-file",
+      "data_class": "long-term private identity key material",
+      "retention": "durable",
+      "at_rest_form": "sealed by a persistent TPM or operating-system credential-store sealer",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "available in process memory after an authorized open",
+      "key_absent_behavior": "the Hub identity path refuses creation when neither a persistent TPM nor operating-system credential-store sealer is available",
+      "reachability": "production-source-path",
+      "public_claimability": "source-inspected-only",
+      "sources": [
+        {
+          "path": "crates/keystore/src/storage.rs",
+          "symbol": "save_identity",
+          "proof": "private identity serialization is passed through the keystore sealer before durable write"
+        },
+        {
+          "path": "apps/osl-hub/src/password_lifecycle.rs",
+          "symbol": "persistent_sealer",
+          "proof": "the Hub identity path accepts only TPM or operating-system credential-store sealers and refuses the insecure or ephemeral fallbacks"
+        }
+      ],
+      "limitations": [
+        "No named installed release was inspected.",
+        "The main password is a separate gate and file-storage-key source; it is not the identity-file sealer.",
+        "Device sealing does not imply that every other local record is sealed.",
+        "This does not claim resistance to malware, memory inspection, backups, swap, crash dumps, or compromise of the operating-system credential boundary."
+      ]
+    },
+    {
+      "id": "message-store-rows",
+      "data_class": "decrypted message bodies and message metadata accepted by MessageStore::put",
+      "retention": "durable",
+      "at_rest_form": "row-level XChaCha20-Poly1305 ciphertext plus keyed blind indexes",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "opened in process memory for an authorized read",
+      "key_absent_behavior": "the store cannot open protected rows",
+      "reachability": "production-source-path",
+      "public_claimability": "test-proven-only",
+      "sources": [
+        {
+          "path": "crates/store/src/lib.rs",
+          "symbol": "MessageStore::put",
+          "proof": "message metadata and body are sealed before the SQLite insert"
+        },
+        {
+          "path": "crates/store/src/cipher.rs",
+          "symbol": "seal",
+          "proof": "a fresh nonce and AEAD seal produce the persisted row bytes"
+        }
+      ],
+      "limitations": [
+        "This is source and focused-test evidence, not a named release or migration census.",
+        "It covers rows accepted by this backend, not every file or browser preference OSL can retain.",
+        "Blind indexes conceal values but still expose equality and frequency relationships."
+      ]
+    },
+    {
+      "id": "message-store-structure",
+      "data_class": "SQLite row count, ordering, sequence values, burn state and timestamps, sizes, and equality or frequency relationships exposed by deterministic blind indexes",
+      "retention": "durable",
+      "at_rest_form": "plaintext database structure around sealed values and keyed blind indexes",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "SQLite query results and store bookkeeping",
+      "key_absent_behavior": "the database structure remains observable even when protected values cannot be opened",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "crates/store/src/schema.rs",
+          "symbol": "SCHEMA_V4",
+          "proof": "user tables retain sequence, burn, timestamp, size, and blinded selector columns around sealed metadata and bodies"
+        },
+        {
+          "path": "crates/store/src/cipher.rs",
+          "symbol": "blind_index",
+          "proof": "the source explicitly documents that equal identifiers produce equal indexes and expose frequency relationships"
+        }
+      ],
+      "limitations": [
+        "This is structural leakage, not readable message identifiers or bodies.",
+        "Encryption of row values is not encryption of the entire SQLite file or its observable graph shape."
+      ]
+    },
+    {
+      "id": "store-attachment-cache",
+      "data_class": "attachment cache metadata, selectors, and cached attachment bytes accepted by the store backend",
+      "retention": "durable",
+      "at_rest_form": "sealed attachment metadata and body with keyed blind indexes",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "opened attachment bytes in process memory",
+      "key_absent_behavior": "protected cache rows cannot be opened",
+      "reachability": "production-source-path",
+      "public_claimability": "test-proven-only",
+      "sources": [
+        {
+          "path": "crates/store/src/lib.rs",
+          "symbol": "MessageStore::put_attachment",
+          "proof": "attachment selectors are blinded and metadata and body are sealed before the SQLite insert"
+        },
+        {
+          "path": "crates/ipc/src/commands.rs",
+          "symbol": "attachment cache commands",
+          "proof": "production IPC cache callers reach the store attachment backend"
+        }
+      ],
+      "limitations": [
+        "This describes the store cache, not every attachment staging, source, export, viewer, or provider path.",
+        "Attachment feature status remains Planned and no named release behavior is inferred."
+      ]
+    },
+    {
+      "id": "peer-map-json",
+      "data_class": "peer identifiers, trust bindings, scope state, and related peer metadata",
+      "retention": "durable",
+      "at_rest_form": "conditional AES-256-GCM file or plaintext JSON",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "parsed JSON in process memory",
+      "key_absent_behavior": "new files and future writes may be plaintext; an existing encrypted file is not intentionally overwritten with plaintext",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "crates/ipc/src/peer_map.rs",
+          "symbol": "write_peer_map",
+          "proof": "maybe_encrypt is used, and no installed file-storage key permits plaintext output"
+        },
+        {
+          "path": "crates/ipc/src/main_password.rs",
+          "symbol": "maybe_encrypt",
+          "proof": "returns plaintext bytes verbatim when the file-storage key slot is empty"
+        }
+      ],
+      "limitations": [
+        "A main password does not establish that every historical file was migrated successfully.",
+        "Removing the main-password storage key restores plaintext output for future writes."
+      ]
+    },
+    {
+      "id": "membership-json",
+      "data_class": "server, channel, and group membership identifiers",
+      "retention": "durable",
+      "at_rest_form": "conditional AES-256-GCM file or plaintext JSON",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "parsed membership map in process memory",
+      "key_absent_behavior": "future writes are plaintext JSON",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "crates/ipc/src/membership.rs",
+          "symbol": "write_scope_membership",
+          "proof": "the serialized membership map is passed to maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/main_password.rs",
+          "symbol": "maybe_encrypt",
+          "proof": "returns plaintext bytes verbatim when the file-storage key slot is empty"
+        }
+      ],
+      "limitations": [
+        "Membership identifiers can therefore exist as durable plaintext.",
+        "The reviewed remove-password migration names peer_map.json and whitelist_state.json, not membership.json; an already-encrypted membership file is not proved to be decrypted by that operation.",
+        "This source fact does not establish which files exist in a particular user profile."
+      ]
+    },
+    {
+      "id": "conditional-json-family",
+      "data_class": "whitelist, app-preference, burned-scope, dead-letter, scope-blob, scope-TTL, sender-key, and related JSON state using maybe_encrypt",
+      "retention": "durable",
+      "at_rest_form": "conditional AES-256-GCM envelope or plaintext JSON",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "parsed JSON in process memory",
+      "key_absent_behavior": "maybe_encrypt returns the serialized bytes unchanged when the file-storage key is absent",
+      "reachability": "mixed-source-paths",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "crates/ipc/src/main_password.rs",
+          "symbol": "maybe_encrypt",
+          "proof": "the shared helper returns plaintext verbatim without a file-storage key"
+        },
+        {
+          "path": "crates/ipc/src/whitelist_state.rs",
+          "symbol": "write_whitelist_state",
+          "proof": "whitelist JSON writes use maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/app_preferences.rs",
+          "symbol": "write_app_preferences",
+          "proof": "application preference JSON writes use maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/control_inbox_dead_letter.rs",
+          "symbol": "write_dead_letter",
+          "proof": "dead-letter JSON writes use maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/scope_blobs_file.rs",
+          "symbol": "write_scope_blobs",
+          "proof": "scope-blob JSON writes use maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/scope_ttl_file.rs",
+          "symbol": "write_scope_ttl",
+          "proof": "scope-TTL JSON writes use maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/sender_key_state.rs",
+          "symbol": "write_sender_key_state",
+          "proof": "sender-key JSON writes use maybe_encrypt"
+        }
+      ],
+      "limitations": [
+        "The family contains both production and incomplete paths; no member is promoted solely because its writer exists.",
+        "The main-password migration and removal lists do not enumerate every member of this family.",
+        "Existing encrypted files can become unreadable when the key is unavailable even though later writes can be plaintext."
+      ]
+    },
+    {
+      "id": "renderer-local-storage",
+      "data_class": "theme, sidebar and home-tile layout, notification selections and chat or security state, Mullvad autostart, Scrub signal groups, service-guide progress, account and session selections, default-browser companion choice, browser import and onboarding state, experimental-send consent, and chat preview, mute, unread, and notification state",
+      "retention": "durable",
+      "at_rest_form": "browser localStorage plaintext",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "JavaScript strings and objects",
+      "key_absent_behavior": "not governed by the main-password file-storage key",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub-ui/src/main.ts",
+          "symbol": "localStorage preference keys",
+          "proof": "thirty-four fixed *StorageKey declarations, one literal default-browser-companion key, owner-qualified variants, and their renderer readers and writers use localStorage"
+        },
+        {
+          "path": "apps/osl-hub-ui/src/theme-preference.ts",
+          "symbol": "themeStorageKey",
+          "proof": "the thirty-sixth family is the imported osl-hub-theme key"
+        }
+      ],
+      "limitations": [
+        "The exact retained values depend on user actions and the active UI path.",
+        "The reviewed source uses thirty-six localStorage families: thirty-four fixed *StorageKey declarations, the imported theme key, and the literal default-browser-companion key. This record covers the entire set rather than a sampled preference.",
+        "No claim is made that localStorage contains message bodies.",
+        "A device-sealed identity does not encrypt this storage."
+      ]
+    },
+    {
+      "id": "hub-plaintext-config-family",
+      "data_class": "onboarding and preview preferences, connector or channel configuration, and other Hub configuration written without an at-rest envelope",
+      "retention": "durable",
+      "at_rest_form": "plaintext JSON or text",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "Rust and renderer values in process memory",
+      "key_absent_behavior": "not governed by the file-storage key",
+      "reachability": "mixed-source-paths",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/preferences.rs",
+          "symbol": "OnboardingPreferences::save",
+          "proof": "preview and onboarding preferences are encoded and written without encrypt_at_rest or maybe_encrypt"
+        },
+        {
+          "path": "crates/ipc/src/fresh_start.rs",
+          "symbol": "execute_fresh_start",
+          "proof": "the fresh-start path writes channels.json as readable JSON"
+        }
+      ],
+      "limitations": [
+        "The exact files and values depend on the active source path and user actions.",
+        "No claim is made that these files contain message bodies.",
+        "Product-wide plaintext identifier minimization remains incomplete."
+      ]
+    },
+    {
+      "id": "active-identity-marker",
+      "data_class": "opaque active identity slot identifier used before the encrypted identity registry is opened",
+      "retention": "durable",
+      "at_rest_form": "plaintext text file with temporary and backup siblings during replacement",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "validated slot-id string during bootstrap and identity switching",
+      "key_absent_behavior": "the marker is deliberately readable before the file-storage key and encrypted registry are available",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/identity_registry.rs",
+          "symbol": "read_active_marker/write_active_marker",
+          "proof": "hub-active-identity and its .tmp or .bak siblings are read and atomically written as plaintext slot identifiers"
+        },
+        {
+          "path": "apps/osl-hub/src/main.rs",
+          "symbol": "select_active_identity_before_bootstrap",
+          "proof": "the production setup path reads the marker before the identity bootstrap"
+        }
+      ],
+      "limitations": [
+        "The marker is an opaque slot identifier, not a private identity key or display label.",
+        "It still reveals identity-slot continuity and is outside the device-sealed identity file and main-password envelopes.",
+        "This is source reachability, not a named-release or existing-profile observation."
+      ]
+    },
+    {
+      "id": "provider-profile-storage",
+      "data_class": "OSL-owned hosted browser profiles and isolated native-app profiles, including provider cookies, site storage, history, session state, and plaintext OSL ownership claim files",
+      "retention": "durable",
+      "at_rest_form": "provider-managed browser or native-application profile formats without an OSL at-rest envelope",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "provider processes and OSL host code access profile paths and session state",
+      "key_absent_behavior": "profile storage is independent of the main-password file-storage key",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/service_host.rs",
+          "symbol": "prepare_profile_directory/profile_root",
+          "proof": "the hosted-service path creates owner-scoped provider profile directories without applying an OSL encryption envelope"
+        },
+        {
+          "path": "apps/osl-hub/src/native_window_host.rs",
+          "symbol": "prepare_profile/claim_discord_channel",
+          "proof": "native hosted applications receive isolated profile or work directories, while Discord ownership claims are readable text files"
+        },
+        {
+          "path": "apps/osl-hub/src/cleanup.rs",
+          "symbol": "full_cleanup_manifest",
+          "proof": "the cleanup inventory separately names browser profiles, cookies, site storage, native profiles, and local sessions"
+        }
+      ],
+      "limitations": [
+        "Provider formats can apply their own operating-system or application protections, but the reviewed OSL source does not wrap these profiles in its identity sealer or file-storage-key envelope.",
+        "Profile contents depend on the provider and user activity and can include copies outside OSL's message store.",
+        "OSL cleanup and uninstall behavior for a named release was not executed."
+      ]
+    },
+    {
+      "id": "startup-trace-log",
+      "data_class": "fixed startup diagnostic labels and elapsed-millisecond timings",
+      "retention": "durable-until-external-cleanup",
+      "at_rest_form": "append-only plaintext osl-startup-trace.txt in the operating-system temporary directory",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "fixed diagnostic label and elapsed timing values",
+      "key_absent_behavior": "not governed by either the identity sealer or main-password file-storage key",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/main.rs",
+          "symbol": "startup_breadcrumb",
+          "proof": "the Windows production path appends fixed startup labels and timings to osl-startup-trace.txt in the OS temp directory"
+        },
+        {
+          "path": "apps/osl-hub/src/native_window_host.rs",
+          "symbol": "startup_breadcrumb",
+          "proof": "the native-host compilation unit appends to the same plaintext trace"
+        }
+      ],
+      "limitations": [
+        "The reviewed call sites use fixed labels and timings rather than message plaintext.",
+        "The trace is outside the ordinary Hub cleanup target list and no deletion path was proved in the reviewed source.",
+        "Operating-system, shell, provider, and crash logs remain outside the verified local encryption boundary."
+      ]
+    },
+    {
+      "id": "hub-encrypted-record-family",
+      "data_class": "security state, service registry and scope index, native overlay ledgers, identity registry records, expiry clocks, and attachment deletion outbox",
+      "retention": "durable",
+      "at_rest_form": "AES-256-GCM files that require the file-storage key",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "opened records in process memory",
+      "key_absent_behavior": "the reviewed writers require a file-storage key and refuse rather than falling back to plaintext",
+      "reachability": "mixed-source-paths",
+      "public_claimability": "source-inspected-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/security.rs",
+          "symbol": "write_encrypted_json",
+          "proof": "security-state records require a storage key and encrypt before atomic write"
+        },
+        {
+          "path": "apps/osl-hub/src/services.rs",
+          "symbol": "write_encrypted_json",
+          "proof": "service records require a storage key and encrypt before atomic write"
+        },
+        {
+          "path": "apps/osl-hub/src/service_scope_index.rs",
+          "symbol": "save_index",
+          "proof": "the service-scope index is encrypted before atomic write"
+        },
+        {
+          "path": "apps/osl-hub/src/broker.rs",
+          "symbol": "write_protected_ledger",
+          "proof": "native overlay receipt and protected ledgers are encrypted before atomic write"
+        },
+        {
+          "path": "apps/osl-hub/src/message_expiry.rs",
+          "symbol": "save_open_clock",
+          "proof": "expiry and receipt-dedup records are encrypted before atomic write"
+        },
+        {
+          "path": "apps/osl-hub/src/peer_attachment_io.rs",
+          "symbol": "save_deletion_outbox",
+          "proof": "the attachment deletion outbox is encrypted before atomic write"
+        }
+      ],
+      "limitations": [
+        "This groups writer contracts; it does not claim every member is reachable in a named release.",
+        "Source-encrypted records do not make the whole profile encrypted."
+      ]
+    },
+    {
+      "id": "decrypted-ui-memory",
+      "data_class": "plaintext currently opened for presentation",
+      "retention": "ephemeral",
+      "at_rest_form": "not an at-rest backend",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "bounded process-memory cache and rendered text while unlocked or visible",
+      "key_absent_behavior": "protected content cannot be opened from the encrypted backend",
+      "reachability": "production-source-path",
+      "public_claimability": "limitation-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/external_overlay.rs",
+          "symbol": "VisiblePlaintextCache",
+          "proof": "opened plaintext is held in a bounded in-memory cache and cleared on lock"
+        }
+      ],
+      "limitations": [
+        "Ephemeral means the application does not intentionally persist this cache; it does not exclude swap, crash dumps, screenshots, malware, or recipient capture.",
+        "Encryption at rest does not protect text while it is being read or typed."
+      ]
+    },
+    {
+      "id": "notes-json-backend",
+      "data_class": "OSL Notes content and revisions",
+      "retention": "durable-if-wired",
+      "at_rest_form": "encrypted file requiring the file-storage key",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "opened in process memory",
+      "key_absent_behavior": "the backend refuses rather than writing plaintext",
+      "reachability": "implemented-unwired",
+      "public_claimability": "not-claimable",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/osl_notes.rs",
+          "symbol": "write_store",
+          "proof": "the backend requires a storage key and seals before writing, but the accepted reachability audit found no production caller"
+        }
+      ],
+      "limitations": [
+        "Truthful backend behavior is not evidence that users can reach Notes.",
+        "No public present-tense storage claim may cite this record."
+      ]
+    },
+    {
+      "id": "scrub-encrypted-index",
+      "data_class": "Scrub index chunks and journal",
+      "retention": "durable-if-reached",
+      "at_rest_form": "AES-256-GCM files requiring the file-storage key",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "index records in process memory",
+      "key_absent_behavior": "the writer refuses without a file-storage key",
+      "reachability": "source-reachability-unknown",
+      "public_claimability": "not-claimable",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/scrub_index.rs",
+          "symbol": "EncryptedScrubIndex::write_chunk",
+          "proof": "chunks and the journal are encrypted before atomic write"
+        }
+      ],
+      "limitations": [
+        "Scrub discovery is Planned and the accepted evidence does not prove this index receives real discovered accounts in a release.",
+        "Truthful encryption code is not runtime reachability evidence."
+      ]
+    },
+    {
+      "id": "protected-attachment-open",
+      "data_class": "decrypted protected attachment bytes",
+      "retention": "ephemeral-if-wired",
+      "at_rest_form": "in-memory open path; non-image external-viewer open is refused",
+      "plaintext_possible_at_rest": false,
+      "plaintext_runtime_form": "decrypted image bytes in memory on the allowed path",
+      "key_absent_behavior": "cannot decrypt",
+      "reachability": "production-source-path",
+      "public_claimability": "planned-only",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/peer_attachment_io.rs",
+          "symbol": "decrypt_file_to_memory",
+          "proof": "the current helper decrypts to memory rather than a durable plaintext file"
+        },
+        {
+          "path": "apps/osl-hub/src/native_attachment_transport.rs",
+          "symbol": "protected viewer gate",
+          "proof": "registered commands and UI invocations reach the open path; non-image open is refused before download or decryption, but exact release behavior remains unproved"
+        }
+      ],
+      "limitations": [
+        "The attachment feature is Planned and no present-tense public claim may cite this backend.",
+        "Source reachability does not establish behavior in a named release."
+      ]
+    },
+    {
+      "id": "qa-diagnostic-artifacts",
+      "data_class": "QA receipts, run markers, screenshots, and diagnostic or evidence files",
+      "retention": "durable-when-qa-enabled",
+      "at_rest_form": "mixed readable JSON, image, text, hashes, and separately sealed device-key material",
+      "plaintext_possible_at_rest": true,
+      "plaintext_runtime_form": "QA evidence values in process memory",
+      "key_absent_behavior": "these artifacts use their own QA contracts rather than the user main-password file-storage key",
+      "reachability": "qa-only-source-path",
+      "public_claimability": "not-claimable",
+      "sources": [
+        {
+          "path": "apps/osl-hub/src/discord_qa_inbound_receipt.rs",
+          "symbol": "write_receipt",
+          "proof": "QA inbound evidence is encoded and retained as an audit artifact"
+        },
+        {
+          "path": "apps/osl-hub/src/discord_qa_identity.rs",
+          "symbol": "write_recoverable",
+          "proof": "QA identity and offer artifacts have separate device-seal and evidence contracts"
+        },
+        {
+          "path": "apps/osl-hub/src/native_discord_adapter.rs",
+          "symbol": "QA artifact writes",
+          "proof": "QA paths can retain diagnostic evidence independently of product at-rest storage"
+        }
+      ],
+      "limitations": [
+        "QA evidence can intentionally contain operational identifiers or pixels and must not be treated as ordinary product storage.",
+        "This census does not assert that QA features are present in shipping configuration.",
+        "Logs redirected or collected by an operating system, shell, CI runner, or provider remain outside the verified local encryption boundary."
+      ]
+    }
+  ],
+  "public_claims": [
+    {
+      "id": "audit-local-storage-boundary",
+      "file": "audit.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log"
+      ],
+      "status_tier": "source-inspected-only",
+      "text": "Source inspection shows the Hub identity path seals long-term private identity keys with a persistent TPM or operating-system credential-store sealer and refuses identity creation when neither is available. That device-sealing boundary is not a whole-profile guarantee: peer-map, membership, and other conditional JSON can be plaintext when no main-password storage key is installed; Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can also be plaintext; and removing the storage key restores plaintext writes. This is not verification of installed release bytes or a particular user profile."
+    },
+    {
+      "id": "faq-password-recovery-boundary",
+      "file": "docs/faq.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log"
+      ],
+      "status_tier": "source-inspected-only",
+      "text": "OSL displays separate recovery phrases for your identity and the main-password gate. Save both during setup. Source inspection shows the main-password recovery phrase can authorize setting a new main password, but it does not prove that every local record is password-protected. Peer, membership, and other conditional JSON can be plaintext without the file-storage key; Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can also be plaintext; and removing the storage key restores plaintext writes. OSL cannot recover either phrase from its servers."
+    },
+    {
+      "id": "faq-shutdown-retention-boundary",
+      "file": "docs/faq.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "message-store-rows",
+        "message-store-structure",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log"
+      ],
+      "status_tier": "test-proven-only",
+      "text": "OSL infrastructure may relay bounded ciphertext and public-key or control records, but it cannot decrypt protected message content. The reviewed source seals accepted message-store values, while SQLite row counts, order, burn timing, sizes, and blind-index equality patterns remain visible; conditional JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can also be plaintext. This is source and focused-test evidence, not proof that a named release, existing profile, backup, or migration is complete. Network-dependent delivery and recovery actions may stop if OSL infrastructure disappears."
+    },
+    {
+      "id": "faq-uninstall-storage-boundary",
+      "file": "docs/faq.html",
+      "backend_refs": [
+        "message-store-rows",
+        "message-store-structure",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log"
+      ],
+      "status_tier": "test-proven-only",
+      "text": "Uninstall and migration behavior has not been verified on a named release. The reviewed source seals accepted message-store values, but database structure, conditional JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can remain visible or plaintext. Do not assume uninstall removes either category. Where available, use OSL's in-app full cleanup before uninstalling, then verify remaining OSL app data, local webview and provider-profile data, and osl-startup-trace.txt; that cleanup sequence itself is not release-verified. Back up required recovery material before deleting anything."
+    },
+    {
+      "id": "status-at-rest-boundary",
+      "file": "docs/status.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "message-store-rows",
+        "message-store-structure",
+        "store-attachment-cache",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log",
+        "hub-encrypted-record-family",
+        "decrypted-ui-memory"
+      ],
+      "status_tier": "test-proven-only",
+      "text": "At-rest status: source-inspected and focused-test evidence only; no named release or existing profile was verified. The Hub identity path requires a persistent TPM or operating-system credential-store sealer; accepted message and attachment-cache values are sealed before SQLite writes; and several Hub record writers require the file-storage key. SQLite structure remains visible, while peer-map, membership, other conditional JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can be plaintext. Opened plaintext exists in memory while displayed. Notes and Scrub-index code are excluded from present-tense claims because production reachability is unproved, and attachment behavior remains Planned despite source reachability."
+    },
+    {
+      "id": "getting-started-password-boundary",
+      "file": "docs/getting-started.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "message-store-rows",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log"
+      ],
+      "status_tier": "test-proven-only",
+      "text": "During setup, OSL asks for a main password and shows separate recovery material. In the reviewed source, the Hub identity path uses a persistent TPM or operating-system credential-store sealer, accepted message-store values are sealed before SQLite writes, and the main-password file-storage key conditionally seals some JSON files. This is not whole-profile encryption: some JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can remain plaintext. These are source and focused-test findings, not a named-release guarantee."
+    },
+    {
+      "id": "how-keys-live-boundary",
+      "file": "docs/how-it-works.html",
+      "backend_refs": [
+        "identity-private-key-file"
+      ],
+      "status_tier": "source-inspected-only",
+      "text": "The reviewed source generates identity keys locally. The Hub stores the private half through a persistent TPM or operating-system credential-store sealer and refuses identity creation when neither is available; the public half is published to the OSL key server so contacts can encrypt to you. The main password is a separate gate and file-storage-key source. This narrow source-inspected claim is not runtime verification of a named release or protection against malware, memory inspection, backups, swap, crash dumps, or compromise of the operating-system credential boundary."
+    },
+    {
+      "id": "privacy-key-storage-boundary",
+      "file": "docs/privacy.html",
+      "backend_refs": [
+        "identity-private-key-file"
+      ],
+      "status_tier": "source-inspected-only",
+      "text": "Private identity keys: the reviewed Hub source requires a persistent TPM or operating-system credential-store sealer before identity creation. Public identity keys are published to the key server. The main password is a separate gate and file-storage-key source. This does not describe every local record and is not verification of installed release bytes."
+    },
+    {
+      "id": "threat-model-at-rest-boundary",
+      "file": "docs/threat-model.html",
+      "backend_refs": [
+        "identity-private-key-file",
+        "message-store-rows",
+        "message-store-structure",
+        "peer-map-json",
+        "membership-json",
+        "conditional-json-family",
+        "renderer-local-storage",
+        "hub-plaintext-config-family",
+        "active-identity-marker",
+        "provider-profile-storage",
+        "startup-trace-log",
+        "decrypted-ui-memory"
+      ],
+      "status_tier": "test-proven-only",
+      "text": "A compromised computer. Source and focused-test evidence covers device-sealed private identity keys and sealed message-store values, not every local record: SQLite structure remains visible, while conditional JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can be plaintext. At-rest protection also does not protect text while it is being read or typed, and it does not stop malware, keyloggers, screen recorders, swap, crash dumps, backups, or compromise of the operating-system credential boundary."
+    }
+  ]
+}

@@ -72,8 +72,7 @@
         <p>OSL opens as its own desktop hub. Connector availability changes during the beta, so the app shows which social and email services can be linked in your installed release.</p>
 
         <h2 id="set-password">Set your password <a class="anchor-link" href="#set-password" aria-label="Link to this section">#</a></h2>
-        <p>The first time you launch OSL, you'll be prompted to set a password. This password encrypts your keys and message history on your computer.</p>
-        <p>OSL requires at least 6 characters, but longer passwords are stronger. There is no password recovery. If you forget your password, all your encrypted history becomes permanently inaccessible.</p>
+        <p data-osl-at-rest-claim="getting-started-password-boundary" data-osl-at-rest-backends="identity-private-key-file message-store-rows peer-map-json membership-json conditional-json-family renderer-local-storage hub-plaintext-config-family active-identity-marker provider-profile-storage startup-trace-log">During setup, OSL asks for a main password and shows separate recovery material. In the reviewed source, the Hub identity path uses a persistent TPM or operating-system credential-store sealer, accepted message-store values are sealed before SQLite writes, and the main-password file-storage key conditionally seals some JSON files. This is not whole-profile encryption: some JSON, Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can remain plaintext. These are source and focused-test findings, not a named-release guarantee.</p>
         <p>Write your password down somewhere safe. A password manager works. A piece of paper in a drawer works. What doesn't work is "I'll remember it."</p>
 
         <h2 id="whitelist">Whitelist your first friend <a class="anchor-link" href="#whitelist" aria-label="Link to this section">#</a></h2>
