@@ -55,7 +55,11 @@
 
 #main .audit-intro .button,
 #main .audit-file .button {
-  min-height: 2.55rem;
+  /* 2.55rem resolved to 40.8px, under the 44px touch target master 8.6 asks
+     for. This is the winning rule for these buttons: audit.css loads after
+     style.css and the selector carries an id, so a class-only rule in
+     style.css cannot reach it. Fixed at source. */
+  min-height: 44px;
   padding: .68rem .9rem;
   border-radius: 3px;
   font-family: var(--font-terminal);

@@ -8853,3 +8853,66 @@ h2:hover .anchor-link,
   color: var(--text);
 }
 .download-features-pending li { color: var(--text-muted); }
+
+/* --- Accessibility pass 2026-07-26 (master 8.6) ------------------------- */
+
+/* The .mission-* illustration on /donate has no styles of its own anywhere in
+   this stylesheet, so its children laid out at natural width and pushed the
+   page 47px sideways at 768px. This does not design the scene — it only stops
+   an unstyled block from overflowing the viewport. */
+.mission-scene {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  max-width: 100%;
+}
+.mission-scene > * { max-width: 100%; min-width: 0; }
+
+/* Touch targets. WCAG 2.5.8 wants 24x24 minimum; master 8.6 asks for 44x44.
+   Inline links inside a sentence are exempt and are left alone. */
+.button,
+.skip-link,
+.home-feature-link,
+.matrix-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.topnav-toggle,
+.dialog-close {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.topnav-brand { min-height: 44px; display: inline-flex; align-items: center; }
+.topnav-links a,
+.footer-pages a,
+.footer-meta a,
+.docs-nav-list a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Some pages (notably /audit) carry a more specific em-based min-height that
+   resolved to 40.8px and beat the 44px rule above. Doubling the class raises
+   specificity to (0,2,0) without reaching for !important. */
+.button.button,
+.topnav-toggle.topnav-toggle,
+.dialog-close.dialog-close {
+  min-height: 44px;
+}
+
+/* The decorative scene still pushed 16px past a 768px viewport. It is
+   aria-hidden ornament, so clipping the overflow costs no content and stops
+   the whole page scrolling sideways. */
+.mission-scene {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: clip;
+}
