@@ -575,6 +575,17 @@ function semanticAttachmentClaimSpans(text) {
     }
   }
 
+  function recordPattern(pattern) {
+    for (const match of text.matchAll(pattern)) {
+      const start = match.index ?? 0;
+      const end = start + match[0].length;
+      const key = `${start}:${end}:${start}:${end}`;
+      if (!spans.some((span) => span.key === key)) {
+        spans.push({ key, start, end, anchorStart: start, anchorEnd: end });
+      }
+    }
+  }
+
   for (const sentenceMatch of text.matchAll(sentencePattern)) {
     const sentence = sentenceMatch[0];
     const sentenceStart = sentenceMatch.index ?? 0;
@@ -637,6 +648,26 @@ function semanticAttachmentClaimSpans(text) {
     const decoy = token(sentence, /\bdecoys?\b/i);
     const exclusive = token(sentence, /\b(?:only|instead\s+of|rather\s+than)\b/i);
     record(sentenceStart, [discord, decoy, exclusive], exclusive);
+  }
+
+  // Bind the actor, downstream surface, and claimed outcome. Isolated words
+  // such as "placeholder", "blocks", and "unreadable" remain ordinary copy.
+  for (const pattern of [
+    /\bosl\s+(?:thwart(?:s|ed|ing)?|circumvent(?:s|ed|ing)?)\s+discord(?:['’]s)?[^.!?;\n]{0,80}\b(?:attachment|upload(?:ed)?\s+files?)[^.!?;\n]{0,45}\b(?:scann?(?:er|ers|ing)?|inspection|checks?)\b/gi,
+    /\bosl\s+prevent(?:s|ed|ing)?\s+discord\s+from\s+inspect(?:s|ed|ing)?\s+(?:attachments?|uploaded\s+files?|files?|uploads?)\b/gi,
+    /\bdiscord(?:['’]s)?\s+checks?\s+on\s+attachments?\s+(?:are|is|were|was|have\s+been|has\s+been)\s+rendered\s+ineffective\s+by\s+osl\b/gi,
+    /\battachment\s+inspection\s+by\s+discord\s+no\s+longer\s+works(?:\s+when\s+osl\s+is\s+used)?\b/gi,
+    /\bdiscord\s+(?:gets?|receives?|sees?)\s+(?:an?\s+|the\s+)?(?:(?:harmless|benign|safe)\s+)?(?:placeholder|stand-in|dummy|surrogate|replacement|decoy)(?:\s+(?:file|image|blob|media))?\s+(?:instead\s+of|rather\s+than)\s+(?:the\s+)?(?:(?:real|original|actual|user['’]s)\s+)?(?:attachments?|uploads?|uploaded\s+files?|files?)\b/gi,
+    /\bonly\s+(?:an?\s+)?(?:(?:harmless|benign|safe)\s+)?(?:placeholder|stand-in|dummy|surrogate|replacement|decoy)(?:\s+(?:file|image|blob|media))?\s+reaches\s+discord(?:\s*(?:;|,)\s*(?:the\s+)?(?:(?:real|original|actual|user['’]s)\s+)?(?:attachments?|uploads?|files?)\s+(?:does\s+not|stays?\s+off)|\s+(?:instead\s+of|rather\s+than)\s+(?:the\s+)?(?:(?:real|original|actual|user['’]s)\s+)?(?:attachments?|uploads?|files?))\b/gi,
+    /\bosl\s+substitut(?:e|es|ed|ing)\s+(?:an?\s+|the\s+)?(?:(?:harmless|benign|safe)\s+)?(?:placeholder|stand-in|dummy|surrogate|replacement|decoy)(?:\s+(?:file|image|blob|media))?\s+for\s+(?:every\s+|the\s+|an?\s+)?(?:attachments?|uploads?|files?)\s+(?:sent|uploaded)\s+to\s+discord\b/gi,
+    /\b(?:actual|original|real)\s+(?:attachments?|uploads?|files?)\s+(?:stays?|remains?)\s+off\s+discord\s*;\s*(?:an?\s+)?(?:(?:harmless|benign|safe)\s+)?(?:placeholder|stand-in|dummy|surrogate|replacement|decoy)(?:\s+(?:file|image|blob|media))?\s+is\s+(?:uploaded|sent)\s+in\s+its\s+place\b/gi,
+    /\bdiscord\s+sees\s+nothing\s+except\s+(?:decoy|fake|dummy|placeholder|surrogate)(?:\s+(?:files?|images?|media|blobs?))?\b/gi,
+    /\bevery\s+(?:file|attachment|upload)\s+visible\s+to\s+discord\s+is\s+(?:an?\s+)?(?:decoy|fake|dummy|placeholder|surrogate)(?:\s+(?:file|image|blob))?\b/gi,
+    /\bdiscord\s+can\s+inspect\s+only\s+(?:an?\s+)?(?:decoy|fake|dummy|placeholder|surrogate)(?:\s+(?:file|image|blob|upload))?\s*,?\s*not\s+(?:the\s+)?(?:user['’]s|real|original|actual)\s+(?:attachments?|uploads?|files?)\b/gi,
+    /\b(?:the\s+)?(?:user['’]s|real|original|actual)\s+(?:attachments?|uploads?|files?)\s+(?:is|are|being|remains?|stays?)\s+(?:opaque|unreadable)\s+to\s+discord\b/gi,
+    /\bdiscord(?:['’]s)?\s+(?:attachment\s+)?scann?(?:er|ers)\s+learns?\s+nothing\s+about\s+(?:the\s+)?(?:user['’]s|real|original|actual)\s+(?:attachments?|uploads?|files?)\b/gi,
+  ]) {
+    recordPattern(pattern);
   }
 
   return spans;
@@ -3686,6 +3717,96 @@ const SELF_TEST_CASES = [
     expect: 'attachment scanning overclaim',
   },
   {
+    name: 'thwarts scanner paraphrase',
+    file: 'features.html',
+    html: '<p>OSL thwarts Discord’s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'circumvents inspection markup paraphrase',
+    file: 'features.html',
+    html: '<p>OSL circum<strong>vents</strong> Discord&apos;s attachment inspection.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'prevents inspection paraphrase',
+    file: 'features.html',
+    html: '<p>OSL prevents Discord from inspecting uploaded files.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'ineffective checks markup paraphrase',
+    file: 'features.html',
+    html: '<p>Discord&apos;s checks on <strong>attachments</strong> are rendered ineffective by OSL.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'inspection no longer works paraphrase',
+    file: 'features.html',
+    html: '<p>Attachment inspection by Discord no longer works when OSL is used.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'placeholder instead paraphrase',
+    file: 'features.html',
+    html: '<p>Discord gets a harmless placeholder file instead of the real attachment.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'stand-in only adjacent-clause paraphrase',
+    file: 'features.html',
+    html: '<p>Only a benign stand-in reaches Discord; the original upload does not.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'dummy substitution paraphrase',
+    file: 'features.html',
+    html: '<p>OSL substitutes a dummy image for every attachment sent to Discord.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'surrogate rather-than paraphrase',
+    file: 'features.html',
+    html: '<p>Discord receives a surrogate blob rather than the uploaded file.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'placeholder in its place paraphrase',
+    file: 'features.html',
+    html: '<p>The actual attachment stays off Discord; a safe placeholder is uploaded in its place.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'nothing except decoys paraphrase',
+    file: 'features.html',
+    html: '<p>Discord sees nothing except decoy media.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'every visible file is decoy paraphrase',
+    file: 'features.html',
+    html: '<p>Every file visible to Discord is a decoy.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'only fake image paraphrase',
+    file: 'features.html',
+    html: '<p>Discord can inspect only a fake image, not the user’s file.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'original upload unreadable paraphrase',
+    file: 'features.html',
+    html: '<p>The original upload remains unreadable to Discord.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'scanner learns nothing paraphrase',
+    file: 'features.html',
+    html: '<p>Discord’s scanner learns nothing about the real attachment.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
     name: 'all private conversation state sealed at rest',
     file: 'audit.html',
     html: '<p>All private conversation state is sealed at rest.</p>',
@@ -4385,6 +4506,60 @@ const NEGATION_CASES = [
     name: 'honest cover substitution claim is unproved',
     file: 'features.html',
     html: '<p>Discord receiving harmless cover files instead of the attachment is unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest thwarts claim is unproved',
+    file: 'features.html',
+    html: '<p>Whether OSL thwarts Discord’s attachment scanner is unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest prevention claim remains Planned',
+    file: 'features.html',
+    html: '<p>OSL preventing Discord from inspecting uploaded files is Planned and not yet implemented.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest placeholder claim is unknown',
+    file: 'features.html',
+    html: '<p>The claim that Discord gets a harmless placeholder instead of the real attachment is unknown.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest stand-in claim is not established',
+    file: 'features.html',
+    html: '<p>Whether only a benign stand-in reaches Discord instead of the upload is not established.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest visible-decoy claim is not established',
+    file: 'features.html',
+    html: '<p>Whether every file visible to Discord is a decoy is not established.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest unreadable-upload claim is not implemented',
+    file: 'features.html',
+    html: '<p>The original upload being unreadable to Discord is not yet implemented.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'ordinary placeholder status copy',
+    file: 'features.html',
+    html: '<p>A placeholder explains that Discord inspection is pending.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'local corrupt-file explanation',
+    file: 'features.html',
+    html: '<p>The original upload is unreadable because the local file is corrupt.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'ordinary pre-upload prevention copy',
+    file: 'features.html',
+    html: '<p>OSL prevents accidental uploads before Discord opens.</p>',
     kinds: ['attachment scanning overclaim'],
   },
   {
