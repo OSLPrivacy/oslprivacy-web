@@ -721,7 +721,8 @@ function falseIdentityPasswordMechanism(text) {
     );
     const nounRelationship = new RegExp(
       `\\b(?:encryption|sealing|protection|security)\\s+(?:of|for)\\s+(?:the\\s+)?${identity}`
-        + `(?:\\s+at[-\\s]+rest)?\\s+(?:uses?|relies\\s+on|depends\\s+on)\\s+${password}`,
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:is\\s+)?`
+        + `(?:uses?|relies\\s+on|depends\\s+on|based\\s+on)\\s+${password}`,
       'i',
     );
     const premodifierNounRelationship = new RegExp(
@@ -741,6 +742,18 @@ function falseIdentityPasswordMechanism(text) {
         + `(?:main[-\\s]+password|password|passphrase)[-\\s]+derived\\s+key`,
       'i',
     );
+    const activePasswordDerivedAdjectiveRelationship = new RegExp(
+      `\\b(?:a|the)?\\s*(?:main[-\\s]+password|password|passphrase)[-\\s]+derived\\s+key\\s+`
+        + `(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
+      'i',
+    );
+    const passwordBasedKeyRelationship = new RegExp(
+      `${identity}\\s+(?:(?:is|are|was|were|be|been)\\s+)?${protectedForm}`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:with|by|under|via)\\s+(?:a\\s+|the\\s+)?`
+        + `(?:main[-\\s]+password|password|passphrase)[-\\s]+based\\s+key`,
+      'i',
+    );
     const keyedEncryptionRelationship = new RegExp(
       `${identity}\\s+(?:encryption|sealing|protection|security)`
         + `(?:\\s+at[-\\s]+rest)?\\s+(?:is\\s+|was\\s+)?(?:keyed|derived)\\s+`
@@ -754,6 +767,8 @@ function falseIdentityPasswordMechanism(text) {
       || premodifierNounRelationship.test(clause)
       || derivedKeyRelationship.test(clause)
       || passwordDerivedAdjectiveRelationship.test(clause)
+      || activePasswordDerivedAdjectiveRelationship.test(clause)
+      || passwordBasedKeyRelationship.test(clause)
       || keyedEncryptionRelationship.test(clause);
   });
 }
@@ -903,7 +918,7 @@ function stripJavaScriptComments(content) {
 }
 
 function evaluateStaticTemplateLiteral(raw, bindings) {
-  let body = raw.slice(1, -1);
+  let body = stripJavaScriptComments(raw.slice(1, -1));
   for (let pass = 0; pass < 32 && body.includes('${'); pass += 1) {
     let failed = false;
     let replaced = false;
@@ -1119,16 +1134,34 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
   return values;
 }
 
-function canonicalStaticJavaScriptReceiver(receiver, aliases) {
+function canonicalStaticJavaScriptReceiver(receiver, aliases, bindings) {
   let canonical = receiver
     .replace(/\?\./g, '.')
     .replace(/\.\[/g, '[')
     .replace(/\[\s*["'`]([A-Za-z_$][A-Za-z0-9_$]*)["'`]\s*\]/g, '.$1')
     .replace(/\s+/g, '');
-  canonical = canonical.replace(/^window\.document(?=[.(]|$)/, 'document');
+  canonical = canonical.replace(
+    /\[([A-Za-z_$][A-Za-z0-9_$]*)\]/g,
+    (match, name) => {
+      const value = bindings.get(name);
+      return typeof value === 'string' && /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(value)
+        ? `.${value}`
+        : match;
+    },
+  );
+  canonical = canonical.replace(/^(?:window|globalThis)\.document(?=[.(]|$)/, 'document');
   canonical = canonical.replace(
     /(querySelector|getElementById)\((["'`])([^"'`]*)\2\)/g,
     (_match, method, _quote, value) => `${method}(${JSON.stringify(value)})`,
+  );
+  canonical = canonical.replace(
+    /(querySelector|getElementById)\(([A-Za-z_$][A-Za-z0-9_$]*)\)/g,
+    (match, method, name) => {
+      const value = bindings.get(name);
+      return typeof value === 'string'
+        ? `${method}(${JSON.stringify(value)})`
+        : match;
+    },
   );
   canonical = canonical.replace(/^document\.querySelector\("body"\)$/, 'document.body');
   for (let pass = 0; pass <= aliases.size; pass += 1) {
@@ -1139,21 +1172,45 @@ function canonicalStaticJavaScriptReceiver(receiver, aliases) {
   return canonical;
 }
 
+function staticJavaScriptScopeStart(source, end) {
+  const stack = [-1];
+  let quote = '';
+  let escaped = false;
+  for (let index = 0; index < end; index += 1) {
+    const char = source[index];
+    if (quote) {
+      if (!escaped && char === quote) quote = '';
+      if (!escaped && char === '\\') escaped = true;
+      else escaped = false;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+    } else if (char === '{') {
+      stack.push(index);
+    } else if (char === '}' && stack.length > 1) {
+      stack.pop();
+    }
+  }
+  return stack.at(-1);
+}
+
 function staticJavaScriptSinkReceiver(
   source,
   memberIndex,
   computedMember,
+  bindings,
   aliases,
   shadowedNames,
 ) {
   let prefix = source.slice(0, memberIndex).replace(/\s+$/, '');
   if (!computedMember) prefix = prefix.replace(/(?:\?\.|\.)\s*$/, '');
   const parenthesized = prefix.match(
-    /\(\s*([A-Za-z_$][A-Za-z0-9_$]*(?:\s*(?:\??\.\s*[A-Za-z_$][A-Za-z0-9_$]*|(?:\?\.)?\[\s*["'`][A-Za-z_$][A-Za-z0-9_$]*["'`]\s*\]))*)\s*\)\s*$/,
+    /(?<![A-Za-z0-9_$])\(\s*([A-Za-z_$][A-Za-z0-9_$]*(?:\s*(?:\??\.\s*[A-Za-z_$][A-Za-z0-9_$]*|(?:\?\.)?\[\s*["'`][A-Za-z_$][A-Za-z0-9_$]*["'`]\s*\]))*)\s*\)\s*$/,
   );
   if (parenthesized) prefix = parenthesized[1];
   const callReceiver = prefix.match(
-    /((?:window\s*(?:\?\.|\.)\s*)?document(?:\s*(?:\?\.|\.)\s*(?:querySelector|getElementById)\s*\(\s*(?:"[^"]*"|'[^']*'|`[^`]*`)\s*\))+)\s*$/,
+    /((?:(?:window|globalThis)\s*(?:\?\.|\.)\s*)?document(?:\s*(?:\?\.|\.)\s*(?:querySelector|getElementById)\s*\(\s*(?:"[^"]*"|'[^']*'|`[^`]*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\))+)\s*$/,
   );
   const match = callReceiver ?? prefix.match(
     /([A-Za-z_$][A-Za-z0-9_$]*(?:\s*(?:\??\.\s*[A-Za-z_$][A-Za-z0-9_$]*|(?:\?\.)?\[\s*(?:["'`][^"'`]*["'`]|[A-Za-z_$][A-Za-z0-9_$]*)\s*\]))*)\s*$/,
@@ -1161,9 +1218,9 @@ function staticJavaScriptSinkReceiver(
   if (!match) return `@unknown:${memberIndex}`;
   const receiver = match[1];
   const root = receiver.match(/[A-Za-z_$][A-Za-z0-9_$]*/)?.[0];
-  const canonical = canonicalStaticJavaScriptReceiver(receiver, aliases);
+  const canonical = canonicalStaticJavaScriptReceiver(receiver, aliases, bindings);
   return root && shadowedNames.has(root)
-    ? `${canonical}#scope:${source.slice(0, memberIndex).lastIndexOf('{')}`
+    ? `${canonical}#scope:${staticJavaScriptScopeStart(source, memberIndex)}`
     : canonical;
 }
 
@@ -1171,6 +1228,7 @@ function staticJavaScriptTextSinkValues(content) {
   const source = stripJavaScriptComments(content);
   const bindings = new Map();
   const emptyNodeBindings = new Set();
+  const createdTextNodeValues = new Map();
   const declarations = [];
   for (const statement of source.matchAll(/\b(?:const|let|var)\s+([^;]+)/g)) {
     for (const declarator of splitTopLevelJavaScriptArguments(statement[1])) {
@@ -1189,11 +1247,16 @@ function staticJavaScriptTextSinkValues(content) {
     }
   }
   for (const declaration of declarations) {
+    const textNode = declaration.expression.match(
+      /^(?:document\.)?createTextNode\s*\(([\s\S]*)\)$/,
+    );
     if (/^(?:document\.)?createElement\s*\(\s*["'][a-z][a-z0-9:-]*["']\s*\)$/i
       .test(declaration.expression)
         || /^(?:document\.)?createDocumentFragment\s*\(\s*\)$/i
-          .test(declaration.expression)) {
+          .test(declaration.expression)
+        || textNode) {
       emptyNodeBindings.add(declaration.name);
+      if (textNode) createdTextNodeValues.set(declaration.name, textNode[1]);
     }
   }
   const createdNodeBindings = new Set(emptyNodeBindings);
@@ -1209,6 +1272,14 @@ function staticJavaScriptTextSinkValues(content) {
     if (!changed) break;
   }
   const populatedNodeBindings = new Set();
+  for (const [binding, expression] of createdTextNodeValues) {
+    const value = evaluateStaticJavaScriptExpression(expression, bindings);
+    createdTextNodeValues.set(binding, value);
+    if (typeof value === 'string' && value.length > 0) {
+      emptyNodeBindings.delete(binding);
+      populatedNodeBindings.add(binding);
+    }
+  }
   for (const binding of [...emptyNodeBindings]) {
     const escaped = escapeRegExp(binding);
     const populated = new RegExp(
@@ -1219,7 +1290,26 @@ function staticJavaScriptTextSinkValues(content) {
       populatedNodeBindings.add(binding);
     }
   }
+  for (const binding of [...populatedNodeBindings]) {
+    const escaped = escapeRegExp(binding);
+    const assignments = [...source.matchAll(new RegExp(
+      `\\b${escaped}\\s*(?:\\.\\s*(?:textContent|innerText|innerHTML)|\\[\\s*["'\`](?:textContent|innerText|innerHTML)["'\`]\\s*\\])\\s*=\\s*([^;]+)`,
+      'g',
+    ))];
+    const lastValue = assignments.length > 0
+      ? evaluateStaticJavaScriptExpression(assignments.at(-1)[1], bindings)
+      : null;
+    if (lastValue === '') {
+      populatedNodeBindings.delete(binding);
+      emptyNodeBindings.add(binding);
+    }
+  }
   const receiverAliases = new Map();
+  for (const destructuring of source.matchAll(
+    /\b(?:const|let|var)\s*\{\s*body(?:\s*:\s*([A-Za-z_$][A-Za-z0-9_$]*))?\s*\}\s*=\s*(?:window\.|globalThis\.)?document\b/g,
+  )) {
+    receiverAliases.set(destructuring[1] ?? 'body', 'document.body');
+  }
   for (let pass = 0; pass <= declarations.length; pass += 1) {
     let changed = false;
     for (const declaration of declarations) {
@@ -1230,7 +1320,7 @@ function staticJavaScriptTextSinkValues(content) {
       if (!receiverPath.test(expression) && !selectorCall.test(expression)) continue;
       receiverAliases.set(
         declaration.name,
-        canonicalStaticJavaScriptReceiver(expression, receiverAliases),
+        canonicalStaticJavaScriptReceiver(expression, receiverAliases, bindings),
       );
       changed = true;
     }
@@ -1254,6 +1344,7 @@ function staticJavaScriptTextSinkValues(content) {
   const values = [];
   const sinkOperations = [];
   const attachmentEdges = [];
+  const removalIndexes = new Map();
   const textPropertyNames = new Set(['textContent', 'innerText', 'innerHTML']);
   for (const assignment of source.matchAll(
     /(?:\b(textContent|innerText|innerHTML)\b|\[\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\])\s*(\+?=)\s*([^;]+)/g,
@@ -1267,6 +1358,7 @@ function staticJavaScriptTextSinkValues(content) {
       source,
       assignment.index ?? 0,
       computedMember,
+      bindings,
       receiverAliases,
       shadowedReceiverNames,
     );
@@ -1298,8 +1390,10 @@ function staticJavaScriptTextSinkValues(content) {
     'writeln',
     'createTextNode',
     'appendChild',
+    'insertBefore',
+    'remove',
   ]);
-  const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode|appendChild)|\[\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\])\s*(?:\?\.)?\s*\(/g;
+  const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode|appendChild|insertBefore|remove)|\[\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\])\s*(?:\?\.)?\s*\(/g;
   for (const call of source.matchAll(textCallRe)) {
     const argumentsSource = balancedCallArguments(source, call.index ?? 0);
     if (argumentsSource === null) continue;
@@ -1314,10 +1408,17 @@ function staticJavaScriptTextSinkValues(content) {
       source,
       call.index ?? 0,
       Boolean(call[2]),
+      bindings,
       receiverAliases,
       shadowedReceiverNames,
     );
-    const candidates = method.startsWith('insertAdjacent') ? args.slice(1) : args;
+    if (method === 'remove') {
+      removalIndexes.set(target, call.index ?? 0);
+      continue;
+    }
+    const candidates = method.startsWith('insertAdjacent')
+      ? args.slice(1)
+      : (method === 'insertBefore' ? args.slice(0, 1) : args);
     let contiguous = [];
     const flushContiguous = () => {
       if (contiguous.length > 0) {
@@ -1353,14 +1454,21 @@ function staticJavaScriptTextSinkValues(content) {
         || /^(?:document\.)?createElement\s*\(\s*["'][a-z][a-z0-9:-]*["']\s*\)$/i
           .test(expression)
         || /^(?:document\.)?createDocumentFragment\s*\(\s*\)$/i.test(expression);
-      const value = emptyNode
-        ? ''
-        : evaluateStaticJavaScriptExpression(textNode?.[1] ?? expression, bindings);
+      const storedTextNodeValue = createdTextNodeValues.get(expression);
+      const value = typeof storedTextNodeValue === 'string'
+        ? storedTextNodeValue
+        : (emptyNode
+          ? ''
+          : evaluateStaticJavaScriptExpression(textNode?.[1] ?? expression, bindings));
       const resolved = spread && Array.isArray(value)
         ? value
         : (typeof value === 'string' ? [value] : []);
       if (createdNodeBindings.has(expression)) {
-        attachmentEdges.push({ parent: target, child: expression });
+        attachmentEdges.push({
+          index: call.index ?? 0,
+          parent: target,
+          child: expression,
+        });
       }
       if (resolved.length > 0
           && resolved.every((item) => typeof item === 'string')) {
@@ -1409,7 +1517,9 @@ function staticJavaScriptTextSinkValues(content) {
   for (let pass = 0; pass <= attachmentEdges.length; pass += 1) {
     let changed = false;
     for (const edge of attachmentEdges) {
-      if (publicTargets.has(edge.parent) && !publicTargets.has(edge.child)) {
+      if (publicTargets.has(edge.parent)
+          && edge.index > (removalIndexes.get(edge.child) ?? -1)
+          && !publicTargets.has(edge.child)) {
         publicTargets.add(edge.child);
         changed = true;
       }
@@ -2785,6 +2895,24 @@ const SELF_TEST_CASES = [
     name: 'identity encryption via password',
     file: 'docs/faq.html',
     html: '<p>Private identity keys are encrypted via your main password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password-derived key actively encrypts identity keys',
+    file: 'docs/faq.html',
+    html: '<p>A main-password-derived key encrypts private identity keys.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password-based key encrypts identity keys',
+    file: 'docs/faq.html',
+    html: '<p>Private identity keys are encrypted with a password-based key.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'identity encryption based on password',
+    file: 'docs/faq.html',
+    html: '<p>Encryption for private identity keys is based on your main password.</p>',
     expect: 'at-rest overclaim',
   },
   {
@@ -4406,10 +4534,38 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_GLOBAL_THIS_RECEIVER',
+      'index.html',
+      '<script>globalThis.document.body.append("All local data is "); document.body.append("password-protected.");</script>',
+      '<script>globalThis.document.body.append("Account "); document.body.append("settings.");</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_NESTED_SELECTOR_RECEIVER',
       'index.html',
       '<script>document.querySelector("main").querySelector(".copy").append("All local data is "); document.querySelector("main").querySelector(".copy").append("password-protected.");</script>',
       '<script>document.querySelector("main").querySelector(".copy").append("Account "); document.querySelector("main").querySelector(".copy").append("settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_DESTRUCTURED_BODY_ALIAS',
+      'index.html',
+      '<script>const { body } = document; body.append("All local data is "); document.body.append("password-protected.");</script>',
+      '<script>const { body } = document; body.append("Account "); document.body.append("settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_STATIC_COMPUTED_RECEIVER',
+      'index.html',
+      '<script>const property = "body"; document[property].append("All local data is "); document.body.append("password-protected.");</script>',
+      '<script>const property = "body"; document[property].append("Account "); document.body.append("settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_BOUND_SELECTOR_RECEIVER',
+      'index.html',
+      '<script>const selector = "body"; document.querySelector(selector).append("All local data is "); document.body.append("password-protected.");</script>',
+      '<script>const selector = "body"; document.querySelector(selector).append("Account "); document.body.append("settings.");</script>',
       'html',
     ],
     [
@@ -4448,6 +4604,34 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_OUTER_ALIAS_AFTER_SHADOW',
+      'index.html',
+      '<script>{ const output = document.body; output.append("All local data is "); { const output = document.createElement("div"); output.append("Account settings."); } output.append("password-protected."); }</script>',
+      '<script>{ const output = document.body; output.append("Account "); { const output = document.createElement("div"); output.append("Unrelated."); } output.append("settings."); }</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_CLEARED_SEPARATOR',
+      'index.html',
+      '<script>const separator = document.createElement("span"); separator.textContent = "not "; separator.textContent = ""; document.body.append("All local data is ", separator, "password-protected.");</script>',
+      '<script>const separator = document.createElement("span"); separator.textContent = "not "; document.body.append("All local data is ", separator, "password-protected.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_INSERT_BEFORE_REACHABILITY',
+      'index.html',
+      '<script>const output = document.createElement("div"); output.append("All local data is "); output.append("password-protected."); document.body.insertBefore(output, document.body.firstChild);</script>',
+      '<script>const output = document.createElement("div"); output.append("Account "); output.append("settings."); document.body.insertBefore(output, document.body.firstChild);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_STORED_TEXT_NODES',
+      'index.html',
+      '<script>const a = "All local data is ", b = "password-protected."; const first = document.createTextNode(a), second = document.createTextNode(b); document.body.appendChild(first); document.body.appendChild(second);</script>',
+      '<script>const a = "Account ", b = "settings."; const first = document.createTextNode(a), second = document.createTextNode(b); document.body.appendChild(first); document.body.appendChild(second);</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_VARIABLE_TEXT_PROPERTY',
       'index.html',
       '<script>const property = "textContent", a = "All local data is ", b = "password-protected."; document.body[property] = a + b;</script>',
@@ -4466,6 +4650,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = `${`${a}${b}`}`;</script>',
       '<script>const a = "Account ", b = "settings."; document.body.textContent = `${`${a}${b}`}`;</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_COMMENT_BRACE_INTERPOLATION',
+      'index.html',
+      '<script>const a = "All local data is ", b = "password-protected."; document.body.textContent = `${a /* } scope */}${b}`;</script>',
+      '<script>const a = "Account ", b = "settings."; document.body.textContent = `${a /* } noun */}${b}`;</script>',
       'html',
     ],
     [
@@ -4653,6 +4844,15 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>document.body.append("All local data is "); document.querySelector("body").textContent = ""; document.body.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_REMOVED_NODE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const output = document.createElement("div"); document.body.append(output); output.remove(); output.append("All local data is "); output.append("password-protected.");</script>',
         ).length === 0;
       },
     },
