@@ -720,6 +720,26 @@ function validateH7Comparison(pricing, asOf) {
   const list = (value) => (Array.isArray(value) ? value : []);
   const unique = (values) => new Set(values).size === values.length;
   const asOfDate = new Date(`${asOf}T00:00:00Z`);
+  const claimTexts = (dimension) => [
+    ...list(dimension?.deleteme_facts)
+      .flatMap((fact) => [fact?.paraphrase ?? '', fact?.qualifiers ?? '']),
+    ...list(dimension?.unknowns).map((unknown) => unknown?.reason ?? ''),
+    dimension?.conflict_explanation ?? '',
+    dimension?.osl_limitation ?? '',
+    dimension?.bounded_conclusion ?? '',
+  ].filter(isNonempty);
+  const hasAffirmative = (text, termPattern) => {
+    const flags = termPattern.flags.includes('g') ? termPattern.flags : `${termPattern.flags}g`;
+    const matcher = new RegExp(termPattern.source, flags);
+    for (const match of text.matchAll(matcher)) {
+      const before = text.slice(Math.max(0, match.index - 120), match.index);
+      const after = text.slice(match.index + match[0].length, match.index + match[0].length + 55);
+      const negatedBefore = /\b(?:cannot|can't|decline(?:s|d)?|no|not|does not|doesn't|is not|isn't|never|without|unknown)\b[^.!?;]{0,105}$/i.test(before);
+      const unknownAfter = /^[^.!?;]{0,35}\b(?:unknown|not stated|not specified|not established)\b/i.test(after);
+      if (!negatedBefore && !unknownAfter) return true;
+    }
+    return false;
+  };
 
   if (pricing.manifest_version !== 7) {
     add('VERSION', 'manifest_version must be exactly 7');
@@ -766,6 +786,7 @@ function validateH7Comparison(pricing, asOf) {
   const sourceById = new Map(sources.map((source) => [source?.id, source]));
   const seenSourceTypes = new Set();
   let datedSources = 0;
+  let newestAccessTime = Number.NEGATIVE_INFINITY;
 
   for (const [index, source] of sources.entries()) {
     const label = isNonempty(source?.id) ? source.id : `source[${index}]`;
@@ -811,6 +832,7 @@ function validateH7Comparison(pricing, asOf) {
       continue;
     }
     datedSources += 1;
+    newestAccessTime = Math.max(newestAccessTime, accessed.getTime());
     const ageDays = Math.floor((asOfDate - accessed) / 86_400_000);
     if (ageDays < 0) {
       add('SOURCE_FUTURE', `${label} was accessed after --as-of=${asOf}`);
@@ -820,6 +842,22 @@ function validateH7Comparison(pricing, asOf) {
   }
   if (datedSources === 0 && sources.length > 0) {
     add('SOURCE_DATE', 'no source has a valid access date');
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(comparison?.reviewed_on ?? '')) {
+    add('REVIEW_DATE', 'reviewed_on must be an ISO date');
+  } else {
+    const reviewed = new Date(`${comparison.reviewed_on}T00:00:00Z`);
+    if (Number.isNaN(reviewed.getTime())
+      || reviewed.toISOString().slice(0, 10) !== comparison.reviewed_on) {
+      add('REVIEW_DATE', 'reviewed_on must be a real calendar date');
+    } else {
+      if (reviewed > asOfDate) {
+        add('REVIEW_DATE', `reviewed_on cannot be after --as-of=${asOf}`);
+      }
+      if (Number.isFinite(newestAccessTime) && reviewed.getTime() < newestAccessTime) {
+        add('REVIEW_DATE', 'reviewed_on cannot precede the newest source access date');
+      }
+    }
   }
   for (const sourceType of H7_REQUIRED_SOURCE_TYPES) {
     if (!seenSourceTypes.has(sourceType)) {
@@ -849,6 +887,23 @@ function validateH7Comparison(pricing, asOf) {
     const capability = capabilityById.get(capabilityId);
     if (!capability || capability.status !== 'Planned') {
       add('OSL_STATUS', `${capabilityId} must resolve to exact status Planned`);
+    }
+    if (!capability || capability.sellable !== false) {
+      add('OSL_SELLABILITY', `${capabilityId} must remain explicitly sellable:false`);
+    }
+  }
+  const exactCapabilityEvidence = new Map([
+    ['scrub-discovery', [/\bfound no accounts\b/i, /\bbrowser import\b/i, /\bnot yet\b|\bin progress\b/i]],
+    ['scrub-guided-deletion', [/\bholds every candidate\b/i, /\bconfirm each removal\b/i, /\bnot yet\b/i]],
+    ['autoscrub', [/\bswitched-off interface scaffolding\b/i, /\bnot installed by default\b/i, /\bnot yet\b/i]],
+  ]);
+  for (const [capabilityId, patterns] of exactCapabilityEvidence) {
+    const capabilityText = [
+      capabilityById.get(capabilityId)?.evidence ?? '',
+      capabilityById.get(capabilityId)?.public_note ?? '',
+    ].join(' ');
+    if (!patterns.every((pattern) => pattern.test(capabilityText))) {
+      add('OSL_EVIDENCE', `${capabilityId} evidence/public_note must preserve its exact non-operational limitation`);
     }
   }
 
@@ -973,6 +1028,16 @@ function validateH7Comparison(pricing, asOf) {
   if (!list(scope?.unknowns).some((unknown) => unknown?.field === 'single_current_global_coverage_count')) {
     add('SCOPE_CONFLICT', 'scope must preserve the unresolved global coverage count');
   }
+  const addedStandard976Claim = list(scope?.deleteme_facts).some((fact) => {
+    const text = `${fact?.paraphrase ?? ''} ${fact?.qualifiers ?? ''}`;
+    if (!/\b976\b/.test(text) || !/\bStandard[- ]US\b/i.test(text)) return false;
+    const explicitlySeparated = /\bnot\b[^.!?;]{0,100}\bStandard[- ]US\b/i.test(text)
+      || /\bStandard[- ]US\b[^.!?;]{0,100}\bnot\b[^.!?;]{0,80}\b976\b/i.test(text);
+    return !explicitlySeparated;
+  });
+  if (addedStandard976Claim) {
+    add('SCOPE_SEMANTICS', 'no fact may present 976 as Standard-US included scope');
+  }
 
   const price = dimensionById.get('price');
   const priceFacts = new Map(list(price?.deleteme_facts).map((fact) => [fact?.id, fact]));
@@ -991,19 +1056,12 @@ function validateH7Comparison(pricing, asOf) {
   const monitoringFacts = new Map(
     list(monitoring?.deleteme_facts).map((fact) => [fact?.id, fact]),
   );
-  const monitoringFactTexts = [...monitoringFacts.values()]
-    .map((fact) => `${fact?.paraphrase ?? ''} ${fact?.qualifiers ?? ''}`);
+  const monitoringClaimTexts = claimTexts(monitoring);
   const continuousUnknown = list(monitoring?.unknowns)
     .find((unknown) => unknown?.field === 'continuous_monitoring');
-  const hasAffirmativeContinuousClaim = monitoringFactTexts.some((text) => {
-    const match = /\b(?:continuous(?:ly)?|24\s*\/\s*7|around[- ]the[- ]clock)\b/i.exec(text);
-    if (!match) return false;
-    const before = text.slice(Math.max(0, match.index - 45), match.index);
-    const after = text.slice(match.index + match[0].length, match.index + match[0].length + 55);
-    const negatedBefore = /\b(?:no|not|does not|doesn't|isn't|without)\b[^.!?]{0,35}$/i.test(before);
-    const unknownAfter = /^[^.!?]{0,35}\b(?:unknown|not stated|not specified)\b/i.test(after);
-    return !negatedBefore && !unknownAfter;
-  });
+  const hasAffirmativeContinuousClaim = monitoringClaimTexts.some((text) => (
+    hasAffirmative(text, /\b(?:continuous(?:ly)?|24\s*\/\s*7|around[- ]the[- ]clock)\b/i)
+  ));
   if (hasAffirmativeContinuousClaim) {
     add('MONITORING_CLAIM', 'literal continuous or 24-hour monitoring must not be claimed');
   }
@@ -1029,6 +1087,9 @@ function validateH7Comparison(pricing, asOf) {
     || !/\bnot\b[^.]{0,80}\b(?:guarantee|every third party|honor)\b/i.test(guaranteeFact.paraphrase ?? '')) {
     add('REMOVAL_GUARANTEE', 'third-party removal must remain expressly unguaranteed');
   }
+  if (claimTexts(removals).some((text) => hasAffirmative(text, /\bguarantee(?:s|d)?\b/i))) {
+    add('REMOVAL_GUARANTEE', 'no removal fact, qualifier, limitation, or conclusion may guarantee third-party action');
+  }
   const processFact = removalFacts.get('submits-and-checks-opt-outs')?.paraphrase ?? '';
   if (!/\bsubmits?\b/i.test(processFact)
     || !/\b(?:checks?|reappear)\b/i.test(processFact)
@@ -1042,6 +1103,11 @@ function validateH7Comparison(pricing, asOf) {
   if (!firstReport
     || !/\bnot\b[^.]{0,80}\bproof\b/i.test(firstReport.paraphrase ?? '')) {
     add('COMPLETION_PROOF', 'the first report must remain a status update, not completion proof');
+  }
+  if (claimTexts(completion).some((text) => (
+    hasAffirmative(text, /\b(?:proof|prov(?:e|es|ed|ing))\b/i)
+  ))) {
+    add('COMPLETION_PROOF', 'no completion fact, qualifier, unknown, limitation, or conclusion may promote a report to proof');
   }
 
   const dataHandling = dimensionById.get('data_handling');
@@ -1082,8 +1148,10 @@ function validateH7Comparison(pricing, asOf) {
     }
   }
 
-  const allComparisonText = JSON.stringify(comparison ?? {});
-  if (/\b(?:cheaper\s+replacement|better\s+than|best|winner|wins|superior|equivalent\s+replacement)\b/i.test(allComparisonText)) {
+  const allClaimTexts = dimensions.flatMap((dimension) => claimTexts(dimension));
+  if (allClaimTexts.some((text) => (
+    hasAffirmative(text, /\b(?:better|best|winner|wins|superior|replacement)\b/i)
+  ))) {
     add('WINNER_LANGUAGE', 'winner, superiority, or replacement marketing is forbidden');
   }
 
@@ -1919,9 +1987,13 @@ const H7_SELF_TEST_MUTATIONS = [
     mutate(pricing) {
       const scope = pricing.research_comparisons.h7_deleteme.dimensions
         .find((dimension) => dimension.id === 'scope');
-      scope.deleteme_facts
-        .find((fact) => fact.id === 'broader-catalog-976')
-        .paraphrase = 'DeleteMe includes 976 sites in the Standard-US plan.';
+      scope.deleteme_facts.push({
+        id: 'contradictory-standard-us-976',
+        paraphrase: 'DeleteMe includes 976 sites in the Standard-US plan.',
+        source_ids: ['broader-broker-catalog'],
+        confidence: 'high',
+        qualifiers: 'Mutation adds a contradictory fact without changing the pinned facts.',
+      });
     },
   },
   {
@@ -1940,10 +2012,7 @@ const H7_SELF_TEST_MUTATIONS = [
     mutate(pricing) {
       const monitoring = pricing.research_comparisons.h7_deleteme.dimensions
         .find((dimension) => dimension.id === 'ongoing_monitoring');
-      const fact = monitoring.deleteme_facts
-        .find((entry) => entry.id === 'reappearance-checks');
-      fact.paraphrase = 'DeleteMe continuously monitors every broker 24/7.';
-      fact.qualifiers = 'Guaranteed around-the-clock coverage.';
+      monitoring.bounded_conclusion += ' DeleteMe monitors every broker 24/7.';
     },
   },
   {
@@ -1952,9 +2021,13 @@ const H7_SELF_TEST_MUTATIONS = [
     mutate(pricing) {
       const completion = pricing.research_comparisons.h7_deleteme.dimensions
         .find((dimension) => dimension.id === 'completion_reporting');
-      completion.deleteme_facts
-        .find((fact) => fact.id === 'first-report-status-only')
-        .paraphrase = 'The first privacy report proves that every item has been removed.';
+      completion.deleteme_facts.push({
+        id: 'contradictory-first-report-proof',
+        paraphrase: 'The first privacy report proves that every item has been removed.',
+        source_ids: ['privacy-report'],
+        confidence: 'high',
+        qualifiers: 'Mutation adds a contradictory fact without changing the pinned fact.',
+      });
     },
   },
   {
@@ -1963,9 +2036,13 @@ const H7_SELF_TEST_MUTATIONS = [
     mutate(pricing) {
       const removals = pricing.research_comparisons.h7_deleteme.dimensions
         .find((dimension) => dimension.id === 'removals');
-      removals.deleteme_facts
-        .find((fact) => fact.id === 'no-guaranteed-completion')
-        .paraphrase = 'DeleteMe guarantees that every third party will remove the data.';
+      removals.deleteme_facts.push({
+        id: 'contradictory-removal-guarantee',
+        paraphrase: 'DeleteMe guarantees that every third party will remove the data.',
+        source_ids: ['terms-service'],
+        confidence: 'high',
+        qualifiers: 'Mutation adds a contradictory fact without changing the pinned fact.',
+      });
     },
   },
   {
@@ -2007,7 +2084,7 @@ const H7_SELF_TEST_MUTATIONS = [
     expect: 'H7_WINNER_LANGUAGE',
     mutate(pricing) {
       pricing.research_comparisons.h7_deleteme.dimensions[0]
-        .bounded_conclusion += ' OSL is the cheaper replacement and clear winner.';
+        .bounded_conclusion += ' OSL is better. OSL is a replacement for DeleteMe.';
     },
   },
   {
