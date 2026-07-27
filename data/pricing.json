@@ -221,7 +221,7 @@
       "id": "image-send",
       "name": "Encrypted image sending",
       "status": "Planned",
-      "evidence": "Downgraded from Beta 2026-07-26 (truth lane). The picker does offer PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs:154, offered_image_extensions() == [jpg, jpeg, png]), but scope is not proof. Master 9 lists the whole attachment lane as implemented-unwired with open findings, master 10 critical class 4 has non-image attachments staged as durable plaintext, and allowlist section B puts 'View-once, timed deletion, attachments' at implemented-unwired -> Planned with an explicit master 8.2 ban on marketing attachments as available before the exact release build has evidence. Allowlist A3 additionally forbids the local-encrypted-storage claim on any page that markets attachments. THIS IS THE HEADLINE PRO BENEFIT: escalated to Zhao as action-needed, because Pro is sold today on a Planned capability.",
+      "evidence": "Downgraded from Beta 2026-07-26; evidence corrected against product truth commit 6d8400d on 2026-07-27. The picker offers PNG and JPEG only (apps/osl-hub/src/attachment_formats.rs:154), but scope is not proof. Historical source-unbound Worker 0a17547d proves only that one known-length part upload returned 201. Exact recovery source 3938a73 is runtime-proven locally. Exact release contract 1e9e635 is test-proven-only, not a deployment receipt. Migration 0010 is unapplied and its matching Worker is inactive. No named release build proves ciphertext/decoy delivery to Discord, so image transport remains Planned and unsellable.",
       "surfaces": [
         "download.html",
         "docs/faq.html",
@@ -539,6 +539,26 @@
       "reason": "Burn is state deletion, not cryptographic erasure. The per-message wrapped-key model that would earn the word is deliberately not built."
     },
     {
+      "phrase": "Discord attachment scanning defeated",
+      "reason": "No named release build proves ciphertext/decoy delivery to Discord. Historical source-unbound Worker 0a17547d proves only one known-length part upload returned 201.",
+      "replaced_by": "image transport labelled Planned with the release-build evidence limitation"
+    },
+    {
+      "phrase": "defeats Discord attachment scanning",
+      "reason": "Same unproved release-build transport property, stated as an affirmative product capability.",
+      "replaced_by": "image transport labelled Planned with the release-build evidence limitation"
+    },
+    {
+      "phrase": "Discord cannot scan attachments",
+      "reason": "No release evidence establishes what Discord receives or can inspect.",
+      "replaced_by": "no named release build proves ciphertext/decoy delivery to Discord"
+    },
+    {
+      "phrase": "Discord sees only decoys",
+      "reason": "The intended ciphertext/decoy property is not proved on a named release build.",
+      "replaced_by": "ciphertext/decoy delivery remains unproved"
+    },
+    {
       "phrase": "Bitcoin and Monero checkout is live",
       "reason": "Invoice plumbing exists, but purchase checkout must remain paused until one-month redemption and automatic expiry are implemented."
     },
@@ -658,7 +678,11 @@
       "renew",
       "auto-renew",
       "recurring",
-      "cryptographic erasure"
+      "cryptographic erasure",
+      "Discord attachment scanning defeated",
+      "defeats Discord attachment scanning",
+      "Discord cannot scan attachments",
+      "Discord sees only decoys"
     ],
     "negators": [
       "no ",

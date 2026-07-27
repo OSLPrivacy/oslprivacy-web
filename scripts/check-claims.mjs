@@ -478,6 +478,50 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
   return errors;
 }
 
+function attachmentScanningOverclaimErrors(fileRel, content) {
+  const rendered = renderedTextWithSourceMap(content);
+  const errors = [];
+  const outcome = /\b(?:defeat(?:ed|s|ing)?|solv(?:e|ed|es|ing))\b/gi;
+
+  for (const sentence of rendered.text.matchAll(/[^.!?;\n]+[.!?;]?/g)) {
+    const text = sentence[0].replace(/\s+/g, ' ').trim();
+    if (!/\bDiscord\b/i.test(text)
+      || !/\battachments?\b/i.test(text)
+      || !/\bscann?(?:er|ers|ing|ed|s)?\b/i.test(text)) {
+      continue;
+    }
+
+    for (const match of text.matchAll(outcome)) {
+      const before = text.slice(0, match.index);
+      const after = text.slice(match.index + match[0].length);
+      const clauseBefore = before
+        .split(/[.!?;]|\b(?:but|while|although|however|whereas|yet)\b/i)
+        .at(-1);
+      const clauseAfter = after
+        .split(/[.!?;]|\b(?:but|while|although|however|whereas|yet)\b/i)
+        .at(0);
+      const honestlyLimited = (
+        /\b(?:not|never|isn't|aren't|hasn't|haven't|cannot|can't)\b[^.!?;]{0,70}$/i.test(clauseBefore)
+        || /\b(?:unproved|unproven|unknown|not established)\b[^.!?;]{0,70}$/i.test(clauseBefore)
+        || /\bplanned\s+to(?:\s+be)?\s*$/i.test(clauseBefore)
+        || /\b(?:is|are|remains?|stays?)\s+(?:Planned|unproved|unproven|unknown)\b/i.test(clauseAfter)
+      );
+      if (honestlyLimited) continue;
+
+      const renderedIndex = (sentence.index ?? 0) + (match.index ?? 0);
+      const sourceIndex = rendered.sourceIndexes[renderedIndex] ?? 0;
+      errors.push({
+        kind: 'attachment scanning overclaim',
+        file: fileRel,
+        line: lineNumber(content, sourceIndex),
+        text: `${shortText(text)} -- release-build ciphertext/decoy delivery is unproved`,
+      });
+    }
+  }
+
+  return errors;
+}
+
 function rel(file) {
   return path.relative(ROOT, file).replaceAll(path.sep, '/');
 }
@@ -2697,6 +2741,7 @@ function analyseFile(fileRel, content, config) {
   }
 
   errors.push(...semanticGrantDurationErrors(fileRel, content, intendedGrantDays));
+  errors.push(...attachmentScanningOverclaimErrors(fileRel, content));
 
   const donationFiles = new Set(crawlerPolicy.donation_amount_files || []);
   const donationFile = donationFiles.has(fileRel);
@@ -3335,6 +3380,66 @@ const SELF_TEST_CASES = [
     file: 'features.html',
     html: '<p>Burn provides cryptographic erasure after send.</p>',
     expect: 'false capability claim',
+  },
+  {
+    name: 'exact Discord attachment scanning defeated claim',
+    file: 'features.html',
+    html: '<p>Discord attachment scanning defeated.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'active defeats Discord attachment scanning claim',
+    file: 'features.html',
+    html: '<p>OSL defeats Discord attachment scanning.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'Discord cannot scan attachments claim',
+    file: 'features.html',
+    html: '<p>Discord cannot scan attachments protected by OSL.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'Discord sees only decoys claim',
+    file: 'features.html',
+    html: '<p>Discord sees only decoys when you send an image.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'equivalent defeated downstream scanner claim',
+    file: 'features.html',
+    html: '<p>OSL defeated Discord’s downstream attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'equivalent solved attachment scanning claim',
+    file: 'features.html',
+    html: '<p>The downstream attachment-scanning problem on Discord is solved.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'Planned clause cannot excuse defeated scanning claim',
+    file: 'features.html',
+    html: '<p>Image transport remains Planned, but OSL has defeated Discord attachment scanning.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'unproved clause cannot excuse solved scanning claim',
+    file: 'features.html',
+    html: '<p>Image transport remains unproved; Discord’s attachment-scanning problem is solved.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'trailing Planned clause cannot excuse equivalent solved claim',
+    file: 'features.html',
+    html: '<p>OSL solved Discord’s attachment-scanning problem, while image transport remains Planned.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'trailing unproved clause cannot excuse equivalent defeated claim',
+    file: 'features.html',
+    html: '<p>OSL defeated Discord’s downstream attachment scanner, although image transport remains unproved.</p>',
+    expect: 'attachment scanning overclaim',
   },
   {
     name: 'all private conversation state sealed at rest',
@@ -3982,6 +4087,24 @@ const NEGATION_CASES = [
     name: 'honest no-cryptographic-erasure limitation',
     file: 'features.html',
     html: '<p>Burn is not cryptographic erasure.</p>',
+    kinds: ['false capability claim'],
+  },
+  {
+    name: 'honest attachment scanning remains Planned',
+    file: 'features.html',
+    html: '<p>Defeating Discord attachment scanning remains Planned and unproved on a release build.</p>',
+    kinds: ['false capability claim', 'attachment scanning overclaim'],
+  },
+  {
+    name: 'honest attachment scanning not solved',
+    file: 'features.html',
+    html: '<p>Discord attachment scanning is not solved; ciphertext/decoy delivery remains unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest decoy property not proved',
+    file: 'features.html',
+    html: '<p>No release build proves that Discord sees only decoys.</p>',
     kinds: ['false capability claim'],
   },
   {
