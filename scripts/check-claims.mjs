@@ -1368,7 +1368,7 @@ function staticJavaScriptTextSinkValues(content) {
     });
   }
   for (const assignment of source.matchAll(
-    /((?:\b[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*)+)\(?\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\)?\s*(?:;|(?=\r?\n|$))/g,
+    /((?:\b[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*)+)\(*\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\)*\s*(?:;|(?=\r?\n|$))/g,
   )) {
     const prefix = source.slice(Math.max(0, (assignment.index ?? 0) - 12), assignment.index);
     if (/\b(?:const|let|var)\s*$/.test(prefix)) continue;
@@ -1413,7 +1413,8 @@ function staticJavaScriptTextSinkValues(content) {
     events.sort((left, right) => left.index - right.index);
   }
   const canonicalCreatedNodeAt = (expression, index = Number.POSITIVE_INFINITY, seen = new Set()) => {
-    const name = expression.trim().replace(/^\(\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\)$/, '$1');
+    let name = expression.trim();
+    while (/^\(\s*[\s\S]*\s*\)$/.test(name)) name = name.slice(1, -1).trim();
     if (baseCreatedNodeBindings.has(name)) return name;
     if (seen.has(name)) return name;
     seen.add(name);
@@ -1779,9 +1780,13 @@ function staticJavaScriptTextSinkValues(content) {
     let emittedInCall = false;
     const emitSink = (rendered) => {
       let operation = 'append';
-      if (method === 'prepend') operation = emittedInCall ? 'append' : 'prepend';
+      if (method === 'prepend') operation = emittedInCall ? 'prepend-followup' : 'prepend';
       else if (method === 'replaceChildren' || method === 'replaceWith') {
         operation = emittedInCall ? 'append' : 'replace';
+      } else if (method === 'insertBefore') {
+        operation = 'insert-before';
+      } else if (method === 'replaceChild') {
+        operation = 'replace-child';
       } else if (method.startsWith('insertAdjacent')
           && typeof insertionPosition === 'string') {
         operation = insertionPosition.toLowerCase();
@@ -1792,6 +1797,7 @@ function staticJavaScriptTextSinkValues(content) {
           target,
           operation,
           rendered,
+          reference: args[1]?.trim() ?? '',
         });
       }
       emittedInCall = true;
@@ -1810,11 +1816,13 @@ function staticJavaScriptTextSinkValues(content) {
       const expression = spread ? trimmed.slice(3) : trimmed;
       const attachedNode = canonicalCreatedNodeAt(expression, call.index ?? 0);
       if (baseCreatedNodeBindings.has(attachedNode)) {
-        attachmentEdges.push({
-          index: call.index ?? 0,
-          parent: target,
-          child: attachedNode,
-        });
+        if (method !== 'replaceWith') {
+          attachmentEdges.push({
+            index: call.index ?? 0,
+            parent: target,
+            child: attachedNode,
+          });
+        }
         flushContiguous();
         emitSink({
           node: attachedNode,
@@ -1864,7 +1872,39 @@ function staticJavaScriptTextSinkValues(content) {
       case 'prepend':
       case 'afterbegin':
         state.content.unshift(sink.rendered);
+        state.prependCursor = 1;
+        state.prependIndex = sink.index;
         break;
+      case 'prepend-followup':
+        if (state.prependIndex !== sink.index) {
+          state.prependCursor = 0;
+          state.prependIndex = sink.index;
+        }
+        state.content.splice(state.prependCursor ?? 0, 0, sink.rendered);
+        state.prependCursor = (state.prependCursor ?? 0) + 1;
+        break;
+      case 'insert-before': {
+        const referenceNode = canonicalCreatedNodeAt(sink.reference, sink.index);
+        let referenceIndex = state.content.findIndex((token) => (
+          token && typeof token === 'object' && token.node === referenceNode
+        ));
+        if (referenceIndex < 0 && /\.firstChild$/.test(sink.reference)) referenceIndex = 0;
+        if (referenceIndex < 0 && /\.lastChild$/.test(sink.reference)) {
+          referenceIndex = Math.max(0, state.content.length - 1);
+        }
+        if (referenceIndex < 0) referenceIndex = state.content.length;
+        state.content.splice(referenceIndex, 0, sink.rendered);
+        break;
+      }
+      case 'replace-child': {
+        const referenceNode = canonicalCreatedNodeAt(sink.reference, sink.index);
+        const referenceIndex = state.content.findIndex((token) => (
+          token && typeof token === 'object' && token.node === referenceNode
+        ));
+        if (referenceIndex < 0) state.content.push(sink.rendered);
+        else state.content.splice(referenceIndex, 1, sink.rendered);
+        break;
+      }
       case 'beforebegin':
         state.before.push(sink.rendered);
         break;
@@ -1875,6 +1915,62 @@ function staticJavaScriptTextSinkValues(content) {
         state.content.push(sink.rendered);
     }
     states.set(sink.target, state);
+  }
+  const latestEventBefore = (events, target, index) => (
+    (events.get(target) ?? []).filter((eventIndex) => eventIndex < index).at(-1) ?? -1
+  );
+  for (const replacement of replacementTextEdges.sort((left, right) => (
+    left.index - right.index
+  ))) {
+    const removedBefore = latestEventBefore(
+      removalEvents,
+      replacement.replaced,
+      replacement.index,
+    );
+    const attachment = attachmentEdges
+      .filter((edge) => (
+        edge.child === replacement.replaced
+          && edge.index < replacement.index
+          && edge.index > removedBefore
+          && edge.index >= latestEventBefore(
+            childClearEvents,
+            edge.parent,
+            replacement.index,
+          )
+      ))
+      .at(-1);
+    if (!attachment) continue;
+    const parentState = states.get(attachment.parent);
+    if (!parentState) continue;
+    const sections = [parentState.before, parentState.content, parentState.after];
+    let replaced = false;
+    for (const section of sections) {
+      const tokenIndex = section.findIndex((token) => (
+        token
+          && typeof token === 'object'
+          && token.node === replacement.replaced
+          && token.attachmentIndex === attachment.index
+      ));
+      if (tokenIndex < 0) continue;
+      const tokens = replacement.tokens.map((token) => {
+        if (typeof token === 'string') return token;
+        attachmentEdges.push({
+          index: replacement.index,
+          parent: attachment.parent,
+          child: token.node,
+        });
+        return {
+          node: token.node,
+          attachmentIndex: replacement.index,
+          parent: attachment.parent,
+        };
+      });
+      section.splice(tokenIndex, 1, ...tokens);
+      replacement.applied = true;
+      replaced = true;
+      break;
+    }
+    if (!replaced) replacement.applied = false;
   }
   const publicTargets = new Set(
     [...states.keys()].filter((target) => /^document(?:[.(]|$)/.test(target)),
@@ -1901,9 +1997,6 @@ function staticJavaScriptTextSinkValues(content) {
       .map((token) => renderToken(token, nextSeen))
       .join('');
   };
-  const latestEventBefore = (events, target, index) => (
-    (events.get(target) ?? []).filter((eventIndex) => eventIndex < index).at(-1) ?? -1
-  );
   const wasPubliclyAttached = (target, index, seen = new Set()) => {
     if (/^document(?:[.(]|$)/.test(target)) return true;
     const visitKey = `${target}@${index}`;
@@ -1925,7 +2018,7 @@ function staticJavaScriptTextSinkValues(content) {
     }
   }
   for (const edge of replacementTextEdges) {
-    if (wasPubliclyAttached(edge.replaced, edge.index)) {
+    if (!edge.applied && wasPubliclyAttached(edge.replaced, edge.index)) {
       values.push(edge.tokens.map((token) => renderToken(token)).join(''));
     }
   }
@@ -5274,6 +5367,41 @@ if (SELF_TEST) {
       '<script>const a = "Account "; const b = "settings."; document.body.textContent = a; document.body.textContent += b;</script>',
       'html',
     ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_DOUBLE_PARENTHESIZED_ASSIGNED_NODE_ALIAS_ATTACHMENT',
+      'index.html',
+      '<script>const d=document.createElement("div"); let a; a=((d)); d.append("All local data is ","password-protected."); document.body.append(a);</script>',
+      '<script>const d=document.createElement("div"); let a; a=((d)); d.append("Account ","settings."); document.body.append(a);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_PREPEND_POPULATED_NODE_BEFORE_EXISTING',
+      'index.html',
+      '<script>const p=document.createElement("div"), c=document.createElement("em"); p.textContent="password-protected."; c.textContent="data is "; p.prepend("All local ",c); document.body.append(p);</script>',
+      '<script>const p=document.createElement("div"), c=document.createElement("em"); p.textContent="settings."; c.textContent="profile "; p.prepend("Account ",c); document.body.append(p);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_DETACH_INSERT_BEFORE_REATTACH',
+      'index.html',
+      '<script>const p=document.createElement("div"), c=document.createElement("em"); c.textContent="data is "; p.append("All local ",c,"password-protected."); document.body.append(p); c.remove(); p.insertBefore(c,p.lastChild);</script>',
+      '<script>const p=document.createElement("div"), c=document.createElement("em"); c.textContent="profile "; p.append("Account ",c,"settings."); document.body.append(p); c.remove(); p.insertBefore(c,p.lastChild);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_INSERT_BEFORE_MIDDLE_COMPOSITION',
+      'index.html',
+      '<script>const p=document.createElement("div"),c=document.createElement("em"),tail=document.createTextNode("password-protected."); c.textContent="data is "; p.append("All local ",tail); p.insertBefore(c,tail); document.body.append(p);</script>',
+      '<script>const p=document.createElement("div"),c=document.createElement("em"),tail=document.createTextNode("settings."); c.textContent="profile "; p.append("Account ",tail); p.insertBefore(c,tail); document.body.append(p);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_CHILD_POSITIONAL_COMPOSITION',
+      'index.html',
+      '<script>const p=document.createElement("div"),old=document.createElement("em"),c=document.createElement("i"); old.textContent="settings "; c.textContent="data is "; p.append("All local ",old,"password-protected."); p.replaceChild(c,old); document.body.append(p);</script>',
+      '<script>const p=document.createElement("div"),old=document.createElement("em"),c=document.createElement("i"); old.textContent="profile "; c.textContent="details "; p.append("Account ",old,"settings."); p.replaceChild(c,old); document.body.append(p);</script>',
+      'html',
+    ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
     [
       'PUBLIC_ASSET_CSS_COMPOSITION',
@@ -5578,6 +5706,33 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>const output = document.createElement("div"); document.body.append(output); output.replaceWith(document.createElement("span")); output.append("All local data is "); output.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_WITH_CHILD_REMOVE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const old=document.createElement("div"), c=document.createElement("em"); c.textContent="data is "; document.body.append(old); old.replaceWith("All local ",c,"password-protected."); c.remove();</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_WITH_CHILD_REMOVE_CHILD_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const old=document.createElement("div"), c=document.createElement("em"); c.textContent="data is "; document.body.append(old); old.replaceWith("All local ",c,"password-protected."); document.body.removeChild(c);</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_INSERT_BEFORE_FRONT_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const p=document.createElement("div"),c=document.createElement("em"),first=document.createTextNode("All local "); c.textContent="password-protected. "; p.append(first,"data is "); p.insertBefore(c,first); document.body.append(p);</script>',
         ).length === 0;
       },
     },
