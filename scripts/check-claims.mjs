@@ -478,45 +478,188 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
   return errors;
 }
 
+const ATTACHMENT_EXACT_CLAIMS = new Set([
+  'discord attachment scanning defeated',
+  'defeats discord attachment scanning',
+  'discord cannot scan attachments',
+  'discord sees only decoys',
+]);
+
+function sentenceBounds(text, start, end) {
+  const before = text.slice(0, start);
+  const left = Math.max(
+    before.lastIndexOf('.'),
+    before.lastIndexOf('!'),
+    before.lastIndexOf('?'),
+    before.lastIndexOf(';'),
+    before.lastIndexOf('\n'),
+  );
+  const candidates = ['.', '!', '?', ';', '\n']
+    .map((boundary) => text.indexOf(boundary, end))
+    .filter((index) => index !== -1);
+  return {
+    start: left + 1,
+    end: candidates.length === 0 ? text.length : Math.min(...candidates),
+  };
+}
+
+function genericNegationGovernsClaim(text, start, end) {
+  const bounds = sentenceBounds(text, start, end);
+  const before = text.slice(bounds.start, start);
+  return (
+    /\b(?:is|are|was|were|does|do|did|has|have|had|can|could|will|would)\s+not\s+(?:yet\s+)?(?:an?\s+)?(?:recurring\s+)?$/i.test(before)
+    || /\b(?:does|do|did)\s+not\s+(?:(?:create|constitute|provide|offer|mean|make|include)\s+){1,4}(?:an?\s+)?(?:recurring\s+)?$/i.test(before)
+    || /\b(?:no|never|nothing)\s+(?:automatic(?:ally)?\s+|recurring\s+)?$/i.test(before)
+    || /\bwithout\s+(?:an?\s+)?(?:automatic\s+|recurring\s+)?$/i.test(before)
+    || /\bnot\s+(?:an?\s+)?(?:claim|promise|assertion)\s+(?:of|that)\s*$/i.test(before)
+  );
+}
+
+function attachmentLimitationGovernsClaim(text, start, end) {
+  const bounds = sentenceBounds(text, start, end);
+  const before = text.slice(bounds.start, start);
+  const after = text.slice(end, bounds.end);
+  const limitation =
+    '(?:planned|unproved|unproven|unknown|not\\s+yet\\s+implemented|not\\s+established)';
+  const beforePattern = new RegExp(
+    `(?:\\b${limitation}\\b|\\bno\\b[^.!?;]{0,80}\\b(?:proves?|establishes?|shows?|demonstrates?|verifies?)\\s+)`
+      + '\\s*'
+      + '(?:(?:claim|property|behaviou?r|assertion)\\s+)?'
+      + '(?:(?:that|whether|if)\\s+)?'
+      + '(?:(?:the|this|it|osl|release|build|feature|transport)\\s+){0,6}$',
+    'i',
+  );
+  const afterPattern = new RegExp(
+    '^\\s*(?:,?\\s*(?:(?:a|the|this)\\s+)?'
+      + '(?:(?:claim|property|behaviou?r|assertion)\\s+)?'
+      + '(?:(?:that|which)\\s+)?)?'
+      + `(?:is|are|remains?|stays?|has\\s+not\\s+been|have\\s+not\\s+been)\\s+${limitation}\\b`,
+    'i',
+  );
+  return beforePattern.test(before) || afterPattern.test(after);
+}
+
+function semanticAttachmentClaimSpans(text) {
+  const spans = [];
+  const sentencePattern = /[^.!?;\n]+[.!?;]?/g;
+
+  function token(sentence, pattern) {
+    const match = sentence.match(pattern);
+    return match && match.index !== undefined
+      ? { start: match.index, end: match.index + match[0].length, text: match[0] }
+      : null;
+  }
+
+  function tokenAfter(sentence, pattern, after) {
+    if (!after) return null;
+    const match = sentence.slice(after.end).match(pattern);
+    return match && match.index !== undefined
+      ? {
+          start: after.end + match.index,
+          end: after.end + match.index + match[0].length,
+        }
+      : null;
+  }
+
+  function record(sentenceStart, tokens, anchor, optionalTokens = []) {
+    const present = tokens.filter(Boolean);
+    if (present.length !== tokens.length || !anchor) return;
+    const spanTokens = [...present, ...optionalTokens.filter(Boolean)];
+    const start = sentenceStart + Math.min(...spanTokens.map((item) => item.start));
+    const end = sentenceStart + Math.max(...spanTokens.map((item) => item.end));
+    const anchorStart = sentenceStart + anchor.start;
+    const anchorEnd = sentenceStart + anchor.end;
+    const key = `${start}:${end}:${anchorStart}:${anchorEnd}`;
+    if (!spans.some((span) => span.key === key)) {
+      spans.push({ key, start, end, anchorStart, anchorEnd });
+    }
+  }
+
+  for (const sentenceMatch of text.matchAll(sentencePattern)) {
+    const sentence = sentenceMatch[0];
+    const sentenceStart = sentenceMatch.index ?? 0;
+    const discord = token(sentence, /\bdiscord\b/i);
+    const osl = token(sentence, /\bosl\b/i);
+    const attachment = token(sentence, /\b(?:attachments?|uploaded\s+files?|files?)\b/i);
+    const inspection = token(sentence, /\b(?:scann?(?:er|ers|ing|ed|s)?|inspection)\b/i);
+    const outcome = token(
+      sentence,
+      /\b(?:defeat(?:ed|s|ing)?|solv(?:e|ed|es|ing)|bypass(?:ed|es|ing)?|neutraliz(?:e|ed|es|ing)|block(?:ed|s|ing)?|evad(?:e|ed|es|ing)|opaque)\b/i,
+    );
+    if (discord && attachment && inspection && outcome) {
+      const targetStart = Math.min(discord.start, attachment.start, inspection.start);
+      const targetEnd = Math.max(discord.end, attachment.end, inspection.end);
+      const outcomeWord = outcome.text.toLowerCase();
+      const activeByOsl = new RegExp(
+        `\\bosl\\s+(?:(?:has|have|had)\\s+)?${escapeRegExp(outcome.text)}\\s+`
+          + "(?:the\\s+)?discord(?:['’]s)?\\b",
+        'i',
+      ).test(sentence);
+      const targetBeforeOutcome = targetEnd <= outcome.start;
+      const passiveTarget = targetBeforeOutcome
+        && outcomeWord.endsWith('ed')
+        && /\b(?:is|are|was|were|being|been|has\s+been|have\s+been)\s+(?:not\s+)?[^.!?;]{0,18}$/i
+          .test(sentence.slice(targetStart, outcome.start));
+      const reversedByOsl =
+        outcome.end <= targetStart
+        && new RegExp(
+          `\\b${escapeRegExp(outcome.text)}\\s+by\\s+osl\\s+(?:is|are|was|were)\\b`,
+          'i',
+        ).test(sentence.slice(outcome.start, targetStart));
+      const opaqueRelation =
+        outcomeWord === 'opaque'
+        && attachment.end <= outcome.start
+        && outcome.end <= Math.max(discord.end, inspection.end)
+        && /\b(?:is|are|remain|remains|stays?)\s+opaque\s+(?:to|from)\b/i
+          .test(sentence.slice(attachment.start, Math.max(discord.end, inspection.end)));
+      if (
+        opaqueRelation
+        || (outcomeWord !== 'opaque' && (activeByOsl || passiveTarget || reversedByOsl))
+      ) {
+        record(sentenceStart, [discord, attachment, inspection, outcome], outcome, [osl]);
+      }
+    }
+
+    const receives = token(sentence, /\b(?:receiv(?:e|es|ed|ing)|gets?|sees?)\b/i);
+    const cover = token(sentence, /\b(?:harmless\s+)?cover\s+files?\b/i);
+    const instead = token(sentence, /\b(?:instead\s+of|rather\s+than)\b/i);
+    const replacedAttachment = tokenAfter(
+      sentence,
+      /\b(?:attachments?|uploaded\s+files?|files?)\b/i,
+      instead,
+    );
+    record(
+      sentenceStart,
+      [discord, receives, cover, instead, replacedAttachment],
+      instead,
+    );
+
+    const decoy = token(sentence, /\bdecoys?\b/i);
+    const exclusive = token(sentence, /\b(?:only|instead\s+of|rather\s+than)\b/i);
+    record(sentenceStart, [discord, decoy, exclusive], exclusive);
+  }
+
+  return spans;
+}
+
 function attachmentScanningOverclaimErrors(fileRel, content) {
   const rendered = renderedTextWithSourceMap(content);
   const errors = [];
-  const outcome = /\b(?:defeat(?:ed|s|ing)?|solv(?:e|ed|es|ing))\b/gi;
 
-  for (const sentence of rendered.text.matchAll(/[^.!?;\n]+[.!?;]?/g)) {
-    const text = sentence[0].replace(/\s+/g, ' ').trim();
-    if (!/\bDiscord\b/i.test(text)
-      || !/\battachments?\b/i.test(text)
-      || !/\bscann?(?:er|ers|ing|ed|s)?\b/i.test(text)) {
-      continue;
-    }
+  for (const span of semanticAttachmentClaimSpans(rendered.text)) {
+    const honestlyLimited =
+      genericNegationGovernsClaim(rendered.text, span.anchorStart, span.anchorEnd)
+      || attachmentLimitationGovernsClaim(rendered.text, span.start, span.end);
+    if (honestlyLimited) continue;
 
-    for (const match of text.matchAll(outcome)) {
-      const before = text.slice(0, match.index);
-      const after = text.slice(match.index + match[0].length);
-      const clauseBefore = before
-        .split(/[.!?;]|\b(?:but|while|although|however|whereas|yet)\b/i)
-        .at(-1);
-      const clauseAfter = after
-        .split(/[.!?;]|\b(?:but|while|although|however|whereas|yet)\b/i)
-        .at(0);
-      const honestlyLimited = (
-        /\b(?:not|never|isn't|aren't|hasn't|haven't|cannot|can't)\b[^.!?;]{0,70}$/i.test(clauseBefore)
-        || /\b(?:unproved|unproven|unknown|not established)\b[^.!?;]{0,70}$/i.test(clauseBefore)
-        || /\bplanned\s+to(?:\s+be)?\s*$/i.test(clauseBefore)
-        || /\b(?:is|are|remains?|stays?)\s+(?:Planned|unproved|unproven|unknown)\b/i.test(clauseAfter)
-      );
-      if (honestlyLimited) continue;
-
-      const renderedIndex = (sentence.index ?? 0) + (match.index ?? 0);
-      const sourceIndex = rendered.sourceIndexes[renderedIndex] ?? 0;
-      errors.push({
-        kind: 'attachment scanning overclaim',
-        file: fileRel,
-        line: lineNumber(content, sourceIndex),
-        text: `${shortText(text)} -- release-build ciphertext/decoy delivery is unproved`,
-      });
-    }
+    const sourceIndex = rendered.sourceIndexes[span.start] ?? 0;
+    const bounds = sentenceBounds(rendered.text, span.start, span.end);
+    errors.push({
+      kind: 'attachment scanning overclaim',
+      file: fileRel,
+      line: lineNumber(content, sourceIndex),
+      text: `${shortText(rendered.text.slice(bounds.start, bounds.end))} -- release-build ciphertext/decoy delivery is unproved`,
+    });
   }
 
   return errors;
@@ -651,20 +794,31 @@ function forbiddenPatterns(forbiddenClaims) {
   });
 }
 
-// Denying a property is honest copy, not a violation: "No subscription." and
-// "does not create a recurring subscription" must pass, while "Manage your
-// subscription" must fail.
+// A limitation must govern the matched claim in the same sentence. A generic
+// negator elsewhere in a fixed-size window cannot launder an adjacent claim.
 function negatedClaim(content, index, matched, policy = {}) {
   const aware = (policy.negation_aware || []).map((word) => word.toLowerCase());
   if (aware.length === 0) return false;
-  const hit = matched.toLowerCase().trim();
+  const hit = matched.toLowerCase().trim().replace(/[’‘]/g, "'");
   if (!aware.some((word) => hit === word || hit.includes(word))) return false;
 
-  const negators = policy.negators || ['no ', 'not ', 'never', "n't", 'without', 'nothing'];
-  const windowSize = Number.isInteger(policy.negation_window) ? policy.negation_window : 48;
-  const start = Math.max(0, index - windowSize);
-  const before = content.slice(start, index).replace(/<[^>]*>/g, ' ').toLowerCase();
-  return negators.some((negator) => before.includes(negator.toLowerCase()));
+  const rendered = renderedTextWithSourceMap(content);
+  let renderedStart = rendered.sourceIndexes.findIndex((sourceIndex) => sourceIndex >= index);
+  if (renderedStart === -1) renderedStart = rendered.text.length;
+  let renderedEnd = renderedStart;
+  const sourceEnd = index + matched.length;
+  while (
+    renderedEnd < rendered.sourceIndexes.length
+    && rendered.sourceIndexes[renderedEnd] < sourceEnd
+  ) {
+    renderedEnd += 1;
+  }
+
+  if (genericNegationGovernsClaim(rendered.text, renderedStart, renderedEnd)) {
+    return true;
+  }
+  return ATTACHMENT_EXACT_CLAIMS.has(hit)
+    && attachmentLimitationGovernsClaim(rendered.text, renderedStart, renderedEnd);
 }
 
 function labelledElements(content, policy = {}) {
@@ -3442,6 +3596,96 @@ const SELF_TEST_CASES = [
     expect: 'attachment scanning overclaim',
   },
   {
+    name: 'unrelated negator sentence cannot launder exact decoy claim',
+    file: 'features.html',
+    html: '<p>This feature is not beta. Discord sees only decoys.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'following unrelated negator sentence cannot launder exact decoy claim',
+    file: 'features.html',
+    html: '<p>Discord sees only decoys. This feature is not beta.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'neutralizes attachment scanner synonym',
+    file: 'features.html',
+    html: '<p>OSL neutralizes Discord’s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'bypasses attachment inspection synonym',
+    file: 'features.html',
+    html: '<p>OSL bypasses Discord’s attachment inspection.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'blocks attachment scanner synonym',
+    file: 'features.html',
+    html: '<p>OSL blocks Discord’s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'evades attachment inspection synonym',
+    file: 'features.html',
+    html: '<p>OSL evades Discord’s attachment inspection.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'opaque uploaded files synonym',
+    file: 'features.html',
+    html: '<p>Uploaded files are opaque to Discord’s scanners.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'cover files replace attachment synonym',
+    file: 'features.html',
+    html: '<p>Discord receives harmless cover files instead of the attachment.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'inline markup and entity cannot split neutralizes claim',
+    file: 'features.html',
+    html: '<p>OSL neutra<strong>lizes</strong> Discord&apos;s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'inline markup and entity cannot split bypass claim',
+    file: 'features.html',
+    html: '<p>OSL bypasses Discord&#39;s attachment&nbsp;<em>inspection</em>.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'inline markup cannot split cover substitution claim',
+    file: 'features.html',
+    html: '<p>Discord receives harmless <strong>cover files</strong> instead of the attachment.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'reversed neutralized scanner phrasing',
+    file: 'features.html',
+    html: '<p>Neutralized by OSL is Discord’s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'reversed bypassed inspection phrasing',
+    file: 'features.html',
+    html: '<p>Discord’s attachment inspection is bypassed by OSL.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'unrelated Planned sentence cannot excuse neutralizes claim',
+    file: 'features.html',
+    html: '<p>Image transport remains Planned. OSL neutralizes Discord’s attachment scanner.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'unrelated unknown clause cannot excuse opaque claim',
+    file: 'features.html',
+    html: '<p>Beta status is unknown, but uploaded files are opaque to Discord’s scanners.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
     name: 'all private conversation state sealed at rest',
     file: 'audit.html',
     html: '<p>All private conversation state is sealed at rest.</p>',
@@ -4106,6 +4350,72 @@ const NEGATION_CASES = [
     file: 'features.html',
     html: '<p>No release build proves that Discord sees only decoys.</p>',
     kinds: ['false capability claim'],
+  },
+  {
+    name: 'honest neutralizes claim remains Planned',
+    file: 'features.html',
+    html: '<p>The claim that OSL neutralizes Discord’s attachment scanner remains Planned.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest bypass claim is unproved',
+    file: 'features.html',
+    html: '<p>Whether OSL bypasses Discord’s attachment inspection is unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest blocked scanner claim is unknown',
+    file: 'features.html',
+    html: '<p>Discord’s attachment scanner being blocked by OSL is unknown.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest evade claim is not yet implemented',
+    file: 'features.html',
+    html: '<p>OSL evading Discord’s attachment inspection is not yet implemented.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest opaque upload claim is not established',
+    file: 'features.html',
+    html: '<p>The assertion that uploaded files are opaque to Discord’s scanners is not established.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest cover substitution claim is unproved',
+    file: 'features.html',
+    html: '<p>Discord receiving harmless cover files instead of the attachment is unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'Discord scanner may block malware without claiming OSL blocks scanning',
+    file: 'features.html',
+    html: '<p>Discord’s attachment scanner blocks malware.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'Discord scanner may be blocking malware without claiming scanning is blocked',
+    file: 'features.html',
+    html: '<p>Discord’s attachment scanner is blocking malware.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'Discord may block an attachment while scanning it',
+    file: 'features.html',
+    html: '<p>Discord blocks an attachment while scanning it.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'OSL may block upload pending Discord inspection',
+    file: 'features.html',
+    html: '<p>OSL blocks an upload until Discord attachment inspection completes.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'Discord scanner may detect an opaque file format',
+    file: 'features.html',
+    html: '<p>Discord’s attachment scanner detects an opaque file format.</p>',
+    kinds: ['attachment scanning overclaim'],
   },
   {
     name: 'honest identity-key and plaintext-metadata boundary',

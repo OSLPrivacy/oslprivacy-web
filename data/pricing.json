@@ -684,17 +684,7 @@
       "Discord cannot scan attachments",
       "Discord sees only decoys"
     ],
-    "negators": [
-      "no ",
-      "not ",
-      "never",
-      "n't",
-      "without",
-      "nothing",
-      "neither"
-    ],
-    "negation_window": 48,
-    "$negation_note": "Denying a property is the honest copy, not a violation. 'No subscription.' and 'does not create a recurring subscription' must PASS, while 'Manage your subscription' must FAIL. A word in negation_aware is only a violation when no negator appears in the preceding negation_window characters. Without this the crawler blocks the very sentences master 7.14 requires."
+    "$negation_note": "Denying or limiting a property is honest copy only when the denial or Planned/unproved/unknown/not-yet-implemented/not-established limitation governs that exact claim in the same sentence. An unrelated negator in an adjacent sentence or clause never suppresses a violation."
   },
   "forbidden_claims": [
     "one-time $5 purchase",
