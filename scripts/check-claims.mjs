@@ -704,7 +704,7 @@ function falseIdentityPasswordMechanism(text) {
     const protectedForm = String.raw`(?:encrypt(?:ed)?|seal(?:ed)?|protect(?:ed)?|secur(?:ed)?)`;
     const passiveRelationship = new RegExp(
       `${identity}\\s+(?:(?:is|are|was|were|be|been|remain(?:s|ed)?|stay(?:s|ed)?|get(?:s)?|got|become(?:s)?)\\s+)?`
-        + `${protectedForm}(?:\\s+at[-\\s]+rest)?\\s+(?:(?:with|by|under)\\s+`
+        + `${protectedForm}(?:\\s+at[-\\s]+rest)?\\s+(?:(?:with|by|under|via)\\s+`
         + `(?:(?:a|the)\\s+key\\s+derived\\s+from\\s+)?${password}`
         + `|using\\s+(?:(?:a|the)\\s+)?(?:key\\s+derived\\s+from\\s+)?${password})`,
       'i',
@@ -1126,6 +1126,11 @@ function canonicalStaticJavaScriptReceiver(receiver, aliases) {
     .replace(/\[\s*["'`]([A-Za-z_$][A-Za-z0-9_$]*)["'`]\s*\]/g, '.$1')
     .replace(/\s+/g, '');
   canonical = canonical.replace(/^window\.document(?=[.(]|$)/, 'document');
+  canonical = canonical.replace(
+    /(querySelector|getElementById)\((["'`])([^"'`]*)\2\)/g,
+    (_match, method, _quote, value) => `${method}(${JSON.stringify(value)})`,
+  );
+  canonical = canonical.replace(/^document\.querySelector\("body"\)$/, 'document.body');
   for (let pass = 0; pass <= aliases.size; pass += 1) {
     const root = canonical.match(/^[A-Za-z_$][A-Za-z0-9_$]*/)?.[0];
     if (!root || !aliases.has(root)) break;
@@ -2774,6 +2779,12 @@ const SELF_TEST_CASES = [
     name: 'identity encryption derived from password',
     file: 'docs/faq.html',
     html: '<p>Identity key encryption is derived from your main password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'identity encryption via password',
+    file: 'docs/faq.html',
+    html: '<p>Private identity keys are encrypted via your main password.</p>',
     expect: 'at-rest overclaim',
   },
   {
@@ -4624,6 +4635,24 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>const qualifier = document.createElement("span"); qualifier.textContent = "not "; document.body.append("All local data is ", qualifier, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_SELECTOR_QUOTE_RESET_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.querySelector(".copy").append("All local data is "); document.querySelector(\'.copy\').textContent = ""; document.querySelector(`.copy`).append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_BODY_SELECTOR_RESET_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.body.append("All local data is "); document.querySelector("body").textContent = ""; document.body.append("password-protected.");</script>',
         ).length === 0;
       },
     },
