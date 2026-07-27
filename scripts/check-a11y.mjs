@@ -25,7 +25,9 @@ import { fileURLToPath } from 'node:url';
 const SCRIPTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.dirname(SCRIPTS_DIR);
 const SERVE_LOCAL_PATH = path.join(SCRIPTS_DIR, 'serve-local.mjs');
-const OUT_PATH = path.join(REPO_ROOT, 'docs', 'evidence', 'website-matrix', 'a11y.json');
+const OUT_PATH = process.env.OSL_A11Y_OUT
+  ? path.resolve(process.env.OSL_A11Y_OUT)
+  : path.join(REPO_ROOT, 'docs', 'evidence', 'website-matrix', 'a11y.json');
 
 const PAGES = [
   '/', '/download', '/features', '/audit', '/donate', '/success', '/cancel',
@@ -39,6 +41,8 @@ const MIN_TAP = 44;
 const MIN_A11Y_COMBINATIONS = 100;
 // Floor proves selectors matched real interactive controls.
 const MIN_INTERACTIVE_CONTROLS = 20;
+// /features is measured at four widths and two zoom levels.
+const MIN_H4_A11Y_PROBES = 8;
 
 function getFreePort() {
   return new Promise((resolve, reject) => {
@@ -234,6 +238,49 @@ function auditPage(minTap) {
     }
   }
 
+  const h4Semantics = [];
+  let h4ExplainerFound = false;
+  if (location.pathname === '/features') {
+    const explainer = document.querySelector('[data-pws-burn-explainer]');
+    h4ExplainerFound = Boolean(explainer);
+    if (!explainer) {
+      h4Semantics.push('missing [data-pws-burn-explainer] section');
+    } else {
+      if (!visible(explainer)) h4Semantics.push('PWS/Burn explainer is not visibly rendered');
+      const labelId = explainer.getAttribute('aria-labelledby');
+      const descriptionId = explainer.getAttribute('aria-describedby');
+      if (!labelId || !document.getElementById(labelId)) h4Semantics.push('explainer has no valid aria-labelledby target');
+      if (!descriptionId || !document.getElementById(descriptionId)) h4Semantics.push('explainer has no valid aria-describedby target');
+
+      const stages = [...explainer.querySelectorAll('article[data-pws-stage]')];
+      if (stages.length !== 2) h4Semantics.push(`expected 2 semantic stages, found ${stages.length}`);
+      for (const stage of stages) {
+        const stageLabel = stage.getAttribute('aria-labelledby');
+        if (!stageLabel || !document.getElementById(stageLabel)) {
+          h4Semantics.push(`${stage.getAttribute('data-pws-stage') || 'unknown'} stage has no accessible heading`);
+        }
+      }
+
+      const plannedBadges = [...explainer.querySelectorAll('[data-osl-status="Planned"]')]
+        .filter((badge) => visible(badge) && badge.textContent.trim() === 'Planned');
+      if (plannedBadges.length !== 2) h4Semantics.push(`expected 2 visible Planned badges, found ${plannedBadges.length}`);
+
+      const limits = [...explainer.querySelectorAll('.pws-burn-limits > li')];
+      if (limits.length !== 4 || limits.some((item) => !visible(item))) {
+        h4Semantics.push(`expected 4 visible Burn boundaries, found ${limits.filter(visible).length}`);
+      }
+
+      const statusLink = explainer.querySelector('a[href="/docs/status"]');
+      if (!statusLink || !visible(statusLink) || statusLink.tabIndex < 0 || !accessibleName(statusLink)) {
+        h4Semantics.push('support-matrix link is not visibly keyboard-focusable and named');
+      } else {
+        statusLink.focus({ preventScroll: true });
+        if (document.activeElement !== statusLink) h4Semantics.push('support-matrix link does not accept focus');
+        statusLink.blur();
+      }
+    }
+  }
+
   return {
     imagesMissingAlt,
     controlsMissingName,
@@ -241,6 +288,8 @@ function auditPage(minTap) {
     horizontalOverflow,
     overflowingElements: overflowingElements.slice(0, 8),
     interactiveControlCount,
+    h4Semantics,
+    h4ExplainerFound,
     landmarks: {
       main: document.querySelectorAll('main').length,
       h1: document.querySelectorAll('h1').length,
@@ -341,6 +390,7 @@ async function run() {
   console.log(`  controls without name : ${sum('controlsMissingName')} (${uniq('controlsMissingName').length} distinct)`);
   console.log(`  tap targets < ${MIN_TAP}px    : ${sum('smallTapTargets')} (${uniq('smallTapTargets').length} distinct)`);
   console.log(`  horizontal overflow   : ${overflowRows.length} combinations`);
+  console.log(`  H4 semantic findings  : ${sum('h4Semantics')} (${uniq('h4Semantics').length} distinct)`);
 
   for (const name of uniq('controlsMissingName')) console.log(`    [name] ${name}`);
   for (const name of uniq('imagesMissingAlt')) console.log(`    [alt]  ${name}`);
@@ -348,8 +398,9 @@ async function run() {
   for (const r of overflowRows.slice(0, 12)) {
     console.log(`    [overflow] ${r.page} ${r.width}px @${r.zoom}% by ${r.horizontalOverflow}px :: ${r.overflowingElements.join(' | ')}`);
   }
+  for (const finding of uniq('h4Semantics')) console.log(`    [H4]   ${finding}`);
 
-  const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length;
+  const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length + sum('h4Semantics');
   console.log(`\ncheck-a11y: ${results.length} combinations, ${failed} blocking findings, ${sum('smallTapTargets')} tap-target findings.`);
 
   let floorFailed = false;
@@ -359,6 +410,11 @@ async function run() {
   }
   if (interactiveControlsFound < MIN_INTERACTIVE_CONTROLS) {
     console.error(`check-a11y floor: expected at least ${MIN_INTERACTIVE_CONTROLS} interactive controls, actually found ${interactiveControlsFound}.`);
+    floorFailed = true;
+  }
+  const h4Probes = results.filter((result) => result.page === '/features' && result.h4ExplainerFound).length;
+  if (h4Probes < MIN_H4_A11Y_PROBES) {
+    console.error(`check-a11y floor: expected at least ${MIN_H4_A11Y_PROBES} H4 explainer probes, actually found ${h4Probes}.`);
     floorFailed = true;
   }
 

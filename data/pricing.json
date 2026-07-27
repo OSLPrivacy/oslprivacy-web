@@ -328,6 +328,7 @@
       "status": "Planned",
       "evidence": "Master 9: components built, production wiring incomplete. Existing copy already refuses to promise that a platform, screenshot or backup forgot anything; that framing is kept.",
       "surfaces": [
+        "features.html",
         "docs/faq.html"
       ],
       "verified_on": "2026-07-26",
@@ -656,7 +657,8 @@
       "renews",
       "renew",
       "auto-renew",
-      "recurring"
+      "recurring",
+      "cryptographic erasure"
     ],
     "negators": [
       "no ",

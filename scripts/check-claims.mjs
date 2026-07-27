@@ -328,6 +328,97 @@ function sectionBlocks(content) {
   return blocks;
 }
 
+function h4ExplainerErrors(fileRel, content) {
+  if (fileRel !== 'features.html') return [];
+
+  const errors = [];
+  const blocks = sectionBlocks(content).filter((block) => (
+    /<section\b[^>]*\bdata-pws-burn-explainer(?:\s|=|>)/i.test(block.html)
+  ));
+  if (blocks.length !== 1) {
+    return [{
+      kind: 'h4 explainer contract',
+      file: fileRel,
+      line: 0,
+      text: `expected exactly one rendered PWS/Burn explainer section, found ${blocks.length}`,
+    }];
+  }
+
+  const block = blocks[0];
+  const openingTag = block.html.match(/^<section\b[^>]*>/i)?.[0] ?? '';
+  const labelledBy = openingTag.match(/\baria-labelledby=["']([^"']+)["']/i)?.[1] ?? '';
+  const describedBy = openingTag.match(/\baria-describedby=["']([^"']+)["']/i)?.[1] ?? '';
+  const rendered = shortText(renderedTextWithSourceMap(block.html).text).toLowerCase();
+  const badges = labelledElements(block.html);
+  const articles = [...block.html.matchAll(/<article\b[^>]*\bdata-pws-stage=["'](?:before|after)["'][^>]*>/gi)];
+  const boundaryItems = [...block.html.matchAll(/<li\b[^>]*>/gi)];
+
+  const requirements = [
+    {
+      label: 'PWS before-disclosure definition',
+      passed: /\bpws\b.{0,90}\bacts before disclosure\b/i.test(rendered),
+    },
+    {
+      label: 'Burn after-disclosure definition',
+      passed: /\bburn\b.{0,90}\bacts after disclosure\b/i.test(rendered),
+    },
+    {
+      label: 'not-cryptographic-erasure limitation',
+      passed: /\bit is not cryptographic erasure\b/i.test(rendered),
+    },
+    {
+      label: 'local deletion boundary',
+      passed: /\blocal deletion\b/i.test(rendered),
+    },
+    {
+      label: 'authenticated cooperative peer request boundary',
+      passed: /\bauthenticated cooperative peer request\b/i.test(rendered),
+    },
+    {
+      label: 'host deletion attempt boundary',
+      passed: /\bhost deletion attempt\b/i.test(rendered),
+    },
+    {
+      label: 'unavoidable copies/screenshots boundary',
+      passed: /\bunavoidable copies and screenshots\b/i.test(rendered),
+    },
+    {
+      label: 'Planned PWS badge',
+      passed: badges.some((badge) => badge.feature === 'exposure-warning' && badge.status === 'Planned'),
+    },
+    {
+      label: 'Planned Burn badge',
+      passed: badges.some((badge) => badge.feature === 'burn' && badge.status === 'Planned'),
+    },
+    {
+      label: 'section accessible name and description',
+      passed: Boolean(labelledBy && describedBy)
+        && new RegExp(`<h2\\b[^>]*\\bid=["']${escapeRegExp(labelledBy)}["']`, 'i').test(block.html)
+        && new RegExp(`<p\\b[^>]*\\bid=["']${escapeRegExp(describedBy)}["']`, 'i').test(block.html),
+    },
+    {
+      label: 'two semantic stages',
+      passed: articles.length === 2,
+    },
+    {
+      label: 'four visible boundary list items',
+      passed: boundaryItems.length === 4,
+    },
+  ];
+
+  for (const requirement of requirements) {
+    if (requirement.passed) continue;
+    errors.push({
+      kind: 'h4 explainer contract',
+      file: fileRel,
+      line: lineNumber(content, block.start),
+      text: `${requirement.label} is missing from the coherent rendered section`,
+    });
+  }
+
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -360,6 +451,8 @@ function analyseFile(fileRel, content, config) {
   const isMarketingCapabilityPage = (surfacePolicy.marketing_capability_files || []).includes(fileRel);
 
   // ---- Global rules: these hold on every surface, whatever the framing.
+  errors.push(...h4ExplainerErrors(fileRel, content));
+
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
     for (const match of content.matchAll(pattern.regex)) {
@@ -378,6 +471,7 @@ function analyseFile(fileRel, content, config) {
     if (!phrase) continue;
     const regex = new RegExp(escapeRegExp(phrase), 'gi');
     for (const match of content.matchAll(regex)) {
+      if (negatedClaim(content, match.index, match[0], crawlerPolicy)) continue;
       errors.push({
         kind: 'false capability claim',
         file: fileRel,
@@ -552,6 +646,12 @@ const SELF_TEST_CASES = [
     name: 'key destruction wording',
     file: 'features.html',
     html: '<p>At zero, the key and readable message disappear.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'affirmative cryptographic erasure claim',
+    file: 'features.html',
+    html: '<p>Burn provides cryptographic erasure after send.</p>',
     expect: 'false capability claim',
   },
   {
@@ -753,6 +853,12 @@ const NEGATION_CASES = [
     kinds: ['forbidden billing', 'forbidden claim'],
   },
   {
+    name: 'honest no-cryptographic-erasure limitation',
+    file: 'features.html',
+    html: '<p>Burn is not cryptographic erasure.</p>',
+    kinds: ['false capability claim'],
+  },
+  {
     name: 'honest unimplemented grant-duration limitation',
     file: 'docs/terms.html',
     html: '<p>An activation code does not grant 30 days of Pro because paid-code expiry is not implemented.</p>',
@@ -862,7 +968,26 @@ if (SELF_TEST) {
     if (!clean) failures += 1;
     console.log(`  ${clean ? 'passed ' : 'FLAGGED'} ${testCase.name}${clean ? '' : ` -> ${errors.map((e) => e.kind).join(', ')}`}`);
   }
-  const total = SELF_TEST_CASES.length + NEGATION_CASES.length;
+
+  console.log('\ncheck-claims self-test (production H4 contract and exact mutation):');
+  const h4Content = await readFile(path.join(ROOT, 'features.html'), 'utf8');
+  const baselineH4Errors = analyseFile('features.html', h4Content, config)
+    .filter((error) => error.kind === 'h4 explainer contract');
+  const baselineClean = baselineH4Errors.length === 0;
+  if (!baselineClean) failures += 1;
+  console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} production PWS/Burn explainer baseline`);
+
+  const requiredLimitation = 'It is not cryptographic erasure.';
+  const limitationOccurrences = h4Content.split(requiredLimitation).length - 1;
+  const mutatedH4 = h4Content.replace(requiredLimitation, '');
+  const limitationMutationCaught = limitationOccurrences === 1
+    && analyseFile('features.html', mutatedH4, config)
+      .some((error) => error.kind === 'h4 explainer contract'
+        && error.text.includes('not-cryptographic-erasure limitation'));
+  if (!limitationMutationCaught) failures += 1;
+  console.log(`  ${limitationMutationCaught ? 'caught ' : 'MISSED '} exact removal of "${requiredLimitation}"`);
+
+  const total = SELF_TEST_CASES.length + NEGATION_CASES.length + 2;
   console.log(`\ncheck-claims self-test: ${total} fixtures, ${failures} failed.`);
   process.exit(failures > 0 ? 1 : 0);
 }
@@ -885,7 +1010,7 @@ for (const file of files) {
     forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim', 'unimplemented grant-duration claim'),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
-    missingText: count('missing required sentence'),
+    missingText: count('missing required sentence', 'h4 explainer contract'),
     verdict: fileErrors.length === 0 ? 'pass' : 'fail',
   });
 }

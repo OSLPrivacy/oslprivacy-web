@@ -8837,6 +8837,201 @@ h2:hover .anchor-link,
 }
 .section-matrix-link a { min-height: 44px; display: inline-flex; align-items: center; }
 
+/* PWS and Burn share one explanation because their boundary is temporal:
+   warning before disclosure, cleanup/cooperation after it. Critical meaning
+   lives in HTML; motion only reinforces the already-visible static sequence. */
+.pws-burn-explainer {
+  width: min(84rem, 100%);
+  padding-block: clamp(3.5rem, 8vw, 7rem);
+}
+.pws-burn-heading {
+  max-width: 52rem;
+  margin: 0 auto clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+}
+.pws-burn-heading .section-subhead { max-width: 46rem; }
+.pws-burn-heading abbr {
+  text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  text-underline-offset: .18em;
+}
+.pws-burn-stages {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-3);
+  align-items: stretch;
+}
+.pws-burn-stage {
+  min-width: 0;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 42%),
+    var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 24px 54px rgba(0, 0, 0, .22);
+}
+.pws-burn-moment {
+  margin: 0 0 var(--s-2);
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.pws-burn-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s-3);
+}
+.pws-burn-title-row h3 {
+  margin: 0;
+  font-size: clamp(1.35rem, 5vw, 2rem);
+  line-height: 1.1;
+}
+.pws-burn-stage > p:not(.pws-burn-moment) {
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.pws-burn-stage > p strong { color: var(--text); }
+.pws-burn-mini-scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(2.5rem, 1fr) 2.75rem minmax(2.5rem, 1fr);
+  gap: .75rem;
+  align-items: center;
+  min-height: 5.5rem;
+  margin-top: var(--s-4);
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+  border-radius: 8px;
+}
+.pws-draft-line,
+.pws-disclosure-line {
+  height: .65rem;
+  background: repeating-linear-gradient(90deg, var(--text-muted) 0 1.2rem, transparent 1.2rem 1.55rem);
+}
+.pws-pause-mark {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: 50%;
+  font-weight: 900;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.pws-disclosure-line { opacity: .28; }
+.pws-burn-boundary {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: .75rem;
+  align-items: center;
+  min-height: 3.25rem;
+  color: var(--text-muted);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.pws-burn-boundary::before,
+.pws-burn-boundary::after {
+  height: 1px;
+  background: var(--border);
+  content: "";
+}
+.pws-burn-flow-signal {
+  position: absolute;
+  width: .45rem;
+  height: .45rem;
+  opacity: 0;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.pws-burn-erasure-limit {
+  margin: var(--s-4) 0;
+  padding: var(--s-3);
+  color: var(--text);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border-left: 3px solid var(--danger);
+}
+.pws-burn-limits {
+  display: grid;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pws-burn-limits li {
+  display: grid;
+  gap: .3rem;
+  min-width: 0;
+  padding: var(--s-3);
+  background: color-mix(in srgb, var(--surface-raised) 78%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.pws-burn-limits li strong { color: var(--text); font-size: .86rem; }
+.pws-burn-limits li span {
+  color: var(--text-muted);
+  font-size: .82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.pws-burn-explainer .section-matrix-link {
+  margin-top: var(--s-4);
+  text-align: center;
+}
+.pws-burn-explainer a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+@media (min-width: 900px) {
+  .pws-burn-stages {
+    grid-template-columns: minmax(0, .92fr) 5.5rem minmax(0, 1.25fr);
+    gap: var(--s-4);
+  }
+  .pws-burn-boundary {
+    grid-template: 1fr auto 1fr / 1fr;
+    justify-items: center;
+    min-height: 100%;
+  }
+  .pws-burn-boundary::before,
+  .pws-burn-boundary::after {
+    width: 1px;
+    height: 100%;
+  }
+  .pws-burn-limits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pws-burn-flow-signal { animation: pws-burn-disclosure-flow 3.8s ease-in-out infinite; }
+  .pws-pause-mark { animation: pws-pause-breathe 3.8s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pws-burn-explainer *,
+  .pws-burn-explainer *::before,
+  .pws-burn-explainer *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+@keyframes pws-burn-disclosure-flow {
+  0%, 22% { opacity: 0; transform: translateY(-2.5rem); }
+  35%, 62% { opacity: 1; }
+  78%, 100% { opacity: 0; transform: translateY(2.5rem); }
+}
+@keyframes pws-pause-breathe {
+  0%, 100% { transform: scale(1); }
+  44% { transform: scale(1.06); }
+}
+
 /* Point of sale. The early-access statement and the two-list split must read as
    part of the purchase, not as fine print, so they are not muted. */
 .checkout-early-access {

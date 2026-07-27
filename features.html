@@ -104,6 +104,53 @@
       </div>
     </section>
 
+    <section class="section pws-burn-explainer" data-pws-burn-explainer aria-labelledby="pws-burn-heading" aria-describedby="pws-burn-intro">
+      <header class="pws-burn-heading">
+        <p class="eyebrow">Before and after disclosure</p>
+        <h2 id="pws-burn-heading" class="section-heading">Two moments. Two safeguards.</h2>
+        <p id="pws-burn-intro" class="section-subhead"><abbr title="Privacy Warning System">PWS</abbr> acts before disclosure. Burn acts after disclosure. They are separate, Planned safeguards for two different moments; neither can make information that another person has seen cease to exist.</p>
+      </header>
+
+      <div class="pws-burn-stages">
+        <article class="pws-burn-stage pws-burn-before" data-pws-stage="before" aria-labelledby="pws-stage-before">
+          <p class="pws-burn-moment">Before disclosure</p>
+          <div class="pws-burn-title-row">
+            <h3 id="pws-stage-before">Privacy Warning System</h3>
+            <span class="osl-status" data-osl-feature="exposure-warning" data-osl-status="Planned">Planned</span>
+          </div>
+          <p><strong>PWS acts before disclosure.</strong> It is designed to pause a sensitive draft before it leaves your device, explain the risk in plain language, and leave the final send decision with you.</p>
+          <div class="pws-burn-mini-scene" aria-hidden="true">
+            <span class="pws-draft-line"></span>
+            <span class="pws-pause-mark">!</span>
+            <span class="pws-disclosure-line"></span>
+          </div>
+        </article>
+
+        <div class="pws-burn-boundary" aria-hidden="true">
+          <span class="pws-burn-flow-signal"></span>
+          <strong>Disclosure</strong>
+        </div>
+
+        <article class="pws-burn-stage pws-burn-after" data-pws-stage="after" aria-labelledby="pws-stage-after">
+          <p class="pws-burn-moment">After disclosure</p>
+          <div class="pws-burn-title-row">
+            <h3 id="pws-stage-after">Burn</h3>
+            <span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span>
+          </div>
+          <p><strong>Burn acts after disclosure.</strong> It is a Planned cleanup and cooperation flow, not a promise that every copy disappears.</p>
+          <p class="pws-burn-erasure-limit"><strong>It is not cryptographic erasure.</strong> Burn cannot make a recipient, connected service, export, or backup forget information it already received.</p>
+          <ul class="pws-burn-limits" aria-label="What Burn can and cannot do">
+            <li><strong>Local deletion.</strong><span>Delete the local OSL state that this device controls.</span></li>
+            <li><strong>Authenticated cooperative peer request.</strong><span>Ask the other OSL client to delete its copy; the peer must cooperate.</span></li>
+            <li><strong>Host deletion attempt.</strong><span>Ask the connected service to remove its hosted item without claiming the service complied.</span></li>
+            <li><strong>Unavoidable copies and screenshots.</strong><span>Copies, screenshots, exports, and backups outside OSL can remain.</span></li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
+    </section>
+
     <section class="section product-demo link-demo reveal" aria-labelledby="link-heading" data-osl-feature="link-protection" data-product-animation="link-flow" data-playback-rate="0.8">
       <div class="demo-heading-row">
         <div>

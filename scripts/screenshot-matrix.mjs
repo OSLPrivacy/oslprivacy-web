@@ -264,11 +264,31 @@ function measureFoldVisibility() {
     }
   }
 
+  const h4 = document.querySelector('[data-pws-burn-explainer]');
+  const h4Explainer = h4 ? {
+    present: true,
+    visible: isStyledVisible(h4),
+    textChars: (h4.textContent || '').replace(/\s+/g, ' ').trim().length,
+    semanticStages: h4.querySelectorAll('article[data-pws-stage]').length,
+    visibleBoundaries: [...h4.querySelectorAll('.pws-burn-limits > li')]
+      .filter((item) => isStyledVisible(item)).length,
+    plannedBadges: [...h4.querySelectorAll('[data-osl-status="Planned"]')]
+      .filter((badge) => isStyledVisible(badge) && badge.textContent.trim() === 'Planned').length,
+  } : {
+    present: false,
+    visible: false,
+    textChars: 0,
+    semanticStages: 0,
+    visibleBoundaries: 0,
+    plannedBadges: 0,
+  };
+
   return {
     visibleTextChars,
     scrollHeight: document.documentElement.scrollHeight,
     unrevealedRevealCount: document.querySelectorAll('.reveal:not(.is-revealed)').length,
     buildMeta: document.querySelector('meta[name="osl-build"]')?.getAttribute('content') ?? null,
+    h4Explainer,
   };
 }
 
@@ -317,7 +337,13 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
   }, sessionId);
   await writeFile(fullPath, Buffer.from(full.data, 'base64'));
 
-  let measurement = { visibleTextChars: null, scrollHeight: null, unrevealedRevealCount: null, buildMeta: null };
+  let measurement = {
+    visibleTextChars: null,
+    scrollHeight: null,
+    unrevealedRevealCount: null,
+    buildMeta: null,
+    h4Explainer: null,
+  };
   let verdict = 'unmeasurable';
   try {
     const evalResult = await cdp.send('Runtime.evaluate', {
@@ -328,7 +354,16 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
       throw new Error(evalResult.exceptionDetails.text || 'Runtime.evaluate threw');
     }
     measurement = evalResult.result.value;
-    verdict = measurement.visibleTextChars >= 40 ? 'pass' : 'fail';
+    const h4 = measurement.h4Explainer;
+    const h4Pass = page !== '/features' || (
+      h4?.present
+      && h4.visible
+      && h4.textChars >= 500
+      && h4.semanticStages === 2
+      && h4.visibleBoundaries === 4
+      && h4.plannedBadges === 2
+    );
+    verdict = measurement.visibleTextChars >= 40 && h4Pass ? 'pass' : 'fail';
   } catch (error) {
     console.error(`screenshot-matrix: measurement failed for ${page} ${width} ${condition}: ${error.message}`);
   }
@@ -343,6 +378,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     scroll_height: measurement.scrollHeight,
     unrevealed_reveal_count: measurement.unrevealedRevealCount,
     build_meta: measurement.buildMeta,
+    h4_explainer: measurement.h4Explainer,
     verdict,
   };
 }
@@ -435,6 +471,12 @@ async function run() {
   let floorFailed = false;
   if (results.length < MIN_SCREENSHOT_CAPTURES) {
     console.error(`screenshot-matrix floor: expected at least ${MIN_SCREENSHOT_CAPTURES} captures, actually produced ${results.length}.`);
+    floorFailed = true;
+  }
+  const expectedH4Captures = args.widths.length * CONDITIONS.length;
+  const h4Captures = results.filter((result) => result.page === '/features' && result.h4_explainer?.present).length;
+  if (h4Captures !== expectedH4Captures) {
+    console.error(`screenshot-matrix floor: expected ${expectedH4Captures} H4 explainer captures, actually produced ${h4Captures}.`);
     floorFailed = true;
   }
 
