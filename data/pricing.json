@@ -148,7 +148,7 @@
     "$authority": "Master 7.6 and 7.10.",
     "position": "OSL is fully open source except for one narrow, optional module.",
     "exception_name": "AutoScrub",
-    "exception_sentence": "The only exception is the optional AutoScrub module, which stays closed source purely to make trivial cloning harder. It is not installed by default, you choose to download it, and a reproducible fully open-source build stays usable without it.",
+    "exception_sentence": "The only exception is a future optional AutoScrub module, which would stay closed source purely to make trivial cloning harder. It does not exist yet; if introduced, it would be separately downloaded only after your explicit consent, and a reproducible fully open-source build would stay usable without it.",
     "exception_does_not_cover": [
       "cryptography",
       "trust and identity",
