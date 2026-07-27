@@ -95,7 +95,7 @@
         <p>No. OSL protects supported text and images. Voice and video calls still use the connected service's normal infrastructure and security.</p>
 
         <h3>What if I forget my password?</h3>
-        <p>OSL provides separate recovery material for the identity and password-protected local state. Save both during setup. OSL cannot recover them from its servers, and losing every recovery copy can make encrypted history permanently inaccessible.</p>
+        <p>OSL displays separate recovery phrases for your OSL identity and the main-password gate. Save both during setup. The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes. OSL cannot recover the phrases from its servers, and losing the material needed for encrypted history can make that history permanently inaccessible.</p>
 
         <h3>What happens to my data if OSL shuts down?</h3>
         <p>Your keys and readable history stay on your devices. OSL infrastructure may relay bounded ciphertext and public-key/control records, but it cannot decrypt message content. If the service disappears, locally retained data remains usable with your identity, password, and recovery material; network-dependent delivery and recovery actions may stop.</p>

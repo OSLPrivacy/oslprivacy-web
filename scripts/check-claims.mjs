@@ -421,27 +421,25 @@ function h4ExplainerErrors(fileRel, content) {
 
 function atRestOverclaimErrors(fileRel, content) {
   const rendered = renderedTextWithSourceMap(content);
-  const text = shortText(rendered.text);
-  const patterns = [
-    /\b(?:all\s+|every\s+)?(?:private\s+)?conversation\s+(?:state|data|metadata|records?)\b.{0,140}\b(?:is|are|stays?|remains?|kept)?\s*(?:fully\s+)?(?:sealed|encrypted)\s+at\s+rest\b/i,
-    /\b(?:sealed|encrypted)\s+at\s+rest\b.{0,140}\b(?:all|every)\s+(?:private\s+)?(?:conversation|local)\s+(?:state|data|metadata|records?)\b/i,
-  ];
-  const limitations = /\b(?:does not cover every|not all|may remain plaintext|can remain plaintext|unless|without (?:an? )?(?:installed )?(?:main password )?storage key|only (?:the )?(?:private )?identity keys?)\b/i;
+  const broadScope = /\b(?:(?:all|every)\s+(?:(?:private|local|conversation)\s+){0,2}(?:state|data|information|records?)(?:\s+on\s+(?:this|the)\s+device)?|(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?))\b/i;
+  const passwordProtection = /\b(?:password[-\s]+protected|(?:sealed|encrypted)\s+at\s+rest|(?:your|the|a)?\s*password\s+(?:encrypts?|protects?)|protected\s+(?:with|by)\s+(?:your|the|a)\s+password)\b/i;
+  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|mean\s+that)\s+(?:all|every)|not\s+(?:all|every)|not\s+a\s+(?:claim|promise)\s+that\s+(?:all|every)|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?)\b/i;
   const errors = [];
 
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (!match) continue;
-    const start = match.index ?? 0;
-    const contextStart = Math.max(0, start - 180);
-    const contextEnd = Math.min(text.length, start + match[0].length + 220);
-    if (limitations.test(text.slice(contextStart, contextEnd))) continue;
+  // Block boundaries keep an honest limitation attached to the claim it
+  // qualifies without letting an unrelated limitation elsewhere on the page
+  // excuse a broad promise. Inline markup and entities are already flattened
+  // by renderedTextWithSourceMap, so they cannot split the semantic match.
+  for (const segment of rendered.text.matchAll(/[^\n]+/g)) {
+    const text = shortText(segment[0]);
+    if (!text || !broadScope.test(text) || !passwordProtection.test(text) || limitations.test(text)) continue;
+    const start = segment.index ?? 0;
     const sourceIndex = rendered.sourceIndexes[start] ?? 0;
     errors.push({
       kind: 'at-rest overclaim',
       file: fileRel,
       line: lineNumber(content, sourceIndex),
-      text: `${shortText(match[0])} -- identity keys are sealed, but conversation metadata can remain plaintext without an installed storage key`,
+      text: `${text} -- password protection does not cover every local record, and plaintext writes return when the storage key is removed`,
     });
   }
 
@@ -691,6 +689,54 @@ const SELF_TEST_CASES = [
     expect: 'at-rest overclaim',
   },
   {
+    name: 'all private state encrypted at rest',
+    file: 'audit.html',
+    html: '<p>All private state is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local state password-protected',
+    file: 'docs/faq.html',
+    html: '<p>All local state is password-protected.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password encrypts all local data',
+    file: 'docs/faq.html',
+    html: '<p>Your password encrypts all local data.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'every private device record password-protected',
+    file: 'docs/faq.html',
+    html: '<p>Every private record on this device is protected with your password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'recovery material for password-protected local state',
+    file: 'docs/faq.html',
+    html: '<p>OSL provides recovery material for password-protected local state.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'inline markup cannot split an at-rest overclaim',
+    file: 'docs/faq.html',
+    html: '<p>All <em>local</em> state is password-protected.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'HTML entities cannot split an at-rest overclaim',
+    file: 'docs/faq.html',
+    html: '<p>All local state is password&#45;protected.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'reversed at-rest overclaim',
+    file: 'audit.html',
+    html: '<p>Encrypted at rest with your password: all private state on this device.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
     name: 'unlimited messages positioning',
     file: 'download.html',
     html: '<li>Unlimited private messages</li>',
@@ -901,6 +947,42 @@ const NEGATION_CASES = [
     kinds: ['at-rest overclaim'],
   },
   {
+    name: 'honest identity-key at-rest claim',
+    file: 'audit.html',
+    html: '<p>Private identity keys are encrypted at rest with your password.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest encrypted message-body claim',
+    file: 'audit.html',
+    html: '<p>Decrypted message bodies in the message store are encrypted at rest.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest password coverage limitation',
+    file: 'docs/faq.html',
+    html: '<p>Password protection does not cover every local record.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest plaintext metadata limitation',
+    file: 'docs/faq.html',
+    html: '<p>Some conversation metadata and preferences may remain plaintext when no storage key is installed.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest plaintext-write restoration',
+    file: 'docs/faq.html',
+    html: '<p>Removing the storage key restores plaintext writes.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest combined key claim and plaintext limitation',
+    file: 'audit.html',
+    html: '<p>Private identity keys are encrypted at rest with your password, but password protection does not cover every local record.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
     name: 'honest unimplemented grant-duration limitation',
     file: 'docs/terms.html',
     html: '<p>An activation code does not grant 30 days of Pro because paid-code expiry is not implemented.</p>',
@@ -1029,7 +1111,36 @@ if (SELF_TEST) {
   if (!limitationMutationCaught) failures += 1;
   console.log(`  ${limitationMutationCaught ? 'caught ' : 'MISSED '} exact removal of "${requiredLimitation}"`);
 
-  const total = SELF_TEST_CASES.length + NEGATION_CASES.length + 2;
+  console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
+  const productionAtRestCases = [
+    {
+      file: 'audit.html',
+      needle: 'That protection does not cover every local record: some private conversation metadata, including peer map and membership records, may remain plaintext when no main password storage key is installed; removing that storage key restores plaintext writes.',
+      replacement: 'All private state is encrypted at rest.',
+    },
+    {
+      file: 'docs/faq.html',
+      needle: 'The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes.',
+      replacement: 'OSL provides recovery material for password-protected local state.',
+    },
+  ];
+  for (const testCase of productionAtRestCases) {
+    const productionContent = await readFile(path.join(ROOT, testCase.file), 'utf8');
+    const occurrences = productionContent.split(testCase.needle).length - 1;
+    const baselineClean = !analyseFile(testCase.file, productionContent, config)
+      .some((error) => error.kind === 'at-rest overclaim');
+    const mutationCaught = occurrences === 1
+      && analyseFile(
+        testCase.file,
+        productionContent.replace(testCase.needle, testCase.replacement),
+        config,
+      ).some((error) => error.kind === 'at-rest overclaim');
+    if (!baselineClean || !mutationCaught) failures += 1;
+    console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} ${testCase.file} production baseline`);
+    console.log(`  ${mutationCaught ? 'caught ' : 'MISSED '} ${testCase.file} exact broad-claim mutation`);
+  }
+
+  const total = SELF_TEST_CASES.length + NEGATION_CASES.length + 2 + (productionAtRestCases.length * 2);
   console.log(`\ncheck-claims self-test: ${total} fixtures, ${failures} failed.`);
   process.exit(failures > 0 ? 1 : 0);
 }
