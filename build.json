@@ -1,8 +1,8 @@
 {
-  "commit": "72213331beee76da926124214d9e778b4517dc45",
-  "short_commit": "72213331",
-  "branch": "web-pricing-truth-2026-07-26",
-  "dirty": true,
-  "built_at": "2026-07-26T23:53:01Z",
+  "commit": "f31f3b28c0173f31cc4d0b4c03d346450b174d2f",
+  "short_commit": "f31f3b28",
+  "branch": "main",
+  "dirty": false,
+  "built_at": "2026-07-27T03:08:28Z",
   "manifest_version": 5
 }
