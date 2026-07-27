@@ -495,6 +495,11 @@
       "replaced_by": "images, with files labelled Planned"
     },
     {
+      "phrase": "unlocks encrypted image sending",
+      "reason": "Encrypted image sending is Planned and unsellable. Pro currently buys early access to tools only after they enter the beta channel.",
+      "replaced_by": "the manifest-driven Pro early-access line"
+    },
+    {
       "phrase": "customer portal",
       "reason": "Implies a stored payment method and a cancellation duty. Master 7.14 forbids both.",
       "replaced_by": "nothing, the prepaid model needs no portal"
@@ -562,6 +567,11 @@
       "file": "docs/terms.html",
       "phrase": "nothing renews automatically",
       "reason": "Master 7.14 requires the no-renewal fact wherever Pro is described."
+    },
+    {
+      "file": "docs/terms.html",
+      "phrase": "Pro is an early-access purchase. Today it unlocks early access to new privacy tools as they reach the beta channel — not the v1 feature set, which is still being finished.",
+      "reason": "The terms must describe what a Pro purchase actually gives today and must not sell Planned encrypted image sending present-tense."
     },
     {
       "file": "download.html",

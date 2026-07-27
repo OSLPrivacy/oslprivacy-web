@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-27T04:14:30.211Z",
+  "generated_at": "2026-07-27T06:28:07.468Z",
   "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell",
   "browser_version": "HeadlessChrome/149.0.7827.55",
-  "server_port": 44807,
+  "server_port": 38921,
   "captures": [
     {
       "page": "/",
@@ -13,7 +13,7 @@
       "visible_text_chars": 637,
       "scroll_height": 3642,
       "unrevealed_reveal_count": 3,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -25,7 +25,7 @@
       "visible_text_chars": 841,
       "scroll_height": 3404,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -37,7 +37,7 @@
       "visible_text_chars": 841,
       "scroll_height": 3362,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -49,7 +49,7 @@
       "visible_text_chars": 786,
       "scroll_height": 2595,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -61,7 +61,7 @@
       "visible_text_chars": 908,
       "scroll_height": 2632,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -70,10 +70,10 @@
       "condition": "js-on",
       "fold_png": "home/1440-js-on-fold.png",
       "full_png": "home/1440-js-on-full.png",
-      "visible_text_chars": 912,
+      "visible_text_chars": 921,
       "scroll_height": 2576,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -85,7 +85,7 @@
       "visible_text_chars": 431,
       "scroll_height": 3642,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -97,7 +97,7 @@
       "visible_text_chars": 467,
       "scroll_height": 3404,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -109,7 +109,7 @@
       "visible_text_chars": 467,
       "scroll_height": 3362,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -121,7 +121,7 @@
       "visible_text_chars": 711,
       "scroll_height": 2595,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -133,7 +133,7 @@
       "visible_text_chars": 711,
       "scroll_height": 2632,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -145,7 +145,7 @@
       "visible_text_chars": 652,
       "scroll_height": 2576,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -157,7 +157,7 @@
       "visible_text_chars": 805,
       "scroll_height": 3642,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -169,7 +169,7 @@
       "visible_text_chars": 841,
       "scroll_height": 3404,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -181,7 +181,7 @@
       "visible_text_chars": 841,
       "scroll_height": 3362,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -193,7 +193,7 @@
       "visible_text_chars": 1075,
       "scroll_height": 2595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -205,7 +205,7 @@
       "visible_text_chars": 1053,
       "scroll_height": 2632,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -217,7 +217,7 @@
       "visible_text_chars": 1016,
       "scroll_height": 2576,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -229,7 +229,7 @@
       "visible_text_chars": 404,
       "scroll_height": 6909,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -241,7 +241,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6533,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -253,7 +253,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6397,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -265,7 +265,7 @@
       "visible_text_chars": 686,
       "scroll_height": 5500,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -277,7 +277,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -289,7 +289,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -301,7 +301,7 @@
       "visible_text_chars": 404,
       "scroll_height": 6909,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -313,7 +313,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6533,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -325,7 +325,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6397,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -337,7 +337,7 @@
       "visible_text_chars": 686,
       "scroll_height": 5500,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -349,7 +349,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -361,7 +361,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -373,7 +373,7 @@
       "visible_text_chars": 404,
       "scroll_height": 6909,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -385,7 +385,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6533,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -397,7 +397,7 @@
       "visible_text_chars": 420,
       "scroll_height": 6397,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -409,7 +409,7 @@
       "visible_text_chars": 686,
       "scroll_height": 5500,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -421,7 +421,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -433,7 +433,7 @@
       "visible_text_chars": 761,
       "scroll_height": 4621,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -445,7 +445,7 @@
       "visible_text_chars": 940,
       "scroll_height": 7696,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -457,7 +457,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7457,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -469,7 +469,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7349,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -481,7 +481,7 @@
       "visible_text_chars": 1000,
       "scroll_height": 5798,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -493,7 +493,7 @@
       "visible_text_chars": 1027,
       "scroll_height": 5322,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -505,7 +505,7 @@
       "visible_text_chars": 1014,
       "scroll_height": 5348,
       "unrevealed_reveal_count": 5,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -517,7 +517,7 @@
       "visible_text_chars": 940,
       "scroll_height": 7696,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -529,7 +529,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7457,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -541,7 +541,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7349,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -553,7 +553,7 @@
       "visible_text_chars": 1000,
       "scroll_height": 5798,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -565,7 +565,7 @@
       "visible_text_chars": 1042,
       "scroll_height": 5322,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -577,7 +577,7 @@
       "visible_text_chars": 1014,
       "scroll_height": 5348,
       "unrevealed_reveal_count": 7,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -589,7 +589,7 @@
       "visible_text_chars": 940,
       "scroll_height": 7696,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -601,7 +601,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7457,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -613,7 +613,7 @@
       "visible_text_chars": 954,
       "scroll_height": 7349,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -625,7 +625,7 @@
       "visible_text_chars": 1000,
       "scroll_height": 5798,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -637,7 +637,7 @@
       "visible_text_chars": 1042,
       "scroll_height": 5322,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -649,7 +649,7 @@
       "visible_text_chars": 1014,
       "scroll_height": 5348,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -661,7 +661,7 @@
       "visible_text_chars": 451,
       "scroll_height": 6162,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -673,7 +673,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5595,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -685,7 +685,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5329,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -697,7 +697,7 @@
       "visible_text_chars": 861,
       "scroll_height": 3565,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -709,7 +709,7 @@
       "visible_text_chars": 767,
       "scroll_height": 3361,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -721,7 +721,7 @@
       "visible_text_chars": 729,
       "scroll_height": 3503,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -733,7 +733,7 @@
       "visible_text_chars": 451,
       "scroll_height": 6162,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -745,7 +745,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5595,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -757,7 +757,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5329,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -769,7 +769,7 @@
       "visible_text_chars": 861,
       "scroll_height": 3565,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -781,7 +781,7 @@
       "visible_text_chars": 767,
       "scroll_height": 3361,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -793,7 +793,7 @@
       "visible_text_chars": 729,
       "scroll_height": 3503,
       "unrevealed_reveal_count": 6,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -805,7 +805,7 @@
       "visible_text_chars": 451,
       "scroll_height": 6162,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -817,7 +817,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -829,7 +829,7 @@
       "visible_text_chars": 451,
       "scroll_height": 5329,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -841,7 +841,7 @@
       "visible_text_chars": 861,
       "scroll_height": 3565,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -853,7 +853,7 @@
       "visible_text_chars": 767,
       "scroll_height": 3361,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -865,7 +865,7 @@
       "visible_text_chars": 729,
       "scroll_height": 3503,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -877,7 +877,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2961,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -889,7 +889,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2841,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -901,7 +901,7 @@
       "visible_text_chars": 295,
       "scroll_height": 2815,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -913,7 +913,7 @@
       "visible_text_chars": 319,
       "scroll_height": 2110,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -925,7 +925,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2366,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -937,7 +937,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2664,
       "unrevealed_reveal_count": 2,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -949,7 +949,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2961,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -961,7 +961,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2841,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -973,7 +973,7 @@
       "visible_text_chars": 295,
       "scroll_height": 2815,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -985,7 +985,7 @@
       "visible_text_chars": 319,
       "scroll_height": 2110,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -997,7 +997,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2366,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1009,7 +1009,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2664,
       "unrevealed_reveal_count": 4,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1021,7 +1021,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2961,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1033,7 +1033,7 @@
       "visible_text_chars": 275,
       "scroll_height": 2841,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1045,7 +1045,7 @@
       "visible_text_chars": 295,
       "scroll_height": 2815,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1057,7 +1057,7 @@
       "visible_text_chars": 319,
       "scroll_height": 2110,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1069,7 +1069,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2366,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1081,7 +1081,7 @@
       "visible_text_chars": 281,
       "scroll_height": 2664,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1093,7 +1093,7 @@
       "visible_text_chars": 684,
       "scroll_height": 1748,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1105,7 +1105,7 @@
       "visible_text_chars": 794,
       "scroll_height": 1611,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1117,7 +1117,7 @@
       "visible_text_chars": 823,
       "scroll_height": 1498,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1129,7 +1129,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1154,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1141,7 +1141,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1100,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1153,7 +1153,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1100,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1165,7 +1165,7 @@
       "visible_text_chars": 689,
       "scroll_height": 1676,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1177,7 +1177,7 @@
       "visible_text_chars": 718,
       "scroll_height": 1539,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1189,7 +1189,7 @@
       "visible_text_chars": 828,
       "scroll_height": 1450,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1201,7 +1201,7 @@
       "visible_text_chars": 873,
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1213,7 +1213,7 @@
       "visible_text_chars": 873,
       "scroll_height": 1076,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1225,7 +1225,7 @@
       "visible_text_chars": 873,
       "scroll_height": 1076,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1237,7 +1237,7 @@
       "visible_text_chars": 684,
       "scroll_height": 1748,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1249,7 +1249,7 @@
       "visible_text_chars": 794,
       "scroll_height": 1611,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1261,7 +1261,7 @@
       "visible_text_chars": 823,
       "scroll_height": 1498,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1273,7 +1273,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1154,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1285,7 +1285,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1100,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1297,7 +1297,7 @@
       "visible_text_chars": 978,
       "scroll_height": 1100,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1309,7 +1309,7 @@
       "visible_text_chars": 444,
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1321,7 +1321,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1333,7 +1333,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1345,7 +1345,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1357,7 +1357,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1369,7 +1369,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1381,7 +1381,7 @@
       "visible_text_chars": 444,
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1393,7 +1393,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1405,7 +1405,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1417,7 +1417,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1429,7 +1429,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1441,7 +1441,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1453,7 +1453,7 @@
       "visible_text_chars": 444,
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1465,7 +1465,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1477,7 +1477,7 @@
       "visible_text_chars": 460,
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1489,7 +1489,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1501,7 +1501,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1513,7 +1513,7 @@
       "visible_text_chars": 571,
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1525,7 +1525,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1537,7 +1537,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1549,7 +1549,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1561,7 +1561,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1573,7 +1573,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1585,7 +1585,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1597,7 +1597,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1609,7 +1609,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1621,7 +1621,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1633,7 +1633,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1645,7 +1645,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1657,7 +1657,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1669,7 +1669,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1681,7 +1681,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1693,7 +1693,7 @@
       "visible_text_chars": 338,
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1705,7 +1705,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1717,7 +1717,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1729,7 +1729,7 @@
       "visible_text_chars": 785,
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1741,7 +1741,7 @@
       "visible_text_chars": 325,
       "scroll_height": 8791,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1751,9 +1751,9 @@
       "fold_png": "docs-faq/360-js-on-fold.png",
       "full_png": "docs-faq/360-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7997,
+      "scroll_height": 8024,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1763,9 +1763,9 @@
       "fold_png": "docs-faq/390-js-on-fold.png",
       "full_png": "docs-faq/390-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7507,
+      "scroll_height": 7535,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1777,7 +1777,7 @@
       "visible_text_chars": 1050,
       "scroll_height": 6140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1789,7 +1789,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1801,7 +1801,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1813,7 +1813,7 @@
       "visible_text_chars": 325,
       "scroll_height": 8791,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1823,9 +1823,9 @@
       "fold_png": "docs-faq/360-js-off-fold.png",
       "full_png": "docs-faq/360-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7997,
+      "scroll_height": 8024,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1835,9 +1835,9 @@
       "fold_png": "docs-faq/390-js-off-fold.png",
       "full_png": "docs-faq/390-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7507,
+      "scroll_height": 7535,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1849,7 +1849,7 @@
       "visible_text_chars": 1050,
       "scroll_height": 6140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1861,7 +1861,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1873,7 +1873,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1885,7 +1885,7 @@
       "visible_text_chars": 325,
       "scroll_height": 8791,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1895,9 +1895,9 @@
       "fold_png": "docs-faq/360-reduced-fold.png",
       "full_png": "docs-faq/360-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7997,
+      "scroll_height": 8024,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1907,9 +1907,9 @@
       "fold_png": "docs-faq/390-reduced-fold.png",
       "full_png": "docs-faq/390-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7507,
+      "scroll_height": 7535,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1921,7 +1921,7 @@
       "visible_text_chars": 1050,
       "scroll_height": 6140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1933,7 +1933,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1945,7 +1945,7 @@
       "visible_text_chars": 1357,
       "scroll_height": 4599,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1957,7 +1957,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7691,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1969,7 +1969,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7386,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1981,7 +1981,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7134,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -1993,7 +1993,7 @@
       "visible_text_chars": 1101,
       "scroll_height": 6255,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2005,7 +2005,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2017,7 +2017,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2029,7 +2029,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7691,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2041,7 +2041,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7386,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2053,7 +2053,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7134,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2065,7 +2065,7 @@
       "visible_text_chars": 1101,
       "scroll_height": 6255,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2077,7 +2077,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2089,7 +2089,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2101,7 +2101,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7691,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2113,7 +2113,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7386,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2125,7 +2125,7 @@
       "visible_text_chars": 576,
       "scroll_height": 7134,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2137,7 +2137,7 @@
       "visible_text_chars": 1101,
       "scroll_height": 6255,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2149,7 +2149,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2161,7 +2161,7 @@
       "visible_text_chars": 1271,
       "scroll_height": 5734,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2173,7 +2173,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5674,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2185,7 +2185,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5051,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2197,7 +2197,7 @@
       "visible_text_chars": 343,
       "scroll_height": 4728,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2209,7 +2209,7 @@
       "visible_text_chars": 1016,
       "scroll_height": 3707,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2221,7 +2221,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2233,7 +2233,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2245,7 +2245,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5674,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2257,7 +2257,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5051,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2269,7 +2269,7 @@
       "visible_text_chars": 343,
       "scroll_height": 4728,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2281,7 +2281,7 @@
       "visible_text_chars": 1016,
       "scroll_height": 3707,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2293,7 +2293,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2305,7 +2305,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2317,7 +2317,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5674,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2329,7 +2329,7 @@
       "visible_text_chars": 343,
       "scroll_height": 5051,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2341,7 +2341,7 @@
       "visible_text_chars": 343,
       "scroll_height": 4728,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2353,7 +2353,7 @@
       "visible_text_chars": 1016,
       "scroll_height": 3707,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2365,7 +2365,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2377,7 +2377,7 @@
       "visible_text_chars": 1672,
       "scroll_height": 2739,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2389,7 +2389,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3981,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2401,7 +2401,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3646,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2413,7 +2413,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3564,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2425,7 +2425,7 @@
       "visible_text_chars": 866,
       "scroll_height": 2740,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2437,7 +2437,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2449,7 +2449,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2461,7 +2461,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3981,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2473,7 +2473,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3646,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2485,7 +2485,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3564,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2497,7 +2497,7 @@
       "visible_text_chars": 866,
       "scroll_height": 2740,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2509,7 +2509,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2521,7 +2521,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2533,7 +2533,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3981,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2545,7 +2545,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3646,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2557,7 +2557,7 @@
       "visible_text_chars": 335,
       "scroll_height": 3564,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2569,7 +2569,7 @@
       "visible_text_chars": 866,
       "scroll_height": 2740,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2581,7 +2581,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2593,7 +2593,7 @@
       "visible_text_chars": 1356,
       "scroll_height": 2116,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2605,7 +2605,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5826,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2617,7 +2617,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5265,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2629,7 +2629,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5079,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2641,7 +2641,7 @@
       "visible_text_chars": 1020,
       "scroll_height": 3988,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2653,7 +2653,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2665,7 +2665,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2677,7 +2677,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5826,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2689,7 +2689,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5265,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2701,7 +2701,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5079,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2713,7 +2713,7 @@
       "visible_text_chars": 1020,
       "scroll_height": 3988,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2725,7 +2725,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2737,7 +2737,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2749,7 +2749,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5826,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2761,7 +2761,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5265,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2773,7 +2773,7 @@
       "visible_text_chars": 423,
       "scroll_height": 5079,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2785,7 +2785,7 @@
       "visible_text_chars": 1020,
       "scroll_height": 3988,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2797,7 +2797,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2809,7 +2809,7 @@
       "visible_text_chars": 1689,
       "scroll_height": 2987,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2819,9 +2819,9 @@
       "fold_png": "docs-terms/320-js-on-fold.png",
       "full_png": "docs-terms/320-js-on-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6444,
+      "scroll_height": 6470,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2833,7 +2833,7 @@
       "visible_text_chars": 418,
       "scroll_height": 5923,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2843,9 +2843,9 @@
       "fold_png": "docs-terms/390-js-on-fold.png",
       "full_png": "docs-terms/390-js-on-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5601,
+      "scroll_height": 5574,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2857,7 +2857,7 @@
       "visible_text_chars": 1011,
       "scroll_height": 4555,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2869,7 +2869,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2881,7 +2881,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2891,9 +2891,9 @@
       "fold_png": "docs-terms/320-js-off-fold.png",
       "full_png": "docs-terms/320-js-off-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6444,
+      "scroll_height": 6470,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2905,7 +2905,7 @@
       "visible_text_chars": 418,
       "scroll_height": 5923,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2915,9 +2915,9 @@
       "fold_png": "docs-terms/390-js-off-fold.png",
       "full_png": "docs-terms/390-js-off-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5601,
+      "scroll_height": 5574,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2929,7 +2929,7 @@
       "visible_text_chars": 1011,
       "scroll_height": 4555,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2941,7 +2941,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2953,7 +2953,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2963,9 +2963,9 @@
       "fold_png": "docs-terms/320-reduced-fold.png",
       "full_png": "docs-terms/320-reduced-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6444,
+      "scroll_height": 6470,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2977,7 +2977,7 @@
       "visible_text_chars": 418,
       "scroll_height": 5923,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -2987,9 +2987,9 @@
       "fold_png": "docs-terms/390-reduced-fold.png",
       "full_png": "docs-terms/390-reduced-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5601,
+      "scroll_height": 5574,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3001,7 +3001,7 @@
       "visible_text_chars": 1011,
       "scroll_height": 4555,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3013,7 +3013,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3025,7 +3025,7 @@
       "visible_text_chars": 1058,
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3037,7 +3037,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4763,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3049,7 +3049,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4358,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3061,7 +3061,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3073,7 +3073,7 @@
       "visible_text_chars": 965,
       "scroll_height": 3233,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3085,7 +3085,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3097,7 +3097,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3109,7 +3109,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4763,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3121,7 +3121,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4358,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3133,7 +3133,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3145,7 +3145,7 @@
       "visible_text_chars": 965,
       "scroll_height": 3233,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3157,7 +3157,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3169,7 +3169,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3181,7 +3181,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4763,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3193,7 +3193,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4358,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3205,7 +3205,7 @@
       "visible_text_chars": 323,
       "scroll_height": 4140,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3217,7 +3217,7 @@
       "visible_text_chars": 965,
       "scroll_height": 3233,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3229,7 +3229,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     },
     {
@@ -3241,7 +3241,7 @@
       "visible_text_chars": 1442,
       "scroll_height": 2507,
       "unrevealed_reveal_count": 0,
-      "build_meta": "63c48a5f-dirty",
+      "build_meta": null,
       "verdict": "pass"
     }
   ]

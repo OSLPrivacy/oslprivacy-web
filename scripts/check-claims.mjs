@@ -468,6 +468,12 @@ const SELF_TEST_CASES = [
     expect: 'unsellable at checkout',
   },
   {
+    name: 'planned image sending sold as a Pro unlock without a capability badge',
+    file: 'docs/terms.html',
+    html: '<p>Pro unlocks encrypted image sending.</p>',
+    expect: 'false capability claim',
+  },
+  {
     name: 'support matrix silently dropping a capability',
     file: 'docs/status.html',
     html: '<table><tr><td><span data-osl-feature="burn" data-osl-status="Planned">Planned</span></td></tr></table>',
