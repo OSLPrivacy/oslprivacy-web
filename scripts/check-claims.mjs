@@ -1173,8 +1173,14 @@ function staticJavaScriptTextSinkValues(content) {
     flushContiguous();
   }
   sinkRuns.sort((left, right) => left.index - right.index);
-  for (let index = 1; index < sinkRuns.length; index += 1) {
-    values.push(sinkRuns[index - 1].rendered + sinkRuns[index].rendered);
+  for (let start = 0; start < sinkRuns.length; start += 1) {
+    let rendered = sinkRuns[start].rendered;
+    for (let end = start + 1;
+      end < sinkRuns.length && end < start + 8;
+      end += 1) {
+      rendered += sinkRuns[end].rendered;
+      values.push(rendered);
+    }
   }
   return values;
 }
@@ -3971,6 +3977,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a); document.body.append(b);</script>',
       '<script>const a = "Account "; const b = "settings."; document.body.append(a); document.body.append(b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_THREE_SEQUENTIAL_SINKS',
+      'index.html',
+      '<script>const a = "All local "; const b = "data is "; const c = "password-protected."; document.body.append(a); document.body.append(b); document.body.append(c);</script>',
+      '<script>const a = "Account "; const b = "sett"; const c = "ings."; document.body.append(a); document.body.append(b); document.body.append(c);</script>',
       'html',
     ],
     [
