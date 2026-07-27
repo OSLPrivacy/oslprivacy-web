@@ -421,20 +421,14 @@ function h4ExplainerErrors(fileRel, content) {
 
 function atRestOverclaimErrors(fileRel, content) {
   const rendered = renderedTextWithSourceMap(content);
-  const universalScope = /\b(?:all|every|everything|entire|entirety|whole|complete|no|none|nothing|never|zero)\b/i;
-  const universalPronounScope = /\b(?:everything|nothing)\b.{0,160}\b(?:private|local(?:ly)?|stored|saved|kept|retained|app\s+(?:keeps|retains)|OSL\s+(?:stores?|writes?|saves?|keeps?|retains?))\b/i;
-  const broadProtectionVerbScope = /\b(?:OSL|the\s+app)\b.{0,100}\b(?:encrypts?|protects?|secures?)\b.{0,100}\beverything\b/i;
-  const splitGenericScope = /\b(?:all|every)\s+(?:items?|things?|one)\b/i;
-  const localContext = /\b(?:private|local|locally|on[-\s]+device|on\s+(?:this|the|your)\s+device|on\s+(?:your|the)\s+(?:computer|machine)|filesystem|persisted|saved|retained|app\s+(?:keeps|retains)|saved\s+by\s+OSL|OSL\s+(?:stores?|writes?|saves?|creates?|keeps?|retains?|profile))\b/i;
-  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)\b/i;
+  const universalScope = /(?<!\bat\s)\ball\b|\b(?:each|every|everything|entire|entirety|whole|complete|totality|no|none|nothing|never|zero)\b|100\s*%/i;
+  const absoluteUniversal = /\b(?:everything|nothing|entirety|totality)\b|100\s*%/i;
+  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|items?|things?|secrets?)\b/i;
   const unqualifiedBroadCategory = /\b(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)\b/i;
-  const cryptoProtectionVerb = /\b(?:encrypt(?:s|ed|ing)?|decrypt|unencrypted|ciphertext|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing)|gated|guards?|locked|unlocks?|inaccessible)\b/i;
-  const atRestContext = /\bat\s+rest\b/i;
-  const passwordContext = /\b(?:(?:your|the|a)\s+)?(?:(?:main[-\s]+)?password|passphrase)\b/i;
-  const passwordRequirement = /\b(?:requires?|needs?|without|cannot|can't|only|read|decrypt|gated|guards?|locked|unlocks?)\b/i;
-  const denial = /\b(?:no|none|nothing|never|zero)\b/i;
-  const plaintextContext = /\b(?:plain[-\s]*text|unencrypted|in\s+the\s+clear)\b/i;
-  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean(?:\s+that)?)\s+(?:all|every)|not\s+(?:all|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+a\s+(?:claim|promise)\s+that\s+(?:all|every)|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?)\b/i;
+  const protectionAssertion = /\b(?:encrypt(?:s|ed|ing)?|decrypt(?:s|ed|ing)?|encipher(?:s|ed|ing)?|unencrypted|ciphertext|cleartext|plain[-\s]*text|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing)|gated|guards?|locked|unlocks?|inaccessible|unreadable|opaque|passphrase|password|in\s+the\s+clear)\b/i;
+  const narrowProtectedObject = /\b(?:private\s+)?identity\s+keys?\b|\b(?:decrypted\s+|supported\s+)?message\s+bodies?\b|\bencrypted\s+(?:message\s+store|history)\b/i;
+  const destructiveScope = /\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|uninstall)\b/i;
+  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it)\b/i;
   const errors = [];
 
   // Block boundaries keep an honest limitation attached to the claim it
@@ -450,29 +444,18 @@ function atRestOverclaimErrors(fileRel, content) {
         text: shortText(sentence[0]),
       }))
       .filter((sentence) => sentence.text);
-    // The scope must be coherent inside one sentence. Once established, the
-    // protection assertion may appear anywhere in the same rendered block;
-    // this catches arbitrarily split prose without combining unrelated
-    // identity-key sentences into a universal local-state claim.
-    const scope = sentences.find(({ text }) => unqualifiedBroadCategory.test(text)
-      || universalPronounScope.test(text)
-      || broadProtectionVerbScope.test(text)
-      || (universalScope.test(text)
-        && localContext.test(text)
-        && stateObject.test(text)));
-    const resolvedScope = scope || (splitGenericScope.test(blockText)
-      && localContext.test(blockText)
-      && stateObject.test(blockText)
-      ? sentences[0]
-      : null);
-    if (!resolvedScope) continue;
-    const promisesProtection = (cryptoProtectionVerb.test(blockText)
-        && (atRestContext.test(blockText) || localContext.test(blockText)))
-      || (passwordContext.test(blockText)
-        && (cryptoProtectionVerb.test(blockText) || passwordRequirement.test(blockText)))
-      || (denial.test(blockText) && plaintextContext.test(blockText));
-    if (!promisesProtection) continue;
-    const { start } = resolvedScope;
+    // Scope is established inside one sentence. Its protection assertion may
+    // appear elsewhere in the same rendered block, so arbitrary sentence
+    // splitting cannot evade the check. Narrow identity-key and message-body
+    // claims remain permissible unless the block also asserts a broad category.
+    const scope = sentences.find(({ text }) => !destructiveScope.test(text) && (unqualifiedBroadCategory.test(text)
+      || (universalScope.test(text) && stateObject.test(text))
+      || (absoluteUniversal.test(text) && protectionAssertion.test(text))));
+    if (!scope || !protectionAssertion.test(blockText)) continue;
+    const isNarrow = narrowProtectedObject.test(scope.text)
+      && !unqualifiedBroadCategory.test(scope.text);
+    if (isNarrow) continue;
+    const { start } = scope;
     const text = blockText;
     const sourceIndex = rendered.sourceIndexes[start] ?? 0;
     errors.push({
@@ -999,6 +982,66 @@ const SELF_TEST_CASES = [
     expect: 'at-rest overclaim',
   },
   {
+    name: 'entire on-disk database encrypted',
+    file: 'docs/faq.html',
+    html: '<p>The entire on-disk database is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'each retained machine record encrypted',
+    file: 'docs/faq.html',
+    html: '<p>Each record retained on this machine is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'one hundred percent retained data encrypted',
+    file: 'docs/faq.html',
+    html: '<p>OSL encrypts 100% of the data it retains.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'totality retained data encrypted',
+    file: 'docs/faq.html',
+    html: '<p>OSL encrypts the totality of its retained data.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'everything retained enciphered',
+    file: 'docs/faq.html',
+    html: '<p>Everything OSL retains on this device is enciphered.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'no retained secret cleartext',
+    file: 'docs/faq.html',
+    html: '<p>No secret OSL keeps on this machine is ever cleartext.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local records unreadable until password',
+    file: 'docs/faq.html',
+    html: '<p>All local records are unreadable until the main password is entered.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local records opaque until passphrase',
+    file: 'docs/faq.html',
+    html: '<p>Every local record remains opaque until the passphrase is supplied.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'split all-records and locality',
+    file: 'docs/faq.html',
+    html: '<p>All records are protected. OSL retains them on this device.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'split everything and local records',
+    file: 'docs/faq.html',
+    html: '<p>Everything is encrypted. OSL retains those records on your device.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
     name: 'unlimited messages positioning',
     file: 'download.html',
     html: '<li>Unlimited private messages</li>',
@@ -1257,6 +1300,24 @@ const NEGATION_CASES = [
     kinds: ['at-rest overclaim'],
   },
   {
+    name: 'honest status metadata does-not-imply limitation',
+    file: 'docs/faq.html',
+    html: '<p>Status metadata reports whether an identity-key storage key is installed; it does not imply that all local records are encrypted.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest status metadata not-evidence limitation',
+    file: 'docs/faq.html',
+    html: '<p>Status metadata is not evidence that every local record is encrypted.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest connected-service ciphertext limitation',
+    file: 'docs/faq.html',
+    html: '<p>Every supported message body retained by the connected service is ciphertext; this says nothing about local metadata.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
     name: 'honest unimplemented grant-duration limitation',
     file: 'docs/terms.html',
     html: '<p>An activation code does not grant 30 days of Pro because paid-code expiry is not implemented.</p>',
@@ -1395,7 +1456,7 @@ if (SELF_TEST) {
     {
       file: 'docs/faq.html',
       needle: 'The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes.',
-      replacement: 'On your device, OSL encrypts everything it retains.',
+      replacement: 'The entire on-disk database is encrypted at rest.',
     },
   ];
   for (const testCase of productionAtRestCases) {
