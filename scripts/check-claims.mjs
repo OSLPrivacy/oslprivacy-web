@@ -102,6 +102,7 @@ const AT_REST_PRODUCT_SOURCE = Object.freeze({
   tree: '48c75ceb9b9fc241f0ee95fbc6f8dfe028e8e65b',
 });
 const AT_REST_CANONICAL_CONTRACT_SHA256 = '6ba87f746f4773f792a451ac354ea5d8452e89d26ee3b92bae2a73e33e30c940';
+const AT_REST_RAW_CONTRACT_SHA256 = 'a7468b174b07301873eee1a1a9e5e01f5af30716df2dbb4bac13f65820c83246';
 const AT_REST_BACKEND_CONTRACT = new Map(Object.entries({
   'identity-private-key-file': {
     retention: 'durable',
@@ -657,6 +658,10 @@ function canonicalSha256(value) {
   return createHash('sha256').update(canonicalJson(value)).digest('hex');
 }
 
+function rawSha256(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
 function plainText(html) {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
 }
@@ -697,7 +702,11 @@ function falseIdentityPasswordMechanism(text) {
     const identity = /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(clause);
     const password = /\b(?:(?:your|the|main|OSL)\s+)?password\b|\bpassphrase\b/i.test(clause);
     const protection = /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(clause);
-    const negated = /\b(?:does\s+not|doesn't|is\s+not|isn't|are\s+not|aren't|never|rather\s+than)\b/i.test(clause);
+    const negated = (
+      /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b.{0,80}\b(?:are\s+not|aren't|never|do\s+not|don't)\b.{0,80}\b(?:encrypt|seal|protect|secur)/i.test(clause)
+      || /\b(?:password|passphrase)\b.{0,80}\b(?:does\s+not|doesn't|never)\b.{0,80}\b(?:encrypt|seal|protect|secur).{0,80}\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(clause)
+      || /\brather\s+than\b/i.test(clause)
+    );
     return identity && password && protection && !negated;
   });
 }
@@ -781,11 +790,20 @@ function textualAssetClaimChannels(fileRel, content) {
   }
   if (extension === '.css') {
     const values = [];
+    const customProperties = new Map();
+    for (const declaration of content.matchAll(/(--[a-z0-9_-]+)\s*:\s*([^;}]+)/gi)) {
+      const strings = [...declaration[2].matchAll(/(["'])([\s\S]*?)\1/g)]
+        .map((match) => match[2]);
+      if (strings.length > 0) customProperties.set(declaration[1], strings.join(''));
+    }
     for (const declaration of content.matchAll(/\bcontent\s*:\s*([^;}]+)/gi)) {
       const strings = [...declaration[1].matchAll(/(["'])([\s\S]*?)\1/g)]
         .map((match) => match[2]);
       values.push(...strings);
       if (strings.length > 1) values.push(strings.join(''));
+      const resolved = [...declaration[1].matchAll(/\bvar\(\s*(--[a-z0-9_-]+)\s*(?:,[^)]+)?\)/gi)]
+        .map((match) => customProperties.get(match[1]) ?? '');
+      if (resolved.length > 0 && resolved.every(Boolean)) values.push(resolved.join(''));
     }
     return values;
   }
@@ -803,6 +821,7 @@ function textualAssetClaimChannels(fileRel, content) {
   if (extension === '.svg' || extension === '.xml') {
     const values = [];
     for (const match of content.matchAll(/>([^<]+)</g)) values.push(match[1]);
+    values.push(shortText(content.replace(/<[^>]*>/g, ' ')));
     for (const match of content.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text\s*>/gi)) {
       values.push(shortText(match[1].replace(/<[^>]*>/g, ' ')));
     }
@@ -856,7 +875,12 @@ function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
     const tag = match[1].toLowerCase();
     const attrs = match[2];
     const body = match[3];
-    if (tag === 'template') continue;
+    if (tag === 'template') {
+      if (/\bshadowrootmode\s*=\s*(["'])(?:open|closed)\1/i.test(attrs)) {
+        record(body, 'declarative-shadow-template');
+      }
+      continue;
+    }
     if (tag === 'noscript') {
       record(body, 'noscript');
       continue;
@@ -897,7 +921,7 @@ function atRestUnboundClaimErrors(fileRel, content) {
   return errors;
 }
 
-function validateAtRestCensus(census) {
+function validateAtRestCensus(census, rawSource) {
   const errors = [];
   const record = (code, text) => errors.push(`${code}: ${text}`);
   if (census?.schema_version !== 1 || census?.census_id !== 'osl-at-rest-source-census') {
@@ -909,6 +933,15 @@ function validateAtRestCensus(census) {
       'AT_REST_CANONICAL_CONTRACT',
       `the complete reviewed census contract must hash to ${AT_REST_CANONICAL_CONTRACT_SHA256}, got ${contractDigest}`,
     );
+  }
+  if (typeof rawSource === 'string') {
+    const rawDigest = rawSha256(rawSource);
+    if (rawDigest !== AT_REST_RAW_CONTRACT_SHA256) {
+      record(
+        'AT_REST_RAW_CONTRACT',
+        `the exact reviewed JSON bytes must hash to ${AT_REST_RAW_CONTRACT_SHA256}, got ${rawDigest}`,
+      );
+    }
   }
   if (census?.product_source?.commit !== AT_REST_PRODUCT_SOURCE.commit
       || census?.product_source?.tree !== AT_REST_PRODUCT_SOURCE.tree
@@ -1232,7 +1265,14 @@ function atRestOverclaimErrors(fileRel, content) {
   const narrowProtectedObject = /\b(?:private\s+)?identity\s+keys?\b|\b(?:decrypted\s+|supported\s+)?message\s+bodies?\b|\bencrypted\s+(?:message\s+store|history)\b/i;
   const destructiveScope = /\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|uninstall)\b/i;
   const localAtRestContext = /\bat[-\s]+rest\b|\bon[-\s]+disk\b|\bfilesystem\b|\blocal(?:ly)?\b|\bon[-\s]+device\b|\bon\s+(?:this|your|the)\s+(?:device|computer|machine)\b|\bwhole[-\s]+profile\b|\bfile[-\s]+storage\b|\bprivate\s+files?\b|\bOSL\s+never\s+(?:writes?|stores?)\b|\b(?:persist(?:s|ed|ing)?|retain(?:s|ed|ing)?)\b/i;
-  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply|prove|describe)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+guarantee|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it|no\b.{0,80}\b(?:release|profile)\b.{0,40}\bverified)\b/i;
+  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply|prove|describe)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+(?:guarantee|encryption|protection)|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it|no\b.{0,80}\b(?:release|profile)\b.{0,40}\bverified)\b/i;
+  const broadNegation = /\b(?:(?:does\s+not|doesn't)\b.{0,100}\b(?:prove|mean|imply|describe|cover|protect|encrypt|secure)\b.{0,100}\b(?:all|each|every)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+(?:guarantee|encryption|protection))\b/i;
+  const affirmativeBroadUnit = (text) => !broadNegation.test(text)
+    && protectionAssertion.test(text)
+    && localAtRestContext.test(text)
+    && (unqualifiedBroadCategory.test(text)
+      || (universalScope.test(text) && stateObject.test(text))
+      || absoluteUniversal.test(text));
   const errors = [];
 
   // Block boundaries keep an honest limitation attached to the claim it
@@ -1251,7 +1291,7 @@ function atRestOverclaimErrors(fileRel, content) {
     const semanticUnits = sentences.flatMap((sentence) => {
       const units = [];
       let cursor = 0;
-      for (const raw of sentence.text.split(/\b(?:but|while|although|whereas|yet|however)\b/i)) {
+      for (const raw of sentence.text.split(/\b(?:but|while|although|whereas|yet|however|even\s+though|despite(?:\s+the\s+fact\s+that)?)\b/i)) {
         const text = shortText(raw.replace(/^[,\s]+|[,\s]+$/g, ''));
         const relative = sentence.text.indexOf(raw, cursor);
         cursor = Math.max(cursor, relative + raw.length);
@@ -1259,8 +1299,10 @@ function atRestOverclaimErrors(fileRel, content) {
       }
       return units;
     });
-    const assertionUnits = semanticUnits.filter(({ text }) => !limitations.test(text));
-    const falseMechanism = assertionUnits.find(({ text }) => falseIdentityPasswordMechanism(text));
+    const assertionUnits = semanticUnits.filter(({ text }) => (
+      !limitations.test(text) || affirmativeBroadUnit(text)
+    ));
+    const falseMechanism = semanticUnits.find(({ text }) => falseIdentityPasswordMechanism(text));
     if (falseMechanism) {
       const sourceIndex = rendered.sourceIndexes[falseMechanism.start] ?? 0;
       errors.push({
@@ -2961,7 +3003,8 @@ for (const term of ['constantly', 'always']) {
 }
 
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
-const atRestCensus = JSON.parse(await readFile(AT_REST_CENSUS_PATH, 'utf8'));
+const atRestCensusRaw = await readFile(AT_REST_CENSUS_PATH, 'utf8');
+const atRestCensus = JSON.parse(atRestCensusRaw);
 const publicSurfaceManifest = JSON.parse(await readFile(PUBLIC_SURFACE_MANIFEST_PATH, 'utf8'));
 const discoveredPublicSurface = await discoverPublicSurface();
 const config = buildConfig(pricing);
@@ -2970,7 +3013,7 @@ if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0
   process.exit(1);
 }
 const h7ValidationErrors = validateH7Comparison(pricing, AS_OF);
-const atRestValidationErrors = validateAtRestCensus(atRestCensus);
+const atRestValidationErrors = validateAtRestCensus(atRestCensus, atRestCensusRaw);
 const publicSurfaceValidationErrors = validatePublicSurfaceManifest(
   publicSurfaceManifest,
   discoveredPublicSurface,
@@ -3141,6 +3184,17 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'DUPLICATE_JSON_KEY_SHADOW',
+      expect: 'AT_REST_RAW_CONTRACT',
+      mutate() {},
+      rawMutate(raw) {
+        return raw.replace(
+          '"schema_version": 1,',
+          '"schema_version": 1, "schema_version": 1,',
+        );
+      },
+    },
+    {
       name: 'BACKEND_MECHANISM_DRIFT',
       expect: 'AT_REST_CANONICAL_CONTRACT',
       mutate(census) {
@@ -3190,6 +3244,27 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'AT_REST_EVEN_THOUGH_UNIVERSAL_PLAINTEXT',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' All local data is encrypted at rest, even though some local settings can remain plaintext.';
+      },
+    },
+    {
+      name: 'AT_REST_AND_UNIVERSAL_PLAINTEXT',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' All local data is encrypted at rest, and some local settings can remain plaintext.';
+      },
+    },
+    {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_WITH_UNRELATED_NEGATION',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Private identity keys are encrypted with your main password, and this does not protect every backup.';
+      },
+    },
+    {
       name: 'AT_REST_UNREACHABLE_NOTES_CLAIM',
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
@@ -3212,7 +3287,8 @@ if (SELF_TEST) {
       mutation.name,
       (atRestCensusMutationRuns.get(mutation.name) ?? 0) + 1,
     );
-    const mutationErrors = validateAtRestCensus(mutated);
+    const mutatedRaw = mutation.rawMutate?.(atRestCensusRaw);
+    const mutationErrors = validateAtRestCensus(mutated, mutatedRaw);
     const caught = mutationErrors.some((error) => error.startsWith(`${mutation.expect}:`));
     if (!caught) failures += 1;
     console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name} (expected ${mutation.expect})`);
@@ -3331,6 +3407,13 @@ if (SELF_TEST) {
       'textual-asset',
     ],
     [
+      'PUBLIC_ASSET_CSS_VARIABLE_COMPOSITION',
+      'assets/claim.css',
+      ':root { --scope: "All local data is "; --protection: "password-protected."; } .claim::after { content: var(--scope) var(--protection); }',
+      ':root { --scope: "Account "; --protection: "settings."; } .claim::after { content: var(--scope) var(--protection); }',
+      'textual-asset',
+    ],
+    [
       'PUBLIC_ASSET_JS_COMPOSITION',
       'assets/claim.js',
       'document.body.insertAdjacentText("beforeend", "All local data is " + "password-protected.");',
@@ -3343,6 +3426,13 @@ if (SELF_TEST) {
       'assets/claim.svg',
       '<svg><text><tspan>All local data is </tspan><tspan>password-protected.</tspan></text></svg>',
       '<svg><text><tspan>Account settings.</tspan></text></svg>',
+      'textual-asset',
+    ],
+    [
+      'PUBLIC_ASSET_SVG_SIBLING_COMPOSITION',
+      'assets/claim.svg',
+      '<svg><text>All local data is </text><text>password-protected.</text></svg>',
+      '<svg><text>Account </text><text>settings.</text></svg>',
       'textual-asset',
     ],
     ['PUBLIC_ASSET_TXT_STAGE', 'assets/claim.txt', publicClaim, 'Account settings.', 'textual-asset'],
@@ -3379,6 +3469,20 @@ if (SELF_TEST) {
           'index.html',
           `<template><p>${publicClaim}</p></template>`,
         ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_DECLARATIVE_SHADOW_TEMPLATE',
+      caught() {
+        const positive = publicAtRestChannelErrors(
+          'index.html',
+          `<template shadowrootmode="open"><p>${publicClaim}</p></template>`,
+        );
+        const removal = publicAtRestChannelErrors(
+          'index.html',
+          '<template shadowrootmode="open"><p>Account settings.</p></template>',
+        );
+        return positive.length > 0 && removal.length === 0;
       },
     },
   );
