@@ -83,7 +83,7 @@
         <p>X25519 and ML-KEM-768 are combined in a "hybrid" mode. An attacker would have to break both to recover your keys. If quantum computers turn out to break X25519 some day, ML-KEM-768 still holds. If a flaw is found in ML-KEM-768, X25519 still holds. You get the benefits of both algorithms and the failure mode of neither.</p>
 
         <h2 id="where-keys-live">Where your keys live <a class="anchor-link" href="#where-keys-live" aria-label="Link to this section">#</a></h2>
-        <p>Everything cryptographic happens on your computer. Your encryption keys are generated locally and stored locally. They're encrypted at rest with your password, so even someone with full access to your filesystem can't read them without it.</p>
+        <p>Everything cryptographic happens on your computer. Your encryption keys are generated locally, and the private half never leaves your machine. The <em>public</em> half of your identity keys is published to the OSL key server — that is how anyone can send to you at all — so "your keys stay local" is true of the secret ones, not of the public ones. They're encrypted at rest with your password, so even someone with full access to your filesystem can't read them without it.</p>
         <p>We never see your keys. We have no copy of them. We can't recover them if you lose them. This is the trade-off for end-to-end encryption: nobody else can read your data, and that includes us.</p>
 
         <h2 id="what-services-see">What connected services see <a class="anchor-link" href="#what-services-see" aria-label="Link to this section">#</a></h2>
@@ -96,7 +96,7 @@
 
         <h2 id="open-source">Audit the crypto <a class="anchor-link" href="#open-source" aria-label="Link to this section">#</a></h2>
         <p>OSL is fully open source. The entire client is on <a href="https://github.com/OSLPrivacy/discord-privacy-client" target="_blank" rel="noopener">GitHub</a> under Apache-2.0, and the <a href="/audit">Audit page</a> points you straight at the crypto. Reading the code lets you verify how messages are encrypted. It doesn't guarantee that the code is bug-free, but it means you can check.</p>
-        <p>The only exception is the optional AutoScrub module, which stays closed source purely to make trivial cloning harder. The exception is deliberately narrow: it does not cover cryptography, trust and identity, deletion receipts, data formats, policy contracts, Free Scrub, or the default client — all of those stay open. AutoScrub is not installed by default, you choose to download it after a plain closed-source warning, and a reproducible fully open-source build of OSL stays usable without it.</p>
+        <p>The only exception is the optional AutoScrub module, which will stay closed source purely to make trivial cloning harder. That module does not exist yet, so everything OSL ships today is open. The exception is deliberately narrow: it does not cover cryptography, trust and identity, deletion receipts, data formats, policy contracts, Free Scrub, or the default client — all of those stay open. AutoScrub is not installed by default, you choose to download it after a plain closed-source warning, and a reproducible fully open-source build of OSL stays usable without it.</p>
       </article>
     </div>
   </main>
