@@ -763,6 +763,10 @@ function semanticAttachmentClaimSpans(text) {
     /\bdiscord\s+receives?\s+(?:an?\s+|the\s+)?(?:upload|attachment|file)\s+reference[.!?]\s*(?:the\s+)?referenced\s+(?:attachments?|uploads?|files?)\s+reveals?\s+(?:no|zero)\s+(?:content|information|meaning)\s+to\s+it\b/gi,
     /\bto\s+discord\s*,?\s*(?:every\s+|the\s+)?(?:user['’]s|genuine|actual|real|original|source)\s+(?:attachments?|uploads?|files?)\s+(?:is|are|becomes?|remain(?:s)?)\s+(?:indecipherable|invisible|unintelligible)\b/gi,
     /\bdiscord\s+can\s+extract\s+(?:no|zero)\s+(?:content|information|meaning)\s+from\s+(?:the\s+)?(?:payload|attachment|upload|file)\b/gi,
+    /\b(?:discord|the\s+(?:service|platform)|the\s+downstream\s+(?:service|platform))(?:['’]s)?\s+(?:content[-\s]+analysis\s+(?:machinery|system|pipeline)|analysis\s+(?:machinery|system|pipeline))\s+(?:gets?|receives?|has)\s+no\s+(?:useful|meaningful)\s+(?:view|visibility|information)\b/gi,
+    /\b(?:discord|the\s+(?:service|platform))\s+(?:gets?|receives?|sees?)\s+(?:an?\s+)?(?:benign|harmless|sanitized)\s+(?:twin|double|lookalike)\b[^\n]{0,120}\b(?:source|original|real|actual)\s+(?:attachments?|uploads?|files?)\s+never\s+(?:leaves?|reaches?|arrives?)\b/gi,
+    /\b(?:the\s+)?(?:attachments?|uploads?|files?)(?:['’]s)?\s+(?:substance|contents?|meaning)\s+(?:is|are|remains?|becomes?)\s+(?:unintelligible|indecipherable|invisible)\s+to\s+(?:discord|the\s+(?:service|platform))\b/gi,
+    /\b(?:osl\s+)?skirts?\s+discord(?:['’]s)?\s+(?:attachment\s+|file\s+|upload\s+)?audit\b/gi,
   ]) {
     recordPattern(pattern);
   }
@@ -2862,13 +2866,14 @@ function atRestOverclaimErrors(fileRel, content) {
   const rendered = publicClaimTextWithSourceMap(content);
   const universalScope = /(?<!\bat\s)\ball\b|\b(?:each|every|everything|entire|entirety|whole|complete|totality|no|none|nothing|never|zero)\b|100\s*%/i;
   const absoluteUniversal = /\b(?:everything|nothing|entirety|totality)\b|100\s*%/i;
-  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|items?|things?|secrets?)\b/i;
-  const unqualifiedBroadCategory = /\b(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)\b/i;
+  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|items?|things?|secrets?|artifacts?|residue|material)\b/i;
+  const unqualifiedBroadCategory = /\b(?:private|local|sensitive|confidential)\s+(?:conversation\s+)?(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|artifacts?|residue|material)\b/i;
   const protectionAssertion = /\b(?:encrypt(?:s|ed|ing)?|decrypt(?:s|ed|ing)?|encipher(?:s|ed|ing)?|unencrypted|ciphertext|cleartext|plain[-\s]*text|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing)|gated|guards?|locked|unlocks?|inaccessible|unreadable|opaque|passphrase|password|in\s+the\s+clear)\b/i;
   const narrowProtectedObject = /\b(?:private\s+)?identity\s+keys?\b|\b(?:decrypted\s+|supported\s+)?message\s+bodies?\b|\bencrypted\s+(?:message\s+store|history)\b/i;
   const destructiveScope = /\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|uninstall)\b/i;
   const localAtRestContext = /\bat[-\s]+rest\b|\bon[-\s]+disk\b|\bfilesystem\b|\blocal(?:ly)?\b|\bon[-\s]+device\b|\bon\s+(?:this|your|the)\s+(?:device|computer|machine)\b|\bwhole[-\s]+profile\b|\bfile[-\s]+storage\b|\bprivate\s+files?\b|\bOSL\s+never\s+(?:writes?|stores?)\b|\b(?:persist(?:s|ed|ing)?|retain(?:s|ed|ing)?)\b/i;
-  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply|prove|describe)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+(?:guarantee|encryption|protection)|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it|no\b.{0,80}\b(?:release|profile)\b.{0,40}\bverified)\b/i;
+  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:claim|cover|protect|encrypt|secure|mean|imply|prove|describe)(?:\s+that)?\s+(?:all|each|every|nothing)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+(?:guarantee|encryption|protection)|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it|no\b.{0,80}\b(?:release|profile)\b.{0,40}\bverified)\b/i;
+  const residueAbsence = /\b(?:(?:osl\s+)?leaves?\s+(?:behind\s+)?(?:no|zero)\s+(?:readable\s+)?(?:private|confidential|sensitive)?\s*(?:residue|artifacts?|data|material)|nothing\s+(?:private|confidential|sensitive)\s+survives?\s+(?:on[-\s]+disk|at[-\s]+rest|locally|on\s+(?:the|your|this)\s+(?:device|computer|machine)))\b/i;
   const broadNegation = /\b(?:(?:does\s+not|doesn't)\b.{0,100}\b(?:prove|mean|imply|describe|cover|protect|encrypt|secure)\b.{0,100}\b(?:all|each|every)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+(?:guarantee|encryption|protection))\b/i;
   const affirmativeBroadUnit = (text) => !broadNegation.test(text)
     && protectionAssertion.test(text)
@@ -2903,6 +2908,17 @@ function atRestOverclaimErrors(fileRel, content) {
       }
       return units;
     });
+    const residueClaim = semanticUnits.find(({ text }) => residueAbsence.test(text) && !limitations.test(text));
+    if (residueClaim) {
+      const sourceIndex = rendered.sourceIndexes[residueClaim.start] ?? 0;
+      errors.push({
+        kind: 'at-rest overclaim',
+        file: fileRel,
+        line: lineNumber(content, sourceIndex),
+        text: `${residueClaim.text} -- readable private residue is not excluded across every local backend`,
+      });
+      continue;
+    }
     const assertionUnits = semanticUnits.filter(({ text }) => (
       !limitations.test(text) || affirmativeBroadUnit(text)
     ));
@@ -2953,13 +2969,13 @@ function scrubOverclaimErrors(fileRel, content) {
   const attachedLimitation =
     /\b(?:planned|coming\s+soon|arriving|unavailable|not\s+(?:available|implemented|wired|supported|proved|proven|qualified)|not\s+yet\s+(?:available|implemented|wired|supported|proved|proven|qualified)|implemented[-\s]+unwired|test[-\s]+proven(?:[-\s]+only)?|unwired|unproved|unproven|unknown|view[-\s]+only|manual(?:ly|\s+only)?|requires?\s+(?:your\s+)?(?:review|confirmation)|does\s+not|cannot|never|may\s+(?:omit|exclude|miss)|can\s+be\s+incomplete|future|intended|design)\b/i;
   const completeHistory =
-    /(?:\b(?:complete|full|entire|whole|all)\b.{0,45}\b(?:history|content|messages?|posts?|records?|account\s+data|exports?)\b|\b(?:history|content|messages?|posts?|records?|account\s+data|exports?)\b.{0,45}\b(?:complete|full|entire|whole|all)\b)/i;
+    /(?:\b(?:complete|full|entire|whole|all|fully\s+reconciled)\b.{0,45}\b(?:history|content|messages?|posts?|records?|account\s+data|exports?|downloads?)\b|\b(?:history|content|messages?|posts?|records?|account\s+data|exports?|downloads?)\b.{0,45}\b(?:complete|full|entire|whole|all|fully\s+reconciled|nothing\s+(?:is\s+)?omitted)\b|\bnothing\s+(?:is\s+)?omitted\b.{0,45}\b(?:scrub|exports?|downloads?|history|content)\b)/i;
   const awayOperation =
-    /(?:\b(?:works?|runs?|scans?|cleans?|deletes?|removes?)\b.{0,55}\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b|\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b.{0,55}\b(?:works?|runs?|scans?|cleans?|deletes?|removes?)\b)/i;
+    /(?:\b(?:works?|runs?|scans?|cleans?|delet(?:e|es|ed|ing)|remov(?:e|es|ed|ing))\b.{0,55}\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b|\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b.{0,55}\b(?:works?|runs?|scans?|cleans?|delet(?:e|es|ed|ing)|remov(?:e|es|ed|ing))\b)/i;
   const automaticDeletion =
     /(?:\b(?:automatically|autonomously|on\s+its\s+own|without\s+(?:your\s+)?(?:review|confirmation|approval))\b.{0,45}\b(?:deletes?|removes?|cleans?|erases?)\b|\b(?:deletes?|removes?|cleans?|erases?)\b.{0,45}\b(?:automatically|autonomously|on\s+its\s+own|without\s+(?:your\s+)?(?:review|confirmation|approval))\b)/i;
   const providerSupport =
-    /\b(?:supports?|works?\s+with|handles?|imports?\s+from|covers?|available\s+(?:for|across|on)|compatible\s+with)\b/i;
+    /\b(?:supports?|works?\s+with|handles?|imports?\s+from|covers?|available\s+(?:for|across|on)|compatible\s+with|(?:natively\s+)?understands?)\b/i;
   const fiveProviderWording =
     /\b(?:five|5)[-\s]+(?:providers?|services?|platforms?|apps?|connectors?)\b/i;
   const providerPatterns = [
@@ -2968,6 +2984,7 @@ function scrubOverclaimErrors(fileRel, content) {
     /\bwhats\s*app\b/i,
     /\b(?:google|gmail)\b/i,
     /\b(?:twitter|x\/twitter|x)\b/i,
+    /\b(?:microsoft|outlook)\b/i,
   ];
 
   for (const sentence of rendered.text.matchAll(/[^.!?;\n]+[.!?;]?/g)) {
@@ -4805,11 +4822,95 @@ const SELF_TEST_CASES = [
     html: '<p>AutoScrub is Planned. Scrub imports your complete history.</p>',
     expect: 'Scrub capability overclaim',
   },
+  {
+    name: 'every-sensitive-artifact sealing claim',
+    file: 'docs/privacy.html',
+    html: '<p>Every sensitive artifact retained by OSL is sealed cryptographically.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'no-readable-private-residue claim',
+    file: 'docs/privacy.html',
+    html: '<p>OSL leaves no readable private residue.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'nothing-confidential-survives claim',
+    file: 'docs/privacy.html',
+    html: '<p>Nothing confidential survives on disk.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'content-analysis-no-view claim',
+    file: 'features.html',
+    html: '<p>Discord’s content-analysis machinery gets no useful view of the attachment.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'benign-twin source-never-leaves claim',
+    file: 'features.html',
+    html: '<p>The service receives a benign twin; the source attachment never leaves your device.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'unintelligible-substance claim',
+    file: 'features.html',
+    html: '<p>The attachment’s substance is unintelligible to Discord.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'generalized skirts-audit claim',
+    file: 'features.html',
+    html: '<p>Skirts Discord’s attachment audit.</p>',
+    expect: 'attachment scanning overclaim',
+  },
+  {
+    name: 'keeps-deleting-while-away claim',
+    file: 'features.html',
+    html: '<p>AutoScrub keeps deleting old posts while you’re away.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'fully-reconciled-download claim',
+    file: 'features.html',
+    html: '<p>Scrub downloads are fully reconciled and nothing is omitted.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'five-provider native-understanding claim',
+    file: 'features.html',
+    html: '<p>Scrub natively understands exports from Discord, Meta, WhatsApp, Google, and Microsoft.</p>',
+    expect: 'Scrub capability overclaim',
+  },
 ];
 
 // Copy that must NOT be flagged. A gate that fires on honest writing gets
 // switched off, so these matter as much as the known-bad cases.
 const NEGATION_CASES = [
+  {
+    name: 'honest readable-residue limitation',
+    file: 'docs/privacy.html',
+    html: '<p>OSL does not claim that nothing confidential survives on disk.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
+    name: 'honest planned benign-twin wording',
+    file: 'features.html',
+    html: '<p>A benign twin replacing the source attachment remains Planned and unproved.</p>',
+    kinds: ['attachment scanning overclaim'],
+  },
+  {
+    name: 'honest incomplete Scrub downloads',
+    file: 'features.html',
+    html: '<p>Scrub downloads may omit records and are not yet qualified as complete.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest planned Microsoft provider target',
+    file: 'features.html',
+    html: '<p>Discord, Meta, WhatsApp, Google, and Microsoft are Planned targets for Scrub.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
   {
     name: 'honest incomplete provider-export limitation',
     file: 'features.html',
