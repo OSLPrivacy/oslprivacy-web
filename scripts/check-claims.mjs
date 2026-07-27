@@ -101,8 +101,8 @@ const AT_REST_PRODUCT_SOURCE = Object.freeze({
   commit: 'b1e8c10a13622aa2afea39361ed5c4309e168ca5',
   tree: '48c75ceb9b9fc241f0ee95fbc6f8dfe028e8e65b',
 });
-const AT_REST_CANONICAL_CONTRACT_SHA256 = '6ba87f746f4773f792a451ac354ea5d8452e89d26ee3b92bae2a73e33e30c940';
-const AT_REST_RAW_CONTRACT_SHA256 = 'a7468b174b07301873eee1a1a9e5e01f5af30716df2dbb4bac13f65820c83246';
+const AT_REST_CANONICAL_CONTRACT_SHA256 = '285c0809c84515101cff374121b4ccedba3150bef57d38c3ab3500e40f5bdaee';
+const AT_REST_RAW_CONTRACT_SHA256 = '1c64684a7b13cc154d1e4630ef7d3b7c60ec6d2310a402dddb170391b4e281ec';
 const AT_REST_BACKEND_CONTRACT = new Map(Object.entries({
   'identity-private-key-file': {
     retention: 'durable',
@@ -2327,6 +2327,14 @@ function validateAtRestCensus(census, rawSource) {
   if (claims.length !== AT_REST_CLAIM_CONTRACT.size) {
     record('AT_REST_CLAIM_CENSUS', `expected exactly ${AT_REST_CLAIM_CONTRACT.size} public claims, got ${claims.length}`);
   }
+  const statusClaim = claimById.get('status-at-rest-boundary');
+  if (statusClaim && (!/\bNotes is implemented but not wired into the source-inspected production app\b/i.test(statusClaim.text)
+      || !/\bScrub-index code is excluded from present-tense claims because its production reachability is unproved\b/i.test(statusClaim.text))) {
+    record(
+      'AT_REST_REACHABILITY_WORDING',
+      'status-at-rest-boundary must distinguish affirmatively unwired Notes from unknown Scrub-index reachability',
+    );
+  }
   return errors;
 }
 
@@ -4493,6 +4501,18 @@ if (SELF_TEST) {
       expect: 'AT_REST_BACKEND_TRUTH',
       mutate(census) {
         census.backends.find((backend) => backend.id === 'notes-json-backend').reachability = 'production-source-path';
+      },
+    },
+    {
+      name: 'implemented-unwired Notes softened to unknown reachability',
+      expect: 'AT_REST_REACHABILITY_WORDING',
+      mutate(census) {
+        const claim = census.public_claims
+          .find((entry) => entry.id === 'status-at-rest-boundary');
+        claim.text = claim.text.replace(
+          'Notes is implemented but not wired into the source-inspected production app; Scrub-index code is excluded from present-tense claims because its production reachability is unproved',
+          'Notes and Scrub-index code are excluded from present-tense claims because production reachability is unproved',
+        );
       },
     },
     {
