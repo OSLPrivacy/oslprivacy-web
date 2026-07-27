@@ -74,7 +74,8 @@
       "renews": false,
       "stores_payment_method": false,
       "requires_account": false,
-      "grant_days": 30,
+      "intended_grant_days": 30,
+      "$intended_grant_days_note": "This is the approved future entitlement length, not current implementation state. Paid codes currently grant lifetime access; checkout remains paused until explicit redemption and automatic expiry exist.",
       "status": "Beta",
       "no_renewal_note": "One month per code. Nothing renews, and OSL never stores your payment details.",
       "$no_renewal_note_why": "Allowlist A6 rule 3: the limitation must ship with the price on the same page, in the same section, at comparable prominence -- a limitation in a linked FAQ does not count. index.html showed '$5 / month' on two checkout buttons with no renewal disclosure anywhere on the page, which reads as a subscription and contradicts master 7.14. Pinned in required_phrases for index.html and download.html so it cannot regress.",
@@ -545,6 +546,10 @@
       "reason": "No redemption endpoint or timestamp exists in the committed keyserver."
     },
     {
+      "phrase": "Your month starts when you enter the code",
+      "reason": "The approved redemption-start policy is not implemented. No explicit redemption record or timestamp exists, and current paid codes grant lifetime access."
+    },
+    {
       "phrase": "When Pro ends, OSL returns to Free",
       "reason": "Automatic paid-code expiry is Planned and not implemented."
     }
@@ -577,9 +582,19 @@
       "reason": "Same, on the licences section of the audit page."
     },
     {
+      "file": "audit.html",
+      "phrase": "No redemption record exists yet",
+      "reason": "The audit page must not describe the approved future redemption record as current keyserver behavior."
+    },
+    {
       "file": "docs/privacy.html",
       "phrase": "no message text, no conversation names, no carrier text and no recipient identity",
       "reason": "Master 7.1 requires the payment and credit ledger boundary to be stated plainly."
+    },
+    {
+      "file": "docs/privacy.html",
+      "phrase": "No redemption record exists yet",
+      "reason": "The privacy page must describe the actual licence schema, which has no redemption timestamp."
     },
     {
       "file": "docs/terms.html",
@@ -590,6 +605,11 @@
       "file": "docs/terms.html",
       "phrase": "Pro is an early-access purchase. Today it unlocks early access to new privacy tools as they reach the beta channel — not the v1 feature set, which is still being finished.",
       "reason": "The terms must describe what a Pro purchase actually gives today and must not sell Planned encrypted image sending present-tense."
+    },
+    {
+      "file": "docs/terms.html",
+      "phrase": "Automatic one-month expiry and return to Free are not implemented yet.",
+      "reason": "The terms must not promise an expiry transition that the client and keyserver do not implement."
     },
     {
       "file": "download.html",
@@ -605,6 +625,16 @@
       "file": "download.html",
       "phrase": "Checkout is paused until one-month redemption and expiry are implemented.",
       "reason": "The purchase surface must fail closed until the intended entitlement boundary exists."
+    },
+    {
+      "file": "download.html",
+      "phrase": "Automatic Pro expiry is not implemented, so checkout remains paused.",
+      "reason": "The purchase surface must state the exact missing entitlement behavior rather than imply that a paid code expires today."
+    },
+    {
+      "file": "success.html",
+      "phrase": "Automatic one-month expiry is not implemented",
+      "reason": "The legacy success surface must not promise a duration or return-to-Free transition for issued lifetime licences."
     },
     {
       "file": "docs/status.html",

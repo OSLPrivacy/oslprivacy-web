@@ -474,6 +474,24 @@ const SELF_TEST_CASES = [
     expect: 'false capability claim',
   },
   {
+    name: 'future redemption record described as current',
+    file: 'audit.html',
+    html: '<p>A redemption record is a licence hash and a timestamp.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'unimplemented redemption-start promise',
+    file: 'docs/faq.html',
+    html: '<p>Your month starts when you enter the code.</p>',
+    expect: 'false capability claim',
+  },
+  {
+    name: 'unimplemented automatic return to Free',
+    file: 'docs/terms.html',
+    html: '<p>When Pro ends, OSL returns to Free.</p>',
+    expect: 'false capability claim',
+  },
+  {
     name: 'support matrix silently dropping a capability',
     file: 'docs/status.html',
     html: '<table><tr><td><span data-osl-feature="burn" data-osl-status="Planned">Planned</span></td></tr></table>',
