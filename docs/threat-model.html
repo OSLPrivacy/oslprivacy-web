@@ -67,13 +67,13 @@
         <p class="lede">What OSL defends against, and what it doesn't.</p>
 
         <h2 id="defends-against">What OSL defends against <a class="anchor-link" href="#defends-against" aria-label="Link to this section">#</a></h2>
-        <p>OSL protects the <strong>content</strong> of your messages against the following adversaries:</p>
+        <p>OSL protects the <strong>content of supported direct messages</strong> against the following adversaries. Group chats, server channels, and other unsupported connectors are not covered.</p>
         <ul>
-          <li>A connected social or email service reading protected message content. It receives ciphertext only.</li>
+          <li>A connected social or email service reading supported protected message content. For those direct messages it receives ciphertext only; service metadata remains visible.</li>
           <li>Service employees with access to stored message data. They see the same ciphertext.</li>
           <li>Attackers who breach the connected service's infrastructure.</li>
           <li>Network eavesdroppers, including an ISP, public Wi-Fi snooper, or government tapping the wire. They see encrypted network traffic carrying ciphertext.</li>
-          <li>Anyone using legal process to obtain stored data from the connected service. The protected content in that data is ciphertext.</li>
+          <li>Anyone using legal process to obtain stored data from the connected service. For supported protected direct messages, the content in that data is ciphertext.</li>
         </ul>
 
         <h2 id="doesnt-defend-against">What OSL does NOT defend against <a class="anchor-link" href="#doesnt-defend-against" aria-label="Link to this section">#</a></h2>
@@ -92,7 +92,7 @@
         <p>Possibly. Rules differ by provider, and some prohibit modified clients or automated interaction. Experimental interaction modes are off by default. Do not connect an account you cannot afford to lose without reviewing that service's current rules.</p>
 
         <h3>Can a government obtain my messages from a service?</h3>
-        <p>A provider may be compelled to hand over what it has. For content protected by OSL, the provider has ciphertext made of random-looking bytes. Decrypting it requires keys the provider does not have.</p>
+        <p>A provider may be compelled to hand over what it has. For supported direct-message content protected by OSL, the provider has ciphertext made of random-looking bytes. Decrypting it requires keys the provider does not have.</p>
 
         <h3>Can the government compel ME to hand over my password?</h3>
         <p>Depending on jurisdiction, possibly. Some legal systems can compel you to disclose passwords; others can't (or it's unsettled law). OSL doesn't protect against legal coercion or physical compulsion. If you're in a high-risk situation, consult a lawyer and consider whether OSL alone is enough.</p>
