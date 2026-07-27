@@ -723,10 +723,23 @@ function falseIdentityPasswordMechanism(text) {
         + `(?:\\s+at[-\\s]+rest)?\\s+(?:uses?|relies\\s+on|depends\\s+on)\\s+${password}`,
       'i',
     );
+    const premodifierNounRelationship = new RegExp(
+      `${identity}\\s+(?:encryption|sealing|protection|security)`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:uses?|relies\\s+on|depends\\s+on)\\s+${password}`,
+      'i',
+    );
+    const derivedKeyRelationship = new RegExp(
+      `\\b(?:a|the)?\\s*key\\s+derived\\s+from\\s+${password}\\s+`
+        + `(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
+      'i',
+    );
     return passiveRelationship.test(clause)
       || activeRelationship.test(clause)
       || usedToRelationship.test(clause)
-      || nounRelationship.test(clause);
+      || nounRelationship.test(clause)
+      || premodifierNounRelationship.test(clause)
+      || derivedKeyRelationship.test(clause);
   });
 }
 
@@ -881,7 +894,10 @@ function evaluateStaticTemplateLiteral(raw, bindings) {
   const interpolationRe = /\$\{([^{}]+)\}/g;
   for (const match of body.matchAll(interpolationRe)) {
     const literal = decodeJavaScriptString(`\`${body.slice(cursor, match.index)}\``);
-    const value = evaluateStaticJavaScriptExpression(match[1], bindings);
+    const value = evaluateStaticJavaScriptExpression(
+      stripJavaScriptComments(match[1]),
+      bindings,
+    );
     if (literal === null || typeof value !== 'string') return null;
     result += literal + value;
     cursor = (match.index ?? 0) + match[0].length;
@@ -1081,6 +1097,15 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
   return values;
 }
 
+function staticJavaScriptSinkReceiver(source, memberIndex, computedMember) {
+  let prefix = source.slice(0, memberIndex).replace(/\s+$/, '');
+  if (!computedMember) prefix = prefix.replace(/(?:\?\.|\.)\s*$/, '');
+  const match = prefix.match(
+    /([A-Za-z_$][A-Za-z0-9_$]*(?:\s*(?:\??\.\s*[A-Za-z_$][A-Za-z0-9_$]*|\[\s*(?:["'`][^"'`]*["'`]|[A-Za-z_$][A-Za-z0-9_$]*)\s*\]))*)\s*$/,
+  );
+  return match ? match[1].replace(/\s+/g, '') : `@unknown:${memberIndex}`;
+}
+
 function staticJavaScriptTextSinkValues(content) {
   const source = stripJavaScriptComments(content);
   const bindings = new Map();
@@ -1093,6 +1118,11 @@ function staticJavaScriptTextSinkValues(content) {
       );
       if (match) declarations.push({ name: match[1], expression: match[2] });
     }
+  }
+  for (const statement of source.matchAll(
+    /\b(?:const|let|var)\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([^\n;]+)/g,
+  )) {
+    declarations.push({ name: statement[1], expression: statement[2] });
   }
   for (const declaration of declarations) {
     if (/^(?:document\.)?createElement\s*\(\s*["'][a-z][a-z0-9:-]*["']\s*\)$/i
@@ -1115,38 +1145,84 @@ function staticJavaScriptTextSinkValues(content) {
   }
 
   const values = [];
-  const sinkRuns = [];
+  const sinkOperations = [];
   for (const assignment of source.matchAll(
     /(?:\b(?:textContent|innerText|innerHTML)\b|\[\s*["'](?:textContent|innerText|innerHTML)["']\s*\])\s*(\+?=)\s*([^;]+)/g,
   )) {
     const value = evaluateStaticJavaScriptExpression(assignment[2], bindings);
+    const computedMember = assignment[0].trimStart().startsWith('[');
+    const target = staticJavaScriptSinkReceiver(
+      source,
+      assignment.index ?? 0,
+      computedMember,
+    );
     if (typeof value === 'string') {
       values.push(value);
-      sinkRuns.push({ index: assignment.index ?? 0, rendered: value });
+      sinkOperations.push({
+        index: assignment.index ?? 0,
+        target,
+        operation: assignment[1] === '+=' ? 'append' : 'replace',
+        rendered: value,
+      });
     } else if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
       const rendered = value.join(',');
       values.push(rendered);
-      sinkRuns.push({ index: assignment.index ?? 0, rendered });
+      sinkOperations.push({
+        index: assignment.index ?? 0,
+        target,
+        operation: assignment[1] === '+=' ? 'append' : 'replace',
+        rendered,
+      });
     }
   }
-  const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)|\[\s*["'](insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)["']\s*\])\s*(?:\?\.)?\s*\(/g;
+  const textSinkMethods = new Set([
+    'insertAdjacentText',
+    'insertAdjacentHTML',
+    'append',
+    'prepend',
+    'replaceChildren',
+    'replaceWith',
+    'write',
+    'writeln',
+    'createTextNode',
+  ]);
+  const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)|\[\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|[A-Za-z_$][A-Za-z0-9_$]*)\s*\])\s*(?:\?\.)?\s*\(/g;
   for (const call of source.matchAll(textCallRe)) {
     const argumentsSource = balancedCallArguments(source, call.index ?? 0);
     if (argumentsSource === null) continue;
-    const method = call[1] ?? call[2];
+    const method = call[1]
+      ?? evaluateStaticJavaScriptExpression(call[2] ?? '', bindings);
+    if (typeof method !== 'string' || !textSinkMethods.has(method)) continue;
     const args = splitTopLevelJavaScriptArguments(argumentsSource);
     const insertionPosition = method.startsWith('insertAdjacent')
       ? evaluateStaticJavaScriptExpression(args[0] ?? '', bindings)
       : null;
-    const reversesAcrossCalls = method === 'prepend'
-      || (typeof insertionPosition === 'string'
-        && ['afterbegin', 'afterend'].includes(insertionPosition.toLowerCase()));
+    const target = staticJavaScriptSinkReceiver(
+      source,
+      call.index ?? 0,
+      Boolean(call[2]),
+    );
     const candidates = method.startsWith('insertAdjacent') ? args.slice(1) : args;
     let contiguous = [];
     const flushContiguous = () => {
       if (contiguous.length > 0) {
         const rendered = contiguous.join('');
-        sinkRuns.push({ index: call.index ?? 0, rendered, reversesAcrossCalls });
+        let operation = 'append';
+        if (method === 'prepend') operation = 'prepend';
+        else if (method === 'replaceChildren' || method === 'replaceWith') {
+          operation = 'replace';
+        } else if (method.startsWith('insertAdjacent')
+            && typeof insertionPosition === 'string') {
+          operation = insertionPosition.toLowerCase();
+        }
+        if (method !== 'createTextNode') {
+          sinkOperations.push({
+            index: call.index ?? 0,
+            target,
+            operation,
+            rendered: method === 'writeln' ? `${rendered}\n` : rendered,
+          });
+        }
         if (contiguous.length > 1) values.push(rendered);
       }
       contiguous = [];
@@ -1178,23 +1254,30 @@ function staticJavaScriptTextSinkValues(content) {
     }
     flushContiguous();
   }
-  sinkRuns.sort((left, right) => left.index - right.index);
-  for (let start = 0; start < sinkRuns.length; start += 1) {
-    let rendered = sinkRuns[start].rendered;
-    for (let end = start + 1; end < sinkRuns.length; end += 1) {
-      rendered += sinkRuns[end].rendered;
-      values.push(rendered);
+  const states = new Map();
+  sinkOperations.sort((left, right) => left.index - right.index);
+  for (const sink of sinkOperations) {
+    const state = states.get(sink.target) ?? { before: '', content: '', after: '' };
+    switch (sink.operation) {
+      case 'replace':
+        state.content = sink.rendered;
+        break;
+      case 'prepend':
+      case 'afterbegin':
+        state.content = sink.rendered + state.content;
+        break;
+      case 'beforebegin':
+        state.before += sink.rendered;
+        break;
+      case 'afterend':
+        state.after = sink.rendered + state.after;
+        break;
+      default:
+        state.content += sink.rendered;
     }
+    states.set(sink.target, state);
   }
-  for (let start = 0; start < sinkRuns.length; start += 1) {
-    if (!sinkRuns[start].reversesAcrossCalls) continue;
-    let rendered = sinkRuns[start].rendered;
-    for (let end = start + 1; end < sinkRuns.length; end += 1) {
-      if (!sinkRuns[end].reversesAcrossCalls) break;
-      rendered = sinkRuns[end].rendered + rendered;
-      values.push(rendered);
-    }
-  }
+  for (const state of states.values()) values.push(state.before + state.content + state.after);
   return values;
 }
 
@@ -2505,6 +2588,18 @@ const SELF_TEST_CASES = [
     name: 'reversed false password mechanism for identity keys',
     file: 'docs/faq.html',
     html: '<p>Your main password seals the identity private key.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'premodifier false password mechanism for identity keys',
+    file: 'docs/faq.html',
+    html: '<p>Private identity key encryption uses your main password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'reordered derived-key password mechanism for identity keys',
+    file: 'docs/faq.html',
+    html: '<p>A key derived from your main password encrypts private identity keys.</p>',
     expect: 'at-rest overclaim',
   },
   {
@@ -4021,6 +4116,48 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_MIXED_APPEND_PREPEND_ORDER',
+      'index.html',
+      '<script>document.body.append("password-protected."); document.body.prepend("All local data is ");</script>',
+      '<script>document.body.append("settings."); document.body.prepend("Account ");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_MIXED_ADJACENT_ORDER',
+      'index.html',
+      '<script>document.body.insertAdjacentText("beforeend", "password-protected."); document.body.insertAdjacentText("afterbegin", "All local data is ");</script>',
+      '<script>document.body.insertAdjacentText("beforeend", "settings."); document.body.insertAdjacentText("afterbegin", "Account ");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_ASI_DECLARATIONS',
+      'index.html',
+      '<script>const a = "All local "\nconst b = "data is "\nconst c = "password-protected."\ndocument.body.append(a)\ndocument.body.append(b)\ndocument.body.append(c)</script>',
+      '<script>const a = "Account "\nconst b = "settings."\ndocument.body.append(a)\ndocument.body.append(b)</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_BOUND_COMPUTED_SINK',
+      'index.html',
+      '<script>const sink = "append"; document.body[sink]("All local data is ", "password-protected.");</script>',
+      '<script>const sink = "append"; document.body[sink]("Account ", "settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEMPLATE_COMPUTED_SINK',
+      'index.html',
+      '<script>const sink = `append`; document.body[sink]("All local data is ", "password-protected.");</script>',
+      '<script>const sink = `append`; document.body[sink]("Account ", "settings.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_COMMENTED_TEMPLATE_INTERPOLATION',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.textContent = `${a /* scope */}${b /* mechanism */}`;</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.textContent = `${a /* noun */}${b /* noun */}`;</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEXT_PROPERTY_APPEND',
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; document.body.textContent = a; document.body.textContent += b;</script>',
@@ -4081,6 +4218,62 @@ if (SELF_TEST) {
       },
     });
   }
+  publicSurfaceMutations.push(
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEXT_REPLACEMENT_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.body.textContent = "All local "; document.body.textContent = "data is "; document.body.textContent = "password-protected.";</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_HTML_REPLACEMENT_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.body.innerHTML = "All local "; document.body.innerHTML = "data is "; document.body.innerHTML = "password-protected.";</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_CHILDREN_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.body.replaceChildren("All local "); document.body.replaceChildren("data is "); document.body.replaceChildren("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_CLEARING_RESET_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>document.body.append("All local data is "); document.body.textContent = ""; document.body.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_DISTINCT_TARGETS_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const x = document.createElement("div"), y = document.createElement("div"), z = document.createElement("div"); x.append("All local "); y.append("data is "); z.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_DISTINCT_REVERSE_TARGETS_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const x = document.createElement("div"), y = document.createElement("div"), z = document.createElement("div"); x.prepend("password-protected."); y.prepend("data is "); z.prepend("All local ");</script>',
+        ).length === 0;
+      },
+    },
+  );
   publicSurfaceMutations.push(
     {
       name: 'PUBLIC_CHANNEL_INERT_SCRIPT_DISTINCTION',
