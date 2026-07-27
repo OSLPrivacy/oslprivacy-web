@@ -4,7 +4,7 @@
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
   "currency": "USD",
-  "authority": "docs/design/osl-master-decision-2026-07-26.md sections 7.1, 7.6, 7.10, 7.14 and 8 (revision OSL-MASTER-2026-07-26-r4), plus docs/decisions/pro-prepaid-monthly-codes-2026-07-26.md, both in the discord-privacy-client repository.",
+  "authority": "docs/design/osl-master-decision-2026-07-26.md sections 7.1, 7.6, 7.10, 7.14 and 8 (revision OSL-MASTER-2026-07-26-r12), plus docs/decisions/pro-prepaid-monthly-codes-2026-07-26.md, both in the discord-privacy-client repository.",
   "model": {
     "name": "Prepaid activation codes",
     "summary": "$5 buys a code that unlocks Pro for one month. It is not a subscription: nothing auto-renews, no payment details are stored, and no account is required. To keep Pro, buy another code.",
@@ -636,7 +636,7 @@
     "credits": "Processing credits are bought separately for optional cloud AI features. They never renew, and encryption keeps working without them.",
     "crypto": "Bitcoin and Monero work the same way as card: one payment, one month, nothing stored.",
     "free_forever": "Free stays free. Paying is never required for the basic encryption path to keep working.",
-    "expiry_behaviour": "When Pro ends, OSL returns to Free. Your keys, messages and notes are unaffected.",
+    "expiry_behaviour": "When Pro ends, OSL returns to Free. Your keys and protected messages are unaffected.",
     "ledger_privacy": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity.",
     "open_source": "OSL is fully open source. The only exception is the optional AutoScrub module, which is not installed by default."
   },
