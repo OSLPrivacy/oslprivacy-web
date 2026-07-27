@@ -369,7 +369,7 @@
       ],
       "verified_on": "2026-07-26",
       "sellable": false,
-      "public_note": "In progress. The handoff takes you to the page where you delete; OSL never deletes for you. It cannot be exercised end to end until discovery produces accounts."
+      "public_note": "Not yet, and further off than a dependency on discovery would suggest. The part of the app that would actually carry out a guided deletion is not connected: it holds every candidate and does not open the page, choose the delete action, confirm it, or check that it worked. When it does land, OSL will take you to the page and you confirm each removal yourself — OSL will not delete on your behalf."
     },
     {
       "id": "autoscrub",
@@ -382,7 +382,7 @@
       ],
       "verified_on": "2026-07-26",
       "sellable": false,
-      "public_note": "Not yet. AutoScrub repeats an approved plan with strict limits and a stop control. It is the one optional closed-source module, is not installed by default, and requires explicit consent to download."
+      "public_note": "Not yet. What exists is switched-off interface scaffolding, not a working engine — the app itself says it is unavailable in this build. AutoScrub is also the one optional closed-source module, it is not installed by default, and it would need your explicit consent to download."
     },
     {
       "id": "ai-carrier-text",

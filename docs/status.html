@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="osl-build" content="f31f3b28">
+  <meta name="osl-build" content="63c48a5f-dirty">
   <title>What works today | OSL Privacy Docs</title>
   <meta name="description" content="The dated record of what OSL actually does in the shipping app today, and what is still being finished before v1.">
   <meta name="color-scheme" content="dark">
@@ -94,8 +94,8 @@
             <tr><th scope="row">Burn</th><td><span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet as a peer action. When it lands, burn deletes OSL local and server-side state and asks the other side to delete too. It does not destroy anyone ability to decrypt what the service already holds, and it cannot recall a screenshot.</td></tr>
             <tr><th scope="row">Link protection</th><td><span class="osl-status" data-osl-feature="link-protection" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. This is a design intention with no code behind it.</td></tr>
             <tr><th scope="row">Scrub discovery</th><td><span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>In progress, and the closest to landing. Scrub is designed to find the accounts and exposure you left behind, on your own machine. On the last measured run it found no accounts because the browser import does not yet hand its results to Scrub.</td></tr>
-            <tr><th scope="row">Guided deletion handoff</th><td><span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>In progress. The handoff takes you to the page where you delete; OSL never deletes for you. It cannot be exercised end to end until discovery produces accounts.</td></tr>
-            <tr><th scope="row">AutoScrub</th><td><span class="osl-status" data-osl-feature="autoscrub" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. AutoScrub repeats an approved plan with strict limits and a stop control. It is the one optional closed-source module, is not installed by default, and requires explicit consent to download.</td></tr>
+            <tr><th scope="row">Guided deletion handoff</th><td><span class="osl-status" data-osl-feature="scrub-guided-deletion" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet, and further off than a dependency on discovery would suggest. The part of the app that would actually carry out a guided deletion is not connected: it holds every candidate and does not open the page, choose the delete action, confirm it, or check that it worked. When it does land, OSL will take you to the page and you confirm each removal yourself — OSL will not delete on your behalf.</td></tr>
+            <tr><th scope="row">AutoScrub</th><td><span class="osl-status" data-osl-feature="autoscrub" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. What exists is switched-off interface scaffolding, not a working engine — the app itself says it is unavailable in this build. AutoScrub is also the one optional closed-source module, it is not installed by default, and it would need your explicit consent to download.</td></tr>
             <tr><th scope="row">AI-generated carrier text</th><td><span class="osl-status" data-osl-feature="ai-carrier-text" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. Opt-in AI-written cover text. Cloud generation is never end-to-end private, because the service has to see the text it is working on.</td></tr>
             <tr><th scope="row">Processing credits</th><td><span class="osl-status" data-osl-feature="processing-credits" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet, and not on sale. Credits would be bought separately and never renew.</td></tr>
             <tr><th scope="row">Automatic Pro expiry</th><td><span class="osl-status" data-osl-feature="pro-expiry-enforcement" data-osl-status="Planned">Planned</span></td><td>2026-07-26</td><td>Not yet. A purchased code currently unlocks Pro without a redemption clock, so the month does not yet start when you enter the code.</td></tr>
@@ -154,6 +154,6 @@
     <p class="copyright">&copy; 2026 OSL Privacy</p>
   </footer>
 
-  <script src="/assets/js/main.js?v=f31f3b28" defer></script>
+  <script src="/assets/js/main.js?v=63c48a5f" defer></script>
 </body>
 </html>
