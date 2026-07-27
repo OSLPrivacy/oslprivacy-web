@@ -32,28 +32,102 @@ const MIN_CAPABILITY_REGISTRY_ENTRIES = 1;
 // Floor prevents required sentence checks from disappearing silently.
 const MIN_REQUIRED_PHRASES = 1;
 
+const BLOCK_TEXT_TAGS = new Set([
+  'address', 'article', 'aside', 'blockquote', 'br', 'dd', 'details', 'dialog',
+  'div', 'dl', 'dt', 'fieldset', 'figcaption', 'figure', 'footer', 'form',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hr', 'li', 'main', 'nav',
+  'ol', 'p', 'pre', 'section', 'summary', 'table', 'tbody', 'td', 'tfoot',
+  'th', 'thead', 'tr', 'ul',
+]);
+
+const NAMED_HTML_ENTITIES = new Map([
+  ['amp', '&'],
+  ['apos', "'"],
+  ['gt', '>'],
+  ['hellip', '…'],
+  ['lt', '<'],
+  ['mdash', '—'],
+  ['nbsp', ' '],
+  ['ndash', '–'],
+  ['quot', '"'],
+]);
+
+function decodeHtmlEntity(entity) {
+  const body = entity.slice(1, -1);
+  if (/^#\d+$/.test(body)) {
+    const codePoint = Number.parseInt(body.slice(1), 10);
+    if (Number.isSafeInteger(codePoint) && codePoint > 0 && codePoint <= 0x10ffff) {
+      return String.fromCodePoint(codePoint);
+    }
+  }
+  if (/^#x[0-9a-f]+$/i.test(body)) {
+    const codePoint = Number.parseInt(body.slice(2), 16);
+    if (Number.isSafeInteger(codePoint) && codePoint > 0 && codePoint <= 0x10ffff) {
+      return String.fromCodePoint(codePoint);
+    }
+  }
+  return NAMED_HTML_ENTITIES.get(body.toLowerCase()) ?? entity;
+}
+
+function renderedTextWithSourceMap(content) {
+  // Ignore non-rendered containers and comments while keeping their byte
+  // positions available for useful source-line diagnostics.
+  const masked = content
+    .replace(/<!--[\s\S]*?-->/g, (value) => ' '.repeat(value.length))
+    .replace(/<(script|style|template)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, (value) => ' '.repeat(value.length));
+  const chars = [];
+  const sourceIndexes = [];
+
+  function append(value, sourceIndex) {
+    for (const char of value) {
+      chars.push(char);
+      sourceIndexes.push(sourceIndex);
+    }
+  }
+
+  for (let index = 0; index < masked.length;) {
+    if (masked[index] === '<') {
+      const end = masked.indexOf('>', index + 1);
+      if (end !== -1) {
+        const tag = masked.slice(index, end + 1).match(/^<\s*\/?\s*([a-z][a-z0-9:-]*)\b/i);
+        if (tag && BLOCK_TEXT_TAGS.has(tag[1].toLowerCase())) append('\n', index);
+        index = end + 1;
+        continue;
+      }
+    }
+    if (masked[index] === '&') {
+      const entity = masked.slice(index).match(/^&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]+);/i);
+      if (entity) {
+        append(decodeHtmlEntity(entity[0]), index);
+        index += entity[0].length;
+        continue;
+      }
+    }
+    append(masked[index], index);
+    index += 1;
+  }
+
+  return { text: chars.join(''), sourceIndexes };
+}
+
 function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
   if (!Number.isInteger(intendedGrantDays) || intendedGrantDays <= 0) return [];
 
-  // Keep offsets stable for line reporting while excluding markup and comments
-  // from the public-copy rule.
-  const visible = content
-    .replace(/<!--[\s\S]*?-->/g, (value) => ' '.repeat(value.length))
-    .replace(/<[^>]*>/g, (value) => ' '.repeat(value.length));
+  const rendered = renderedTextWithSourceMap(content);
   const dayCount = escapeRegExp(String(intendedGrantDays));
   const duration = new RegExp(
     `(?:\\b(?:${dayCount}|thirty)\\s*(?:-|\\s)\\s*(?:calendar\\s+)?days?\\b|\\b(?:one|1|a)\\s*(?:-|\\s)\\s*(?:full\\s+)?month\\b|\\bmonth[-\\s]long\\b)`,
     'i',
   );
-  const credential = /\b(?:codes?|licen[cs]es?|(?:activation|paid(?:\s+pro)?|prepaid|purchase[sd]?)[-\s]+(?:keys?|vouchers?)|pro[-\s]+vouchers?)\b/i;
-  const explicitNonimplementation = /\b(?:unimplemented|not\s+(?:yet\s+)?implemented|does\s+not|doesn't|do\s+not|don't|cannot|can't|paused\s+until|without\s+(?:an?\s+)?(?:redemption|expiry|duration)\s+(?:record|clock|timestamp)?|currently\s+(?:grants?|unlocks?)\s+(?:pro\s+)?(?:for\s+)?lifetime)\b/i;
-  const plannedContract = /(?:\b(?:grant(?:ing)?|duration|entitlement|access|feature)\b.{0,80}\b(?:is|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract))?\b|\bplanned\b.{0,80}\b(?:grant|duration|entitlement|access|feature)\b)/i;
+  const credential = /\b(?:codes?|licen[cs]es?|(?:(?:activation|product|redemption|paid|prepaid|pro|licen[cs]e)[-\s]+){1,3}(?:keys?|tokens?|vouchers?))\b/i;
+  const entitlementContext = /\b(?:pro|access|entitlement|grant(?:s|ed|ing)?|giv(?:e|es|en|ing)|provid(?:e|es|ed|ing)|unlock(?:s|ed|ing)?|activat(?:e|es|ed|ing)|redeem(?:s|ed|ing)?|duration|valid\s+for|last(?:s|ed|ing)?)\b/i;
+  const explicitNonimplementation = /\b(?:unimplemented|not\s+(?:yet\s+)?implemented|does\s+not|doesn't|do\s+not|don't|cannot|can't|paused\s+until|no\s+(?:redemption|expiry|duration)\s+(?:record|clock|timestamp|enforcement)|without\s+(?:an?\s+)?(?:redemption|expiry|duration)\s+(?:record|clock|timestamp)?|currently\s+(?:grants?|unlocks?)\s+(?:pro\s+)?(?:for\s+)?lifetime)\b/i;
+  const plannedContract = /(?:\b(?:grant(?:ing)?|duration|entitlement|access|feature|codes?|keys?|tokens?|vouchers?|licen[cs]es?)\b.{0,100}\b(?:is|are|remain|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract)|\s+to\s+(?:provide|grant|give|unlock|include|offer))?\b|\bplanned\b.{0,100}\b(?:grant|duration|entitlement|access|feature)\b)/i;
   const presentGrantAssertion = /\b(?:grants?|gives?|provides?|unlocks?|includes?|comes?\s+with|lasts?|(?:is|are)\s+valid\s+for)\b/i;
-  const genericPlannedContract = /\b(?:is|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract))?\b/i;
-  const conditionalOnImplementation = /\b(?:if|once|after|when)\s+(?:automatic\s+)?(?:expiry|redemption|duration)\b.{0,100}\b(?:is\s+)?implemented\b/i;
-  const adjacentContinuation = /^(?:it|they|each|one|that|the\s+(?:code|key|voucher|licen[cs]e))\b/i;
-  const ADJACENT_RAW_GAP_MAX = 240;
-  const ADJACENT_TEXT_MAX = 320;
+  const genericPlannedContract = /\b(?:is|are|remain|remains)\s+(?:an?\s+)?planned(?:\s+(?:feature|capability|contract)|\s+to\s+(?:provide|grant|give|unlock|include|offer))?\b/i;
+  const conditionalOnImplementation = /\b(?:(?:if|once|after|when|provided(?:\s+that)?)\s+(?:automatic\s+)?(?:expiry|redemption|duration)\b.{0,100}\b(?:is\s+)?implemented|(?:automatic\s+)?(?:expiry|redemption|duration)\b.{0,100}\b(?:is\s+)?implemented\s+(?:first|beforehand))\b/i;
+  const ADJACENT_SOURCE_GAP_MAX = 360;
+  const ADJACENT_TEXT_MAX = 420;
   const errors = [];
 
   function honestLimitation(text) {
@@ -65,17 +139,20 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
   }
 
   function record(start, text) {
+    const sourceIndex = rendered.sourceIndexes[start] ?? 0;
     errors.push({
       kind: 'unimplemented grant-duration claim',
       file: fileRel,
-      line: lineNumber(content, start),
+      line: lineNumber(content, sourceIndex),
       text: `${shortText(text)} -- paid-code duration and expiry are not implemented`,
     });
   }
 
-  const sentences = [...visible.matchAll(/[^.!?]+[.!?]?/g)].map((sentence) => ({
+  const sentences = [...rendered.text.matchAll(/[^.!?;\n]+[.!?;]?/g)].map((sentence) => ({
     start: sentence.index,
     end: sentence.index + sentence[0].length,
+    sourceStart: rendered.sourceIndexes[sentence.index] ?? 0,
+    sourceEnd: rendered.sourceIndexes[sentence.index + sentence[0].length - 1] ?? 0,
     text: sentence[0].replace(/\s+/g, ' ').trim(),
   })).filter((sentence) => sentence.text);
 
@@ -85,20 +162,20 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
     record(sentence.start, sentence.text);
   }
 
-  // Catch a credential assertion followed immediately by a bounded pronoun
-  // continuation, e.g. “An activation code grants Pro. It lasts 30 days.”
-  // Do not join arbitrary nearby sentences: that would conflate unrelated
-  // refund windows or documentation elsewhere on the page.
+  // Join exactly one neighboring rendered-text segment in either direction.
+  // The context requirement prevents an unrelated refund window from being
+  // treated as a Pro grant, while still catching “code grants Pro. It lasts…”
+  // and “Pro lasts… Use the product key.”
   for (let i = 0; i + 1 < sentences.length; i += 1) {
     const first = sentences[i];
     const second = sentences[i + 1];
-    const gap = second.start - first.end;
-    if (gap < 0 || gap > ADJACENT_RAW_GAP_MAX) continue;
-    if (!credential.test(first.text) || duration.test(first.text)) continue;
-    if (!duration.test(second.text) || credential.test(second.text)) continue;
-    if (!adjacentContinuation.test(second.text)) continue;
+    if (first.text.endsWith(';')) continue;
+    const sourceGap = second.sourceStart - first.sourceEnd;
+    if (sourceGap < 0 || sourceGap > ADJACENT_SOURCE_GAP_MAX) continue;
     const combined = `${first.text} ${second.text}`;
-    if (combined.length > ADJACENT_TEXT_MAX || honestLimitation(combined)) continue;
+    if (combined.length > ADJACENT_TEXT_MAX) continue;
+    if (!credential.test(combined) || !duration.test(combined) || !entitlementContext.test(combined)) continue;
+    if (honestLimitation(combined)) continue;
     record(first.start, combined);
   }
 
@@ -611,6 +688,42 @@ const SELF_TEST_CASES = [
     expect: 'unimplemented grant-duration claim',
   },
   {
+    name: 'product-key synonym',
+    file: 'pricing.html',
+    html: '<p>Each product-key grants Pro for one month.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'redemption-token synonym',
+    file: 'download.html',
+    html: '<p>A redemption-token grants Pro for 30 days.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'decoded nonbreaking-space duration',
+    file: 'pricing.html',
+    html: '<p>An activation code grants Pro for one&nbsp;month.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'inline-tag split duration digits',
+    file: 'pricing.html',
+    html: '<p>An activation code grants Pro for <span>3</span><span>0</span> days.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'forward cross-sentence grant',
+    file: 'docs/faq.html',
+    html: '<p>An activation code grants Pro.</p><p>Access lasts one month.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
+    name: 'reverse cross-sentence grant',
+    file: 'docs/faq.html',
+    html: '<p>Pro access lasts 30 days.</p><p>Use the product key to unlock it.</p>',
+    expect: 'unimplemented grant-duration claim',
+  },
+  {
     name: 'support matrix silently dropping a capability',
     file: 'docs/status.html',
     html: '<table><tr><td><span data-osl-feature="burn" data-osl-status="Planned">Planned</span></td></tr></table>',
@@ -679,6 +792,24 @@ const NEGATION_CASES = [
     name: 'honest if-implemented limitation',
     file: 'docs/terms.html',
     html: '<p>An activation key will grant Pro for one month if automatic expiry is implemented.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest planned-to-provide limitation',
+    file: 'docs/terms.html',
+    html: '<p>Activation keys are planned to provide one month of Pro.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest provided-implemented limitation',
+    file: 'docs/terms.html',
+    html: '<p>An activation code will provide one month of Pro, provided expiry is implemented.</p>',
+    kinds: ['unimplemented grant-duration claim'],
+  },
+  {
+    name: 'honest adjacent no-redemption-record limitation',
+    file: 'audit.html',
+    html: '<p>The intended purchase is for one month of Pro.</p><p>No redemption record exists yet for a licence.</p>',
     kinds: ['unimplemented grant-duration claim'],
   },
   {
