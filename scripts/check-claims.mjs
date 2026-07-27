@@ -421,15 +421,17 @@ function h4ExplainerErrors(fileRel, content) {
 
 function atRestOverclaimErrors(fileRel, content) {
   const rendered = renderedTextWithSourceMap(content);
-  const universalScope = /\b(?:all|every|everything|entire|entirety|whole|complete|no|nothing|never)\b/i;
-  const localContext = /\b(?:private|local|locally|on[-\s]+device|on\s+(?:this|the)\s+device|on\s+(?:your|the)\s+computer|filesystem|stored\s+locally|saved\s+by\s+OSL|OSL\s+(?:stores?|writes?|saves?|profile))\b/i;
-  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database|everything|nothing)\b/i;
+  const universalScope = /\b(?:all|every|everything|entire|entirety|whole|complete|no|none|nothing|never|zero)\b/i;
+  const universalPronounScope = /\b(?:everything|nothing)\b.{0,160}\b(?:private|local(?:ly)?|stored|saved|kept|app\s+keeps|OSL\s+(?:stores?|writes?|saves?|keeps?))\b/i;
+  const localContext = /\b(?:private|local|locally|on[-\s]+device|on\s+(?:this|the)\s+device|on\s+(?:your|the)\s+(?:computer|machine)|filesystem|persisted|saved|app\s+keeps|saved\s+by\s+OSL|OSL\s+(?:stores?|writes?|saves?|creates?|keeps?|profile))\b/i;
+  const stateObject = /\b(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)\b/i;
   const unqualifiedBroadCategory = /\b(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?|storage|metadata|preferences?|settings?|profile|history|files?|content|cache|database)\b/i;
-  const cryptoProtectionVerb = /\b(?:encrypt(?:s|ed|ing)?|decrypt|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i;
+  const cryptoProtectionVerb = /\b(?:encrypt(?:s|ed|ing)?|decrypt|unencrypted|ciphertext|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing)|gated|guards?|locked|unlocks?)\b/i;
   const atRestContext = /\bat\s+rest\b/i;
   const passwordContext = /\b(?:(?:your|the|a)\s+)?(?:main[-\s]+)?password\b/i;
-  const passwordRequirement = /\b(?:requires?|needs?|without|cannot|can't|read|decrypt)\b/i;
-  const neverPlaintextAssertion = /\b(?:no|nothing|never)\b.{0,180}\bplaintext\b/i;
+  const passwordRequirement = /\b(?:requires?|needs?|without|cannot|can't|only|read|decrypt|gated|guards?|locked|unlocks?)\b/i;
+  const denial = /\b(?:no|none|nothing|never|zero)\b/i;
+  const plaintextContext = /\b(?:plain[-\s]*text|unencrypted)\b/i;
   const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean\s+that)\s+(?:all|every)|not\s+(?:all|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+a\s+(?:claim|promise)\s+that\s+(?:all|every)|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?)\b/i;
   const errors = [];
 
@@ -446,26 +448,24 @@ function atRestOverclaimErrors(fileRel, content) {
         text: shortText(sentence[0]),
       }))
       .filter((sentence) => sentence.text);
-    const candidates = [...sentences];
-    for (const width of [2, 3]) {
-      for (let index = 0; index + width <= sentences.length; index += 1) {
-        candidates.push({
-          start: sentences[index].start,
-          text: sentences.slice(index, index + width).map((sentence) => sentence.text).join(' '),
-        });
-      }
-    }
-    const claim = candidates.find(({ text }) => {
-      const broadScope = unqualifiedBroadCategory.test(text)
-        || (universalScope.test(text) && localContext.test(text) && stateObject.test(text));
-      const promisesProtection = (cryptoProtectionVerb.test(text) && atRestContext.test(text))
-        || (passwordContext.test(text)
-          && (cryptoProtectionVerb.test(text) || passwordRequirement.test(text)))
-        || neverPlaintextAssertion.test(text);
-      return broadScope && promisesProtection;
-    });
-    if (!claim) continue;
-    const { start, text } = claim;
+    // The scope must be coherent inside one sentence. Once established, the
+    // protection assertion may appear anywhere in the same rendered block;
+    // this catches arbitrarily split prose without combining unrelated
+    // identity-key sentences into a universal local-state claim.
+    const scope = sentences.find(({ text }) => unqualifiedBroadCategory.test(text)
+      || universalPronounScope.test(text)
+      || (universalScope.test(text)
+        && localContext.test(text)
+        && stateObject.test(text)));
+    if (!scope) continue;
+    const promisesProtection = (cryptoProtectionVerb.test(blockText)
+        && (atRestContext.test(blockText) || localContext.test(blockText)))
+      || (passwordContext.test(blockText)
+        && (cryptoProtectionVerb.test(blockText) || passwordRequirement.test(blockText)))
+      || (denial.test(blockText) && plaintextContext.test(blockText));
+    if (!promisesProtection) continue;
+    const { start } = scope;
+    const text = blockText;
     const sourceIndex = rendered.sourceIndexes[start] ?? 0;
     errors.push({
       kind: 'at-rest overclaim',
@@ -895,6 +895,78 @@ const SELF_TEST_CASES = [
     expect: 'at-rest overclaim',
   },
   {
+    name: 'never stores unencrypted private data',
+    file: 'docs/faq.html',
+    html: '<p>OSL never stores unencrypted private data.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local data kept as ciphertext',
+    file: 'docs/faq.html',
+    html: '<p>All local data is kept as ciphertext.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'every local record password-gated',
+    file: 'docs/faq.html',
+    html: '<p>Every local record is password-gated.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all private files locked by password',
+    file: 'docs/faq.html',
+    html: '<p>All private files are locked by your password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'everything app keeps on machine encrypted',
+    file: 'docs/faq.html',
+    html: '<p>Everything the app keeps on your machine is encrypted.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all persisted data password-protected',
+    file: 'docs/faq.html',
+    html: '<p>All persisted data is protected with your password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'every saved preference encrypted at rest',
+    file: 'docs/faq.html',
+    html: '<p>Every saved preference is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password guards all local content',
+    file: 'docs/faq.html',
+    html: '<p>Your password guards all local content.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'password unlocks all local storage',
+    file: 'docs/faq.html',
+    html: '<p>Only your password can unlock all local storage.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'reverse never-plaintext order',
+    file: 'docs/faq.html',
+    html: '<p>Plaintext is never written for private local data.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'zero plaintext local records',
+    file: 'docs/faq.html',
+    html: '<p>There are zero plaintext local records.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'four-sentence at-rest composition',
+    file: 'docs/faq.html',
+    html: '<p>Every record is private. OSL creates it. It stores it locally. The data is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
     name: 'unlimited messages positioning',
     file: 'download.html',
     html: '<li>Unlimited private messages</li>',
@@ -1285,7 +1357,7 @@ if (SELF_TEST) {
     {
       file: 'docs/faq.html',
       needle: 'The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes.',
-      replacement: 'At rest, every local record is encrypted.',
+      replacement: 'OSL never stores unencrypted private data.',
     },
   ];
   for (const testCase of productionAtRestCases) {
