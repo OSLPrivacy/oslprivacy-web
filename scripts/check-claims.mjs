@@ -419,6 +419,35 @@ function h4ExplainerErrors(fileRel, content) {
   return errors;
 }
 
+function atRestOverclaimErrors(fileRel, content) {
+  const rendered = renderedTextWithSourceMap(content);
+  const text = shortText(rendered.text);
+  const patterns = [
+    /\b(?:all\s+|every\s+)?(?:private\s+)?conversation\s+(?:state|data|metadata|records?)\b.{0,140}\b(?:is|are|stays?|remains?|kept)?\s*(?:fully\s+)?(?:sealed|encrypted)\s+at\s+rest\b/i,
+    /\b(?:sealed|encrypted)\s+at\s+rest\b.{0,140}\b(?:all|every)\s+(?:private\s+)?(?:conversation|local)\s+(?:state|data|metadata|records?)\b/i,
+  ];
+  const limitations = /\b(?:does not cover every|not all|may remain plaintext|can remain plaintext|unless|without (?:an? )?(?:installed )?(?:main password )?storage key|only (?:the )?(?:private )?identity keys?)\b/i;
+  const errors = [];
+
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (!match) continue;
+    const start = match.index ?? 0;
+    const contextStart = Math.max(0, start - 180);
+    const contextEnd = Math.min(text.length, start + match[0].length + 220);
+    if (limitations.test(text.slice(contextStart, contextEnd))) continue;
+    const sourceIndex = rendered.sourceIndexes[start] ?? 0;
+    errors.push({
+      kind: 'at-rest overclaim',
+      file: fileRel,
+      line: lineNumber(content, sourceIndex),
+      text: `${shortText(match[0])} -- identity keys are sealed, but conversation metadata can remain plaintext without an installed storage key`,
+    });
+  }
+
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -452,6 +481,7 @@ function analyseFile(fileRel, content, config) {
 
   // ---- Global rules: these hold on every surface, whatever the framing.
   errors.push(...h4ExplainerErrors(fileRel, content));
+  errors.push(...atRestOverclaimErrors(fileRel, content));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -653,6 +683,12 @@ const SELF_TEST_CASES = [
     file: 'features.html',
     html: '<p>Burn provides cryptographic erasure after send.</p>',
     expect: 'false capability claim',
+  },
+  {
+    name: 'all private conversation state sealed at rest',
+    file: 'audit.html',
+    html: '<p>All private conversation state is sealed at rest.</p>',
+    expect: 'at-rest overclaim',
   },
   {
     name: 'unlimited messages positioning',
@@ -859,6 +895,12 @@ const NEGATION_CASES = [
     kinds: ['false capability claim'],
   },
   {
+    name: 'honest identity-key and plaintext-metadata boundary',
+    file: 'audit.html',
+    html: '<p>Private identity keys are sealed at rest. Some conversation metadata may remain plaintext without an installed storage key.</p>',
+    kinds: ['at-rest overclaim'],
+  },
+  {
     name: 'honest unimplemented grant-duration limitation',
     file: 'docs/terms.html',
     html: '<p>An activation code does not grant 30 days of Pro because paid-code expiry is not implemented.</p>',
@@ -1007,7 +1049,7 @@ for (const file of files) {
   fileSummaries.push({
     file: fileRel,
     barePrices: count('bare price'),
-    forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim', 'unimplemented grant-duration claim'),
+    forbiddenHits: count('forbidden billing', 'forbidden claim', 'false capability claim', 'unimplemented grant-duration claim', 'at-rest overclaim'),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
     missingText: count('missing required sentence', 'h4 explainer contract'),
