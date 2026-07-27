@@ -1135,12 +1135,18 @@ function staticJavaScriptTextSinkValues(content) {
     if (argumentsSource === null) continue;
     const method = call[1] ?? call[2];
     const args = splitTopLevelJavaScriptArguments(argumentsSource);
+    const insertionPosition = method.startsWith('insertAdjacent')
+      ? evaluateStaticJavaScriptExpression(args[0] ?? '', bindings)
+      : null;
+    const reversesAcrossCalls = method === 'prepend'
+      || (typeof insertionPosition === 'string'
+        && ['afterbegin', 'afterend'].includes(insertionPosition.toLowerCase()));
     const candidates = method.startsWith('insertAdjacent') ? args.slice(1) : args;
     let contiguous = [];
     const flushContiguous = () => {
       if (contiguous.length > 0) {
         const rendered = contiguous.join('');
-        sinkRuns.push({ index: call.index ?? 0, rendered });
+        sinkRuns.push({ index: call.index ?? 0, rendered, reversesAcrossCalls });
         if (contiguous.length > 1) values.push(rendered);
       }
       contiguous = [];
@@ -1175,10 +1181,17 @@ function staticJavaScriptTextSinkValues(content) {
   sinkRuns.sort((left, right) => left.index - right.index);
   for (let start = 0; start < sinkRuns.length; start += 1) {
     let rendered = sinkRuns[start].rendered;
-    for (let end = start + 1;
-      end < sinkRuns.length && end < start + 8;
-      end += 1) {
+    for (let end = start + 1; end < sinkRuns.length; end += 1) {
       rendered += sinkRuns[end].rendered;
+      values.push(rendered);
+    }
+  }
+  for (let start = 0; start < sinkRuns.length; start += 1) {
+    if (!sinkRuns[start].reversesAcrossCalls) continue;
+    let rendered = sinkRuns[start].rendered;
+    for (let end = start + 1; end < sinkRuns.length; end += 1) {
+      if (!sinkRuns[end].reversesAcrossCalls) break;
+      rendered = sinkRuns[end].rendered + rendered;
       values.push(rendered);
     }
   }
@@ -3984,6 +3997,27 @@ if (SELF_TEST) {
       'index.html',
       '<script>const a = "All local "; const b = "data is "; const c = "password-protected."; document.body.append(a); document.body.append(b); document.body.append(c);</script>',
       '<script>const a = "Account "; const b = "sett"; const c = "ings."; document.body.append(a); document.body.append(b); document.body.append(c);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_NINE_SEQUENTIAL_SINKS',
+      'index.html',
+      '<script>document.body.append("All "); document.body.append("lo"); document.body.append("cal "); document.body.append("da"); document.body.append("ta "); document.body.append("is "); document.body.append("pass"); document.body.append("word-"); document.body.append("protected.");</script>',
+      '<script>document.body.append("A"); document.body.append("cc"); document.body.append("ou"); document.body.append("nt "); document.body.append("se"); document.body.append("tt"); document.body.append("in"); document.body.append("g"); document.body.append("s.");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_PREPEND_RUNTIME_ORDER',
+      'index.html',
+      '<script>document.body.prepend("password-protected."); document.body.prepend("data is "); document.body.prepend("All local ");</script>',
+      '<script>document.body.prepend("settings."); document.body.prepend("Account ");</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_AFTERBEGIN_RUNTIME_ORDER',
+      'index.html',
+      '<script>document.body.insertAdjacentText("afterbegin", "password-protected."); document.body.insertAdjacentText("afterbegin", "data is "); document.body.insertAdjacentText("afterbegin", "All local ");</script>',
+      '<script>document.body.insertAdjacentText("afterbegin", "settings."); document.body.insertAdjacentText("afterbegin", "Account ");</script>',
       'html',
     ],
     [
