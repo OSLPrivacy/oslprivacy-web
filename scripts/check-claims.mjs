@@ -1348,6 +1348,13 @@ function staticJavaScriptTextSinkValues(content) {
       if (match) declarations.push({ name: match[1], expression: match[2] });
     }
   }
+  for (const assignment of source.matchAll(
+    /\b([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*;/g,
+  )) {
+    const prefix = source.slice(Math.max(0, (assignment.index ?? 0) - 12), assignment.index);
+    if (/\b(?:const|let|var)\s*$/.test(prefix)) continue;
+    declarations.push({ name: assignment[1], expression: assignment[2] });
+  }
   for (const declaration of declarations) {
     const textNode = declaration.expression.match(
       /^(?:document\.)?createTextNode\s*\(([\s\S]*)\)$/,
@@ -1392,6 +1399,7 @@ function staticJavaScriptTextSinkValues(content) {
     if (!changed) break;
   }
   const populatedNodeBindings = new Set();
+  const nodePopulationDependencies = new Map();
   for (const [binding, expression] of createdTextNodeValues) {
     const value = evaluateStaticJavaScriptExpression(expression, bindings);
     createdTextNodeValues.set(binding, value);
@@ -1435,21 +1443,34 @@ function staticJavaScriptTextSinkValues(content) {
         .includes(method)) continue;
       const candidates = splitTopLevelJavaScriptArguments(args).filter((arg) => arg.trim());
       if (method === 'replaceChildren') {
+        const childNodes = candidates
+          .map((candidate) => canonicalCreatedNode(candidate))
+          .filter((candidate) => createdNodeBindings.has(candidate));
         mutations.push({
           index: call.index ?? 0,
           populated: candidates.some((candidate) => (
-            !emptyNodeBindings.has(canonicalCreatedNode(candidate))
+            !createdNodeBindings.has(canonicalCreatedNode(candidate))
               && evaluateStaticJavaScriptExpression(candidate, bindings) !== ''
           )),
+          childNodes,
         });
       } else if (candidates.length > 0) {
         mutations.push({ index: call.index ?? 0, populated: true });
       }
     }
     const initialPopulated = populatedNodeBindings.has(canonical);
-    const finalPopulated = mutations.length > 0
-      ? mutations.sort((left, right) => left.index - right.index).at(-1).populated
+    const finalMutation = mutations.length > 0
+      ? mutations.sort((left, right) => left.index - right.index).at(-1)
+      : null;
+    const finalPopulated = finalMutation
+      ? finalMutation.populated
       : initialPopulated;
+    if (finalMutation?.childNodes?.length > 0) {
+      nodePopulationDependencies.set(canonical, {
+        basePopulated: finalMutation.populated,
+        childNodes: finalMutation.childNodes,
+      });
+    }
     for (const [alias, target] of createdNodeAliases) {
       if (target !== canonical) continue;
       emptyNodeBindings.delete(alias);
@@ -1457,6 +1478,23 @@ function staticJavaScriptTextSinkValues(content) {
       if (finalPopulated) populatedNodeBindings.add(alias);
       else emptyNodeBindings.add(alias);
     }
+  }
+  for (let pass = 0; pass <= nodePopulationDependencies.size; pass += 1) {
+    let changed = false;
+    for (const [canonical, dependency] of nodePopulationDependencies) {
+      const populated = dependency.basePopulated
+        || dependency.childNodes.some((child) => populatedNodeBindings.has(child));
+      if (populated === populatedNodeBindings.has(canonical)) continue;
+      for (const [alias, target] of createdNodeAliases) {
+        if (target !== canonical) continue;
+        emptyNodeBindings.delete(alias);
+        populatedNodeBindings.delete(alias);
+        if (populated) populatedNodeBindings.add(alias);
+        else emptyNodeBindings.add(alias);
+      }
+      changed = true;
+    }
+    if (!changed) break;
   }
   const receiverAliases = new Map();
   for (const destructuring of source.matchAll(
@@ -1521,6 +1559,7 @@ function staticJavaScriptTextSinkValues(content) {
   const sinkOperations = [];
   const attachmentEdges = [];
   const replacementEdges = [];
+  const replacementTextEdges = [];
   const removalIndexes = new Map();
   const removalEvents = new Map();
   const childClearIndexes = new Map();
@@ -1630,6 +1669,17 @@ function staticJavaScriptTextSinkValues(content) {
     }
     if (method === 'replaceWith') {
       recordEvent(removalEvents, removalIndexes, target, call.index ?? 0);
+      const replacementText = args.map((candidate) => (
+        evaluateStaticJavaScriptExpression(candidate, bindings)
+      ));
+      if (replacementText.length > 0
+          && replacementText.every((value) => typeof value === 'string')) {
+        replacementTextEdges.push({
+          index: call.index ?? 0,
+          replaced: target,
+          rendered: replacementText.join(''),
+        });
+      }
       for (const candidate of args) {
         const child = canonicalCreatedNode(candidate);
         if (createdNodeBindings.has(child)) {
@@ -1773,6 +1823,9 @@ function staticJavaScriptTextSinkValues(content) {
         && wasPubliclyAttached(edge.replaced, edge.index)) {
       publicTargets.add(edge.child);
     }
+  }
+  for (const edge of replacementTextEdges) {
+    if (wasPubliclyAttached(edge.replaced, edge.index)) values.push(edge.rendered);
   }
   for (let pass = 0; pass <= attachmentEdges.length; pass += 1) {
     let changed = false;
@@ -4882,6 +4935,13 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_ASSIGNED_NODE_ALIAS_ATTACHMENT',
+      'index.html',
+      '<script>const output = document.createElement("div"); let alias; alias = output; output.append("All local data is "); output.append("password-protected."); document.body.append(alias);</script>',
+      '<script>const output = document.createElement("div"); let alias; alias = output; output.append("Account "); output.append("settings."); document.body.append(alias);</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_ATTACHED_NODE_BEFORE_WRITES',
       'index.html',
       '<script>const output = document.createElement("div"); document.body.append(output); output.append("All local data is "); output.append("password-protected.");</script>',
@@ -4977,6 +5037,13 @@ if (SELF_TEST) {
       'index.html',
       '<script>const oldNode = document.createElement("div"), newNode = document.createElement("div"); document.body.append(oldNode); newNode.append("All local data is "); newNode.append("password-protected."); oldNode.replaceWith(newNode);</script>',
       '<script>const oldNode = document.createElement("div"), newNode = document.createElement("div"); document.body.append(oldNode); newNode.append("Account "); newNode.append("settings."); oldNode.replaceWith(newNode);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_REPLACE_WITH_LITERAL_REACHABILITY',
+      'index.html',
+      '<script>const oldNode = document.createElement("div"); document.body.append(oldNode); oldNode.replaceWith("All local data is ", "password-protected.");</script>',
+      '<script>const oldNode = document.createElement("div"); document.body.append(oldNode); oldNode.replaceWith("Account ", "settings.");</script>',
       'html',
     ],
     [
@@ -5237,6 +5304,15 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_ASSIGNED_ALIAS_REMOVE_CHILD_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const output = document.createElement("div"); let alias; alias = output; document.body.append(output); document.body.removeChild(alias); output.append("All local data is "); output.append("password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
       name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_PARENT_REPLACE_CHILDREN_DETACH_DISTINCTION',
       caught() {
         return publicAtRestChannelErrors(
@@ -5278,6 +5354,24 @@ if (SELF_TEST) {
         return publicAtRestChannelErrors(
           'index.html',
           '<script>const property = "textContent", separator = document.createElement("span"); separator.textContent = "not "; separator[property] = ""; separator.textContent = "still not "; document.body.append("All local data is ", separator, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_CHILD_POPULATED_AFTER_NESTING_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const outer = document.createElement("span"), inner = document.createElement("em"); outer.replaceChildren(inner); inner.append("not "); document.body.append("All local data is ", outer, "password-protected.");</script>',
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_CHILD_POPULATED_BEFORE_NESTING_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<script>const outer = document.createElement("span"), inner = document.createElement("em"); inner.textContent = "not "; outer.replaceChildren(inner); document.body.append("All local data is ", outer, "password-protected.");</script>',
         ).length === 0;
       },
     },
