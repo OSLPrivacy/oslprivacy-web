@@ -421,8 +421,8 @@ function h4ExplainerErrors(fileRel, content) {
 
 function atRestOverclaimErrors(fileRel, content) {
   const rendered = renderedTextWithSourceMap(content);
-  const broadScope = /\b(?:(?:all|every)\s+(?:(?:private|local|conversation)\s+){0,2}(?:state|data|information|records?)(?:\s+on\s+(?:this|the)\s+device)?|(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?))\b/i;
-  const passwordProtection = /\b(?:password[-\s]+protected|(?:sealed|encrypted)\s+at\s+rest|(?:your|the|a)?\s*password\s+(?:encrypts?|protects?)|protected\s+(?:with|by)\s+(?:your|the|a)\s+password)\b/i;
+  const broadScope = /\b(?:(?:all|every|entire|whole)\s+(?:(?:private|local|conversation)\s+){0,2}(?:state|data|information|records?|storage|metadata)(?:\s+on\s+(?:this|the)\s+device)?|everything\s+(?:private|local)(?:\s+on\s+(?:this|the)\s+device)?|(?:private|local)\s+(?:conversation\s+)?(?:state|data|information|records?|storage|metadata))\b/i;
+  const passwordProtection = /\b(?:password[-\s]+protected|(?:sealed|encrypted|protected)\s+(?:at\s+rest|(?:with|by)\s+(?:(?:your|the|a)\s+)?(?:main[-\s]+)?password)|(?:your|the|a)?\s*(?:main[-\s]+)?password\s+(?:encrypts?|protects?))\b/i;
   const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|mean\s+that)\s+(?:all|every)|not\s+(?:all|every)|not\s+a\s+(?:claim|promise)\s+that\s+(?:all|every)|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?)\b/i;
   const errors = [];
 
@@ -734,6 +734,30 @@ const SELF_TEST_CASES = [
     name: 'reversed at-rest overclaim',
     file: 'audit.html',
     html: '<p>Encrypted at rest with your password: all private state on this device.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local storage encrypted with main password',
+    file: 'docs/faq.html',
+    html: '<p>All local storage is encrypted with your main password.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local metadata password-protected',
+    file: 'docs/faq.html',
+    html: '<p>All local metadata is password-protected.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'everything private encrypted at rest',
+    file: 'docs/faq.html',
+    html: '<p>Everything private on this device is encrypted at rest.</p>',
+    expect: 'at-rest overclaim',
+  },
+  {
+    name: 'all local records encrypted with password',
+    file: 'docs/faq.html',
+    html: '<p>All local records are encrypted with your password.</p>',
     expect: 'at-rest overclaim',
   },
   {
@@ -1121,7 +1145,7 @@ if (SELF_TEST) {
     {
       file: 'docs/faq.html',
       needle: 'The password recovery phrase can authorize setting a new main password; it does not mean that every local record is password-protected. Some conversation metadata and preferences may remain plaintext when no storage key is installed, and removing that storage key restores plaintext writes.',
-      replacement: 'OSL provides recovery material for password-protected local state.',
+      replacement: 'All local storage is encrypted with your main password.',
     },
   ];
   for (const testCase of productionAtRestCases) {
