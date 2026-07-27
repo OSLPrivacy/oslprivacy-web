@@ -699,15 +699,28 @@ function falseIdentityPasswordMechanism(text) {
     .map(shortText)
     .filter(Boolean);
   return clauses.some((clause) => {
-    const identity = /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(clause);
-    const password = /\b(?:(?:your|the|main|OSL)\s+)?password\b|\bpassphrase\b/i.test(clause);
-    const protection = /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(clause);
-    const negated = (
-      /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b.{0,80}\b(?:are\s+not|aren't|never|do\s+not|don't)\b.{0,80}\b(?:encrypt|seal|protect|secur)/i.test(clause)
-      || /\b(?:password|passphrase)\b.{0,80}\b(?:does\s+not|doesn't|never)\b.{0,80}\b(?:encrypt|seal|protect|secur).{0,80}\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(clause)
-      || /\brather\s+than\b/i.test(clause)
+    const identity = String.raw`\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b`;
+    const password = String.raw`\b(?:(?:your|the|main|OSL)\s+)*(?:password|passphrase)\b`;
+    const protectedForm = String.raw`(?:encrypt(?:ed)?|seal(?:ed)?|protect(?:ed)?|secur(?:ed)?)`;
+    const passiveRelationship = new RegExp(
+      `${identity}\\s+(?:(?:is|are|was|were|be|been|remain(?:s|ed)?|stay(?:s|ed)?|get(?:s)?|got|become(?:s)?)\\s+)?`
+        + `${protectedForm}(?:\\s+at[-\\s]+rest)?\\s+(?:with|by|using|under)\\s+${password}`,
+      'i',
     );
-    return identity && password && protection && !negated;
+    const activeRelationship = new RegExp(
+      `${password}\\s+(?:(?:directly|itself)\\s+)?(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))`
+        + `(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
+      'i',
+    );
+    const usedToRelationship = new RegExp(
+      `${password}\\s+(?:is|was|gets?|got)\\s+used\\s+to\\s+`
+        + `(?:encrypt|seal|protect|secure)(?:\\s+at[-\\s]+rest)?\\s+(?:the\\s+)?${identity}`,
+      'i',
+    );
+    return !/\brather\s+than\b/i.test(clause)
+      && (passiveRelationship.test(clause)
+        || activeRelationship.test(clause)
+        || usedToRelationship.test(clause));
   });
 }
 
@@ -772,6 +785,234 @@ function atRestSemanticTripwire(text) {
   ));
 }
 
+function htmlAttributeValue(attrs, name) {
+  const match = attrs.match(new RegExp(
+    `\\b${escapeRegExp(name)}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'=<>\\x60]+))`,
+    'i',
+  ));
+  return match ? (match[1] ?? match[2] ?? match[3] ?? '') : '';
+}
+
+function decodeJavaScriptString(raw) {
+  const quote = raw[0];
+  const body = raw.slice(1, -1);
+  if (quote === '`' && body.includes('${')) return null;
+  return body.replace(
+    /\\(?:u\{([0-9a-f]+)\}|u([0-9a-f]{4})|x([0-9a-f]{2})|([0btnvfr\\'"`]))/gi,
+    (_match, codePoint, unicode, hex, simple) => {
+      if (codePoint) return String.fromCodePoint(Number.parseInt(codePoint, 16));
+      if (unicode) return String.fromCharCode(Number.parseInt(unicode, 16));
+      if (hex) return String.fromCharCode(Number.parseInt(hex, 16));
+      return {
+        0: '\0',
+        b: '\b',
+        t: '\t',
+        n: '\n',
+        v: '\v',
+        f: '\f',
+        r: '\r',
+        '\\': '\\',
+        "'": "'",
+        '"': '"',
+        '`': '`',
+      }[simple] ?? simple;
+    },
+  );
+}
+
+function tokenizeStaticJavaScriptExpression(expression) {
+  const tokens = [];
+  let index = 0;
+  while (index < expression.length) {
+    const char = expression[index];
+    if (/\s/.test(char)) {
+      index += 1;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === '`') {
+      const quote = char;
+      let end = index + 1;
+      let escaped = false;
+      while (end < expression.length) {
+        const current = expression[end];
+        if (!escaped && current === quote) break;
+        if (!escaped && current === '\\') escaped = true;
+        else escaped = false;
+        end += 1;
+      }
+      if (end >= expression.length) return null;
+      const value = decodeJavaScriptString(expression.slice(index, end + 1));
+      if (value === null) return null;
+      tokens.push({ type: 'string', value });
+      index = end + 1;
+      continue;
+    }
+    const identifier = expression.slice(index).match(/^[A-Za-z_$][A-Za-z0-9_$]*/);
+    if (identifier) {
+      tokens.push({ type: 'identifier', value: identifier[0] });
+      index += identifier[0].length;
+      continue;
+    }
+    if ('+.,()'.includes(char)) {
+      tokens.push({ type: char, value: char });
+      index += 1;
+      continue;
+    }
+    return null;
+  }
+  return tokens;
+}
+
+function evaluateStaticJavaScriptExpression(expression, bindings) {
+  const tokens = tokenizeStaticJavaScriptExpression(expression);
+  if (!tokens) return null;
+  let index = 0;
+  const accept = (type) => {
+    if (tokens[index]?.type !== type) return false;
+    index += 1;
+    return true;
+  };
+  const parseExpression = () => {
+    let value = parsePostfix();
+    if (value === null) return null;
+    while (accept('+')) {
+      const right = parsePostfix();
+      if (right === null) return null;
+      value += right;
+    }
+    return value;
+  };
+  const parsePrimary = () => {
+    const token = tokens[index];
+    if (token?.type === 'string') {
+      index += 1;
+      return token.value;
+    }
+    if (token?.type === 'identifier' && bindings.has(token.value)) {
+      index += 1;
+      return bindings.get(token.value);
+    }
+    if (accept('(')) {
+      const value = parseExpression();
+      if (value === null || !accept(')')) return null;
+      return value;
+    }
+    return null;
+  };
+  function parsePostfix() {
+    let value = parsePrimary();
+    if (value === null) return null;
+    while (accept('.')) {
+      const method = tokens[index];
+      if (method?.type !== 'identifier' || method.value !== 'concat') return null;
+      index += 1;
+      if (!accept('(')) return null;
+      if (!accept(')')) {
+        do {
+          const argument = parseExpression();
+          if (argument === null) return null;
+          value += argument;
+        } while (accept(','));
+        if (!accept(')')) return null;
+      }
+    }
+    return value;
+  }
+  const value = parseExpression();
+  return value !== null && index === tokens.length ? value : null;
+}
+
+function balancedCallArguments(content, callStart) {
+  const open = content.indexOf('(', callStart);
+  if (open < 0) return null;
+  let quote = '';
+  let escaped = false;
+  let depth = 0;
+  for (let index = open; index < content.length; index += 1) {
+    const char = content[index];
+    if (quote) {
+      if (!escaped && char === quote) quote = '';
+      if (!escaped && char === '\\') escaped = true;
+      else escaped = false;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+      continue;
+    }
+    if (char === '(') depth += 1;
+    if (char === ')') {
+      depth -= 1;
+      if (depth === 0) return content.slice(open + 1, index);
+    }
+  }
+  return null;
+}
+
+function splitTopLevelJavaScriptArguments(argumentsSource) {
+  const values = [];
+  let start = 0;
+  let quote = '';
+  let escaped = false;
+  let depth = 0;
+  for (let index = 0; index < argumentsSource.length; index += 1) {
+    const char = argumentsSource[index];
+    if (quote) {
+      if (!escaped && char === quote) quote = '';
+      if (!escaped && char === '\\') escaped = true;
+      else escaped = false;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === '`') quote = char;
+    else if (char === '(') depth += 1;
+    else if (char === ')') depth -= 1;
+    else if (char === ',' && depth === 0) {
+      values.push(argumentsSource.slice(start, index));
+      start = index + 1;
+    }
+  }
+  values.push(argumentsSource.slice(start));
+  return values;
+}
+
+function staticJavaScriptTextSinkValues(content) {
+  const bindings = new Map();
+  const declarations = [...content.matchAll(
+    /\b(?:const|let|var)\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([^;\n]+)/g,
+  )];
+  for (let pass = 0; pass <= declarations.length; pass += 1) {
+    let changed = false;
+    for (const declaration of declarations) {
+      if (bindings.has(declaration[1])) continue;
+      const value = evaluateStaticJavaScriptExpression(declaration[2], bindings);
+      if (value === null) continue;
+      bindings.set(declaration[1], value);
+      changed = true;
+    }
+    if (!changed) break;
+  }
+
+  const values = [];
+  for (const assignment of content.matchAll(
+    /\b(?:textContent|innerText)\s*=\s*([^;\n]+)/g,
+  )) {
+    const value = evaluateStaticJavaScriptExpression(assignment[1], bindings);
+    if (value !== null) values.push(value);
+  }
+  const textCallRe = /\b(?:insertAdjacentText|append|prepend|replaceChildren|write|writeln)\s*\(/g;
+  for (const call of content.matchAll(textCallRe)) {
+    const source = balancedCallArguments(content, call.index ?? 0);
+    if (source === null) continue;
+    const args = splitTopLevelJavaScriptArguments(source);
+    const candidates = call[0].startsWith('insertAdjacentText') ? args.slice(1) : args;
+    for (const candidate of candidates) {
+      const value = evaluateStaticJavaScriptExpression(candidate, bindings);
+      if (value !== null) values.push(value);
+    }
+  }
+  return values;
+}
+
 function textualAssetClaimChannels(fileRel, content) {
   const extension = path.extname(fileRel).toLowerCase();
   if (extension === '.json' || extension === '.webmanifest') {
@@ -816,6 +1057,7 @@ function textualAssetClaimChannels(fileRel, content) {
         .map((match) => match[2]);
       if (strings.length > 1) values.push(strings.join(''));
     }
+    values.push(...staticJavaScriptTextSinkValues(content));
     return values;
   }
   if (extension === '.svg' || extension === '.xml') {
@@ -876,7 +1118,7 @@ function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
     const attrs = match[2];
     const body = match[3];
     if (tag === 'template') {
-      if (/\bshadowrootmode\s*=\s*(["'])(?:open|closed)\1/i.test(attrs)) {
+      if (/^(?:open|closed)$/i.test(htmlAttributeValue(attrs, 'shadowrootmode'))) {
         record(body, 'declarative-shadow-template');
       }
       continue;
@@ -885,7 +1127,7 @@ function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
       record(body, 'noscript');
       continue;
     }
-    const type = attrs.match(/\btype\s*=\s*(["'])([^"']+)\1/i)?.[2]?.toLowerCase() ?? '';
+    const type = htmlAttributeValue(attrs, 'type').toLowerCase();
     if (type === 'application/ld+json') {
       for (const value of textualAssetClaimChannels('inline.json', body)) record(value, 'json-ld');
       continue;
@@ -3265,6 +3507,13 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_WITH_UNRELATED_SUBJECT_NEGATION',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += " Private identity keys are encrypted with your main password, and backups aren't protected.";
+      },
+    },
+    {
       name: 'AT_REST_UNREACHABLE_NOTES_CLAIM',
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
@@ -3398,6 +3647,20 @@ if (SELF_TEST) {
       '<script>document.body.insertAdjacentText("beforeend", "Account settings.");</script>',
       'html',
     ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_CONCAT_COPY',
+      'index.html',
+      '<script>document.body.insertAdjacentText("beforeend", "All local data is ".concat("password-protected."));</script>',
+      '<script>document.body.insertAdjacentText("beforeend", "Account ".concat("settings."));</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_IDENTIFIER_COPY',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.insertAdjacentText("beforeend", a + b);</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.insertAdjacentText("beforeend", a + b);</script>',
+      'html',
+    ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
     [
       'PUBLIC_ASSET_CSS_COMPOSITION',
@@ -3456,10 +3719,29 @@ if (SELF_TEST) {
     {
       name: 'PUBLIC_CHANNEL_INERT_SCRIPT_DISTINCTION',
       caught() {
-        return publicAtRestChannelErrors(
+        const inert = publicAtRestChannelErrors(
           'index.html',
           `<script type="application/json">{"claim":"${publicClaim}"}</script>`,
-        ).length === 0;
+        );
+        const executable = publicAtRestChannelErrors(
+          'index.html',
+          `<script type="module">document.body.append("${publicClaim}")</script>`,
+        );
+        return inert.length === 0 && executable.length > 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_UNQUOTED_INERT_SCRIPT_DISTINCTION',
+      caught() {
+        const inert = publicAtRestChannelErrors(
+          'index.html',
+          `<script type=application/json>{"claim":"${publicClaim}"}</script>`,
+        );
+        const executable = publicAtRestChannelErrors(
+          'index.html',
+          `<script type=module>document.body.append("${publicClaim}")</script>`,
+        );
+        return inert.length === 0 && executable.length > 0;
       },
     },
     {
@@ -3481,6 +3763,20 @@ if (SELF_TEST) {
         const removal = publicAtRestChannelErrors(
           'index.html',
           '<template shadowrootmode="open"><p>Account settings.</p></template>',
+        );
+        return positive.length > 0 && removal.length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_UNQUOTED_DECLARATIVE_SHADOW_TEMPLATE',
+      caught() {
+        const positive = publicAtRestChannelErrors(
+          'index.html',
+          `<template shadowrootmode=open><p>${publicClaim}</p></template>`,
+        );
+        const removal = publicAtRestChannelErrors(
+          'index.html',
+          '<template shadowrootmode=open><p>Account settings.</p></template>',
         );
         return positive.length > 0 && removal.length === 0;
       },
