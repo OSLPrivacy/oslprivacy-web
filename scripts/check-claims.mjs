@@ -1084,6 +1084,7 @@ function splitTopLevelJavaScriptArguments(argumentsSource) {
 function staticJavaScriptTextSinkValues(content) {
   const source = stripJavaScriptComments(content);
   const bindings = new Map();
+  const emptyNodeBindings = new Set();
   const declarations = [];
   for (const statement of source.matchAll(/\b(?:const|let|var)\s+([^;]+)/g)) {
     for (const declarator of splitTopLevelJavaScriptArguments(statement[1])) {
@@ -1091,6 +1092,14 @@ function staticJavaScriptTextSinkValues(content) {
         /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*([\s\S]+?)\s*$/,
       );
       if (match) declarations.push({ name: match[1], expression: match[2] });
+    }
+  }
+  for (const declaration of declarations) {
+    if (/^(?:document\.)?createElement\s*\(\s*["'][a-z][a-z0-9:-]*["']\s*\)$/i
+      .test(declaration.expression)
+        || /^(?:document\.)?createDocumentFragment\s*\(\s*\)$/i
+          .test(declaration.expression)) {
+      emptyNodeBindings.add(declaration.name);
     }
   }
   for (let pass = 0; pass <= declarations.length; pass += 1) {
@@ -1108,12 +1117,16 @@ function staticJavaScriptTextSinkValues(content) {
   const values = [];
   const sinkRuns = [];
   for (const assignment of source.matchAll(
-    /(?:\b(?:textContent|innerText|innerHTML)\b|\[\s*["'](?:textContent|innerText|innerHTML)["']\s*\])\s*=\s*([^;]+)/g,
+    /(?:\b(?:textContent|innerText|innerHTML)\b|\[\s*["'](?:textContent|innerText|innerHTML)["']\s*\])\s*(\+?=)\s*([^;]+)/g,
   )) {
-    const value = evaluateStaticJavaScriptExpression(assignment[1], bindings);
-    if (typeof value === 'string') values.push(value);
-    else if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
-      values.push(value.join(','));
+    const value = evaluateStaticJavaScriptExpression(assignment[2], bindings);
+    if (typeof value === 'string') {
+      values.push(value);
+      sinkRuns.push({ index: assignment.index ?? 0, rendered: value });
+    } else if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
+      const rendered = value.join(',');
+      values.push(rendered);
+      sinkRuns.push({ index: assignment.index ?? 0, rendered });
     }
   }
   const textCallRe = /(?:\b(insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)|\[\s*["'](insertAdjacentText|insertAdjacentHTML|append|prepend|replaceChildren|replaceWith|write|writeln|createTextNode)["']\s*\])\s*(?:\?\.)?\s*\(/g;
@@ -1139,10 +1152,13 @@ function staticJavaScriptTextSinkValues(content) {
       const textNode = expression.match(
         /^(?:document\.)?createTextNode\s*\(([\s\S]*)\)$/,
       );
-      const value = evaluateStaticJavaScriptExpression(
-        textNode?.[1] ?? expression,
-        bindings,
-      );
+      const emptyNode = emptyNodeBindings.has(expression)
+        || /^(?:document\.)?createElement\s*\(\s*["'][a-z][a-z0-9:-]*["']\s*\)$/i
+          .test(expression)
+        || /^(?:document\.)?createDocumentFragment\s*\(\s*\)$/i.test(expression);
+      const value = emptyNode
+        ? ''
+        : evaluateStaticJavaScriptExpression(textNode?.[1] ?? expression, bindings);
       const resolved = spread && Array.isArray(value)
         ? value
         : (typeof value === 'string' ? [value] : []);
@@ -3944,10 +3960,24 @@ if (SELF_TEST) {
       'html',
     ],
     [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_EMPTY_ELEMENT',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; const empty = document.createElement("span"); document.body.append(a, empty, b);</script>',
+      '<script>const a = "Account "; const b = "settings."; const empty = document.createElement("span"); document.body.append(a, empty, b);</script>',
+      'html',
+    ],
+    [
       'PUBLIC_CHANNEL_GENERATED_SCRIPT_SEQUENTIAL_SINKS',
       'index.html',
       '<script>const a = "All local data is "; const b = "password-protected."; document.body.append(a); document.body.append(b);</script>',
       '<script>const a = "Account "; const b = "settings."; document.body.append(a); document.body.append(b);</script>',
+      'html',
+    ],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEXT_PROPERTY_APPEND',
+      'index.html',
+      '<script>const a = "All local data is "; const b = "password-protected."; document.body.textContent = a; document.body.textContent += b;</script>',
+      '<script>const a = "Account "; const b = "settings."; document.body.textContent = a; document.body.textContent += b;</script>',
       'html',
     ],
     ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
