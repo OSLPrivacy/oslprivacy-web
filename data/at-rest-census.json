@@ -225,17 +225,17 @@
         },
         {
           "path": "crates/ipc/src/control_inbox_dead_letter.rs",
-          "symbol": "write_dead_letter",
+          "symbol": "write_control_inbox_dead_letter",
           "proof": "dead-letter JSON writes use maybe_encrypt"
         },
         {
           "path": "crates/ipc/src/scope_blobs_file.rs",
-          "symbol": "write_scope_blobs",
+          "symbol": "write",
           "proof": "scope-blob JSON writes use maybe_encrypt"
         },
         {
           "path": "crates/ipc/src/scope_ttl_file.rs",
-          "symbol": "write_scope_ttl",
+          "symbol": "write_scope_ttls",
           "proof": "scope-TTL JSON writes use maybe_encrypt"
         },
         {
@@ -478,7 +478,7 @@
       "sources": [
         {
           "path": "apps/osl-hub/src/osl_notes.rs",
-          "symbol": "write_store",
+          "symbol": "save",
           "proof": "the backend requires a storage key and seals before writing, but the accepted reachability audit found no production caller"
         }
       ],
@@ -500,8 +500,8 @@
       "sources": [
         {
           "path": "apps/osl-hub/src/scrub_index.rs",
-          "symbol": "EncryptedScrubIndex::write_chunk",
-          "proof": "chunks and the journal are encrypted before atomic write"
+          "symbol": "EncryptedScrubIndex::append_chunk + save_journal",
+          "proof": "append_chunk seals each chunk and save_journal seals the journal before atomic writes"
         }
       ],
       "limitations": [

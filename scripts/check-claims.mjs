@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -100,6 +101,7 @@ const AT_REST_PRODUCT_SOURCE = Object.freeze({
   commit: 'b1e8c10a13622aa2afea39361ed5c4309e168ca5',
   tree: '48c75ceb9b9fc241f0ee95fbc6f8dfe028e8e65b',
 });
+const AT_REST_CANONICAL_CONTRACT_SHA256 = '6ba87f746f4773f792a451ac354ea5d8452e89d26ee3b92bae2a73e33e30c940';
 const AT_REST_BACKEND_CONTRACT = new Map(Object.entries({
   'identity-private-key-file': {
     retention: 'durable',
@@ -641,6 +643,20 @@ function shortText(value) {
   return value.replace(/\s+/g, ' ').trim();
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map((key) => (
+      `${JSON.stringify(key)}:${canonicalJson(value[key])}`
+    )).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function canonicalSha256(value) {
+  return createHash('sha256').update(canonicalJson(value)).digest('hex');
+}
+
 function plainText(html) {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
 }
@@ -673,12 +689,17 @@ function atRestClaimElements(content) {
 
 function falseIdentityPasswordMechanism(text) {
   const normalized = shortText(text);
-  if (/\b(?:does\s+not|doesn't|is\s+not|isn't|are\s+not|aren't|never|separate|rather\s+than)\b/i.test(normalized)) {
-    return false;
-  }
-  return /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(normalized)
-    && /\b(?:(?:your|the|main|OSL)\s+)?password\b|\bpassphrase\b/i.test(normalized)
-    && /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(normalized);
+  const clauses = normalized
+    .split(/\b(?:but|while|although|whereas|yet|however)\b/i)
+    .map(shortText)
+    .filter(Boolean);
+  return clauses.some((clause) => {
+    const identity = /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i.test(clause);
+    const password = /\b(?:(?:your|the|main|OSL)\s+)?password\b|\bpassphrase\b/i.test(clause);
+    const protection = /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(clause);
+    const negated = /\b(?:does\s+not|doesn't|is\s+not|isn't|are\s+not|aren't|never|rather\s+than)\b/i.test(clause);
+    return identity && password && protection && !negated;
+  });
 }
 
 const AT_REST_BACKEND_MENTIONS = [
@@ -693,17 +714,18 @@ const AT_REST_BACKEND_MENTIONS = [
   ['hub-plaintext-config-family', /\bHub\s+configuration\b/i],
   ['active-identity-marker', /\bactive[-\s]+slot\s+marker\b/i],
   ['provider-profile-storage', /\bprovider[-\s]+managed\s+profiles?\b/i],
-  ['startup-trace-log', /\bstartup\s+trace\b/i],
+  ['startup-trace-log', /\b(?:startup[-\s]+(?:trace|log|breadcrumb)|trace[-\s]+log)\b/i],
   ['hub-encrypted-record-family', /\bHub\s+record\s+writers?\b/i],
   ['decrypted-ui-memory', /\bopened\s+plaintext\b/i],
+  ['qa-diagnostic-artifacts', /\b(?:QA[-\s]+receipts?|diagnostic[-\s]+logs?|receipt[-\s]+ledgers?|diagnostic[-\s]+artifacts?)\b/i],
 ];
 
 function unsupportedAtRestBackendAffirmation(text) {
   const normalized = shortText(text);
-  const namedUnsupported = /\b(?:Notes?|Scrub(?:[-\s]+index)?|LAN)\b/i.test(normalized);
-  const storageAssertion = /\b(?:backend|index|store|storage|file|record)\b/i.test(normalized)
+  const namedUnsupported = /\b(?:Notes?|Scrub(?:[-\s]+index)?|LAN|QA[-\s]+receipts?|diagnostic[-\s]+logs?|receipt[-\s]+ledgers?|diagnostic[-\s]+artifacts?)\b/i.test(normalized);
+  const storageAssertion = /\b(?:backend|index|store|storage|file|record|receipt|ledger|log|artifact)\b/i.test(normalized)
     && /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|ciphertext|plain[-\s]*text|writes?|persists?|retains?)\b/i.test(normalized);
-  const limitation = /\b(?:excluded|unproved|unwired|unknown|Planned|not[-\s]+claimable|does\s+not|doesn't|cannot|can't|no\s+present[-\s]+tense)\b/i.test(normalized);
+  const limitation = /\b(?:excluded|unproved|unwired|unknown|Planned|QA[-\s]+only|not[-\s]+claimable|does\s+not|doesn't|cannot|can't|no\s+present[-\s]+tense)\b/i.test(normalized);
   return namedUnsupported && storageAssertion && !limitation;
 }
 
@@ -758,16 +780,32 @@ function textualAssetClaimChannels(fileRel, content) {
     }
   }
   if (extension === '.css') {
-    return [...content.matchAll(/\bcontent\s*:\s*(["'])([\s\S]*?)\1/gi)]
-      .map((match) => match[2]);
+    const values = [];
+    for (const declaration of content.matchAll(/\bcontent\s*:\s*([^;}]+)/gi)) {
+      const strings = [...declaration[1].matchAll(/(["'])([\s\S]*?)\1/g)]
+        .map((match) => match[2]);
+      values.push(...strings);
+      if (strings.length > 1) values.push(strings.join(''));
+    }
+    return values;
   }
   if (extension === '.js') {
-    return [...content.matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
+    const values = [...content.matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
       .map((match) => match[2]);
+    const concatenationRe = /(?:(?:["'`])(?:\\.|[^"'`])*?(?:["'`])\s*\+\s*)+(?:["'`])(?:\\.|[^"'`])*?(?:["'`])/g;
+    for (const chain of content.matchAll(concatenationRe)) {
+      const strings = [...chain[0].matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
+        .map((match) => match[2]);
+      if (strings.length > 1) values.push(strings.join(''));
+    }
+    return values;
   }
   if (extension === '.svg' || extension === '.xml') {
     const values = [];
     for (const match of content.matchAll(/>([^<]+)</g)) values.push(match[1]);
+    for (const match of content.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text\s*>/gi)) {
+      values.push(shortText(match[1].replace(/<[^>]*>/g, ' ')));
+    }
     for (const match of content.matchAll(/\b(?:aria-label|aria-description|alt|title|data-[a-z0-9_.:-]+)\s*=\s*(["'])([\s\S]*?)\1/gi)) {
       values.push(match[2]);
     }
@@ -813,9 +851,25 @@ function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
     }
   }
 
-  const embeddedRe = /<(script|template|noscript)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  const embeddedRe = /<(script|template|noscript)\b([^>]*)>([\s\S]*?)<\/\1\s*>/gi;
   for (const match of unbound.matchAll(embeddedRe)) {
-    record(match[2], match[1].toLowerCase());
+    const tag = match[1].toLowerCase();
+    const attrs = match[2];
+    const body = match[3];
+    if (tag === 'template') continue;
+    if (tag === 'noscript') {
+      record(body, 'noscript');
+      continue;
+    }
+    const type = attrs.match(/\btype\s*=\s*(["'])([^"']+)\1/i)?.[2]?.toLowerCase() ?? '';
+    if (type === 'application/ld+json') {
+      for (const value of textualAssetClaimChannels('inline.json', body)) record(value, 'json-ld');
+      continue;
+    }
+    if (type && !/(?:java|ecma)script|module/i.test(type)) continue;
+    for (const value of textualAssetClaimChannels('inline.js', body)) {
+      record(value, 'inline-script-copy');
+    }
   }
   return errors;
 }
@@ -848,6 +902,13 @@ function validateAtRestCensus(census) {
   const record = (code, text) => errors.push(`${code}: ${text}`);
   if (census?.schema_version !== 1 || census?.census_id !== 'osl-at-rest-source-census') {
     record('AT_REST_SCHEMA', 'unsupported or missing at-rest census identity/version');
+  }
+  const contractDigest = canonicalSha256(census);
+  if (contractDigest !== AT_REST_CANONICAL_CONTRACT_SHA256) {
+    record(
+      'AT_REST_CANONICAL_CONTRACT',
+      `the complete reviewed census contract must hash to ${AT_REST_CANONICAL_CONTRACT_SHA256}, got ${contractDigest}`,
+    );
   }
   if (census?.product_source?.commit !== AT_REST_PRODUCT_SOURCE.commit
       || census?.product_source?.tree !== AT_REST_PRODUCT_SOURCE.tree
@@ -1187,8 +1248,19 @@ function atRestOverclaimErrors(fileRel, content) {
         text: shortText(sentence[0]),
       }))
       .filter((sentence) => sentence.text);
-    const assertionSentences = sentences.filter(({ text }) => !limitations.test(text));
-    const falseMechanism = assertionSentences.find(({ text }) => falseIdentityPasswordMechanism(text));
+    const semanticUnits = sentences.flatMap((sentence) => {
+      const units = [];
+      let cursor = 0;
+      for (const raw of sentence.text.split(/\b(?:but|while|although|whereas|yet|however)\b/i)) {
+        const text = shortText(raw.replace(/^[,\s]+|[,\s]+$/g, ''));
+        const relative = sentence.text.indexOf(raw, cursor);
+        cursor = Math.max(cursor, relative + raw.length);
+        if (text) units.push({ start: sentence.start + Math.max(0, relative), text });
+      }
+      return units;
+    });
+    const assertionUnits = semanticUnits.filter(({ text }) => !limitations.test(text));
+    const falseMechanism = assertionUnits.find(({ text }) => falseIdentityPasswordMechanism(text));
     if (falseMechanism) {
       const sourceIndex = rendered.sourceIndexes[falseMechanism.start] ?? 0;
       errors.push({
@@ -1203,8 +1275,8 @@ function atRestOverclaimErrors(fileRel, content) {
     // appear elsewhere in the same rendered block, so arbitrary sentence
     // splitting cannot evade the check. Narrow identity-key and message-body
     // claims remain permissible unless the block also asserts a broad category.
-    const assertionText = assertionSentences.map(({ text }) => text).join(' ');
-    const scope = assertionSentences.find(({ text }) => !destructiveScope.test(text)
+    const assertionText = assertionUnits.map(({ text }) => text).join(' ');
+    const scope = assertionUnits.find(({ text }) => !destructiveScope.test(text)
       && (unqualifiedBroadCategory.test(text)
         || (universalScope.test(text) && stateObject.test(text))
         || (absoluteUniversal.test(text) && protectionAssertion.test(text))));
@@ -3053,6 +3125,43 @@ if (SELF_TEST) {
       },
     },
     {
+      name: 'BACKEND_SOURCE_SYMBOL_DRIFT',
+      expect: 'AT_REST_CANONICAL_CONTRACT',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'startup-trace-log')
+          .sources[0].symbol = 'symbol_that_does_not_exist';
+      },
+    },
+    {
+      name: 'BACKEND_SOURCE_PROOF_DRIFT',
+      expect: 'AT_REST_CANONICAL_CONTRACT',
+      mutate(census) {
+        census.backends.find((backend) => backend.id === 'startup-trace-log')
+          .sources[0].proof = 'synchronized mutable proof';
+      },
+    },
+    {
+      name: 'BACKEND_MECHANISM_DRIFT',
+      expect: 'AT_REST_CANONICAL_CONTRACT',
+      mutate(census) {
+        const identity = census.backends
+          .find((backend) => backend.id === 'identity-private-key-file');
+        identity.at_rest_form = 'encrypted with the main password';
+        identity.key_absent_behavior = 'plaintext fallback';
+      },
+    },
+    {
+      name: 'SYNCED_BACKEND_REF_OMISSION',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        const claim = census.public_claims
+          .find((entry) => entry.id === 'status-at-rest-boundary');
+        claim.text = claim.text.replace('startup trace', 'startup log');
+        claim.backend_refs = claim.backend_refs
+          .filter((backend) => backend !== 'startup-trace-log');
+      },
+    },
+    {
       name: 'AT_REST_CONTRADICTION_UNIVERSAL_THEN_PLAINTEXT',
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
@@ -3064,6 +3173,20 @@ if (SELF_TEST) {
       expect: 'AT_REST_CLAIM_SEMANTICS',
       mutate(census) {
         census.public_claims[0].text += ' Some local settings can be plaintext. All local data is encrypted at rest.';
+      },
+    },
+    {
+      name: 'AT_REST_SAME_SENTENCE_UNIVERSAL_PLAINTEXT',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' All local data is encrypted at rest, but some local settings can remain plaintext.';
+      },
+    },
+    {
+      name: 'AT_REST_FALSE_IDENTITY_PASSWORD_WITH_SEPARATE_CLAUSE',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Private identity keys are encrypted with your main password, while the file-storage key is separate.';
       },
     },
     {
@@ -3180,6 +3303,85 @@ if (SELF_TEST) {
       },
     },
   ];
+  const publicClaim = 'All local data is encrypted at rest.';
+  const channelControls = [
+    ['PUBLIC_CHANNEL_DOCUMENT_TITLE', 'index.html', `<title>${publicClaim}</title>`, '<title></title>', 'html'],
+    ['PUBLIC_CHANNEL_RENDERED_TEXT', 'index.html', `<main><p>${publicClaim}</p></main>`, '<main><p></p></main>', 'html'],
+    ['PUBLIC_CHANNEL_METADATA_CONTENT', 'index.html', `<meta name="description" content="${publicClaim}">`, '<meta name="description" content="">', 'html'],
+    ['PUBLIC_CHANNEL_ARIA_DESCRIPTION', 'index.html', `<main aria-description="${publicClaim}"></main>`, '<main aria-description=""></main>', 'html'],
+    ['PUBLIC_CHANNEL_ALT', 'index.html', `<img alt="${publicClaim}">`, '<img alt="">', 'html'],
+    ['PUBLIC_CHANNEL_TITLE_ATTRIBUTE', 'index.html', `<div title="${publicClaim}"></div>`, '<div title=""></div>', 'html'],
+    ['PUBLIC_CHANNEL_PLACEHOLDER', 'index.html', `<input placeholder="${publicClaim}">`, '<input placeholder="">', 'html'],
+    ['PUBLIC_CHANNEL_VALUE', 'index.html', `<input value="${publicClaim}">`, '<input value="">', 'html'],
+    ['PUBLIC_CHANNEL_DATA_ATTRIBUTE', 'index.html', `<div data-copy="${publicClaim}"></div>`, '<div data-copy=""></div>', 'html'],
+    ['PUBLIC_CHANNEL_JSON_LD', 'index.html', `<script type="application/ld+json">{"description":"${publicClaim}"}</script>`, '<script type="application/ld+json">{}</script>', 'html'],
+    [
+      'PUBLIC_CHANNEL_GENERATED_SCRIPT_COPY',
+      'index.html',
+      '<script>document.body.insertAdjacentText("beforeend", "All local data is " + "password-protected.");</script>',
+      '<script>document.body.insertAdjacentText("beforeend", "Account settings.");</script>',
+      'html',
+    ],
+    ['PUBLIC_CHANNEL_NOSCRIPT', 'index.html', `<noscript><p>${publicClaim}</p></noscript>`, '<noscript><p></p></noscript>', 'html'],
+    [
+      'PUBLIC_ASSET_CSS_COMPOSITION',
+      'assets/claim.css',
+      '.claim::after { content: "All local data is " "password-protected."; }',
+      '.claim::after { content: "Account settings."; }',
+      'textual-asset',
+    ],
+    [
+      'PUBLIC_ASSET_JS_COMPOSITION',
+      'assets/claim.js',
+      'document.body.insertAdjacentText("beforeend", "All local data is " + "password-protected.");',
+      'document.body.insertAdjacentText("beforeend", "Account settings.");',
+      'textual-asset',
+    ],
+    ['PUBLIC_ASSET_JSON_STAGE', 'assets/claim.json', `{"claim":"${publicClaim}"}`, '{"claim":""}', 'textual-asset'],
+    [
+      'PUBLIC_ASSET_SVG_COMPOSITION',
+      'assets/claim.svg',
+      '<svg><text><tspan>All local data is </tspan><tspan>password-protected.</tspan></text></svg>',
+      '<svg><text><tspan>Account settings.</tspan></text></svg>',
+      'textual-asset',
+    ],
+    ['PUBLIC_ASSET_TXT_STAGE', 'assets/claim.txt', publicClaim, 'Account settings.', 'textual-asset'],
+    ['PUBLIC_ASSET_WEBMANIFEST_STAGE', 'assets/claim.webmanifest', `{"description":"${publicClaim}"}`, '{"description":""}', 'textual-asset'],
+    ['PUBLIC_ASSET_XML_STAGE', 'assets/claim.xml', `<copy>${publicClaim}</copy>`, '<copy>Account settings.</copy>', 'textual-asset'],
+    ['AT_REST_STARTUP_LOG_ALIAS', 'index.html', '<p>Every startup log is encrypted at rest.</p>', '<p>Startup diagnostics are source-inspected only.</p>', 'html'],
+    ['AT_REST_RECEIPT_LEDGER_ALIAS', 'index.html', '<p>The QA receipt ledger is encrypted at rest.</p>', '<p>The QA receipt ledger is QA-only and not claimable.</p>', 'html'],
+    ['AT_REST_DIAGNOSTIC_LOG_ALIAS', 'index.html', '<p>The diagnostic log is encrypted before writing.</p>', '<p>The diagnostic log is QA-only and excluded.</p>', 'html'],
+  ];
+  for (const [name, file, fixture, removed, kind] of channelControls) {
+    publicSurfaceMutations.push({
+      name,
+      caught() {
+        const positive = publicAtRestChannelErrors(file, fixture, kind);
+        const removal = publicAtRestChannelErrors(file, removed, kind);
+        return positive.length > 0 && removal.length === 0;
+      },
+    });
+  }
+  publicSurfaceMutations.push(
+    {
+      name: 'PUBLIC_CHANNEL_INERT_SCRIPT_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          `<script type="application/json">{"claim":"${publicClaim}"}</script>`,
+        ).length === 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_TEMPLATE_DISTINCTION',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          `<template><p>${publicClaim}</p></template>`,
+        ).length === 0;
+      },
+    },
+  );
   const publicSurfaceRuns = new Map();
   for (const mutation of publicSurfaceMutations) {
     publicSurfaceRuns.set(mutation.name, (publicSurfaceRuns.get(mutation.name) ?? 0) + 1);
