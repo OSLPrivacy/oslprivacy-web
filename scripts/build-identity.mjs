@@ -1,12 +1,24 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import {
+  hasSemanticBuildMeta,
+  insertExactBuildMeta,
+  requireExactBuildMeta,
+} from './html-build-meta.mjs';
 
 const SHA_RE = /^[0-9a-f]{40}$/;
-const BUILD_META_RE = /^[ \t]*<meta\b(?=[^>]*\bname=["']osl-build["'])[^>]*>[ \t]*(?:\r?\n)?/gim;
 const COMMIT_QUERY_RE = /\?v=[0-9a-f]{8,40}(?:-dirty)?/gi;
 const STATIC_ROOT_FILES = new Set(['_headers', '_redirects', 'robots.txt']);
+const CONTROL_OUTPUT_FILES = new Set(['_headers', '_redirects']);
+const DEPLOY_CONTROL_INPUTS = [
+  '.assetsignore',
+  '_headers',
+  '_redirects',
+  'data/pricing.json',
+  'wrangler.jsonc',
+];
 
 function argValue(name) {
   const prefix = `${name}=`;
@@ -56,45 +68,47 @@ async function exists(file) {
   }
 }
 
-async function htmlFiles(root) {
-  const files = [];
-  for (const entry of await readdir(root, { withFileTypes: true })) {
-    if (entry.isFile() && entry.name.endsWith('.html')) {
-      files.push(path.join(root, entry.name));
-    }
-  }
-  const docs = path.join(root, 'docs');
-  if (await exists(docs)) {
-    for (const entry of await readdir(docs, { withFileTypes: true })) {
-      if (entry.isFile() && entry.name.endsWith('.html')) {
-        files.push(path.join(docs, entry.name));
-      }
-    }
-  }
-  return files.sort();
-}
-
 async function walkedFiles(root, current = root) {
   const files = [];
   for (const entry of await readdir(current, { withFileTypes: true })) {
     const full = path.join(current, entry.name);
     if (entry.isDirectory()) files.push(...await walkedFiles(root, full));
-    else if (entry.isFile()) files.push(full);
+    else files.push(full);
   }
   return files.sort();
 }
 
-async function publicArtifactFiles() {
-  const excluded = new Set(['_headers', '_redirects', 'build.json']);
-  return (await walkedFiles(OUT)).filter((file) => {
+async function artifactLeafFiles() {
+  const excluded = new Set(['build.json']);
+  const leaves = (await walkedFiles(OUT)).filter((file) => {
     const relative = rel(file, OUT);
-    return !excluded.has(relative) && !path.basename(relative).startsWith('.');
+    return !excluded.has(relative);
   });
+  for (const file of leaves) {
+    if (!(await lstat(file)).isFile()) {
+      fail(`deploy artifact contains a non-regular output leaf: ${rel(file, OUT)}`);
+    }
+  }
+  return leaves;
 }
 
-async function artifactDigests() {
+function isServedArtifact(file) {
+  const name = rel(file, OUT);
+  return !CONTROL_OUTPUT_FILES.has(name)
+    && !name.split('/').some((part) => part.startsWith('.'));
+}
+
+async function servedArtifactFiles() {
+  return (await artifactLeafFiles()).filter(isServedArtifact);
+}
+
+async function artifactHtmlFiles() {
+  return (await servedArtifactFiles()).filter((file) => file.toLowerCase().endsWith('.html'));
+}
+
+async function fileDigests(files) {
   const entries = [];
-  for (const file of await publicArtifactFiles()) {
+  for (const file of files) {
     entries.push([rel(file, OUT), sha256(await readFile(file))]);
   }
   return Object.fromEntries(entries);
@@ -107,11 +121,40 @@ function trackedStaticFiles() {
     .filter(Boolean)
     .filter((name) => (
       (/^[^/]+\.html$/.test(name)) ||
-      (/^docs\/[^/]+\.html$/.test(name)) ||
-      (/^assets\//.test(name) && !name.split('/').some((part) => part.startsWith('.'))) ||
+      (/^docs\/.+\.html$/.test(name)) ||
+      (/^assets\/.+/.test(name)) ||
       STATIC_ROOT_FILES.has(name)
     ))
     .sort();
+}
+
+async function publishableFilesystemFiles() {
+  const files = [];
+  for (const entry of await readdir(ROOT, { withFileTypes: true })) {
+    if (entry.isFile() && (entry.name.endsWith('.html') || STATIC_ROOT_FILES.has(entry.name))) {
+      files.push(path.join(ROOT, entry.name));
+    }
+  }
+  for (const directory of ['assets', 'docs']) {
+    const root = path.join(ROOT, directory);
+    if (!(await exists(root))) continue;
+    for (const file of await walkedFiles(root)) {
+      if (directory === 'assets' || file.toLowerCase().endsWith('.html')) files.push(file);
+    }
+  }
+  return files.sort();
+}
+
+async function publishableSourceErrors() {
+  const tracked = new Set(trackedStaticFiles());
+  const errors = [];
+  for (const file of await publishableFilesystemFiles()) {
+    const name = rel(file);
+    if (!tracked.has(name)) {
+      errors.push(`${name} is an untracked or ignored byte inside a publishable source root`);
+    }
+  }
+  return errors;
 }
 
 function committedBytes(name) {
@@ -119,20 +162,12 @@ function committedBytes(name) {
 }
 
 function sourceHtml(content) {
-  return content
-    .replace(BUILD_META_RE, '')
-    .replace(COMMIT_QUERY_RE, '');
+  return content.replace(COMMIT_QUERY_RE, '');
 }
 
 function artifactHtml(content, commit) {
   const shortCommit = commit.slice(0, 8);
-  const clean = sourceHtml(content);
-  const viewportLineRe = /^([ \t]*<meta\s+name=["']viewport["'][^>]*>[ \t]*)$/im;
-  if (!viewportLineRe.test(clean)) fail('missing viewport meta');
-  const withMeta = clean.replace(
-    viewportLineRe,
-    `$1\n  <meta name="osl-build" content="${commit}">`,
-  );
+  const withMeta = insertExactBuildMeta(sourceHtml(content), commit);
   return withMeta.replace(
     /<(script|link)\b[^>]*>/gi,
     (tag) => tag.replace(
@@ -147,18 +182,36 @@ async function sourceIdentityErrors() {
   if (await exists(path.join(ROOT, 'build.json'))) {
     errors.push('build.json is tracked/source-local; it must exist only in the deploy artifact');
   }
-  for (const file of await htmlFiles(ROOT)) {
-    const content = await readFile(file, 'utf8');
-    if (BUILD_META_RE.test(content)) {
-      errors.push(`${rel(file)} contains an osl-build meta stamp`);
+  for (const name of trackedStaticFiles().filter((file) => file.toLowerCase().endsWith('.html'))) {
+    const content = committedBytes(name).toString('utf8');
+    if (hasSemanticBuildMeta(content)) {
+      errors.push(`${name} contains a semantic osl-build meta stamp`);
     }
-    BUILD_META_RE.lastIndex = 0;
     if (COMMIT_QUERY_RE.test(content)) {
-      errors.push(`${rel(file)} contains a commit-shaped asset cache token`);
+      errors.push(`${name} contains a commit-shaped asset cache token`);
     }
     COMMIT_QUERY_RE.lastIndex = 0;
   }
   return errors;
+}
+
+function deployControlInputDigests() {
+  return Object.fromEntries(DEPLOY_CONTROL_INPUTS.map((name) => [
+    name,
+    sha256(committedBytes(name)),
+  ]));
+}
+
+function requireDeployControlSemantics() {
+  let wrangler;
+  try {
+    wrangler = JSON.parse(committedBytes('wrangler.jsonc').toString('utf8'));
+  } catch (error) {
+    fail(`committed wrangler.jsonc is not strict JSON: ${error.message}`);
+  }
+  if (wrangler.pages_build_output_dir !== './dist') {
+    fail('committed wrangler.jsonc must set pages_build_output_dir to ./dist');
+  }
 }
 
 function deploymentContract() {
@@ -221,7 +274,7 @@ async function verifyArtifact(expected) {
     fail(`invalid or missing deploy artifact build.json: ${error.message}`);
   }
   const required = {
-    schema_version: 1,
+    schema_version: 2,
     commit: expected.expectedCommit,
     short_commit: expected.expectedCommit.slice(0, 8),
     branch: expected.deploymentBranch,
@@ -240,16 +293,27 @@ async function verifyArtifact(expected) {
   if (!build.files || typeof build.files !== 'object' || Array.isArray(build.files)) {
     fail('deploy artifact build.json files manifest is missing or invalid');
   }
+  if (!build.artifact_files || typeof build.artifact_files !== 'object' || Array.isArray(build.artifact_files)) {
+    fail('deploy artifact build.json artifact_files manifest is missing or invalid');
+  }
+  if (!build.inputs || typeof build.inputs !== 'object' || Array.isArray(build.inputs)) {
+    fail('deploy artifact build.json input manifest is missing or invalid');
+  }
+  const expectedInputs = deployControlInputDigests();
+  if (JSON.stringify(build.inputs) !== JSON.stringify(expectedInputs)) {
+    fail('deploy artifact build.json control inputs mismatch');
+  }
+  for (const control of CONTROL_OUTPUT_FILES) {
+    if (build.artifact_files[control] !== expectedInputs[control]) {
+      fail(`deploy artifact does not byte-bind ${control} to its committed control input`);
+    }
+  }
 
-  const files = await htmlFiles(OUT);
+  const files = await artifactHtmlFiles();
   if (files.length === 0) fail('deploy artifact contains no HTML');
   for (const file of files) {
     const content = await readFile(file, 'utf8');
-    const metas = [...content.matchAll(/<meta\b(?=[^>]*\bname=["']osl-build["'])[^>]*>/gi)];
-    const metaCommit = metas[0]?.[0].match(/\bcontent=["']([^"']+)["']/i)?.[1];
-    if (metas.length !== 1 || metaCommit !== expected.expectedCommit) {
-      fail(`${rel(file, OUT)} does not carry exactly one full-SHA osl-build stamp`);
-    }
+    requireExactBuildMeta(content, expected.expectedCommit, rel(file, OUT));
     if (content.includes('-dirty')) fail(`${rel(file, OUT)} contains a dirty build stamp`);
     for (const tag of content.matchAll(/<(?:script|link)\b[^>]*>/gi)) {
       const localAsset = tag[0].match(/(?:src|href)=["'](\/assets\/[^"']+)["']/i)?.[1];
@@ -259,16 +323,28 @@ async function verifyArtifact(expected) {
     }
   }
 
-  const actualFiles = await publicArtifactFiles();
-  const actualNames = actualFiles.map((file) => rel(file, OUT));
-  const manifestNames = Object.keys(build.files).sort();
-  if (JSON.stringify(actualNames) !== JSON.stringify(manifestNames)) {
-    fail('deploy artifact file manifest does not exactly cover the public artifact');
+  const artifactFiles = await artifactLeafFiles();
+  const artifactNames = artifactFiles.map((file) => rel(file, OUT));
+  const artifactManifestNames = Object.keys(build.artifact_files).sort();
+  if (JSON.stringify(artifactNames) !== JSON.stringify(artifactManifestNames)) {
+    fail('deploy artifact artifact_files manifest does not exactly cover every output leaf');
   }
-  for (const file of actualFiles) {
+  for (const file of artifactFiles) {
     const name = rel(file, OUT);
     const digest = sha256(await readFile(file));
-    if (build.files[name] !== digest) fail(`deploy artifact digest mismatch: ${name}`);
+    if (build.artifact_files[name] !== digest) fail(`deploy artifact leaf digest mismatch: ${name}`);
+  }
+
+  const servedFiles = await servedArtifactFiles();
+  const servedNames = servedFiles.map((file) => rel(file, OUT));
+  const servedManifestNames = Object.keys(build.files).sort();
+  if (JSON.stringify(servedNames) !== JSON.stringify(servedManifestNames)) {
+    fail('deploy artifact files manifest does not exactly cover every served leaf');
+  }
+  for (const file of servedFiles) {
+    const name = rel(file, OUT);
+    const digest = sha256(await readFile(file));
+    if (build.files[name] !== digest) fail(`deploy artifact served digest mismatch: ${name}`);
   }
   return { build, htmlCount: files.length };
 }
@@ -276,11 +352,15 @@ async function verifyArtifact(expected) {
 async function run() {
   assertSafeOutput();
 
-  const sourceErrors = await sourceIdentityErrors();
+  const sourceErrors = [
+    ...await sourceIdentityErrors(),
+    ...await publishableSourceErrors(),
+  ];
   if (sourceErrors.length > 0) {
     for (const error of sourceErrors) console.error(`build-identity source refusal: ${error}`);
     process.exit(1);
   }
+  requireDeployControlSemantics();
   if (CHECK_SOURCE) {
     console.log('build-identity: source contains no self-referential build identity.');
     return;
@@ -295,11 +375,11 @@ async function run() {
 
   const pricing = JSON.parse(await readFile(path.join(ROOT, 'data', 'pricing.json'), 'utf8'));
   await copyStaticSource();
-  for (const file of await htmlFiles(OUT)) {
+  for (const file of await artifactHtmlFiles()) {
     await writeFile(file, artifactHtml(await readFile(file, 'utf8'), expected.expectedCommit));
   }
   const buildObject = {
-    schema_version: 1,
+    schema_version: 2,
     commit: expected.expectedCommit,
     short_commit: expected.expectedCommit.slice(0, 8),
     branch: expected.deploymentBranch,
@@ -307,7 +387,9 @@ async function run() {
     dirty: false,
     built_at: new Date().toISOString(),
     manifest_version: pricing.manifest_version,
-    files: await artifactDigests(),
+    inputs: deployControlInputDigests(),
+    artifact_files: await fileDigests(await artifactLeafFiles()),
+    files: await fileDigests(await servedArtifactFiles()),
   };
   await writeFile(path.join(OUT, 'build.json'), `${JSON.stringify(buildObject, null, 2)}\n`);
   const { htmlCount } = await verifyArtifact(expected);

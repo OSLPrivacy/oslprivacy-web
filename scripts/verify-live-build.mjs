@@ -1,6 +1,14 @@
 import { createHash } from 'node:crypto';
+import { requireExactBuildMeta } from './html-build-meta.mjs';
 
 const SHA_RE = /^[0-9a-f]{40}$/;
+const EXPECTED_INPUTS = [
+  '.assetsignore',
+  '_headers',
+  '_redirects',
+  'data/pricing.json',
+  'wrangler.jsonc',
+];
 
 function argValue(name) {
   const prefix = `${name}=`;
@@ -45,7 +53,7 @@ if (!(buildResponse.headers.get('cache-control') || '').toLowerCase().includes('
 }
 const build = await buildResponse.json();
 
-if (build.schema_version !== 1) fail('live build schema mismatch');
+if (build.schema_version !== 2) fail('live build schema mismatch');
 if (build.commit !== expectedCommit) fail(`live build SHA mismatch: expected ${expectedCommit}, got ${build.commit}`);
 if (build.short_commit !== expectedCommit.slice(0, 8)) fail('live short SHA mismatch');
 if (build.environment !== expectedEnvironment) fail(`live environment mismatch: expected ${expectedEnvironment}, got ${build.environment}`);
@@ -54,17 +62,46 @@ if (build.dirty !== false) fail('live build reports dirty source');
 if (!build.files || typeof build.files !== 'object' || Array.isArray(build.files)) {
   fail('live build has no file-digest manifest');
 }
+if (!build.artifact_files || typeof build.artifact_files !== 'object' || Array.isArray(build.artifact_files)) {
+  fail('live build has no complete artifact-leaf manifest');
+}
+if (!build.inputs || typeof build.inputs !== 'object' || Array.isArray(build.inputs)) {
+  fail('live build has no deploy-input manifest');
+}
+
+function validateManifest(manifest, label) {
+  const entries = Object.entries(manifest);
+  if (entries.length < 1) fail(`live build ${label} manifest is empty`);
+  for (const [name, digest] of entries) {
+    if (
+      typeof name !== 'string' ||
+      name.startsWith('/') ||
+      name.includes('\\') ||
+      name.split('/').some((part) => part === '' || part === '.' || part === '..') ||
+      !/^[0-9a-f]{64}$/.test(digest)
+    ) {
+      fail(`live build contains an invalid ${label} manifest entry: ${name}`);
+    }
+  }
+  return entries;
+}
+
+const artifactFiles = validateManifest(build.artifact_files, 'artifact-leaf');
+const inputEntries = validateManifest(build.inputs, 'deploy-input');
+if (JSON.stringify(inputEntries.map(([name]) => name).sort()) !== JSON.stringify(EXPECTED_INPUTS)) {
+  fail('live build deploy-input manifest has unexpected coverage');
+}
+for (const control of ['_headers', '_redirects']) {
+  if (build.artifact_files[control] !== build.inputs[control]) {
+    fail(`live build does not byte-bind ${control} as both artifact and deploy input`);
+  }
+}
+
 const files = Object.entries(build.files);
-if (files.length < 1) fail('live build file-digest manifest is empty');
+validateManifest(build.files, 'served-file');
 for (const [name, digest] of files) {
-  if (
-    typeof name !== 'string' ||
-    name.startsWith('/') ||
-    name.includes('\\') ||
-    name.split('/').some((part) => part === '' || part === '.' || part === '..') ||
-    !/^[0-9a-f]{64}$/.test(digest)
-  ) {
-    fail(`live build contains an invalid file-manifest entry: ${name}`);
+  if (build.artifact_files[name] !== digest) {
+    fail(`live served file is not identically bound in the complete artifact manifest: ${name}`);
   }
   const fileUrl = new URL(`/${name.split('/').map(encodeURIComponent).join('/')}`, baseUrl);
   fileUrl.searchParams.set('verify', expectedCommit);
@@ -80,7 +117,6 @@ rootUrl.searchParams.set('verify', expectedCommit);
 const rootResponse = await fetchBound(rootUrl, '/');
 if (!rootResponse.ok) fail(`/ returned HTTP ${rootResponse.status}`);
 const rootHtml = await rootResponse.text();
-const meta = rootHtml.match(/<meta\b(?=[^>]*\bname=["']osl-build["'])[^>]*\bcontent=["']([^"']+)["'][^>]*>/i);
-if (!meta || meta[1] !== expectedCommit) fail('live root HTML is not bound to the expected full SHA');
+requireExactBuildMeta(rootHtml, expectedCommit, 'live root HTML');
 
-console.log(`verify-live-build: ${baseUrl} serves ${expectedCommit} (${expectedEnvironment}); ${files.length} files match.`);
+console.log(`verify-live-build: ${baseUrl} serves ${expectedCommit} (${expectedEnvironment}); ${files.length} served files and ${artifactFiles.length} artifact leaves are bound.`);

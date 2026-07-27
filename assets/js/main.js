@@ -496,7 +496,9 @@
 
   const subscribeButtons = [...document.querySelectorAll('.cta-subscribe')];
   const checkoutStatus = document.getElementById('checkout-status');
-  if (subscribeButtons.length > 0) {
+  const PRO_PURCHASE_CHECKOUT_ENABLED = false;
+  subscribeButtons.forEach((button) => { button.disabled = true; });
+  if (PRO_PURCHASE_CHECKOUT_ENABLED && subscribeButtons.length > 0) {
     subscribeButtons.forEach((subscribeButton) => subscribeButton.addEventListener('click', async () => {
       const labels = subscribeButtons.map((button) => button.textContent);
       subscribeButtons.forEach((button) => { button.disabled = true; });
@@ -849,7 +851,7 @@
 
   function setCryptoButtonsDisabled(disabled) {
     cryptoButtons.forEach((button) => {
-      button.disabled = disabled;
+      button.disabled = !PRO_PURCHASE_CHECKOUT_ENABLED || disabled;
       button.setAttribute('aria-busy', disabled && cryptoQuoteBusy ? 'true' : 'false');
     });
   }
@@ -1298,8 +1300,9 @@
   });
 
   updateCryptoRecoveryControls();
+  setCryptoButtonsDisabled(true);
 
-  cryptoButtons.forEach((button) => {
+  if (PRO_PURCHASE_CHECKOUT_ENABLED) cryptoButtons.forEach((button) => {
     button.addEventListener('click', async () => {
       const existing = readCryptoCheckout();
       if (existing?.invoice?.invoice_id && existing?.delivery?.privateJwk) {

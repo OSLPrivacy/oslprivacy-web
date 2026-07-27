@@ -15,9 +15,11 @@ const index = Buffer.from([
   '</head><body>fixture</body></html>',
 ].join(''));
 const asset = Buffer.from('void 0;\n');
+const headers = Buffer.from('/*\n  X-Content-Type-Options: nosniff\n');
+const redirects = Buffer.from('/old / 301\n');
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const baseBuild = {
-  schema_version: 1,
+  schema_version: 2,
   commit,
   short_commit: shortCommit,
   branch,
@@ -25,6 +27,19 @@ const baseBuild = {
   dirty: false,
   built_at: '2026-07-27T00:00:00.000Z',
   manifest_version: 5,
+  inputs: {
+    '.assetsignore': digest(Buffer.from('scripts/\n')),
+    '_headers': digest(headers),
+    '_redirects': digest(redirects),
+    'data/pricing.json': digest(Buffer.from('{"manifest_version":5}\n')),
+    'wrangler.jsonc': digest(Buffer.from('{}\n')),
+  },
+  artifact_files: {
+    '_headers': digest(headers),
+    '_redirects': digest(redirects),
+    'assets/main.js': digest(asset),
+    'index.html': digest(index),
+  },
   files: {
     'assets/main.js': digest(asset),
     'index.html': digest(index),
@@ -33,6 +48,7 @@ const baseBuild = {
 
 let mode = 'positive';
 let port;
+let passed = 0;
 const server = createServer((request, response) => {
   const url = new URL(request.url, `http://127.0.0.1:${port}`);
   if (url.pathname === '/build.json') {
@@ -55,16 +71,41 @@ const server = createServer((request, response) => {
     if (mode === 'wrong-sha') build.commit = 'b'.repeat(40);
     if (mode === 'wrong-environment') build.environment = 'preview';
     if (mode === 'wrong-branch') build.branch = 'preview-branch';
-    if (mode === 'wrong-schema') build.schema_version = 2;
+    if (mode === 'wrong-schema') build.schema_version = 3;
     response.end(JSON.stringify(build));
     return;
   }
   if (url.pathname === '/' || url.pathname === '/index.html') {
-    if (mode === 'wrong-root-meta' && url.pathname === '/') {
-      response.end(index.toString().replace(commit, 'b'.repeat(40)));
-    } else {
-      response.end(index);
+    let html = index.toString();
+    if (mode === 'wrong-root-meta' && url.pathname === '/') html = html.replace(commit, 'b'.repeat(40));
+    if (mode === 'commented-root-meta' && url.pathname === '/') {
+      html = html.replace(
+        `<meta name="osl-build" content="${commit}">`,
+        `<!-- <meta name="osl-build" content="${commit}"> -->`,
+      );
     }
+    if (mode === 'data-name-root-meta' && url.pathname === '/') {
+      html = html.replace('name="osl-build"', 'data-name="osl-build"');
+    }
+    if (mode === 'duplicate-root-meta' && url.pathname === '/') {
+      html = html.replace(
+        '</head>',
+        `<meta name="osl-build" content="${commit}"></head>`,
+      );
+    }
+    if (mode === 'encoded-duplicate-root-meta' && url.pathname === '/') {
+      html = html.replace(
+        '</head>',
+        `<meta name="osl&#45;build" content="${commit}"></head>`,
+      );
+    }
+    if (mode === 'fake-head-root-meta' && url.pathname === '/') {
+      html = html.replace(
+        `<head><meta name="osl-build" content="${commit}"></head><body>`,
+        `<head></head><body><head><meta name="osl-build" content="${commit}"></head>`,
+      );
+    }
+    response.end(html);
     return;
   }
   if (url.pathname === '/assets/main.js') {
@@ -98,6 +139,7 @@ async function check(name, selectedMode, expectedCode, phrase) {
   if (result.code !== expectedCode || (phrase && !result.output.includes(phrase))) {
     throw new Error(`${name} failed\nexit=${result.code}\n${result.output}`);
   }
+  passed += 1;
   console.log(`  passed ${name}`);
 }
 
@@ -110,7 +152,7 @@ try {
     });
   });
 
-  await check('exact live artifact', 'positive', 0, '2 files match');
+  await check('exact live artifact', 'positive', 0, '2 served files and 4 artifact leaves are bound');
   await check('missing build.json refusal', 'build-404', 1, 'HTTP 404');
   await check('invalid build.json refusal', 'invalid-json', 1, 'SyntaxError');
   await check('cacheable build.json refusal', 'cacheable', 1, 'Cache-Control: no-store');
@@ -119,10 +161,15 @@ try {
   await check('live environment mismatch refusal', 'wrong-environment', 1, 'live environment mismatch');
   await check('live branch mismatch refusal', 'wrong-branch', 1, 'live branch mismatch');
   await check('live schema mismatch refusal', 'wrong-schema', 1, 'live build schema mismatch');
-  await check('root meta mismatch refusal', 'wrong-root-meta', 1, 'root HTML is not bound');
+  await check('root meta mismatch refusal', 'wrong-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
+  await check('commented root meta refusal', 'commented-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
+  await check('data-name root meta refusal', 'data-name-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
+  await check('duplicate root meta refusal', 'duplicate-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
+  await check('character-reference duplicate root meta refusal', 'encoded-duplicate-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
+  await check('fake post-body head root meta refusal', 'fake-head-root-meta', 1, 'canonical html/head/body document');
   await check('changed artifact refusal', 'changed-artifact', 1, 'digest mismatch');
   await check('cross-origin redirect refusal', 'cross-origin', 1, 'redirected outside');
-  console.log('test-live-build: 12 cases, 0 failed.');
+  console.log(`test-live-build: ${passed} cases, 0 failed.`);
 } finally {
   await new Promise((resolve) => server.close(resolve));
 }

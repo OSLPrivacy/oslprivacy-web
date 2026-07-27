@@ -1,17 +1,18 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "manifest_version": 5,
+  "manifest_version": 6,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
   "currency": "USD",
   "authority": "docs/design/osl-master-decision-2026-07-26.md sections 7.1, 7.6, 7.10, 7.14 and 8 (revision OSL-MASTER-2026-07-26-r12), plus docs/decisions/pro-prepaid-monthly-codes-2026-07-26.md, both in the discord-privacy-client repository.",
   "model": {
     "name": "Prepaid activation codes",
-    "summary": "$5 buys a code that unlocks Pro for one month. It is not a subscription: nothing auto-renews, no payment details are stored, and no account is required. To keep Pro, buy another code.",
+    "summary": "$5 is the intended price for one month of Pro. Checkout is paused until one-month redemption and expiry are implemented. It is not a subscription: nothing auto-renews, no payment details are stored, and no account is required.",
     "no_stored_payment_data": true,
     "no_auto_renewal": true,
     "no_account_required": true,
-    "period_starts_on_redemption": true,
+    "period_starts_on_redemption": false,
+    "intended_period_starts_on_redemption": true,
     "$redemption_note": "Owner decision 2026-07-26: the month does NOT start at purchase. It starts when the code is entered into the OSL client, so a code bought and left unused for months still delivers a full 30 days. Two separate clocks: shelf life (how long an unredeemed code may still be entered) and entitlement period (the 30 days of Pro). This is product truth, but see publication.not_publishable below -- the client does not implement it yet, so the WEBSITE must not claim it.",
     "$why_this_matters": "Owner decision 2026-07-26: payment information is NEVER saved, including for repeat purchases. The website may state the $5-per-month rate, but must never imply a stored card, a recurring mandate, or a cancellation obligation."
   },
@@ -21,9 +22,9 @@
       "$5 is the price of one month of Pro.",
       "Nothing renews automatically and there is nothing to cancel.",
       "OSL never stores payment details, including for repeat purchases.",
-      "No OSL account is required; Pro is unlocked by pasting an activation code.",
+      "No OSL account is required; the intended flow unlocks Pro by pasting an activation code.",
       "Card, Bitcoin and Monero all work the same way: one payment, one month.",
-      "When Pro ends the app returns to Free and the encryption path keeps working."
+      "Checkout is paused until redemption records and automatic one-month expiry are implemented."
     ],
     "not_publishable": [
       {
@@ -120,15 +121,15 @@
   "payment_methods": {
     "card": {
       "provider": "Stripe",
-      "status": "Available",
+      "status": "Paused",
       "stores_payment_method": false,
       "note": "Stripe sees the card; OSL does not receive card numbers and keeps no customer profile, because every purchase is a separate one-off charge."
     },
     "crypto": {
       "provider": "self-hosted invoice (Bitcoin, Monero)",
-      "status": "Available",
+      "status": "Paused",
       "stores_payment_method": false,
-      "note": "Works exactly like card: one invoice buys one month. Nothing to cancel, nothing stored. Live since commits 7e31408 (Bitcoin) and 6081eb1 (Monero)."
+      "note": "Invoice creation works, but purchase checkout is paused with card checkout until one-month redemption and expiry are implemented."
     }
   },
   "ledger_privacy": {
@@ -139,7 +140,7 @@
       "carrier text",
       "recipient identity"
     ],
-    "redemption_record": "licence hash and timestamp only -- no account, email, device fingerprint, IP, install ID or joined payment identifier.",
+    "redemption_record": "No redemption record exists yet. Issued licence rows contain a licence hash and status, with no account, email, device fingerprint, install ID or joined payment identifier.",
     "plain_sentence": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity."
   },
   "open_source": {
@@ -534,6 +535,18 @@
     {
       "phrase": "cryptographic erasure",
       "reason": "Burn is state deletion, not cryptographic erasure. The per-message wrapped-key model that would earn the word is deliberately not built."
+    },
+    {
+      "phrase": "Bitcoin and Monero checkout is live",
+      "reason": "Invoice plumbing exists, but purchase checkout must remain paused until one-month redemption and automatic expiry are implemented."
+    },
+    {
+      "phrase": "A redemption record is a licence hash and a timestamp",
+      "reason": "No redemption endpoint or timestamp exists in the committed keyserver."
+    },
+    {
+      "phrase": "When Pro ends, OSL returns to Free",
+      "reason": "Automatic paid-code expiry is Planned and not implemented."
     }
   ],
   "$forbidden_phrases_note": "Exact case-insensitive substrings that must not appear in any crawled HTML. Unlike forbidden_claims these are not billing words but capability claims that source evidence proved false on 2026-07-26. Each records the defect it guards so a future editor cannot reintroduce it by accident.",
@@ -541,7 +554,12 @@
     {
       "file": "index.html",
       "phrase": "Nothing renews, and OSL never stores your payment details",
-      "reason": "Allowlist A6 rule 3 and master 7.14. index.html carries two Get Pro checkout buttons showing the monthly rate; the no-renewal, no-stored-card limitation must appear on the same page at comparable prominence, not only in the FAQ."
+      "reason": "Allowlist A6 rule 3 and master 7.14. index.html shows the intended monthly rate beside paused checkout controls; the no-renewal, no-stored-card limitation must remain equally prominent."
+    },
+    {
+      "file": "index.html",
+      "phrase": "Checkout stays paused until one-month redemption and expiry work as described.",
+      "reason": "The homepage must not expose an enabled purchase while the committed keyserver still issues non-expiring paid licences."
     },
     {
       "file": "docs/how-it-works.html",
@@ -582,6 +600,11 @@
       "file": "download.html",
       "phrase": "Pro is an early-access purchase",
       "reason": "Owner decision 2026-07-26. The point of sale must be unambiguous that this is early access, naming what works today versus what arrives at v1. This is a consumer-protection line and is the one place where softening is not allowed."
+    },
+    {
+      "file": "download.html",
+      "phrase": "Checkout is paused until one-month redemption and expiry are implemented.",
+      "reason": "The purchase surface must fail closed until the intended entitlement boundary exists."
     },
     {
       "file": "docs/status.html",
@@ -641,12 +664,12 @@
   ],
   "$forbidden_note": "Two families. (1) Billing wording that is now wrong in BOTH directions: the old permanent one-time framing ('$5 once', 'No renewal', 'one-time $5 purchase') AND any subscription framing ('Renews monthly', 'subscription', 'cancel any time') -- because a prepaid code neither renews nor is cancellable. Plus the 'unlimited messages' positioning Zhao replaced with Scrub. (2) Security/marketing claims master 7.11, 8.2 and 8.4 forbid until the audited live path earns them. The crawler fails on any hit outside data/ and scripts/.",
   "required_disclosures": {
-    "pro_billing": "$5 unlocks Pro for one month. It is not a subscription — nothing renews automatically, and OSL never stores your payment details. When the month ends, buy another code to continue.",
-    "no_account": "No OSL account is needed. You paste an activation code into the app.",
+    "pro_billing": "$5 is the intended price for one month of Pro. Checkout is paused until one-month redemption and expiry are implemented. It is not a subscription — nothing renews automatically, and OSL never stores your payment details.",
+    "no_account": "No OSL account is intended to be needed. The activation-code flow is not ready for purchase.",
     "credits": "Processing credits are bought separately for optional cloud AI features. They never renew, and encryption keeps working without them.",
-    "crypto": "Bitcoin and Monero work the same way as card: one payment, one month, nothing stored.",
+    "crypto": "Bitcoin and Monero checkout is paused with card checkout until one-month redemption and expiry are implemented.",
     "free_forever": "Free stays free. Paying is never required for the basic encryption path to keep working.",
-    "expiry_behaviour": "When Pro ends, OSL returns to Free. Your keys and protected messages are unaffected.",
+    "expiry_behaviour": "Automatic Pro expiry is not implemented. Checkout remains paused.",
     "ledger_privacy": "The payment and credit records contain no message text, no conversation names, no carrier text and no recipient identity.",
     "open_source": "OSL is fully open source. The only exception is the optional AutoScrub module, which is not installed by default."
   },

@@ -4,8 +4,9 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const root = new URL('../', import.meta.url);
-const [html, donationHtml, script] = await Promise.all([
+const [html, homeHtml, donationHtml, script] = await Promise.all([
   readFile(new URL('download.html', root), 'utf8'),
+  readFile(new URL('index.html', root), 'utf8'),
   readFile(new URL('donate.html', root), 'utf8'),
   readFile(new URL('assets/js/main.js', root), 'utf8'),
 ]);
@@ -44,15 +45,19 @@ function validQuote(asset = 'btc') {
   };
 }
 
-test('Bitcoin and Monero checkout methods are live', () => {
+test('Bitcoin and Monero purchase methods are listed but fail closed while redemption is blocked', () => {
   const paymentBlock = html.match(/<div class="coming-payment-options"[\s\S]*?<\/div>/)?.[0] ?? '';
-  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*Pay once/);
-  assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*Pay once/);
-  assert.equal((paymentBlock.match(/\bdisabled\b/g) ?? []).length, 0);
+  assert.match(html, /class="button button-primary cta-subscribe" type="button" disabled>Pro checkout paused/);
+  assert.equal((homeHtml.match(/class="button button-primary cta-subscribe" type="button" disabled/g) ?? []).length, 2);
+  assert.match(paymentBlock, /data-crypto-method="btc"[\s\S]*Bitcoin[\s\S]*One month/);
+  assert.match(paymentBlock, /data-crypto-method="xmr"[\s\S]*Monero[\s\S]*One month/);
+  assert.match(paymentBlock, /aria-disabled="true" inert/);
   assert.equal((paymentBlock.match(/data-crypto-method="btc"/g) ?? []).length, 1);
   assert.equal((paymentBlock.match(/data-crypto-method="xmr"/g) ?? []).length, 1);
   assert.equal((paymentBlock.match(/class="bitcoin-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
   assert.equal((paymentBlock.match(/class="monero-mark" viewBox="0 0 24 24"/g) ?? []).length, 1);
+  assert.match(script, /const PRO_PURCHASE_CHECKOUT_ENABLED = false/);
+  assert.match(script, /if \(PRO_PURCHASE_CHECKOUT_ENABLED\) cryptoButtons\.forEach/);
 });
 
 test('Bitcoin and Monero donation methods appear exactly once', () => {

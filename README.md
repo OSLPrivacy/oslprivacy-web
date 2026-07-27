@@ -13,8 +13,9 @@ contain `build.json` or a claimed build SHA: a commit cannot contain its own
 final SHA.
 
 The deployment build must receive the exact checkout identity from the deploy
-environment and materialize `dist/build.json`, a SHA-256 manifest of every
-other public artifact, and the matching full-SHA `osl-build` HTML metadata.
+environment and materialize `dist/build.json`, SHA-256 manifests for every
+output leaf and every fetchable served file, the exact deploy-control inputs,
+and matching full-SHA `osl-build` HTML metadata.
 Configure Cloudflare Pages with build command `node scripts/build-identity.mjs`,
 output directory `dist`, and
 `OSL_DEPLOY_ENVIRONMENT=production` for Production /
@@ -29,8 +30,11 @@ The build accepts the SHA and branch only from Cloudflare Pages' injected
 `CF_PAGES_COMMIT_SHA` and `CF_PAGES_BRANCH`. It refuses a missing or non-full
 SHA, a dirty checkout, a SHA that differs from `git rev-parse HEAD`, an absent
 environment/branch, a production branch other than `main`, or `main` labelled
-as a preview. The checked-in Pages configuration fixes the output directory at
-`dist`. A direct upload of an old `dist` is not an accepted promotion path.
+as a preview. It also refuses ignored or untracked bytes anywhere under a
+publishable source root instead of silently omitting them. The checked-in Pages
+configuration fixes the output directory at `dist`; any other output path is
+refused before deletion. A direct upload of an old `dist` is not an accepted
+promotion path.
 
 Before promotion, verify the exact deployment rather than merely checking that
 the site responds:
@@ -43,15 +47,28 @@ node scripts/verify-live-build.mjs \
   --environment=production
 ```
 
-The builder reads deployable bytes from the named commit's Git objects, so
-ignored or untracked filesystem bytes cannot enter `dist`. The digest manifest
-covers every served file except `build.json` itself; `_headers` and `_redirects`
-are Cloudflare control inputs rather than served files, and dotfiles are not
-copied. The live verifier checks the full SHA in both `/build.json` and the root
-HTML, then downloads and hashes every served artifact named by the manifest.
+The builder reads deployable bytes from the named commit's Git objects. Nested
+HTML is discovered and stamped recursively. Every HTML document must contain
+exactly one semantic `<meta name="osl-build" content="<full SHA>">` inside its
+`head`; comments, `data-name`, duplicate tags, body tags, and raw-text lookalikes
+do not count. `artifact_files` covers every output leaf except `build.json`,
+including tracked dotfiles and the Pages control files. `files` separately
+covers every fetchable served file. `inputs` byte-binds `_headers`,
+`_redirects`, `.assetsignore`, `wrangler.jsonc`, and the pricing manifest to
+their committed bytes. Local verification refuses an extra output entry or any
+digest/control mismatch.
+
+The live verifier checks the full SHA in `/build.json` and the root HTML,
+validates the complete artifact/input manifests, then downloads and hashes
+every fetchable served artifact named by `files`.
 Rollback means rebuilding and publishing a named previous clean commit under
 the same contract, then running the live verifier against that previous full
 SHA. Do not copy an old `dist` directory or infer a rollback from page content.
+
+Pro purchase controls intentionally remain disabled until the keyserver has an
+explicit redemption record and enforces the advertised one-month expiry. The
+invoice and delivery plumbing existing in source is not sufficient authority to
+accept payment for that entitlement.
 
 ## Develop locally
 
