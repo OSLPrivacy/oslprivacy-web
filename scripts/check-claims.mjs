@@ -2946,6 +2946,50 @@ function atRestOverclaimErrors(fileRel, content) {
   return errors;
 }
 
+function scrubOverclaimErrors(fileRel, content) {
+  const rendered = publicClaimTextWithSourceMap(content);
+  const errors = [];
+  const scrubContext = /\b(?:auto\s*scrub|scrub)\b/i;
+  const attachedLimitation =
+    /\b(?:planned|coming\s+soon|arriving|unavailable|not\s+(?:available|implemented|wired|supported|proved|proven|qualified)|not\s+yet\s+(?:available|implemented|wired|supported|proved|proven|qualified)|implemented[-\s]+unwired|test[-\s]+proven(?:[-\s]+only)?|unwired|unproved|unproven|unknown|view[-\s]+only|manual(?:ly|\s+only)?|requires?\s+(?:your\s+)?(?:review|confirmation)|does\s+not|cannot|never|may\s+(?:omit|exclude|miss)|can\s+be\s+incomplete|future|intended|design)\b/i;
+  const completeHistory =
+    /(?:\b(?:complete|full|entire|whole|all)\b.{0,45}\b(?:history|content|messages?|posts?|records?|account\s+data|exports?)\b|\b(?:history|content|messages?|posts?|records?|account\s+data|exports?)\b.{0,45}\b(?:complete|full|entire|whole|all)\b)/i;
+  const awayOperation =
+    /(?:\b(?:works?|runs?|scans?|cleans?|deletes?|removes?)\b.{0,55}\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b|\b(?:while\s+you.{0,8}\baway|while\s+the\s+user\s+is\s+away|while\s+away|unattended|in\s+the\s+background|without\s+(?:you|the\s+user))\b.{0,55}\b(?:works?|runs?|scans?|cleans?|deletes?|removes?)\b)/i;
+  const automaticDeletion =
+    /(?:\b(?:automatically|autonomously|on\s+its\s+own|without\s+(?:your\s+)?(?:review|confirmation|approval))\b.{0,45}\b(?:deletes?|removes?|cleans?|erases?)\b|\b(?:deletes?|removes?|cleans?|erases?)\b.{0,45}\b(?:automatically|autonomously|on\s+its\s+own|without\s+(?:your\s+)?(?:review|confirmation|approval))\b)/i;
+  const providerSupport =
+    /\b(?:supports?|works?\s+with|handles?|imports?\s+from|covers?|available\s+(?:for|across|on)|compatible\s+with)\b/i;
+  const fiveProviderWording =
+    /\b(?:five|5)[-\s]+(?:providers?|services?|platforms?|apps?|connectors?)\b/i;
+  const providerPatterns = [
+    /\bdiscord\b/i,
+    /\b(?:meta|facebook|instagram)\b/i,
+    /\bwhats\s*app\b/i,
+    /\b(?:google|gmail)\b/i,
+    /\b(?:twitter|x\/twitter|x)\b/i,
+  ];
+
+  for (const sentence of rendered.text.matchAll(/[^.!?;\n]+[.!?;]?/g)) {
+    const text = shortText(sentence[0]);
+    if (!text || !scrubContext.test(text) || attachedLimitation.test(text)) continue;
+    const providerCount = providerPatterns.filter((pattern) => pattern.test(text)).length;
+    if (!completeHistory.test(text)
+        && !awayOperation.test(text)
+        && !automaticDeletion.test(text)
+        && !fiveProviderWording.test(text)
+        && !(providerSupport.test(text) && providerCount >= 5)) continue;
+    const sourceIndex = rendered.sourceIndexes[sentence.index ?? 0] ?? 0;
+    errors.push({
+      kind: 'Scrub capability overclaim',
+      file: fileRel,
+      line: lineNumber(content, sourceIndex),
+      text,
+    });
+  }
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -2991,6 +3035,7 @@ function analyseFile(fileRel, content, config) {
     );
   }
   errors.push(...atRestOverclaimErrors(fileRel, unboundAtRestContent));
+  errors.push(...scrubOverclaimErrors(fileRel, content));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -4706,11 +4751,101 @@ const SELF_TEST_CASES = [
     html: '<table><tr><td><span data-osl-feature="burn">burn</span></td></tr></table>',
     expect: 'capability badge',
   },
+  {
+    name: 'complete Scrub history claim',
+    file: 'features.html',
+    html: '<p>Scrub imports your complete account history.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'reversed full-history Scrub claim',
+    file: 'features.html',
+    html: '<p>Your full history is covered by Scrub.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'all-content inline markup and entity claim',
+    file: 'features.html',
+    html: '<p>Scrub scans <strong>all&nbsp;content</strong> in the export.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'unattended Scrub public comment',
+    file: 'features.html',
+    html: '<!-- Scrub runs unattended. -->',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'works-while-away Scrub claim',
+    file: 'features.html',
+    html: '<p>Scrub works while you&apos;re away.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'automatic deletion public data attribute',
+    file: 'features.html',
+    html: '<button data-public-claim="AutoScrub automatically deletes old posts.">Run</button>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'generic five-provider Scrub claim',
+    file: 'features.html',
+    html: '<p>Scrub works with five providers.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'enumerated five-provider Scrub claim',
+    file: 'features.html',
+    html: '<p>Scrub supports Discord, Meta, WhatsApp, Google, and X.</p>',
+    expect: 'Scrub capability overclaim',
+  },
+  {
+    name: 'unrelated planned sentence cannot launder completeness',
+    file: 'features.html',
+    html: '<p>AutoScrub is Planned. Scrub imports your complete history.</p>',
+    expect: 'Scrub capability overclaim',
+  },
 ];
 
 // Copy that must NOT be flagged. A gate that fires on honest writing gets
 // switched off, so these matter as much as the known-bad cases.
 const NEGATION_CASES = [
+  {
+    name: 'honest incomplete provider-export limitation',
+    file: 'features.html',
+    html: '<p>A Scrub provider export may omit remote-only messages and can be incomplete.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest Free Scrub view-only limitation',
+    file: 'features.html',
+    html: '<p>Free Scrub is view-only and never works while you are away.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest planned automatic deletion',
+    file: 'features.html',
+    html: '<p>AutoScrub automatic deletion is Planned and unavailable in this build.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest implemented-unwired provider parsing',
+    file: 'features.html',
+    html: '<p>Scrub provider-export parsing is implemented-unwired and test-proven-only.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest planned five-provider targets',
+    file: 'features.html',
+    html: '<p>Discord, Meta, WhatsApp, Google, and X are Planned targets for Scrub.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest unknown provider-support statement',
+    file: 'features.html',
+    html: '<p>Whether Scrub supports five providers is unknown.</p>',
+    kinds: ['Scrub capability overclaim'],
+  },
   {
     name: 'honest no-subscription sentence',
     file: 'docs/terms.html',
@@ -6886,6 +7021,24 @@ if (SELF_TEST) {
   if (!limitationMutationCaught) failures += 1;
   console.log(`  ${limitationMutationCaught ? 'caught ' : 'MISSED '} exact removal of "${requiredLimitation}"`);
 
+  console.log('\ncheck-claims self-test (production Scrub baseline and exact mutation):');
+  const scrubMarker = '<p class="eyebrow">Scrub</p>';
+  const scrubMarkerOccurrences = h4Content.split(scrubMarker).length - 1;
+  const scrubBaselineErrors = analyseFile('features.html', h4Content, config)
+    .filter((error) => error.kind === 'Scrub capability overclaim');
+  const scrubBaselineClean = scrubBaselineErrors.length === 0;
+  const mutatedScrubPage = h4Content.replace(
+    scrubMarker,
+    `${scrubMarker}<p>Scrub imports your complete account history.</p>`,
+  );
+  const scrubMutationCaught = scrubMarkerOccurrences === 1
+    && mutatedScrubPage !== h4Content
+    && analyseFile('features.html', mutatedScrubPage, config)
+      .some((error) => error.kind === 'Scrub capability overclaim');
+  if (!scrubBaselineClean || !scrubMutationCaught) failures += 1;
+  console.log(`  ${scrubBaselineClean ? 'passed ' : 'FAILED '} production Scrub baseline`);
+  console.log(`  ${scrubMutationCaught ? 'caught ' : 'MISSED '} exact production Scrub completeness mutation`);
+
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
     {
@@ -7159,6 +7312,7 @@ if (SELF_TEST) {
     + 1
     + SELF_TEST_CASES.length
     + NEGATION_CASES.length
+    + 2
     + 2
     + (productionAtRestCases.length * 2)
     + 1
