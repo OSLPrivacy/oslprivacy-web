@@ -92,7 +92,7 @@
         <p>No. OSL recipients need OSL installed to decrypt. Anyone without OSL, including the connected service or someone reading its stored message data, sees ciphertext only.</p>
 
         <h3>Can I encrypt voice/video calls?</h3>
-        <p>No. OSL protects supported text and images. Voice and video calls still use the connected service's normal infrastructure and security.</p>
+        <p>No. OSL protects supported text today. Encrypted image sending is <span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span> and is not in the shipping app yet. Voice and video calls still use the connected service's normal infrastructure and security.</p>
 
         <h3>What if I forget my password?</h3>
         <p data-osl-at-rest-claim="faq-password-recovery-boundary" data-osl-at-rest-backends="identity-private-key-file peer-map-json membership-json conditional-json-family renderer-local-storage hub-plaintext-config-family active-identity-marker provider-profile-storage startup-trace-log">OSL displays separate recovery phrases for your identity and the main-password gate. Save both during setup. Source inspection shows the main-password recovery phrase can authorize setting a new main password, but it does not prove that every local record is password-protected. Peer, membership, and other conditional JSON can be plaintext without the file-storage key; Hub configuration, renderer localStorage, provider-managed profiles, the active-slot marker, and a fixed-label startup trace can also be plaintext; and removing the storage key restores plaintext writes. OSL cannot recover either phrase from its servers.</p>
