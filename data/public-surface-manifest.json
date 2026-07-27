@@ -1,0 +1,69 @@
+{
+  "$schema": "https://oslprivacy.com/schemas/public-surface-manifest-v1.json",
+  "schema_version": 1,
+  "manifest_id": "osl-public-surface",
+  "html": [
+    "audit.html",
+    "cancel.html",
+    "docs/faq.html",
+    "docs/getting-started.html",
+    "docs/how-it-works.html",
+    "docs/index.html",
+    "docs/privacy.html",
+    "docs/status.html",
+    "docs/terms.html",
+    "docs/threat-model.html",
+    "donate.html",
+    "download.html",
+    "features.html",
+    "index.html",
+    "pricing.html",
+    "success.html"
+  ],
+  "assets": [
+    "assets/css/audit.css",
+    "assets/css/donate.css",
+    "assets/css/style.css",
+    "assets/fonts/INTER-LICENSE.txt",
+    "assets/fonts/InterVariable.woff2",
+    "assets/img/.gitkeep",
+    "assets/img/apple-touch-icon.png",
+    "assets/img/favicon-16.png",
+    "assets/img/favicon-32.png",
+    "assets/img/favicon.svg",
+    "assets/img/logo-mark.svg",
+    "assets/img/logo.svg",
+    "assets/img/osl-app-icon-v2.png",
+    "assets/img/osl-app-icon.png",
+    "assets/js/crypto-donation.js",
+    "assets/js/main.js"
+  ],
+  "controls": [
+    "_headers",
+    "_redirects",
+    "robots.txt"
+  ],
+  "generated": [
+    "build.json"
+  ],
+  "claim_channels": [
+    "rendered-text",
+    "document-title",
+    "metadata-content",
+    "accessible-name",
+    "alt-title-placeholder-value",
+    "public-data-attribute",
+    "json-ld",
+    "inline-script-copy",
+    "textual-asset"
+  ],
+  "textual_asset_extensions": [
+    ".css",
+    ".js",
+    ".json",
+    ".svg",
+    ".txt",
+    ".webmanifest",
+    ".xml"
+  ]
+}

@@ -22,6 +22,7 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const PRICING_PATH = path.join(ROOT, 'data', 'pricing.json');
 const AT_REST_CENSUS_PATH = path.join(ROOT, 'data', 'at-rest-census.json');
+const PUBLIC_SURFACE_MANIFEST_PATH = path.join(ROOT, 'data', 'public-surface-manifest.json');
 const SELF_TEST = process.argv.includes('--self-test');
 const AS_OF = parseAsOf(process.argv);
 const PRICE_RE = /\$\s?\d+(\.\d{2})?/g;
@@ -29,6 +30,30 @@ const MARKER_RE = /<!--\s*osl:[A-Za-z0-9_$.-]+\s*-->[\s\S]*?<!--\s*\/osl\s*-->/g
 const PROVEN = new Set(['Available', 'Beta']);
 // Floor proves the crawler glob found the expected site surface.
 const MIN_CLAIM_HTML_FILES = 12;
+const MIN_PUBLIC_HTML_FILES = 16;
+const MIN_PUBLIC_ASSET_FILES = 16;
+const REQUIRED_PUBLIC_CONTROLS = ['_headers', '_redirects', 'robots.txt'];
+const REQUIRED_GENERATED_SURFACES = ['build.json'];
+const REQUIRED_PUBLIC_CLAIM_CHANNELS = [
+  'rendered-text',
+  'document-title',
+  'metadata-content',
+  'accessible-name',
+  'alt-title-placeholder-value',
+  'public-data-attribute',
+  'json-ld',
+  'inline-script-copy',
+  'textual-asset',
+];
+const REQUIRED_TEXTUAL_ASSET_EXTENSIONS = [
+  '.css',
+  '.js',
+  '.json',
+  '.svg',
+  '.txt',
+  '.webmanifest',
+  '.xml',
+];
 // Floor prevents an empty registry from making badge checks vacuous.
 const MIN_CAPABILITY_REGISTRY_ENTRIES = 1;
 // Floor prevents required sentence checks from disappearing silently.
@@ -450,29 +475,84 @@ function semanticGrantDurationErrors(fileRel, content, intendedGrantDays) {
   return errors;
 }
 
-async function htmlFiles() {
-  const rootEntries = await readdir(ROOT, { withFileTypes: true });
-  const files = rootEntries
-    .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
-    .map((entry) => path.join(ROOT, entry.name));
+function rel(file) {
+  return path.relative(ROOT, file).replaceAll(path.sep, '/');
+}
 
-  const docsDir = path.join(ROOT, 'docs');
+async function walkedFiles(directory) {
+  const files = [];
+  let entries;
   try {
-    const docsEntries = await readdir(docsDir, { withFileTypes: true });
-    for (const entry of docsEntries) {
-      if (entry.isFile() && entry.name.endsWith('.html')) {
-        files.push(path.join(docsDir, entry.name));
-      }
-    }
+    entries = await readdir(directory, { withFileTypes: true });
   } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
+    if (error.code === 'ENOENT') return files;
+    throw error;
   }
-
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await walkedFiles(full));
+    else if (entry.isFile()) files.push(full);
+  }
   return files.sort();
 }
 
-function rel(file) {
-  return path.relative(ROOT, file).replaceAll(path.sep, '/');
+async function discoverPublicSurface() {
+  const rootEntries = await readdir(ROOT, { withFileTypes: true });
+  const html = rootEntries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
+    .map((entry) => entry.name);
+  html.push(...(await walkedFiles(path.join(ROOT, 'docs')))
+    .filter((file) => file.toLowerCase().endsWith('.html'))
+    .map((file) => rel(file)));
+  const assets = (await walkedFiles(path.join(ROOT, 'assets'))).map((file) => rel(file));
+  const rootFiles = new Set(rootEntries.filter((entry) => entry.isFile()).map((entry) => entry.name));
+  const controls = REQUIRED_PUBLIC_CONTROLS.filter((name) => rootFiles.has(name));
+  const generatedSourceFiles = REQUIRED_GENERATED_SURFACES.filter((name) => rootFiles.has(name));
+  return {
+    html: html.sort(),
+    assets: assets.sort(),
+    controls: controls.sort(),
+    generated: [...REQUIRED_GENERATED_SURFACES],
+    generatedSourceFiles,
+  };
+}
+
+function validatePublicSurfaceManifest(manifest, discovered) {
+  const errors = [];
+  const add = (code, text) => errors.push(`PUBLIC_SURFACE_${code}: ${text}`);
+  if (manifest?.schema_version !== 1 || manifest?.manifest_id !== 'osl-public-surface') {
+    add('SCHEMA', 'schema_version 1 and manifest_id osl-public-surface are required');
+  }
+  const exactList = (field, actual, minimum) => {
+    const declared = manifest?.[field];
+    if (!Array.isArray(declared)
+        || declared.length < minimum
+        || new Set(declared).size !== declared.length
+        || JSON.stringify([...declared].sort()) !== JSON.stringify(actual)) {
+      add('CENSUS', `${field} must exactly equal recursive discovery and retain a floor of ${minimum}`);
+    }
+  };
+  exactList('html', discovered.html, MIN_PUBLIC_HTML_FILES);
+  exactList('assets', discovered.assets, MIN_PUBLIC_ASSET_FILES);
+  exactList('controls', discovered.controls, REQUIRED_PUBLIC_CONTROLS.length);
+  exactList('generated', discovered.generated, REQUIRED_GENERATED_SURFACES.length);
+  if (JSON.stringify(discovered.controls) !== JSON.stringify([...REQUIRED_PUBLIC_CONTROLS].sort())) {
+    add('CONTROL', 'all three root controls must exist');
+  }
+  if (discovered.generatedSourceFiles.length > 0) {
+    add('GENERATED', 'build.json must be generated into the artifact, never present in source');
+  }
+  if (JSON.stringify(manifest?.claim_channels) !== JSON.stringify(REQUIRED_PUBLIC_CLAIM_CHANNELS)) {
+    add('CHANNELS', 'claim_channels must retain the exact public text and metadata channel contract');
+  }
+  if (JSON.stringify(manifest?.textual_asset_extensions) !== JSON.stringify(REQUIRED_TEXTUAL_ASSET_EXTENSIONS)) {
+    add('CHANNELS', 'textual_asset_extensions must retain the exact scan contract');
+  }
+  return errors;
+}
+
+function htmlFiles(manifest) {
+  return manifest.html.map((name) => path.join(ROOT, name));
 }
 
 function escapeRegExp(value) {
@@ -601,6 +681,51 @@ function falseIdentityPasswordMechanism(text) {
     && /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing))\b/i.test(normalized);
 }
 
+const AT_REST_BACKEND_MENTIONS = [
+  ['identity-private-key-file', /\b(?:private\s+)?identity\s+(?:private\s+)?keys?\b/i],
+  ['message-store-rows', /\bmessage[-\s]+store\s+values?\b/i],
+  ['message-store-structure', /\bSQLite\s+(?:structure|row counts?|order|burn timing|sizes?)\b/i],
+  ['store-attachment-cache', /\battachment[-\s]+cache\b/i],
+  ['peer-map-json', /\bpeer[-\s]+map\b/i],
+  ['membership-json', /\bmembership\b/i],
+  ['conditional-json-family', /\bconditional\s+JSON\b/i],
+  ['renderer-local-storage', /\brenderer\s+localStorage\b/i],
+  ['hub-plaintext-config-family', /\bHub\s+configuration\b/i],
+  ['active-identity-marker', /\bactive[-\s]+slot\s+marker\b/i],
+  ['provider-profile-storage', /\bprovider[-\s]+managed\s+profiles?\b/i],
+  ['startup-trace-log', /\bstartup\s+trace\b/i],
+  ['hub-encrypted-record-family', /\bHub\s+record\s+writers?\b/i],
+  ['decrypted-ui-memory', /\bopened\s+plaintext\b/i],
+];
+
+function unsupportedAtRestBackendAffirmation(text) {
+  const normalized = shortText(text);
+  const namedUnsupported = /\b(?:Notes?|Scrub(?:[-\s]+index)?|LAN)\b/i.test(normalized);
+  const storageAssertion = /\b(?:backend|index|store|storage|file|record)\b/i.test(normalized)
+    && /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|ciphertext|plain[-\s]*text|writes?|persists?|retains?)\b/i.test(normalized);
+  const limitation = /\b(?:excluded|unproved|unwired|unknown|Planned|not[-\s]+claimable|does\s+not|doesn't|cannot|can't|no\s+present[-\s]+tense)\b/i.test(normalized);
+  return namedUnsupported && storageAssertion && !limitation;
+}
+
+function atRestBackendReferenceErrors(text, backendRefs) {
+  const errors = [];
+  const refs = new Set(backendRefs);
+  const sentences = shortText(text).split(/[.!?;]+/).map(shortText).filter(Boolean);
+  for (const sentence of sentences) {
+    if (unsupportedAtRestBackendAffirmation(sentence)) {
+      errors.push('implemented-unwired, unknown, or Planned backend asserted as present-tense public storage truth');
+    }
+    const assertion = /\b(?:encrypt(?:s|ed|ing)?|seal(?:s|ed|ing)?|protect(?:s|ed|ing)?|ciphertext|plain[-\s]*text|visible|require(?:s|d)?\s+the\s+file[-\s]+storage\s+key|opened)\b/i.test(sentence);
+    if (!assertion) continue;
+    for (const [backendId, pattern] of AT_REST_BACKEND_MENTIONS) {
+      if (pattern.test(sentence) && !refs.has(backendId)) {
+        errors.push(`${backendId} is asserted but absent from backend_refs`);
+      }
+    }
+  }
+  return errors;
+}
+
 function atRestSemanticTripwire(text) {
   const normalized = shortText(text);
   if (!normalized) return false;
@@ -610,9 +735,89 @@ function atRestSemanticTripwire(text) {
   const sentences = normalized.split(/[.!?;]+/).map(shortText).filter(Boolean);
   return sentences.some((sentence) => (
     falseIdentityPasswordMechanism(sentence)
+      || unsupportedAtRestBackendAffirmation(sentence)
       || (explicitAtRest.test(sentence) && protectionAssertion.test(sentence))
       || (localContext.test(sentence) && protectionAssertion.test(sentence))
   ));
+}
+
+function textualAssetClaimChannels(fileRel, content) {
+  const extension = path.extname(fileRel).toLowerCase();
+  if (extension === '.json' || extension === '.webmanifest') {
+    try {
+      const values = [];
+      const visit = (value) => {
+        if (typeof value === 'string') values.push(value);
+        else if (Array.isArray(value)) value.forEach(visit);
+        else if (value && typeof value === 'object') Object.values(value).forEach(visit);
+      };
+      visit(JSON.parse(content));
+      return values;
+    } catch {
+      return [content];
+    }
+  }
+  if (extension === '.css') {
+    return [...content.matchAll(/\bcontent\s*:\s*(["'])([\s\S]*?)\1/gi)]
+      .map((match) => match[2]);
+  }
+  if (extension === '.js') {
+    return [...content.matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
+      .map((match) => match[2]);
+  }
+  if (extension === '.svg' || extension === '.xml') {
+    const values = [];
+    for (const match of content.matchAll(/>([^<]+)</g)) values.push(match[1]);
+    for (const match of content.matchAll(/\b(?:aria-label|aria-description|alt|title|data-[a-z0-9_.:-]+)\s*=\s*(["'])([\s\S]*?)\1/gi)) {
+      values.push(match[2]);
+    }
+    return values;
+  }
+  return [content];
+}
+
+function publicAtRestChannelErrors(fileRel, content, kind = 'html') {
+  const errors = [];
+  const record = (text, channel) => {
+    const normalized = shortText(renderedTextWithSourceMap(text).text);
+    if (!normalized || !atRestSemanticTripwire(normalized)) return;
+    errors.push({
+      kind: 'unbound at-rest claim',
+      file: fileRel,
+      line: 0,
+      text: `${normalized} -- undeclared public ${channel} at-rest assertion`,
+    });
+  };
+
+  if (kind !== 'html') {
+    for (const value of textualAssetClaimChannels(fileRel, content)) {
+      record(value, 'textual-asset');
+    }
+    return errors;
+  }
+
+  let unbound = content;
+  for (const element of atRestClaimElements(content)) {
+    unbound = unbound.replace(element.html, ' '.repeat(element.html.length));
+  }
+  const visible = visibleHtml(unbound);
+  const textElementRe = /<(title|p|li|td|th|caption|summary|label|button|a|h[1-6])\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  for (const match of visible.matchAll(textElementRe)) record(match[2], 'rendered-text');
+
+  const tagRe = /<[a-z][^>]*>/gi;
+  const attributeRe = /\b(content|aria-label|aria-description|alt|title|placeholder|value|data-[a-z0-9_.:-]+)\s*=\s*(["'])([\s\S]*?)\2/gi;
+  for (const tag of unbound.matchAll(tagRe)) {
+    for (const attribute of tag[0].matchAll(attributeRe)) {
+      if (/^data-osl-at-rest-(?:claim|backends)$/i.test(attribute[1])) continue;
+      record(attribute[3], `attribute:${attribute[1]}`);
+    }
+  }
+
+  const embeddedRe = /<(script|template|noscript)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  for (const match of unbound.matchAll(embeddedRe)) {
+    record(match[2], match[1].toLowerCase());
+  }
+  return errors;
 }
 
 function atRestUnboundClaimErrors(fileRel, content) {
@@ -736,6 +941,13 @@ function validateAtRestCensus(census) {
           || backend.public_claimability === 'planned-only') {
         record('AT_REST_UNWIRED_CLAIM', `${claim.id} cites ${ref}, whose ${backend.reachability}/${backend.public_claimability} status cannot support public present-tense copy`);
       }
+    }
+    for (const detail of atRestBackendReferenceErrors(claim.text, claim.backend_refs)) {
+      record('AT_REST_CLAIM_SEMANTICS', `${claim.id}: ${detail}`);
+    }
+    const overclaims = atRestOverclaimErrors(claim.file, `<p>${claim.text}</p>`);
+    if (overclaims.length > 0) {
+      record('AT_REST_CLAIM_SEMANTICS', `${claim.id}: contradictory universal at-rest assertion`);
     }
   }
   for (const [id, expected] of AT_REST_CLAIM_CONTRACT) {
@@ -958,7 +1170,8 @@ function atRestOverclaimErrors(fileRel, content) {
   const protectionAssertion = /\b(?:encrypt(?:s|ed|ing)?|decrypt(?:s|ed|ing)?|encipher(?:s|ed|ing)?|unencrypted|ciphertext|cleartext|plain[-\s]*text|sealed?|protect(?:s|ed|ing)?|secur(?:e|es|ed|ing)|gated|guards?|locked|unlocks?|inaccessible|unreadable|opaque|passphrase|password|in\s+the\s+clear)\b/i;
   const narrowProtectedObject = /\b(?:private\s+)?identity\s+keys?\b|\b(?:decrypted\s+|supported\s+)?message\s+bodies?\b|\bencrypted\s+(?:message\s+store|history)\b/i;
   const destructiveScope = /\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|uninstall)\b/i;
-  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it)\b/i;
+  const localAtRestContext = /\bat[-\s]+rest\b|\bon[-\s]+disk\b|\bfilesystem\b|\blocal(?:ly)?\b|\bon[-\s]+device\b|\bon\s+(?:this|your|the)\s+(?:device|computer|machine)\b|\bwhole[-\s]+profile\b|\bfile[-\s]+storage\b|\bprivate\s+files?\b|\bOSL\s+never\s+(?:writes?|stores?)\b|\b(?:persist(?:s|ed|ing)?|retain(?:s|ed|ing)?)\b/i;
+  const limitations = /\b(?:(?:does\s+not|doesn't)\s+(?:cover|protect|encrypt|secure|mean|imply|prove|describe)(?:\s+that)?\s+(?:all|each|every)|not\s+(?:all|each|every|everything|the\s+(?:entire|whole|complete))|not\s+(?:a\s+)?whole[-\s]+profile\s+guarantee|not\s+(?:fully\s+)?(?:encrypted|protected|sealed|secured)|not\s+(?:a\s+)?(?:claim|promise|evidence)\s+that\s+(?:all|each|every)|(?:says?|proves?)\s+nothing\s+about\s+local|(?:may|can)\s+remain\s+plaintext|plaintext\s+(?:fallback|writes?)|without\s+(?:an?\s+)?(?:installed\s+)?(?:main[-\s]+password\s+)?storage\s+key|remov(?:e|es|ed|ing)\b.{0,80}\b(?:restores?|causes?)\s+plaintext\s+writes?|only\s+(?:the\s+)?(?:private\s+)?identity\s+keys?|not\s+(?:yet|complete\s+yet)|nothing\b.{0,100}\bcalls?\s+it|no\b.{0,80}\b(?:release|profile)\b.{0,40}\bverified)\b/i;
   const errors = [];
 
   // Block boundaries keep an honest limitation attached to the claim it
@@ -967,14 +1180,15 @@ function atRestOverclaimErrors(fileRel, content) {
   // by renderedTextWithSourceMap, so they cannot split the semantic match.
   for (const segment of rendered.text.matchAll(/[^\n]+/g)) {
     const blockText = shortText(segment[0]);
-    if (!blockText || limitations.test(blockText)) continue;
+    if (!blockText) continue;
     const sentences = [...segment[0].matchAll(/[^.!?;\n]+[.!?;]?/g)]
       .map((sentence) => ({
         start: (segment.index ?? 0) + (sentence.index ?? 0),
         text: shortText(sentence[0]),
       }))
       .filter((sentence) => sentence.text);
-    const falseMechanism = sentences.find(({ text }) => falseIdentityPasswordMechanism(text));
+    const assertionSentences = sentences.filter(({ text }) => !limitations.test(text));
+    const falseMechanism = assertionSentences.find(({ text }) => falseIdentityPasswordMechanism(text));
     if (falseMechanism) {
       const sourceIndex = rendered.sourceIndexes[falseMechanism.start] ?? 0;
       errors.push({
@@ -989,10 +1203,14 @@ function atRestOverclaimErrors(fileRel, content) {
     // appear elsewhere in the same rendered block, so arbitrary sentence
     // splitting cannot evade the check. Narrow identity-key and message-body
     // claims remain permissible unless the block also asserts a broad category.
-    const scope = sentences.find(({ text }) => !destructiveScope.test(text) && (unqualifiedBroadCategory.test(text)
-      || (universalScope.test(text) && stateObject.test(text))
-      || (absoluteUniversal.test(text) && protectionAssertion.test(text))));
-    if (!scope || !protectionAssertion.test(blockText)) continue;
+    const assertionText = assertionSentences.map(({ text }) => text).join(' ');
+    const scope = assertionSentences.find(({ text }) => !destructiveScope.test(text)
+      && (unqualifiedBroadCategory.test(text)
+        || (universalScope.test(text) && stateObject.test(text))
+        || (absoluteUniversal.test(text) && protectionAssertion.test(text))));
+    if (!scope
+        || !protectionAssertion.test(assertionText)
+        || !localAtRestContext.test(assertionText)) continue;
     const isNarrow = narrowProtectedObject.test(scope.text)
       && !unqualifiedBroadCategory.test(scope.text);
     if (isNarrow) continue;
@@ -1547,6 +1765,15 @@ function validateH7Comparison(pricing, asOf) {
   if (addedStandard976Claim) {
     add('SCOPE_SEMANTICS', 'no fact may present 976 as Standard-US included scope');
   }
+  const scopeClaimTexts = claimTexts(scope);
+  if (scopeClaimTexts.some((text) => /\b(?:50|85|850)\s*\+?\b/.test(text))) {
+    add('SCOPE_SEMANTICS', '50+, 85+, and 850+ are not admissible scope figures anywhere in the comparison');
+  }
+  const scope976Occurrences = scopeClaimTexts
+    .reduce((count, text) => count + [...text.matchAll(/\b976\b/g)].length, 0);
+  if (scope976Occurrences !== 2) {
+    add('SCOPE_SEMANTICS', '976 may occur only in the pinned broader-catalog fact and the scope conflict explanation');
+  }
 
   const price = dimensionById.get('price');
   const priceFacts = new Map(list(price?.deleteme_facts).map((fact) => [fact?.id, fact]));
@@ -1569,10 +1796,10 @@ function validateH7Comparison(pricing, asOf) {
   const continuousUnknown = list(monitoring?.unknowns)
     .find((unknown) => unknown?.field === 'continuous_monitoring');
   const hasAffirmativeContinuousClaim = monitoringClaimTexts.some((text) => (
-    hasAffirmative(text, /\b(?:continuous(?:ly)?|24\s*\/\s*7|around[- ]the[- ]clock)\b/i)
+    hasAffirmative(text, /\b(?:continuous(?:ly)?|constantly|always|24\s*\/\s*7|around[- ]the[- ]clock)\b/i)
   ));
   if (hasAffirmativeContinuousClaim) {
-    add('MONITORING_CLAIM', 'literal continuous or 24-hour monitoring must not be claimed');
+    add('MONITORING_CLAIM', 'literal continuous, constant, always-on, or 24-hour monitoring must not be claimed');
   }
   if (!continuousUnknown
     || !/\b(?:does not establish|unknown|not stated|does not specify)\b/i.test(continuousUnknown.reason ?? '')) {
@@ -2618,8 +2845,53 @@ const H7_SELF_TEST_MUTATIONS = [
   },
 ];
 
+function appendH7ClaimField(pricingFixture, dimensionId, field, sentence) {
+  const dimension = pricingFixture.research_comparisons.h7_deleteme.dimensions
+    .find((entry) => entry.id === dimensionId);
+  if (field === 'fact') dimension.deleteme_facts[0].paraphrase += ` ${sentence}`;
+  else if (field === 'qualifier') dimension.deleteme_facts[0].qualifiers += ` ${sentence}`;
+  else if (field === 'unknown') dimension.unknowns[0].reason += ` ${sentence}`;
+  else if (field === 'limitation') dimension.osl_limitation += ` ${sentence}`;
+  else if (field === 'conclusion') dimension.bounded_conclusion += ` ${sentence}`;
+}
+
+const H7_ADVERSARIAL_MUTATIONS = [];
+for (const count of ['50+', '85+', '850+']) {
+  for (const field of ['fact', 'qualifier', 'unknown', 'limitation', 'conclusion']) {
+    H7_ADVERSARIAL_MUTATIONS.push({
+      name: `H7_SCOPE_${count.replace('+', '_PLUS')}_${field.toUpperCase()}`,
+      expect: 'H7_SCOPE_SEMANTICS',
+      mutate(pricingFixture) {
+        appendH7ClaimField(pricingFixture, 'scope', field, `DeleteMe covers ${count} sites.`);
+      },
+    });
+  }
+}
+for (const field of ['unknown', 'limitation', 'conclusion']) {
+  H7_ADVERSARIAL_MUTATIONS.push({
+    name: `H7_SCOPE_976_${field.toUpperCase()}`,
+    expect: 'H7_SCOPE_SEMANTICS',
+    mutate(pricingFixture) {
+      appendH7ClaimField(pricingFixture, 'scope', field, 'DeleteMe covers 976 sites.');
+    },
+  });
+}
+for (const term of ['constantly', 'always']) {
+  for (const field of ['fact', 'qualifier', 'unknown', 'limitation', 'conclusion']) {
+    H7_ADVERSARIAL_MUTATIONS.push({
+      name: `H7_MONITOR_${term.toUpperCase()}_${field.toUpperCase()}`,
+      expect: 'H7_MONITORING_CLAIM',
+      mutate(pricingFixture) {
+        appendH7ClaimField(pricingFixture, 'ongoing_monitoring', field, `DeleteMe ${term} monitors every broker.`);
+      },
+    });
+  }
+}
+
 const pricing = JSON.parse(await readFile(PRICING_PATH, 'utf8'));
 const atRestCensus = JSON.parse(await readFile(AT_REST_CENSUS_PATH, 'utf8'));
+const publicSurfaceManifest = JSON.parse(await readFile(PUBLIC_SURFACE_MANIFEST_PATH, 'utf8'));
+const discoveredPublicSurface = await discoverPublicSurface();
 const config = buildConfig(pricing);
 if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0) {
   console.error('check-claims floor: tiers.pro.intended_grant_days must be a positive integer so the semantic grant-duration prohibition cannot become vacuous.');
@@ -2627,6 +2899,10 @@ if (!Number.isInteger(config.intendedGrantDays) || config.intendedGrantDays <= 0
 }
 const h7ValidationErrors = validateH7Comparison(pricing, AS_OF);
 const atRestValidationErrors = validateAtRestCensus(atRestCensus);
+const publicSurfaceValidationErrors = validatePublicSurfaceManifest(
+  publicSurfaceManifest,
+  discoveredPublicSurface,
+);
 
 if (SELF_TEST) {
   let failures = 0;
@@ -2776,6 +3052,34 @@ if (SELF_TEST) {
           .status_tier = 'runtime-verified';
       },
     },
+    {
+      name: 'AT_REST_CONTRADICTION_UNIVERSAL_THEN_PLAINTEXT',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' All local data is encrypted at rest. Some local settings can be plaintext.';
+      },
+    },
+    {
+      name: 'AT_REST_CONTRADICTION_PLAINTEXT_THEN_UNIVERSAL',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' Some local settings can be plaintext. All local data is encrypted at rest.';
+      },
+    },
+    {
+      name: 'AT_REST_UNREACHABLE_NOTES_CLAIM',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' The Notes backend encrypts its file before writing.';
+      },
+    },
+    {
+      name: 'AT_REST_UNREACHABLE_LAN_CLAIM',
+      expect: 'AT_REST_CLAIM_SEMANTICS',
+      mutate(census) {
+        census.public_claims[0].text += ' The LAN backend encrypts its records before writing.';
+      },
+    },
   ];
   const atRestCensusMutationRuns = new Map();
   for (const mutation of atRestCensusMutations) {
@@ -2794,6 +3098,99 @@ if (SELF_TEST) {
     && [...atRestCensusMutationRuns.values()].every((runs) => runs === 1);
   if (!everyAtRestCensusMutationRanOnce) failures += 1;
   console.log(`  ${everyAtRestCensusMutationRanOnce ? 'passed ' : 'FAILED '} each at-rest census mutation executed exactly once`);
+
+  console.log('\ncheck-claims self-test (recursive public surface):');
+  const publicSurfaceBaselineClean = publicSurfaceValidationErrors.length === 0;
+  if (!publicSurfaceBaselineClean) failures += 1;
+  console.log(`  ${publicSurfaceBaselineClean ? 'passed ' : 'FAILED '} exact recursive public-surface manifest`);
+  const publicSurfaceMutations = [
+    {
+      name: 'PUBLIC_ROOT_NESTED_BROAD_CLAIM',
+      caught() {
+        const discovered = structuredClone(discoveredPublicSurface);
+        discovered.html.push('docs/nested/claim.html');
+        discovered.html.sort();
+        return validatePublicSurfaceManifest(publicSurfaceManifest, discovered)
+          .some((error) => error.startsWith('PUBLIC_SURFACE_CENSUS:'));
+      },
+    },
+    {
+      name: 'PUBLIC_ROOT_NESTED_CLEAN_UNDECLARED',
+      caught() {
+        const discovered = structuredClone(discoveredPublicSurface);
+        discovered.html.push('docs/nested/clean.html');
+        discovered.html.sort();
+        return validatePublicSurfaceManifest(publicSurfaceManifest, discovered)
+          .some((error) => error.startsWith('PUBLIC_SURFACE_CENSUS:'));
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_META_TAG_ATTRIBUTE',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<meta name="description" data-audit="All local data is encrypted at rest.">',
+        ).length > 0;
+      },
+    },
+    {
+      name: 'PUBLIC_CHANNEL_ACCESSIBLE_NAME',
+      caught() {
+        return publicAtRestChannelErrors(
+          'index.html',
+          '<main aria-label="All local data is encrypted at rest."></main>',
+        ).length > 0;
+      },
+    },
+    {
+      name: 'PUBLIC_ASSET_JSON_CLAIM',
+      caught() {
+        return publicAtRestChannelErrors(
+          'assets/claims.json',
+          '{"claim":"All local data is encrypted at rest."}',
+          'textual-asset',
+        ).length > 0;
+      },
+    },
+    {
+      name: 'PUBLIC_MANIFEST_HTML_STAGE_REMOVAL',
+      caught() {
+        const manifest = structuredClone(publicSurfaceManifest);
+        manifest.html.pop();
+        return validatePublicSurfaceManifest(manifest, discoveredPublicSurface)
+          .some((error) => error.startsWith('PUBLIC_SURFACE_CENSUS:'));
+      },
+    },
+    {
+      name: 'PUBLIC_MANIFEST_ASSET_STAGE_REMOVAL',
+      caught() {
+        const manifest = structuredClone(publicSurfaceManifest);
+        manifest.assets.pop();
+        return validatePublicSurfaceManifest(manifest, discoveredPublicSurface)
+          .some((error) => error.startsWith('PUBLIC_SURFACE_CENSUS:'));
+      },
+    },
+    {
+      name: 'PUBLIC_ROOT_BROAD_CLAIM_POSITIVE',
+      caught() {
+        return publicAtRestChannelErrors(
+          'claim-control.html',
+          '<main><p>All local data is encrypted at rest.</p></main>',
+        ).length > 0;
+      },
+    },
+  ];
+  const publicSurfaceRuns = new Map();
+  for (const mutation of publicSurfaceMutations) {
+    publicSurfaceRuns.set(mutation.name, (publicSurfaceRuns.get(mutation.name) ?? 0) + 1);
+    const caught = mutation.caught();
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name}`);
+  }
+  const everyPublicSurfaceMutationRanOnce = publicSurfaceRuns.size === publicSurfaceMutations.length
+    && [...publicSurfaceRuns.values()].every((runs) => runs === 1);
+  if (!everyPublicSurfaceMutationRanOnce) failures += 1;
+  console.log(`  ${everyPublicSurfaceMutationRanOnce ? 'passed ' : 'FAILED '} every recursive public-surface mutation executed exactly once`);
 
   console.log(`check-claims self-test (H7 DeleteMe manifest, as of ${AS_OF}):`);
   const comparison = pricing.research_comparisons?.h7_deleteme;
@@ -2848,6 +3245,23 @@ if (SELF_TEST) {
     && [...mutationRuns.values()].every((runs) => runs === 1);
   if (!allMutationsRanExactlyOnce) failures += 1;
   console.log(`  ${allMutationsRanExactlyOnce ? 'passed ' : 'FAILED '} each named H7 mutation executed exactly once`);
+
+  console.log('\ncheck-claims self-test (H7 adversarial field mutations):');
+  const h7AdversarialRuns = new Map();
+  for (const mutation of H7_ADVERSARIAL_MUTATIONS) {
+    const mutated = structuredClone(pricing);
+    mutation.mutate(mutated);
+    h7AdversarialRuns.set(mutation.name, (h7AdversarialRuns.get(mutation.name) ?? 0) + 1);
+    const mutationErrors = validateH7Comparison(mutated, AS_OF);
+    const caught = mutationErrors.some((error) => error.startsWith(`${mutation.expect}:`));
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} ${mutation.name} (expected ${mutation.expect})`);
+  }
+  const everyH7AdversarialMutationRanOnce = H7_ADVERSARIAL_MUTATIONS.length === 28
+    && h7AdversarialRuns.size === H7_ADVERSARIAL_MUTATIONS.length
+    && [...h7AdversarialRuns.values()].every((runs) => runs === 1);
+  if (!everyH7AdversarialMutationRanOnce) failures += 1;
+  console.log(`  ${everyH7AdversarialMutationRanOnce ? 'passed ' : 'FAILED '} all 28 H7 adversarial field mutations executed exactly once`);
 
   console.log('\ncheck-claims self-test (each HTML fixture must be caught):');
   for (const testCase of SELF_TEST_CASES) {
@@ -3124,8 +3538,13 @@ if (SELF_TEST) {
   const total = atRestAssertions.length
     + atRestCensusMutations.length
     + 1
+    + 1
+    + publicSurfaceMutations.length
+    + 1
     + h7Assertions.length
     + H7_SELF_TEST_MUTATIONS.length
+    + 1
+    + H7_ADVERSARIAL_MUTATIONS.length
     + 1
     + SELF_TEST_CASES.length
     + NEGATION_CASES.length
@@ -3138,7 +3557,7 @@ if (SELF_TEST) {
   process.exit(failures > 0 ? 1 : 0);
 }
 
-const files = await htmlFiles();
+const files = htmlFiles(publicSurfaceManifest);
 const fileSummaries = [];
 const errors = h7ValidationErrors.map((text) => ({
   kind: 'H7 research comparison',
@@ -3152,6 +3571,12 @@ errors.push(...atRestValidationErrors.map((text) => ({
   line: 0,
   text,
 })));
+errors.push(...publicSurfaceValidationErrors.map((text) => ({
+  kind: 'public surface census',
+  file: 'data/public-surface-manifest.json',
+  line: 0,
+  text,
+})));
 const crawledFiles = new Set(files.map((file) => rel(file)));
 
 for (const file of files) {
@@ -3159,6 +3584,7 @@ for (const file of files) {
   const content = await readFile(file, 'utf8');
   const fileErrors = analyseFile(fileRel, content, config);
   fileErrors.push(...atRestClaimBindingErrors(fileRel, content, atRestCensus));
+  fileErrors.push(...publicAtRestChannelErrors(fileRel, content));
   errors.push(...fileErrors);
 
   const count = (...kinds) => fileErrors.filter((error) => kinds.includes(error.kind)).length;
@@ -3181,6 +3607,13 @@ for (const file of files) {
     missingText: count('missing required sentence', 'h4 explainer contract'),
     verdict: fileErrors.length === 0 ? 'pass' : 'fail',
   });
+}
+
+for (const assetRel of publicSurfaceManifest.assets) {
+  const extension = path.extname(assetRel).toLowerCase();
+  if (!publicSurfaceManifest.textual_asset_extensions.includes(extension)) continue;
+  const content = await readFile(path.join(ROOT, assetRel), 'utf8');
+  errors.push(...publicAtRestChannelErrors(assetRel, content, 'textual-asset'));
 }
 
 // A requirement aimed at a file the crawler never opens would silently pass.

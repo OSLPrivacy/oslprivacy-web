@@ -16,7 +16,9 @@ const DEPLOY_CONTROL_INPUTS = [
   '.assetsignore',
   '_headers',
   '_redirects',
+  'data/at-rest-census.json',
   'data/pricing.json',
+  'data/public-surface-manifest.json',
   'wrangler.jsonc',
 ];
 
