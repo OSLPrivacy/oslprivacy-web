@@ -82,7 +82,9 @@ try {
   ].join('\n'));
   await writeFile(path.join(root, 'assets', 'img', '.gitkeep'), '');
   await writeFile(path.join(root, 'assets', 'js', 'main.js'), 'void 0;\n');
+  await writeFile(path.join(root, 'data', 'at-rest-census.json'), '{"schema_version":1}\n');
   await writeFile(path.join(root, 'data', 'pricing.json'), '{"manifest_version":5}\n');
+  await writeFile(path.join(root, 'data', 'public-surface-manifest.json'), '{"schema_version":1}\n');
   await writeFile(path.join(root, '.assetsignore'), 'scripts/\ndata/\n');
   await writeFile(path.join(root, '.gitignore'), 'dist/\n*.log\n');
   await writeFile(path.join(root, '_headers'), '/*\n  X-Content-Type-Options: nosniff\n');
