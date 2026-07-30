@@ -45,6 +45,8 @@ node scripts/check-claims.mjs
 node scripts/test-live-build.mjs
 ```
 
+Acceptance command: `node scripts/pricing-sync.mjs --check && node scripts/check-claims.mjs && node scripts/test-live-build.mjs`
+
 That is the promotion path for the clean H1 pricing candidate. Do not rebuild
 pricing copy by hand during deployment; fix `data/pricing.json` or the claim
 gate only when one of those commands refuses the candidate.

@@ -9,6 +9,7 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.dirname(SCRIPT_DIR);
 const VERIFIER = path.join(SCRIPT_DIR, 'verify-live-build.mjs');
 const README = path.join(ROOT, 'README.md');
+const H24_ACCEPTANCE_COMMAND = 'node scripts/pricing-sync.mjs --check && node scripts/check-claims.mjs && node scripts/test-live-build.mjs';
 const commit = 'a'.repeat(40);
 const shortCommit = commit.slice(0, 8);
 const branch = 'main';
@@ -206,6 +207,7 @@ async function checkReadmePromotionContract() {
   const readme = await readFile(README, 'utf8');
   const normalized = readme.replace(/\s+/g, ' ');
   const required = [
+    H24_ACCEPTANCE_COMMAND,
     'node scripts/pricing-sync.mjs --check',
     'node scripts/check-claims.mjs',
     'node scripts/test-live-build.mjs',
