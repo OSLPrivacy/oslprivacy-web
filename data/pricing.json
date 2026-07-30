@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "claim_gate_source_sha256": "615a0b69e240f6795e76dc1c15208572a840bfa637db16308a60bdf3b3f1400a",
+  "claim_gate_source_sha256": "48f7c0a2d2052c0980fc902989e9507c12335b3c83ea7d8e515384e04ebcff3a",
   "manifest_version": 7,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
@@ -1280,6 +1280,21 @@
     "banner": "OSL is in early access before its v1 launch. Some of what you see below is still being finished — the status page says exactly what works today.",
     "matrix_url": "/docs/status",
     "matrix_link_text": "See what works today",
+    "public_ia_files": [
+      "index.html",
+      "features.html",
+      "download.html"
+    ],
+    "public_ia_forbidden_terms": [
+      "keyserver",
+      "keyservers",
+      "ratchet",
+      "ratchets",
+      "provider adapters"
+    ],
+    "public_ia_forbidden_patterns": [
+      "ban risk [0-9]+%"
+    ],
     "$why": "Owner decision 2026-07-26. The site is pre-launch marketing for v1, not a live health screen. Putting a status label on every feature card made the product harder to understand without making it more honest. Honesty is concentrated in two unmissable places instead: the dated status page and the point of sale."
   },
   "surface_policy": {

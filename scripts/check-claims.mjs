@@ -3225,6 +3225,48 @@ function exposureComparisonContractErrors(fileRel, content, crawlerPolicy) {
   return errors;
 }
 
+function publicIaContractErrors(fileRel, content, launchFrame) {
+  const files = Array.isArray(launchFrame.public_ia_files)
+    ? launchFrame.public_ia_files
+    : [];
+  if (!files.includes(fileRel)) return [];
+
+  const errors = [];
+  const forbiddenTerms = Array.isArray(launchFrame.public_ia_forbidden_terms)
+    ? launchFrame.public_ia_forbidden_terms
+    : [];
+  const forbiddenPatterns = Array.isArray(launchFrame.public_ia_forbidden_patterns)
+    ? launchFrame.public_ia_forbidden_patterns
+    : [];
+  const forbidden = [
+    ...forbiddenTerms.map((term) => new RegExp(`\\b${escapeRegExp(term)}\\b`, 'i')),
+    ...forbiddenPatterns.map((pattern) => new RegExp(pattern, 'i')),
+  ];
+
+  for (const pattern of forbidden) {
+    const match = content.match(pattern);
+    if (!match) continue;
+    errors.push({
+      kind: 'h9 public IA contract',
+      file: fileRel,
+      line: lineNumber(content, match.index ?? 0),
+      text: `${shortText(match[0])} must not appear in public launch IA or safety copy`,
+    });
+  }
+
+  const matrixUrl = launchFrame.matrix_url || '/docs/status';
+  if (!content.includes(matrixUrl)) {
+    errors.push({
+      kind: 'h9 public IA contract',
+      file: fileRel,
+      line: 0,
+      text: `public launch page must link to ${matrixUrl}`,
+    });
+  }
+
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -3274,6 +3316,7 @@ function analyseFile(fileRel, content, config) {
   errors.push(...scrubOverclaimErrors(fileRel, content));
   errors.push(...scrubDemoContractErrors(fileRel, content));
   errors.push(...exposureComparisonContractErrors(fileRel, content, crawlerPolicy));
+  errors.push(...publicIaContractErrors(fileRel, content, launchFrame));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -4137,6 +4180,18 @@ function buildConfig(pricing) {
   if (!isObject(pricing.launch_frame)) add('launch_frame must be present');
   if (launchFrame.stage !== 'pre-launch') add('launch_frame.stage must remain pre-launch');
   if (launchFrame.matrix_url !== '/docs/status') add('launch_frame.matrix_url must remain /docs/status');
+  const publicIaFiles = stringList(launchFrame.public_ia_files, 'launch_frame.public_ia_files');
+  const publicIaForbiddenTerms = stringList(launchFrame.public_ia_forbidden_terms, 'launch_frame.public_ia_forbidden_terms');
+  const publicIaForbiddenPatterns = stringList(launchFrame.public_ia_forbidden_patterns, 'launch_frame.public_ia_forbidden_patterns');
+  for (const file of ['index.html', 'features.html', 'download.html']) {
+    if (!publicIaFiles.includes(file)) add(`launch_frame.public_ia_files must include ${file}`);
+  }
+  for (const term of ['keyserver', 'ratchet', 'provider adapters']) {
+    if (!publicIaForbiddenTerms.includes(term)) add(`launch_frame.public_ia_forbidden_terms must include ${term}`);
+  }
+  if (!publicIaForbiddenPatterns.includes('ban risk [0-9]+%')) {
+    add('launch_frame.public_ia_forbidden_patterns must include ban risk [0-9]+%');
+  }
   const surfacePolicy = isObject(pricing.surface_policy) ? pricing.surface_policy : {};
   if (!isObject(pricing.surface_policy)) add('surface_policy must be present');
   const matrixFiles = stringList(surfacePolicy.matrix_files, 'surface_policy.matrix_files');
@@ -5138,6 +5193,24 @@ const SELF_TEST_CASES = [
     file: 'index.html',
     html: '<section><span data-osl-feature="exposure-comparison" data-osl-status="Beta">Beta</span><p>Run a live scan of your device and score your protection.</p><p><a href="/docs/status">See what works today</a></p></section>',
     expect: 'h28 exposure comparison contract',
+  },
+  {
+    name: 'public launch IA exposes keyserver machinery',
+    file: 'index.html',
+    html: '<section><p>Choose a keyserver before setup.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h9 public IA contract',
+  },
+  {
+    name: 'public safety copy fabricates a ban risk percentage',
+    file: 'features.html',
+    html: '<section><p>This mode has ban risk 12% on supported services.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h9 public IA contract',
+  },
+  {
+    name: 'public launch page omits the status link',
+    file: 'download.html',
+    html: '<section><p>Download the early-access app.</p></section>',
+    expect: 'h9 public IA contract',
   },
   {
     name: 'the one true crypto sentence deleted',
