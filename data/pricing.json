@@ -23,6 +23,8 @@
       "pricing_source": "/model",
       "capability_source": "/capability_registry",
       "connector_source": "/connector_matrix",
+      "central_accept_command": "node -e \"const p=JSON.parse(require('fs').readFileSync('data/pricing.json','utf8')); if(!p.model || !p.capability_registry || !p.connector_matrix) process.exit(1)\"",
+      "local_contract_test": "node scripts/test-pricing-manifest.mjs",
       "checkout_state": "paused_until_redemption_records_and_automatic_one_month_expiry_exist",
       "absence_rule": "Absence of implementation evidence, consent, binding, or authority means refusal or a Planned label; it never means permission.",
       "publication_rule": "Public copy may use the intended $5 one-month price and the no-renewal, no-stored-payment, no-account-required claims, but must not promise redemption-start timing or sell any capability whose registry entry is not sellable.",
