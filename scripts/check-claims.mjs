@@ -3585,6 +3585,10 @@ function validateH7Comparison(pricing, asOf) {
         || !/\bH7 comparison\b/i.test(refreshEvidence?.result ?? '')) {
         add('SOURCE_REFRESH', `${label}.refresh_evidence.result must say the official DeleteMe/Abine source was refreshed for the H7 comparison`);
       }
+      if (!new RegExp(`\\bon ${source?.accessed_on}\\b`).test(refreshEvidence?.result ?? '')
+        || !/\b(live URL\/title|indexed-content) checks\b/i.test(refreshEvidence?.result ?? '')) {
+        add('SOURCE_REFRESH', `${label}.refresh_evidence.result must retain the access date plus live URL/title or indexed-content check detail`);
+      }
     }
     if (!H7_SOURCE_TYPES.has(source?.source_type)) {
       add('SOURCE_TYPE', `${label} has unsupported source_type ${JSON.stringify(source?.source_type)}`);
@@ -5971,6 +5975,14 @@ const H7_SELF_TEST_MUTATIONS = [
     },
   },
   {
+    name: 'generic source-refresh result without maintained evidence detail',
+    expect: 'H7_SOURCE_REFRESH',
+    mutate(pricing) {
+      pricing.research_comparisons.h7_deleteme.sources[0].refresh_evidence.result =
+        'The official DeleteMe/Abine source was manually re-read for the H7 comparison refresh.';
+    },
+  },
+  {
     name: 'future access date',
     expect: 'H7_SOURCE_FUTURE',
     mutate(pricing) {
@@ -7704,8 +7716,8 @@ if (SELF_TEST) {
         && dimension.conflict_explanation?.trim()),
     },
     {
-      name: 'exactly 22 named H7 mutations',
-      pass: H7_SELF_TEST_MUTATIONS.length === 22,
+      name: 'exactly 23 named H7 mutations',
+      pass: H7_SELF_TEST_MUTATIONS.length === 23,
     },
   ];
   for (const assertion of h7Assertions) {
