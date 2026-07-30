@@ -9124,7 +9124,7 @@ h2:hover .anchor-link,
 }
 .pws-burn-title-row h3 {
   margin: 0;
-  font-size: clamp(1.35rem, 5vw, 2rem);
+  font-size: 1.75rem;
   line-height: 1.1;
 }
 .pws-burn-stage > p:not(.pws-burn-moment) {
@@ -9281,7 +9281,7 @@ h2:hover .anchor-link,
     align-items: flex-start;
   }
   .pws-burn-title-row h3 {
-    font-size: clamp(1.2rem, 8vw, 1.55rem);
+    font-size: 1.45rem;
   }
   .pws-burn-mini-scene {
     grid-template-columns: minmax(0, 1fr) 2.35rem minmax(0, 1fr);
