@@ -8874,7 +8874,7 @@ h2:hover .anchor-link,
     linear-gradient(145deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 42%),
     var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 24px 54px rgba(0, 0, 0, .22);
 }
 .pws-burn-moment {
@@ -8962,6 +8962,17 @@ h2:hover .anchor-link,
   box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent);
   transform: translate(-50%, -50%);
 }
+.pws-burn-flow-signal::after {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: .42rem;
+  height: .42rem;
+  border-block-start: 2px solid currentColor;
+  border-inline-end: 2px solid currentColor;
+  content: "";
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
 .pws-burn-erasure-limit {
   margin: var(--s-4) 0;
   padding: var(--s-3);
@@ -9020,6 +9031,42 @@ h2:hover .anchor-link,
   .pws-burn-limits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+@media (max-width: 599px) {
+  .pws-burn-explainer {
+    width: 100%;
+    padding-inline: var(--s-3);
+  }
+  .pws-burn-heading {
+    margin-bottom: var(--s-5);
+  }
+  .pws-burn-stage {
+    padding: var(--s-3);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, .2);
+  }
+  .pws-burn-title-row {
+    align-items: flex-start;
+  }
+  .pws-burn-title-row h3 {
+    font-size: clamp(1.2rem, 8vw, 1.55rem);
+  }
+  .pws-burn-mini-scene {
+    grid-template-columns: minmax(0, 1fr) 2.35rem minmax(0, 1fr);
+    min-height: 4.5rem;
+    padding: .85rem;
+  }
+  .pws-pause-mark {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+  .pws-burn-boundary {
+    min-height: 2.75rem;
+    gap: .55rem;
+  }
+  .pws-burn-limits li {
+    padding: .85rem;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .pws-burn-flow-signal { animation: pws-burn-disclosure-flow 3.8s ease-in-out infinite; }
   .pws-pause-mark { animation: pws-pause-breathe 3.8s ease-in-out infinite; }
@@ -9032,8 +9079,26 @@ h2:hover .anchor-link,
     transition: none !important;
   }
   .pws-burn-flow-signal {
+    width: min(3.25rem, 32vw);
+    height: 2px;
     opacity: .86;
+    color: var(--accent);
+    background: linear-gradient(90deg, transparent, var(--accent) 28% 72%, transparent);
+    border-radius: 999px;
+    box-shadow: none;
     transform: translate(-50%, -50%);
+  }
+  .pws-burn-flow-signal::after { opacity: 1; }
+}
+@media (max-width: 599px) and (prefers-reduced-motion: reduce) {
+  .pws-burn-flow-signal {
+    width: 2px;
+    height: 1.9rem;
+    background: linear-gradient(180deg, transparent, var(--accent) 24% 76%, transparent);
+  }
+  .pws-burn-flow-signal::after {
+    inset-block-start: calc(100% - .1rem);
+    transform: translate(-50%, -50%) rotate(135deg);
   }
 }
 @keyframes pws-burn-disclosure-flow {
