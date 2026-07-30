@@ -7791,6 +7791,15 @@ if (SELF_TEST) {
   if (!bannedH4MutationCaught) failures += 1;
   console.log(`  ${bannedH4MutationCaught ? 'caught ' : 'MISSED '} banned H4 erasure phrasing insertion`);
 
+  const h18NamedTestPassed = baselineClean
+    && h4MarkerMutationCaught
+    && limitationMutationCaught
+    && pwsBoundaryMutationCaught
+    && burnBoundaryMutationCaught
+    && bannedH4MutationCaught;
+  if (!h18NamedTestPassed) failures += 1;
+  console.log(`  ${h18NamedTestPassed ? 'passed ' : 'FAILED '} State PWS-before and Burn-after boundaries with all banned erasure phrasing excluded`);
+
   console.log('\ncheck-claims self-test (production FAQ burn boundary copy contract):');
   const faqContent = await readFile(path.join(ROOT, 'docs/faq.html'), 'utf8');
   const baselineFaqBurnErrors = analyseFile('docs/faq.html', faqContent, config)
