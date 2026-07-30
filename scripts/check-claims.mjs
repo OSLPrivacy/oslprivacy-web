@@ -3057,6 +3057,52 @@ function scrubDemoContractErrors(fileRel, content) {
   return errors;
 }
 
+function exposureComparisonContractErrors(fileRel, content, crawlerPolicy) {
+  if (fileRel !== 'index.html' && fileRel !== 'docs/status.html') return [];
+
+  const errors = [];
+  const rendered = renderedTextWithSourceMap(content).text;
+  const badges = labelledElements(content, crawlerPolicy)
+    .filter((badge) => badge.feature === 'exposure-comparison');
+  const hasIllustrationBadge = badges.some((badge) => badge.status === 'Illustration');
+  const hasNotScanLimitation = /\bnot a scan of your device\b/i.test(rendered);
+
+  const requirements = [
+    {
+      label: 'Illustration label',
+      passed: hasIllustrationBadge,
+    },
+    {
+      label: 'not-a-device-scan limitation',
+      passed: hasNotScanLimitation,
+    },
+  ];
+
+  if (fileRel === 'index.html') {
+    requirements.push({
+      label: 'published-practice source framing',
+      passed: /\bpublished agency and company practice\b/i.test(rendered),
+    });
+  } else {
+    requirements.push({
+      label: 'not-a-live-score limitation',
+      passed: /\bnever shows a live protection score\b/i.test(rendered),
+    });
+  }
+
+  for (const requirement of requirements) {
+    if (requirement.passed) continue;
+    errors.push({
+      kind: 'h28 exposure comparison contract',
+      file: fileRel,
+      line: 0,
+      text: `${requirement.label} is missing from the exposure comparison`,
+    });
+  }
+
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -3104,6 +3150,7 @@ function analyseFile(fileRel, content, config) {
   errors.push(...atRestOverclaimErrors(fileRel, unboundAtRestContent));
   errors.push(...scrubOverclaimErrors(fileRel, content));
   errors.push(...scrubDemoContractErrors(fileRel, content));
+  errors.push(...exposureComparisonContractErrors(fileRel, content, crawlerPolicy));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -4950,6 +4997,12 @@ const SELF_TEST_CASES = [
     file: 'features.html',
     html: '<span data-osl-feature="telepathy" data-osl-status="Beta">Beta</span>',
     expect: 'capability badge',
+  },
+  {
+    name: 'exposure comparison framed as a live scan',
+    file: 'index.html',
+    html: '<section><span data-osl-feature="exposure-comparison" data-osl-status="Beta">Beta</span><p>Run a live scan of your device and score your protection.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h28 exposure comparison contract',
   },
   {
     name: 'the one true crypto sentence deleted',
@@ -7838,7 +7891,7 @@ for (const file of files) {
     ),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
-    missingText: count('missing required sentence', 'h4 explainer contract', 'h17 scrub demo contract'),
+    missingText: count('missing required sentence', 'h4 explainer contract', 'h17 scrub demo contract', 'h28 exposure comparison contract'),
     verdict: fileErrors.length === 0 ? 'pass' : 'fail',
   });
 }
