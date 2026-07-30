@@ -7760,6 +7760,26 @@ if (SELF_TEST) {
   if (!limitationMutationCaught) failures += 1;
   console.log(`  ${limitationMutationCaught ? 'caught ' : 'MISSED '} exact removal of "${requiredLimitation}"`);
 
+  const requiredPwsBoundary = 'acts before disclosure';
+  const pwsBoundaryOccurrences = h4Content.split(requiredPwsBoundary).length - 1;
+  const mutatedH4WithoutPwsBoundary = h4Content.split(requiredPwsBoundary).join('');
+  const pwsBoundaryMutationCaught = pwsBoundaryOccurrences === 2
+    && analyseFile('features.html', mutatedH4WithoutPwsBoundary, config)
+      .some((error) => error.kind === 'h4 explainer contract'
+        && error.text.includes('PWS before-disclosure definition'));
+  if (!pwsBoundaryMutationCaught) failures += 1;
+  console.log(`  ${pwsBoundaryMutationCaught ? 'caught ' : 'MISSED '} h18 PWS-before boundary removal`);
+
+  const requiredBurnBoundary = 'acts after disclosure';
+  const burnBoundaryOccurrences = h4Content.split(requiredBurnBoundary).length - 1;
+  const mutatedH4WithoutBurnBoundary = h4Content.split(requiredBurnBoundary).join('');
+  const burnBoundaryMutationCaught = burnBoundaryOccurrences === 2
+    && analyseFile('features.html', mutatedH4WithoutBurnBoundary, config)
+      .some((error) => error.kind === 'h4 explainer contract'
+        && error.text.includes('Burn after-disclosure definition'));
+  if (!burnBoundaryMutationCaught) failures += 1;
+  console.log(`  ${burnBoundaryMutationCaught ? 'caught ' : 'MISSED '} h18 Burn-after boundary removal`);
+
   const bannedH4Mutation = h4Content.replace(
     requiredLimitation,
     `${requiredLimitation} It is not cryptographic erasure and cannot make remote copies vanish.`,
