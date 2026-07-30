@@ -3007,6 +3007,56 @@ function scrubOverclaimErrors(fileRel, content) {
   return errors;
 }
 
+function scrubDemoContractErrors(fileRel, content) {
+  if (fileRel !== 'index.html') return [];
+
+  const errors = [];
+  const blocks = sectionBlocks(content).filter((block) => (
+    /<section\b[^>]*\bclass=["'][^"']*\bscrub-demo\b/i.test(block.html)
+      || /<section\b[^>]*\bdata-product-animation=["']scrub-flow["']/i.test(block.html)
+  ));
+  if (blocks.length !== 1) {
+    return [{
+      kind: 'h17 scrub demo contract',
+      file: fileRel,
+      line: 0,
+      text: `expected exactly one index Scrub demo section, found ${blocks.length}`,
+    }];
+  }
+
+  const block = blocks[0];
+  const rendered = shortText(renderedTextWithSourceMap(block.html).text);
+  const requirements = [
+    {
+      label: 'username-only local-export evidence',
+      passed: /\busernames?\b/i.test(rendered)
+        && /\blocal export\b/i.test(rendered)
+        && /(?:\bonly\b.{0,45}\busernames?\b|\busernames?\b.{0,45}\bonly\b)/i.test(rendered),
+    },
+    {
+      label: 'no deletion promise',
+      passed: !/\b(?:delete|deletes|deleted|deleting|deletion|remove|removes|removed|removing|erase|erases|erased|erasing|clear|clears|cleared|clean|cleans|cleaned|cleaning)\b/i.test(rendered)
+        && !/\bscrub-eraser\b/i.test(block.html),
+    },
+    {
+      label: 'internal machinery hidden',
+      passed: !/\b(?:keyservers?|ratchets?|receipts?|browser profiles?|provider adapters?|provider exports?|selected-account binding|completeness receipts?)\b/i.test(rendered),
+    },
+  ];
+
+  for (const requirement of requirements) {
+    if (requirement.passed) continue;
+    errors.push({
+      kind: 'h17 scrub demo contract',
+      file: fileRel,
+      line: lineNumber(content, block.start),
+      text: `${requirement.label} is missing from the index Scrub demo`,
+    });
+  }
+
+  return errors;
+}
+
 function checkoutRegions(content, policy) {
   const startTag = policy.checkout_region_start || 'osl:checkout-summary';
   const endTag = policy.checkout_region_end || '/osl:checkout-summary';
@@ -3053,6 +3103,7 @@ function analyseFile(fileRel, content, config) {
   }
   errors.push(...atRestOverclaimErrors(fileRel, unboundAtRestContent));
   errors.push(...scrubOverclaimErrors(fileRel, content));
+  errors.push(...scrubDemoContractErrors(fileRel, content));
 
   for (const pattern of patterns) {
     pattern.regex.lastIndex = 0;
@@ -5088,6 +5139,24 @@ const SELF_TEST_CASES = [
     expect: 'Scrub capability overclaim',
   },
   {
+    name: 'index Scrub demo omits username-only evidence',
+    file: 'index.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks a local export you choose.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h17 scrub demo contract',
+  },
+  {
+    name: 'index Scrub demo promises deletion',
+    file: 'index.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks only username text in a local export you choose.</p><p>It prepares directions to the deletion page.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h17 scrub demo contract',
+  },
+  {
+    name: 'index Scrub demo exposes implementation machinery',
+    file: 'index.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks only username text in a local export you choose.</p><p>Provider exports, selected-account binding and completeness receipts are not qualified.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h17 scrub demo contract',
+  },
+  {
     name: 'unrelated planned sentence cannot launder completeness',
     file: 'features.html',
     html: '<p>AutoScrub is Planned. Scrub imports your complete history.</p>',
@@ -5217,6 +5286,12 @@ const NEGATION_CASES = [
     file: 'features.html',
     html: '<p>Whether Scrub supports five providers is unknown.</p>',
     kinds: ['Scrub capability overclaim'],
+  },
+  {
+    name: 'honest index Scrub username-only demo',
+    file: 'index.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p>Planned for v1: Free Scrub will review only usernames found in that local export, then prepare manual review steps you can follow yourself. It does not connect to services, change accounts, or run while you are away.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-findings"><strong>3 username matches</strong></div></section>',
+    kinds: ['h17 scrub demo contract', 'Scrub capability overclaim'],
   },
   {
     name: 'honest no-subscription sentence',
@@ -7413,6 +7488,25 @@ if (SELF_TEST) {
   console.log(`  ${scrubBaselineClean ? 'passed ' : 'FAILED '} production Scrub baseline`);
   console.log(`  ${scrubMutationCaught ? 'caught ' : 'MISSED '} exact production Scrub completeness mutation`);
 
+  console.log('\ncheck-claims self-test (production H17 index Scrub demo contract):');
+  const h17Content = await readFile(path.join(ROOT, 'index.html'), 'utf8');
+  const h17BaselineErrors = analyseFile('index.html', h17Content, config)
+    .filter((error) => error.kind === 'h17 scrub demo contract');
+  const h17BaselineClean = h17BaselineErrors.length === 0;
+  const requiredUsernameBoundary = 'It checks only username text in a local export you choose.';
+  const h17BoundaryOccurrences = h17Content.split(requiredUsernameBoundary).length - 1;
+  const mutatedH17 = h17Content.replace(
+    requiredUsernameBoundary,
+    'It checks a local export you choose, then prepares directions to the deletion page.',
+  );
+  const h17MutationCaught = h17BoundaryOccurrences === 1
+    && mutatedH17 !== h17Content
+    && analyseFile('index.html', mutatedH17, config)
+      .some((error) => error.kind === 'h17 scrub demo contract');
+  if (!h17BaselineClean || !h17MutationCaught) failures += 1;
+  console.log(`  ${h17BaselineClean ? 'passed ' : 'FAILED '} production index Scrub demo baseline`);
+  console.log(`  ${h17MutationCaught ? 'caught ' : 'MISSED '} exact index Scrub username-boundary mutation`);
+
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
     {
@@ -7688,6 +7782,7 @@ if (SELF_TEST) {
     + NEGATION_CASES.length
     + 2
     + 2
+    + 2
     + (productionAtRestCases.length * 2)
     + 1
     + atRestPageMutations.length
@@ -7743,7 +7838,7 @@ for (const file of files) {
     ),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
-    missingText: count('missing required sentence', 'h4 explainer contract'),
+    missingText: count('missing required sentence', 'h4 explainer contract', 'h17 scrub demo contract'),
     verdict: fileErrors.length === 0 ? 'pass' : 'fail',
   });
 }
