@@ -7168,6 +7168,8 @@ h2:hover .anchor-link,
 .activation-method svg { width:3.25rem; height:2.7rem; overflow:visible; fill:none; stroke:var(--text); stroke-width:1.5; }
 .activation-method small { color:var(--text); font-size:.62rem; }
 .activation-method-card svg { width:3.7rem; }
+.activation-method-disabled { opacity:.38; border-color:var(--border); }
+.activation-method-disabled small::after { display:block; margin-top:.2rem; color:var(--text-muted); font-size:.46rem; letter-spacing:.08em; text-transform:uppercase; content:"Soon"; }
 .activation-method .bitcoin-mark,
 .activation-method .monero-mark { fill:var(--text); stroke:none; }
 .payment-brand-button {
