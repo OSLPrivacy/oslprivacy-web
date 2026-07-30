@@ -3676,17 +3676,288 @@ function validateH7Comparison(pricing, asOf) {
 }
 
 function buildConfig(pricing) {
-  const registry = pricing.capability_registry ?? [];
+  const errors = [];
+  const add = (message) => errors.push(message);
+  const isObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const hasText = (value) => typeof value === 'string' && value.trim().length > 0;
+  const list = (value, pathName) => {
+    if (!Array.isArray(value)) {
+      add(`${pathName} must be an array`);
+      return [];
+    }
+    return value;
+  };
+  const stringList = (value, pathName) => {
+    const entries = list(value, pathName);
+    for (const [index, entry] of entries.entries()) {
+      if (!hasText(entry)) add(`${pathName}[${index}] must be a non-empty string`);
+    }
+    return entries.filter(hasText);
+  };
+  const phraseEntries = (value, pathName) => list(value, pathName).filter((entry, index) => {
+    if (typeof entry === 'string') return true;
+    if (isObject(entry) && hasText(entry.phrase)) return true;
+    add(`${pathName}[${index}] must be a string or an object with phrase`);
+    return false;
+  });
+  const phrases = (entries) => entries.map((entry) => (
+    typeof entry === 'string' ? entry : entry.phrase
+  )).filter(hasText);
+  const containsPhrase = (values, pattern) => values.some((value) => pattern.test(value));
+  const requirePhrase = (values, pattern, description) => {
+    if (!containsPhrase(values, pattern)) add(description);
+  };
+  const uniqueStrings = (values, pathName) => {
+    const seen = new Set();
+    for (const value of values) {
+      if (seen.has(value)) add(`${pathName} contains duplicate "${value}"`);
+      seen.add(value);
+    }
+  };
+
+  if (!isObject(pricing)) add('pricing manifest must be an object');
+  const model = isObject(pricing.model) ? pricing.model : {};
+  if (!isObject(pricing.model)) add('model must be present');
+  const truthContract = isObject(model.truth_contract) ? model.truth_contract : {};
+  if (!isObject(model.truth_contract)) add('model.truth_contract must be present');
+  const requiredRoots = ['model', 'capability_registry', 'connector_matrix'];
+  const acceptedRoots = stringList(
+    truthContract.accept_requires_top_level,
+    'model.truth_contract.accept_requires_top_level',
+  );
+  for (const root of requiredRoots) {
+    if (!acceptedRoots.includes(root)) {
+      add(`model.truth_contract.accept_requires_top_level must include ${root}`);
+    }
+    if (pricing[root] === undefined || pricing[root] === null) {
+      add(`${root} must be present because the central accept contract requires it`);
+    }
+  }
+  if (truthContract.checkout_state !== 'paused_until_redemption_records_and_automatic_one_month_expiry_exist') {
+    add('model.truth_contract.checkout_state must keep checkout paused until redemption and expiry exist');
+  }
+  if (!/\bnever means permission\b/i.test(truthContract.absence_rule ?? '')
+      || !/\b(?:refusal|Planned label)\b/.test(truthContract.absence_rule ?? '')) {
+    add('model.truth_contract.absence_rule must say absence fails closed, never permission');
+  }
+  if (!/\bmust not promise redemption-start timing\b/i.test(truthContract.publication_rule ?? '')
+      || !/\bsell any capability whose registry entry is not sellable\b/i.test(truthContract.publication_rule ?? '')) {
+    add('model.truth_contract.publication_rule must bind public copy to redemption and sellability limits');
+  }
+  const mustNotPublish = stringList(
+    truthContract.must_not_publish_until_implemented,
+    'model.truth_contract.must_not_publish_until_implemented',
+  );
+  requirePhrase(
+    mustNotPublish,
+    /^Your month starts when you enter the code\.$/,
+    'redemption-start copy must remain unpublished until implemented',
+  );
+  requirePhrase(
+    mustNotPublish,
+    /^Automatic Pro expiry is implemented\.$/,
+    'automatic-expiry copy must remain unpublished until implemented',
+  );
+  requirePhrase(
+    mustNotPublish,
+    /^Processing credits are on sale\.$/,
+    'processing-credit sale copy must remain unpublished until implemented',
+  );
+
+  if (model.no_stored_payment_data !== true) add('model.no_stored_payment_data must be true');
+  if (model.no_auto_renewal !== true) add('model.no_auto_renewal must be true');
+  if (model.no_account_required !== true) add('model.no_account_required must be true');
+  if (model.period_starts_on_redemption !== false) {
+    add('model.period_starts_on_redemption must stay false until implemented');
+  }
+  if (model.intended_period_starts_on_redemption !== true) {
+    add('model.intended_period_starts_on_redemption must preserve the approved future policy');
+  }
+
+  const publication = isObject(pricing.publication) ? pricing.publication : {};
+  if (!isObject(pricing.publication)) add('publication policy must be present');
+  const publishable = stringList(publication.publishable, 'publication.publishable');
+  const notPublishable = list(publication.not_publishable, 'publication.not_publishable');
+  requirePhrase(publishable, /\$5\b.*\bone month\b/i, 'publication.publishable must include the intended $5 one-month price');
+  requirePhrase(publishable, /\bNothing renews automatically\b/i, 'publication.publishable must include no-auto-renewal copy');
+  requirePhrase(publishable, /\bnever stores payment details\b/i, 'publication.publishable must include no-stored-payment copy');
+  requirePhrase(publishable, /\bNo OSL account is required\b/i, 'publication.publishable must include no-account copy');
+  requirePhrase(publishable, /\bCheckout is paused\b/i, 'publication.publishable must include paused-checkout copy');
+  for (const [index, entry] of notPublishable.entries()) {
+    if (!isObject(entry)) {
+      add(`publication.not_publishable[${index}] must be an object`);
+      continue;
+    }
+    if (!hasText(entry.claim)) add(`publication.not_publishable[${index}].claim must be present`);
+    if (!hasText(entry.reason)) add(`publication.not_publishable[${index}].reason must be present`);
+    if (!Array.isArray(entry.unblocks_when) || entry.unblocks_when.length === 0) {
+      add(`publication.not_publishable[${index}].unblocks_when must be non-empty`);
+    }
+    if (!hasText(entry.owner)) add(`publication.not_publishable[${index}].owner must be present`);
+  }
+
+  const pro = isObject(pricing.tiers?.pro) ? pricing.tiers.pro : {};
+  if (!isObject(pricing.tiers?.pro)) add('tiers.pro must be present');
+  if (pro.billing !== 'prepaid_one_month_code') add('tiers.pro.billing must remain prepaid_one_month_code');
+  if (pro.renews !== false) add('tiers.pro.renews must be false');
+  if (pro.stores_payment_method !== false) add('tiers.pro.stores_payment_method must be false');
+  if (pro.requires_account !== false) add('tiers.pro.requires_account must be false');
+  if (!Number.isInteger(pro.intended_grant_days) || pro.intended_grant_days <= 0) {
+    add('tiers.pro.intended_grant_days must be a positive integer');
+  }
+  if (!/\bearly-access purchase\b/i.test(pro.early_access_line ?? '')) {
+    add('tiers.pro.early_access_line must preserve the early-access purchase framing');
+  }
+  const paymentMethods = isObject(pricing.payment_methods) ? Object.entries(pricing.payment_methods) : [];
+  if (paymentMethods.length === 0) add('payment_methods must define at least one checkout rail');
+  for (const [method, config] of paymentMethods) {
+    if (!isObject(config)) {
+      add(`payment_methods.${method} must be an object`);
+      continue;
+    }
+    if (config.status !== 'Paused') add(`payment_methods.${method}.status must be Paused`);
+    if (config.stores_payment_method !== false) {
+      add(`payment_methods.${method}.stores_payment_method must be false`);
+    }
+  }
+  if (pricing.compute_credits?.status !== 'Planned') add('compute_credits.status must be Planned');
+  if (!Array.isArray(pricing.compute_credits?.packs) || pricing.compute_credits.packs.length !== 0) {
+    add('compute_credits.packs must stay empty until credits are on sale');
+  }
+
+  const capabilityLabels = stringList(pricing.capability_labels, 'capability_labels');
+  uniqueStrings(capabilityLabels, 'capability_labels');
+  for (const label of ['Available', 'Beta', 'Experimental', 'Planned', 'Illustration']) {
+    if (!capabilityLabels.includes(label)) add(`capability_labels must include ${label}`);
+  }
+  const allowedLabels = new Set(capabilityLabels);
+  const registry = list(pricing.capability_registry, 'capability_registry');
+  const registryIds = [];
+  for (const [index, entry] of registry.entries()) {
+    if (!isObject(entry)) {
+      add(`capability_registry[${index}] must be an object`);
+      continue;
+    }
+    if (!hasText(entry.id)) add(`capability_registry[${index}].id must be present`);
+    else registryIds.push(entry.id);
+    if (!hasText(entry.name)) add(`capability_registry[${index}].name must be present`);
+    if (!allowedLabels.has(entry.status)) add(`${entry.id ?? `capability_registry[${index}]`} has unknown status ${entry.status ?? 'missing'}`);
+    if (!hasText(entry.evidence)) add(`${entry.id ?? `capability_registry[${index}]`} must carry evidence`);
+    if (!hasText(entry.verified_on)) add(`${entry.id ?? `capability_registry[${index}]`} must carry verified_on`);
+    if (typeof entry.sellable !== 'boolean') add(`${entry.id ?? `capability_registry[${index}]`}.sellable must be boolean`);
+    if (!hasText(entry.public_note)) add(`${entry.id ?? `capability_registry[${index}]`} must carry public_note`);
+    if (!PROVEN.has(entry.status) && entry.status !== 'Illustration' && entry.sellable !== false) {
+      add(`${entry.id ?? `capability_registry[${index}]`} is ${entry.status ?? 'missing'} and must not be sellable`);
+    }
+    if (entry.status === 'Illustration' && entry.sellable !== false) {
+      add(`${entry.id ?? `capability_registry[${index}]`} is Illustration and must not be sellable`);
+    }
+  }
+  uniqueStrings(registryIds, 'capability_registry.id');
+  const registryById = new Map(registry.filter(isObject).map((entry) => [entry.id, entry]));
+  for (const id of ['image-send', 'file-send', 'view-once', 'burn', 'autoscrub', 'processing-credits', 'pro-expiry-enforcement']) {
+    const entry = registryById.get(id);
+    if (!entry) add(`capability_registry must include ${id}`);
+    else if (entry.sellable !== false) add(`${id} must not be sellable while unfinished`);
+  }
+
+  const forbiddenClaims = stringList(pricing.forbidden_claims, 'forbidden_claims');
+  const forbiddenPhrases = phraseEntries(pricing.forbidden_phrases, 'forbidden_phrases');
+  const requiredPhrases = list(pricing.required_phrases, 'required_phrases');
+  const forbiddenPhraseText = phrases(forbiddenPhrases);
+  for (const [index, requirement] of requiredPhrases.entries()) {
+    if (!isObject(requirement) || !hasText(requirement.file) || !hasText(requirement.phrase)) {
+      add(`required_phrases[${index}] must bind a phrase to a file`);
+    }
+  }
+  requirePhrase(forbiddenClaims, /^subscription$/i, 'forbidden_claims must block subscription framing');
+  requirePhrase(forbiddenClaims, /^one time$/i, 'forbidden_claims must block one-time billing shorthand');
+  requirePhrase(forbiddenClaims, /^lifetime$/i, 'forbidden_claims must block lifetime entitlement claims');
+  requirePhrase(forbiddenClaims, /^unlimited messages$/i, 'forbidden_claims must block unlimited-message positioning');
+  requirePhrase(forbiddenPhraseText, /^Your month starts when you enter the code$/i, 'forbidden_phrases must block redemption-start timing');
+  requirePhrase(forbiddenPhraseText, /^When Pro ends, OSL returns to Free$/i, 'forbidden_phrases must block implemented-expiry timing');
+  requirePhrase(forbiddenPhraseText, /^unlocks encrypted image sending$/i, 'forbidden_phrases must block selling Planned image sending');
+  requirePhrase(forbiddenPhraseText, /^Bitcoin and Monero checkout is live$/i, 'forbidden_phrases must block live-checkout claims while checkout is paused');
+  const requiredPhraseText = requiredPhrases
+    .filter(isObject)
+    .map((entry) => `${entry.file}\n${entry.phrase}`);
+  requirePhrase(requiredPhraseText, /^index\.html\n.*Nothing renews.*never stores your payment details/im, 'index.html must require no-renewal and no-stored-payment copy');
+  requirePhrase(requiredPhraseText, /^download\.html\n.*Nothing renews.*never stores your payment details/im, 'download.html must require no-renewal and no-stored-payment copy');
+  requirePhrase(requiredPhraseText, /^download\.html\n.*Pro is an early-access purchase/im, 'download.html must require early-access purchase copy');
+  requirePhrase(requiredPhraseText, /^download\.html\n.*Checkout is paused/im, 'download.html must require paused-checkout copy');
+  requirePhrase(requiredPhraseText, /^docs\/terms\.html\n.*Automatic one-month expiry.*not implemented/im, 'terms must require the automatic-expiry limitation');
+
+  const crawlerPolicy = isObject(pricing.crawler_policy) ? pricing.crawler_policy : {};
+  if (!isObject(pricing.crawler_policy)) add('crawler_policy must be present');
+  if (crawlerPolicy.status_badge_attribute !== 'data-osl-status') {
+    add('crawler_policy.status_badge_attribute must be data-osl-status');
+  }
+  if (crawlerPolicy.feature_id_attribute !== 'data-osl-feature') {
+    add('crawler_policy.feature_id_attribute must be data-osl-feature');
+  }
+  const negationAware = stringList(crawlerPolicy.negation_aware, 'crawler_policy.negation_aware');
+  for (const phrase of ['subscription', 'renews', 'cryptographic erasure', 'Discord attachment scanning defeated']) {
+    if (!negationAware.includes(phrase)) add(`crawler_policy.negation_aware must include ${phrase}`);
+  }
+
+  const launchFrame = isObject(pricing.launch_frame) ? pricing.launch_frame : {};
+  if (!isObject(pricing.launch_frame)) add('launch_frame must be present');
+  if (launchFrame.stage !== 'pre-launch') add('launch_frame.stage must remain pre-launch');
+  if (launchFrame.matrix_url !== '/docs/status') add('launch_frame.matrix_url must remain /docs/status');
+  const surfacePolicy = isObject(pricing.surface_policy) ? pricing.surface_policy : {};
+  if (!isObject(pricing.surface_policy)) add('surface_policy must be present');
+  const matrixFiles = stringList(surfacePolicy.matrix_files, 'surface_policy.matrix_files');
+  const checkoutFiles = stringList(surfacePolicy.checkout_files, 'surface_policy.checkout_files');
+  const marketingFiles = stringList(surfacePolicy.marketing_capability_files, 'surface_policy.marketing_capability_files');
+  const forwardMarkers = stringList(surfacePolicy.forward_looking_markers, 'surface_policy.forward_looking_markers');
+  if (!matrixFiles.includes('docs/status.html')) add('surface_policy.matrix_files must include docs/status.html');
+  if (!checkoutFiles.includes('success.html')) add('surface_policy.checkout_files must include success.html');
+  if (surfacePolicy.checkout_region_start !== 'osl:checkout-summary') {
+    add('surface_policy.checkout_region_start must be osl:checkout-summary');
+  }
+  if (surfacePolicy.checkout_region_end !== '/osl:checkout-summary') {
+    add('surface_policy.checkout_region_end must be /osl:checkout-summary');
+  }
+  for (const file of ['index.html', 'features.html', 'download.html']) {
+    if (!marketingFiles.includes(file)) add(`surface_policy.marketing_capability_files must include ${file}`);
+  }
+  for (const marker of ['at v1', 'will ', 'not yet', 'early access']) {
+    if (!forwardMarkers.includes(marker)) add(`surface_policy.forward_looking_markers must include "${marker}"`);
+  }
+
+  const connectorMatrix = isObject(pricing.connector_matrix) ? pricing.connector_matrix : {};
+  if (!isObject(pricing.connector_matrix)) add('connector_matrix must be present');
+  const connectors = list(connectorMatrix.connectors, 'connector_matrix.connectors');
+  if (connectors.length === 0) add('connector_matrix.connectors must not be empty');
+  for (const [index, connector] of connectors.entries()) {
+    if (!isObject(connector)) {
+      add(`connector_matrix.connectors[${index}] must be an object`);
+      continue;
+    }
+    if (!hasText(connector.name)) add(`connector_matrix.connectors[${index}].name must be present`);
+    if (/\b\d+(\.\d+)?\s*%/.test(connector.provider_policy_risk ?? '')) {
+      add(`${connector.name ?? `connector_matrix.connectors[${index}]`} must not fabricate a provider-policy risk percentage`);
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error('check-claims pricing policy failures:');
+    for (const error of errors) {
+      console.error(`data/pricing.json:0: [pricing policy] ${error}`);
+    }
+    process.exit(1);
+  }
+
   return {
-    patterns: forbiddenPatterns(pricing.forbidden_claims ?? []),
-    capabilityLabels: pricing.capability_labels ?? [],
-    crawlerPolicy: pricing.crawler_policy ?? {},
-    forbiddenPhrases: pricing.forbidden_phrases ?? [],
-    requiredPhrases: pricing.required_phrases ?? [],
-    registryById: new Map(registry.map((entry) => [entry.id, entry])),
-    surfacePolicy: pricing.surface_policy ?? {},
-    launchFrame: pricing.launch_frame ?? {},
-    intendedGrantDays: pricing.tiers?.pro?.intended_grant_days,
+    patterns: forbiddenPatterns(forbiddenClaims),
+    capabilityLabels,
+    crawlerPolicy,
+    forbiddenPhrases,
+    requiredPhrases,
+    registryById,
+    surfacePolicy,
+    launchFrame,
+    intendedGrantDays: pro.intended_grant_days,
   };
 }
 

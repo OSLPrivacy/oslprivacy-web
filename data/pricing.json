@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "claim_gate_source_sha256": "4807ffb0a4d4fe170f220f507681f5f572036e909de518ef355a945503ebc405",
+  "claim_gate_source_sha256": "a95845a44ebbe39bb832dd699c4473e34ae8ab40bcc9529f54ad548b4da3cbce",
   "manifest_version": 7,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
