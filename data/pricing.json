@@ -14,6 +14,25 @@
     "no_account_required": true,
     "period_starts_on_redemption": false,
     "intended_period_starts_on_redemption": true,
+    "truth_contract": {
+      "accept_requires_top_level": [
+        "model",
+        "capability_registry",
+        "connector_matrix"
+      ],
+      "pricing_source": "/model",
+      "capability_source": "/capability_registry",
+      "connector_source": "/connector_matrix",
+      "checkout_state": "paused_until_redemption_records_and_automatic_one_month_expiry_exist",
+      "absence_rule": "Absence of implementation evidence, consent, binding, or authority means refusal or a Planned label; it never means permission.",
+      "publication_rule": "Public copy may use the intended $5 one-month price and the no-renewal, no-stored-payment, no-account-required claims, but must not promise redemption-start timing or sell any capability whose registry entry is not sellable.",
+      "must_not_publish_until_implemented": [
+        "Your month starts when you enter the code.",
+        "Automatic Pro expiry is implemented.",
+        "Processing credits are on sale.",
+        "A Planned capability is included in a purchase today."
+      ]
+    },
     "$redemption_note": "Owner decision 2026-07-26: the month does NOT start at purchase. It starts when the code is entered into the OSL client, so a code bought and left unused for months still delivers a full 30 days. Two separate clocks: shelf life (how long an unredeemed code may still be entered) and entitlement period (the 30 days of Pro). This is product truth, but see publication.not_publishable below -- the client does not implement it yet, so the WEBSITE must not claim it.",
     "$why_this_matters": "Owner decision 2026-07-26: payment information is NEVER saved, including for repeat purchases. The website may state the $5-per-month rate, but must never imply a stored card, a recurring mandate, or a cancellation obligation."
   },
