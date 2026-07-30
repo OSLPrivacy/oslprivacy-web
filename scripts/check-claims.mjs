@@ -2795,6 +2795,10 @@ function h4ExplainerErrors(fileRel, content) {
   const badges = labelledElements(block.html);
   const articles = [...block.html.matchAll(/<article\b[^>]*\bdata-pws-stage=["'](?:before|after)["'][^>]*>/gi)];
   const boundaryItems = [...block.html.matchAll(/<li\b[^>]*>/gi)];
+  const bannedErasurePhrases = [
+    'not cryptographic erasure',
+    'cannot make',
+  ];
 
   const requirements = [
     {
@@ -2806,8 +2810,12 @@ function h4ExplainerErrors(fileRel, content) {
       passed: /\bburn\b.{0,90}\bacts after disclosure\b/i.test(rendered),
     },
     {
-      label: 'not-cryptographic-erasure limitation',
-      passed: /\bit is not cryptographic erasure\b/i.test(rendered),
+      label: 'recipient-key and outside-copy limitation',
+      passed: /\bburn does not revoke recipient keys or control copies outside osl\b/i.test(rendered),
+    },
+    {
+      label: 'banned erasure phrasing excluded',
+      passed: bannedErasurePhrases.every((phrase) => !rendered.includes(phrase)),
     },
     {
       label: 'local deletion boundary',
@@ -7513,15 +7521,26 @@ if (SELF_TEST) {
   if (!baselineClean) failures += 1;
   console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} production PWS/Burn explainer baseline`);
 
-  const requiredLimitation = 'It is not cryptographic erasure.';
+  const requiredLimitation = 'Burn does not revoke recipient keys or control copies outside OSL.';
   const limitationOccurrences = h4Content.split(requiredLimitation).length - 1;
   const mutatedH4 = h4Content.replace(requiredLimitation, '');
   const limitationMutationCaught = limitationOccurrences === 1
     && analyseFile('features.html', mutatedH4, config)
       .some((error) => error.kind === 'h4 explainer contract'
-        && error.text.includes('not-cryptographic-erasure limitation'));
+        && error.text.includes('recipient-key and outside-copy limitation'));
   if (!limitationMutationCaught) failures += 1;
   console.log(`  ${limitationMutationCaught ? 'caught ' : 'MISSED '} exact removal of "${requiredLimitation}"`);
+
+  const bannedH4Mutation = h4Content.replace(
+    requiredLimitation,
+    `${requiredLimitation} It is not cryptographic erasure and cannot make remote copies vanish.`,
+  );
+  const bannedH4MutationCaught = bannedH4Mutation !== h4Content
+    && analyseFile('features.html', bannedH4Mutation, config)
+      .some((error) => error.kind === 'h4 explainer contract'
+        && error.text.includes('banned erasure phrasing excluded'));
+  if (!bannedH4MutationCaught) failures += 1;
+  console.log(`  ${bannedH4MutationCaught ? 'caught ' : 'MISSED '} banned H4 erasure phrasing insertion`);
 
   console.log('\ncheck-claims self-test (production Scrub baseline and exact mutation):');
   const scrubMarker = '<p class="eyebrow">Scrub</p>';

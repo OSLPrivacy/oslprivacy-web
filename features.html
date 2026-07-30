@@ -108,7 +108,7 @@
       <header class="pws-burn-heading">
         <p class="eyebrow">Before and after disclosure</p>
         <h2 id="pws-burn-heading" class="section-heading">Two moments. Two safeguards.</h2>
-        <p id="pws-burn-intro" class="section-subhead"><abbr title="Privacy Warning System">PWS</abbr> acts before disclosure. Burn acts after disclosure. They are separate, Planned safeguards for two different moments; neither can make information that another person has seen cease to exist.</p>
+        <p id="pws-burn-intro" class="section-subhead"><abbr title="Privacy Warning System">PWS</abbr> acts before disclosure. Burn acts after disclosure. They are separate, Planned safeguards for two different moments; after information leaves your device, OSL can only clean up reachable OSL or service-held copies and report the result.</p>
       </header>
 
       <div class="pws-burn-stages">
@@ -137,9 +137,9 @@
             <h3 id="pws-stage-after">Burn</h3>
             <span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span>
           </div>
-          <p><strong>Burn acts after disclosure.</strong> It is a Planned cleanup and cooperation flow, not a promise that every copy disappears.</p>
-          <p class="pws-burn-erasure-limit"><strong>It is not cryptographic erasure.</strong> Burn cannot make a recipient, connected service, export, or backup forget information it already received.</p>
-          <ul class="pws-burn-limits" aria-label="What Burn can and cannot do">
+          <p><strong>Burn acts after disclosure.</strong> It is a Planned cleanup and cooperation flow for reachable copies and reported outcomes, with no promise about copies outside OSL.</p>
+          <p class="pws-burn-erasure-limit"><strong>Burn does not revoke recipient keys or control copies outside OSL.</strong> A recipient device, connected service, export, backup, screenshot, camera, or already viewed content can remain.</p>
+          <ul class="pws-burn-limits" aria-label="What Burn covers and leaves outside">
             <li><strong>Local deletion.</strong><span>Delete the local OSL state that this device controls.</span></li>
             <li><strong>Authenticated cooperative peer request.</strong><span>Ask the other OSL client to delete its copy; the peer must cooperate.</span></li>
             <li><strong>Host deletion attempt.</strong><span>Ask the connected service to remove its hosted item without claiming the service complied.</span></li>
