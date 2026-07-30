@@ -3833,35 +3833,35 @@ function validateH7Comparison(pricing, asOf) {
   const scope = dimensionById.get('scope');
   const scopeFacts = new Map(list(scope?.deleteme_facts).map((fact) => [fact?.id, fact]));
   const standardScope = scopeFacts.get('standard-us-87')?.paraphrase ?? '';
-  const broaderScope = scopeFacts.get('broader-catalog-976')?.paraphrase ?? '';
+  const broaderScope = scopeFacts.get('broader-catalog-986')?.paraphrase ?? '';
   if (scope?.status !== 'conflicted'
     || !/\b87\b/.test(standardScope)
     || !/\bStandard[- ]US\b/i.test(standardScope)
-    || !/\b976\b/.test(broaderScope)
+    || !/\b986\b/.test(broaderScope)
     || !/\bnot\b[^.]{0,80}\bStandard[- ]US\b/i.test(broaderScope)) {
-    add('SCOPE_SEMANTICS', 'scope must preserve 87 as the Standard-US named list, 976 as a separate non-Standard-US catalog, and the conflict');
+    add('SCOPE_SEMANTICS', 'scope must preserve 87 as the Standard-US named list, 986 as a separate non-Standard-US catalog, and the conflict');
   }
   if (!list(scope?.unknowns).some((unknown) => unknown?.field === 'single_current_global_coverage_count')) {
     add('SCOPE_CONFLICT', 'scope must preserve the unresolved global coverage count');
   }
-  const addedStandard976Claim = list(scope?.deleteme_facts).some((fact) => {
+  const addedStandard986Claim = list(scope?.deleteme_facts).some((fact) => {
     const text = `${fact?.paraphrase ?? ''} ${fact?.qualifiers ?? ''}`;
-    if (!/\b976\b/.test(text) || !/\bStandard[- ]US\b/i.test(text)) return false;
+    if (!/\b986\b/.test(text) || !/\bStandard[- ]US\b/i.test(text)) return false;
     const explicitlySeparated = /\bnot\b[^.!?;]{0,100}\bStandard[- ]US\b/i.test(text)
-      || /\bStandard[- ]US\b[^.!?;]{0,100}\bnot\b[^.!?;]{0,80}\b976\b/i.test(text);
+      || /\bStandard[- ]US\b[^.!?;]{0,100}\bnot\b[^.!?;]{0,80}\b986\b/i.test(text);
     return !explicitlySeparated;
   });
-  if (addedStandard976Claim) {
-    add('SCOPE_SEMANTICS', 'no fact may present 976 as Standard-US included scope');
+  if (addedStandard986Claim) {
+    add('SCOPE_SEMANTICS', 'no fact may present 986 as Standard-US included scope');
   }
   const scopeClaimTexts = claimTexts(scope);
   if (scopeClaimTexts.some((text) => /\b(?:50|85|850)\s*\+?\b/.test(text))) {
     add('SCOPE_SEMANTICS', '50+, 85+, and 850+ are not admissible scope figures anywhere in the comparison');
   }
-  const scope976Occurrences = scopeClaimTexts
-    .reduce((count, text) => count + [...text.matchAll(/\b976\b/g)].length, 0);
-  if (scope976Occurrences !== 2) {
-    add('SCOPE_SEMANTICS', '976 may occur only in the pinned broader-catalog fact and the scope conflict explanation');
+  const scope986Occurrences = scopeClaimTexts
+    .reduce((count, text) => count + [...text.matchAll(/\b986\b/g)].length, 0);
+  if (scope986Occurrences !== 2) {
+    add('SCOPE_SEMANTICS', '986 may occur only in the pinned broader-catalog fact and the scope conflict explanation');
   }
 
   const price = dimensionById.get('price');
@@ -6040,14 +6040,14 @@ const H7_SELF_TEST_MUTATIONS = [
     },
   },
   {
-    name: '976 presented as Standard-US included scope',
+    name: '986 presented as Standard-US included scope',
     expect: 'H7_SCOPE_SEMANTICS',
     mutate(pricing) {
       const scope = pricing.research_comparisons.h7_deleteme.dimensions
         .find((dimension) => dimension.id === 'scope');
       scope.deleteme_facts.push({
-        id: 'contradictory-standard-us-976',
-        paraphrase: 'DeleteMe includes 976 sites in the Standard-US plan.',
+        id: 'contradictory-standard-us-986',
+        paraphrase: 'DeleteMe includes 986 sites in the Standard-US plan.',
         source_ids: ['broader-broker-catalog'],
         confidence: 'high',
         qualifiers: 'Mutation adds a contradictory fact without changing the pinned facts.',
@@ -6179,10 +6179,10 @@ for (const count of ['50+', '85+', '850+']) {
 }
 for (const field of ['unknown', 'limitation', 'conclusion']) {
   H7_ADVERSARIAL_MUTATIONS.push({
-    name: `H7_SCOPE_976_${field.toUpperCase()}`,
+    name: `H7_SCOPE_986_${field.toUpperCase()}`,
     expect: 'H7_SCOPE_SEMANTICS',
     mutate(pricingFixture) {
-      appendH7ClaimField(pricingFixture, 'scope', field, 'DeleteMe covers 976 sites.');
+      appendH7ClaimField(pricingFixture, 'scope', field, 'DeleteMe covers 986 sites.');
     },
   });
 }

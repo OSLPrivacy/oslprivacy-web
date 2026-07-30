@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "claim_gate_source_sha256": "609948068f22686157ad79b3632918ade71a4302cf0121c1326932fa3014bee1",
+  "claim_gate_source_sha256": "3ab59e78f4e9278a823d4ca9c2119a92674f0c387b146d256238e1be692761d0",
   "manifest_version": 7,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
@@ -812,7 +812,7 @@
           "url": "https://joindeleteme.com/sites-we-remove-from/",
           "title": "Sites We Remove From",
           "section": "List of Data Brokers We Have Found and Removed Data From",
-          "published_or_effective_on": "2026-02-04",
+          "published_or_effective_on": "2026-07-30",
           "accessed_on": "2026-07-30",
           "refresh_evidence": {
             "checked_on": "2026-07-30",
@@ -990,7 +990,7 @@
         {
           "id": "scope",
           "status": "conflicted",
-          "conflict_explanation": "The official Standard-US article enumerates 87 included domain entries, while the 976 figure is a broader historical catalog of brokers DeleteMe says it has found and removed data from. These scopes are not interchangeable, and the official pages do not establish one current global coverage count.",
+          "conflict_explanation": "The official Standard-US article enumerates 87 included domain entries, while the 986 figure is a broader historical catalog of brokers DeleteMe says it has found and removed data from. These scopes are not interchangeable, and the official pages do not establish one current global coverage count.",
           "deleteme_facts": [
             {
               "id": "standard-us-87",
@@ -1002,8 +1002,8 @@
               "qualifiers": "The list can change, and an invitation to report an unlisted broker is not a promise that the broker will be accepted or removable."
             },
             {
-              "id": "broader-catalog-976",
-              "paraphrase": "DeleteMe's separate catalog says it has found and removed data from 976 brokers; this broader historical figure is not the Standard-US included-site count.",
+              "id": "broader-catalog-986",
+              "paraphrase": "DeleteMe's separate catalog says it has found and removed data from 986 brokers; this broader historical figure is not the Standard-US included-site count.",
               "source_ids": [
                 "broader-broker-catalog"
               ],
