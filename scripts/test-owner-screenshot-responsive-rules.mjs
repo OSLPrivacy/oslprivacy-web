@@ -19,6 +19,10 @@ const REQUIRED_MAPPINGS = [
       'rule=.eyebrow .osl-status',
     ],
     selector: '.eyebrow .osl-status',
+    declarations: [
+      ['margin-left', /^var\(--s-2\)$/],
+      ['letter-spacing', /^0\.08em$/],
+    ],
   },
   {
     id: 'owner-390-price-rate-wrap',
@@ -30,6 +34,9 @@ const REQUIRED_MAPPINGS = [
       'rule=.price-rate',
     ],
     selector: '.price-rate',
+    declarations: [
+      ['white-space', /^nowrap$/],
+    ],
   },
   {
     id: 'owner-320-status-matrix-scroll',
@@ -41,6 +48,9 @@ const REQUIRED_MAPPINGS = [
       'rule=.status-table-scroll',
     ],
     selector: '.status-table-scroll',
+    declarations: [
+      ['overflow-x', /^auto$/],
+    ],
   },
   {
     id: 'owner-768-donate-scene-overflow',
@@ -52,6 +62,10 @@ const REQUIRED_MAPPINGS = [
       'rule=.mission-scene',
     ],
     selector: '.mission-scene',
+    declarations: [
+      ['width', /^100%$/],
+      ['overflow-x', /^clip$/],
+    ],
   },
 ];
 
@@ -71,6 +85,30 @@ function walkFiles(dir) {
     }
   }
   return files;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function declarationBlocksBefore(cssText, selector, beforeIndex) {
+  const blockPattern = new RegExp(`${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`, 'g');
+  return [...cssText.matchAll(blockPattern)]
+    .filter((match) => match.index < beforeIndex)
+    .map((match) => match[1]);
+}
+
+function blockHasDeclaration(block, property, valuePattern) {
+  return block
+    .split(';')
+    .map((declaration) => declaration.trim())
+    .some((declaration) => {
+      const colon = declaration.indexOf(':');
+      if (colon === -1) return false;
+      const name = declaration.slice(0, colon).trim().toLowerCase();
+      const value = declaration.slice(colon + 1).trim();
+      return name === property && valuePattern.test(value);
+    });
 }
 
 if (!PACKET) {
@@ -117,9 +155,14 @@ for (const mapping of REQUIRED_MAPPINGS) {
     }
   }
   const blockStart = blockMatch.index;
-  const selectorIndex = css.indexOf(mapping.selector);
-  if (selectorIndex === -1 || selectorIndex > blockStart) {
+  const selectorBlocks = declarationBlocksBefore(css, mapping.selector, blockStart);
+  if (selectorBlocks.length === 0) {
     fail(`mapped selector ${mapping.selector} must exist before the owner mapping block`);
+  }
+  for (const [property, valuePattern] of mapping.declarations) {
+    if (!selectorBlocks.some((block) => blockHasDeclaration(block, property, valuePattern))) {
+      fail(`mapped selector ${mapping.selector} must set ${property} for ${mapping.id}`);
+    }
   }
 }
 
