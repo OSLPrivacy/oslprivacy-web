@@ -2,7 +2,7 @@
 // Chrome/Chromium build directly over the DevTools Protocol via the Node 24
 // global WebSocket - no puppeteer/playwright package, no npm install.
 import { spawn } from 'node:child_process';
-import { existsSync, globSync } from 'node:fs';
+import { existsSync, globSync, readFileSync, readdirSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import os from 'node:os';
@@ -13,13 +13,79 @@ import { fileURLToPath } from 'node:url';
 const SCRIPTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.dirname(SCRIPTS_DIR);
 const SERVE_LOCAL_PATH = path.join(SCRIPTS_DIR, 'serve-local.mjs');
+const PUBLIC_SURFACE_MANIFEST_PATH = path.join(REPO_ROOT, 'data', 'public-surface-manifest.json');
 const DEFAULT_OUT_DIR = path.join(REPO_ROOT, 'docs', 'evidence', 'website-matrix');
 
-const DEFAULT_PAGES = [
-  '/', '/download', '/features', '/audit', '/donate', '/success', '/cancel',
-  '/docs/', '/docs/faq', '/docs/status', '/docs/how-it-works', '/docs/getting-started',
-  '/docs/privacy', '/docs/terms', '/docs/threat-model',
-];
+function routeFromHtmlPath(htmlPath) {
+  if (htmlPath === 'index.html') return '/';
+  if (htmlPath.endsWith('/index.html')) return `/${htmlPath.slice(0, -'index.html'.length)}`;
+  return `/${htmlPath.slice(0, -'.html'.length)}`;
+}
+
+function rel(file) {
+  return path.relative(REPO_ROOT, file).replaceAll(path.sep, '/');
+}
+
+function walkedFiles(directory) {
+  let entries;
+  try {
+    entries = readdirSync(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+
+  const files = [];
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...walkedFiles(full));
+    else if (entry.isFile()) files.push(full);
+  }
+  return files.sort();
+}
+
+function discoverPublicHtmlFiles() {
+  const rootEntries = readdirSync(REPO_ROOT, { withFileTypes: true });
+  const html = rootEntries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
+    .map((entry) => entry.name);
+  html.push(...walkedFiles(path.join(REPO_ROOT, 'docs'))
+    .filter((file) => file.toLowerCase().endsWith('.html'))
+    .map((file) => rel(file)));
+  return html.sort();
+}
+
+function publicPagesFromManifest() {
+  const manifest = JSON.parse(readFileSync(PUBLIC_SURFACE_MANIFEST_PATH, 'utf8'));
+  if (!Array.isArray(manifest.html) || manifest.html.length === 0) {
+    throw new Error('public surface manifest must declare public HTML pages');
+  }
+  const declared = [...manifest.html].sort();
+  const discovered = discoverPublicHtmlFiles();
+  if (JSON.stringify(declared) !== JSON.stringify(discovered)) {
+    const declaredSet = new Set(declared);
+    const discoveredSet = new Set(discovered);
+    const missing = discovered.filter((htmlPath) => !declaredSet.has(htmlPath));
+    const extra = declared.filter((htmlPath) => !discoveredSet.has(htmlPath));
+    throw new Error(
+      'public surface manifest HTML must exactly match discovered root/docs HTML so every public page is captured'
+      + `; missing from manifest: ${missing.join(', ') || 'none'}`
+      + `; not found on disk: ${extra.join(', ') || 'none'}`,
+    );
+  }
+  const pages = manifest.html.map((htmlPath) => {
+    if (typeof htmlPath !== 'string' || !htmlPath.endsWith('.html')) {
+      throw new Error(`public surface manifest has invalid HTML entry: ${String(htmlPath)}`);
+    }
+    return routeFromHtmlPath(htmlPath);
+  });
+  if (new Set(pages).size !== pages.length) {
+    throw new Error('public surface manifest maps multiple HTML entries to the same route');
+  }
+  return pages;
+}
+
+const DEFAULT_PAGES = publicPagesFromManifest();
 const DEFAULT_WIDTHS = [320, 360, 390, 768, 1024, 1440];
 const CONDITIONS = ['js-on', 'js-off', 'reduced'];
 const REQUIRED_CONDITIONS = ['js-on', 'js-off', 'reduced'];

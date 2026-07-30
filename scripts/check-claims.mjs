@@ -7719,7 +7719,29 @@ if (SELF_TEST) {
 
   console.log(`check-claims self-test (H7 DeleteMe manifest, as of ${AS_OF}):`);
   const comparison = pricing.research_comparisons?.h7_deleteme;
+  const h29MutatedPricing = structuredClone(pricing);
+  if (h29MutatedPricing.research_comparisons?.h7_deleteme?.sources?.[0]?.refresh_evidence) {
+    h29MutatedPricing.research_comparisons.h7_deleteme.sources[0].refresh_evidence.result =
+      'The source was reviewed.';
+  }
+  const h29RefreshMutationCaught = validateH7Comparison(h29MutatedPricing, AS_OF)
+    .some((error) => error.startsWith('H7_SOURCE_REFRESH:'));
+  const h29MaintainedSourcesClean = h7ValidationErrors.length === 0
+    && comparison?.reviewed_on === AS_OF
+    && comparison?.sources?.length >= 8
+    && comparison.sources.every((source) => source.accessed_on === comparison.reviewed_on
+      && source.refresh_evidence?.checked_on === source.accessed_on
+      && source.refresh_evidence?.method === 'manual_official_source_review'
+      && /\bofficial DeleteMe\/Abine source\b/i.test(source.refresh_evidence?.result ?? '')
+      && /\bH7 comparison\b/i.test(source.refresh_evidence?.result ?? '')
+      && new RegExp(`\\bon ${source.accessed_on}\\b`).test(source.refresh_evidence?.result ?? '')
+      && /\b(live URL\/title|indexed-content) checks\b/i.test(source.refresh_evidence?.result ?? ''));
   const h7Assertions = [
+    {
+      name: 'Promote the clean H7 DeleteMe candidate with maintained source-refresh evidence',
+      pass: h29MaintainedSourcesClean && h29RefreshMutationCaught,
+      detail: h29MaintainedSourcesClean ? '' : h7ValidationErrors.join('; '),
+    },
     {
       name: 'valid fixture passes the full H7 validator',
       pass: h7ValidationErrors.length === 0,
@@ -7906,6 +7928,36 @@ if (SELF_TEST) {
         && error.text.includes('banned erasure phrasing excluded'));
   if (!faqBurnBannedMutationCaught) failures += 1;
   console.log(`  ${faqBurnBannedMutationCaught ? 'caught ' : 'MISSED '} banned FAQ burn erasure phrasing insertion`);
+
+  const h26TestName = 'Promote the clean H4 PWS and Burn candidate instead of rebuilding the explainer';
+  const h4Block = sectionBlocks(h4Content).find((block) => (
+    /<section\b[^>]*\bdata-pws-burn-explainer(?:\s|=|>)/i.test(block.html)
+  ));
+  const h4Rendered = shortText(renderedTextWithSourceMap(h4Block?.html ?? '').text)
+    .replace(/\bPWS Privacy Warning System\b/g, 'PWS');
+  const faqBurnCopy = burnBoundaryCopyElements(faqContent)[0];
+  const h26PromotedFragments = [
+    'PWS acts before disclosure. Burn acts after disclosure. They are separate planned safeguards for two different moments; after information leaves your device, OSL can only clean up reachable OSL or service-held copies and report the result.',
+    'It is a Planned cleanup and cooperation flow for reachable copies and reported outcomes, with no promise about copies outside OSL.',
+    'Burn does not revoke recipient keys or control copies outside OSL.',
+    'Delete the local OSL state that this device controls.',
+    'Ask the other OSL client to delete its copy; the peer must cooperate.',
+    'Ask the connected service to remove its hosted item without claiming the service complied.',
+    'Copies, screenshots, exports, and backups outside OSL can remain.',
+  ];
+  const h26PromotedBaselineClean = Boolean(h4Block && faqBurnCopy)
+    && h26PromotedFragments.every((fragment) => (
+      h4Rendered.includes(fragment) && faqBurnCopy.text.includes(fragment)
+    ));
+  const h26PromotedRawNeedle = 'They are separate planned safeguards for two different moments; after information leaves your device, OSL can only clean up reachable OSL or service-held copies and report the result.';
+  const mutatedFaqWithoutPromotedBoundary = faqContent.replace(h26PromotedRawNeedle, '');
+  const h26PromotedMutationCaught = mutatedFaqWithoutPromotedBoundary !== faqContent
+    && !h26PromotedFragments.every((fragment) => (
+      burnBoundaryCopyElements(mutatedFaqWithoutPromotedBoundary)[0]?.text.includes(fragment)
+    ));
+  const h26NamedTestPassed = h26PromotedBaselineClean && h26PromotedMutationCaught;
+  if (!h26NamedTestPassed) failures += 1;
+  console.log(`  ${h26NamedTestPassed ? 'passed ' : 'FAILED '} ${h26TestName}`);
 
   console.log('\ncheck-claims self-test (production Scrub baseline and exact mutation):');
   const scrubMarker = '<p class="eyebrow">Scrub</p>';

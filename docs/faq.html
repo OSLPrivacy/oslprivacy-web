@@ -126,7 +126,19 @@
         <p>Yes. Free includes protected text on supported connectors with no ads and no message limit. Free Scrub is <span class="osl-status" data-osl-feature="scrub-discovery" data-osl-status="Planned">Planned</span> for v1 and is not available in the shipping app yet. The intended Pro price is <!--osl:tiers.pro.display-->$5<!--/osl--> for one month, but checkout is paused until one-month redemption and expiry are implemented. Encrypted image sending <span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span> is not in the shipping app yet. Pro is not a subscription — nothing renews, and we never store your payment details.</p>
 
         <h3>What does "burn" mean in OSL?</h3>
-        <p data-burn-boundary-copy>Burn is <span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span> and is not a working peer action today. <abbr title="Privacy Warning System">PWS</abbr> acts before disclosure; Burn acts after disclosure. Burn is a Planned cleanup and cooperation flow for reachable copies and reported outcomes, with no promise about copies outside OSL. Burn does not revoke recipient keys or control copies outside OSL. The boundaries are local deletion, authenticated cooperative peer request, host deletion attempt, and unavoidable copies and screenshots. A recipient device, connected service, export, backup, screenshot, camera, or already viewed content can remain. View-once and timed deletion are shown only where the active client can enforce and report their real outcome.</p>
+        <div data-burn-boundary-copy>
+          <p>Burn is <span class="osl-status" data-osl-feature="burn" data-osl-status="Planned">Planned</span> and is not a working peer action today.</p>
+          <p><abbr title="Privacy Warning System">PWS</abbr> acts before disclosure. Burn acts after disclosure. They are separate planned safeguards for two different moments; after information leaves your device, OSL can only clean up reachable OSL or service-held copies and report the result.</p>
+          <p><strong>Burn acts after disclosure.</strong> It is a Planned cleanup and cooperation flow for reachable copies and reported outcomes, with no promise about copies outside OSL.</p>
+          <p><strong>Burn does not revoke recipient keys or control copies outside OSL.</strong> A recipient device, connected service, export, backup, screenshot, camera, or already viewed content can remain.</p>
+          <ul>
+            <li><strong>Local deletion.</strong> Delete the local OSL state that this device controls.</li>
+            <li><strong>Authenticated cooperative peer request.</strong> Ask the other OSL client to delete its copy; the peer must cooperate.</li>
+            <li><strong>Host deletion attempt.</strong> Ask the connected service to remove its hosted item without claiming the service complied.</li>
+            <li><strong>Unavoidable copies and screenshots.</strong> Copies, screenshots, exports, and backups outside OSL can remain.</li>
+          </ul>
+          <p>View-once and timed deletion are shown only where the active client can enforce and report their real outcome.</p>
+        </div>
 
         <h3>What exactly do I get for paying?</h3>
         <p>Today, Pro buys one thing: new privacy tools early, as they reach the public beta channel. Encrypted image sending — PNG and JPEG — <span class="osl-status" data-osl-feature="image-send" data-osl-status="Planned">Planned</span> is built but is not wired into the shipping app, so do not buy Pro today expecting to send images. It is the next thing Pro is meant to unlock, and it is labelled Planned until a released build proves it.</p>
