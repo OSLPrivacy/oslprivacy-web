@@ -10,6 +10,7 @@ const ROOT = path.dirname(SCRIPT_DIR);
 const VERIFIER = path.join(SCRIPT_DIR, 'verify-live-build.mjs');
 const README = path.join(ROOT, 'README.md');
 const H24_ACCEPTANCE_COMMAND = 'node scripts/pricing-sync.mjs --check && node scripts/check-claims.mjs && node scripts/test-live-build.mjs';
+const H25_ACCEPTANCE_COMMAND = 'test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs --url="$OSL_LIVE_URL" --sha="$OSL_LIVE_SHA" --branch=main --environment=production';
 const commit = 'a'.repeat(40);
 const shortCommit = commit.slice(0, 8);
 const branch = 'main';
@@ -213,6 +214,7 @@ async function checkReadmePromotionContract() {
     'node scripts/test-live-build.mjs',
     'promotion path for the clean H1 pricing candidate',
     'Do not rebuild pricing copy by hand during deployment',
+    H25_ACCEPTANCE_COMMAND,
     'test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs',
     '--url="$OSL_LIVE_URL"',
     '--sha="$OSL_LIVE_SHA"',
@@ -249,7 +251,7 @@ try {
     verifierBranch: 'preview-branch',
     verifierEnvironment: 'preview',
   });
-  await check('test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs --url="$OSL_LIVE_URL" --sha="$OSL_LIVE_SHA" --branch=main --environment=production', 'positive', 0, '3 served files and 5 artifact leaves are bound');
+  await check(H25_ACCEPTANCE_COMMAND, 'positive', 0, '3 served files and 5 artifact leaves are bound');
   await check('exact live artifact', 'positive', 0, '3 served files and 5 artifact leaves are bound');
   await check('missing build.json refusal', 'build-404', 1, 'HTTP 404');
   await check('invalid build.json refusal', 'invalid-json', 1, 'SyntaxError');
