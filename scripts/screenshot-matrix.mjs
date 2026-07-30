@@ -364,6 +364,10 @@ async function waitForSettle() {
   await delay(150);
 }
 
+async function writeScreenshot(filePath, data) {
+  await writeFile(filePath, data, 'base64');
+}
+
 async function captureCombo({ cdp, sessionId, page, url, width, condition, outDir }) {
   await cdp.send('Emulation.setDeviceMetricsOverride', {
     width,
@@ -385,7 +389,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
   const fullPath = path.join(dir, `${width}-${condition}-full.png`);
 
   const fold = await cdp.send('Page.captureScreenshot', { format: 'png' }, sessionId);
-  await writeFile(foldPath, Buffer.from(fold.data, 'base64'));
+  await writeScreenshot(foldPath, fold.data);
 
   const metrics = await cdp.send('Page.getLayoutMetrics', {}, sessionId);
   const contentSize = metrics.cssContentSize || metrics.contentSize;
@@ -394,7 +398,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     captureBeyondViewport: true,
     clip: { x: 0, y: 0, width: contentSize.width, height: contentSize.height, scale: 1 },
   }, sessionId);
-  await writeFile(fullPath, Buffer.from(full.data, 'base64'));
+  await writeScreenshot(fullPath, full.data);
 
   let measurement = {
     visibleTextChars: null,
