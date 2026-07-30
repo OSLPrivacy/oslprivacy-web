@@ -3135,6 +3135,9 @@ function scrubDemoContractErrors(fileRel, content) {
     '',
   );
   const visualText = shortText(renderedTextWithSourceMap(visualOnlyHtml).text);
+  const indexDeletionVisual =
+    fileRel === 'index.html'
+      && /\b(?:scrub-flat-cleared|scrub-vapor|scrub-eraser|scrub-erase-line)\b/i.test(block.html);
   const requirements = [
     {
       label: 'username-only local-export evidence',
@@ -3150,7 +3153,8 @@ function scrubDemoContractErrors(fileRel, content) {
       label: 'no deletion-action UI',
       passed: !/\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|erase|erases|erased|erasing|clear|clears|cleared|clean|cleans|cleaned|cleaning)\b/i.test(visualText)
         && !/\bscrub-eraser\b/i.test(block.html)
-        && !/\bscrub-erase-line\b/i.test(block.html),
+        && !/\bscrub-erase-line\b/i.test(block.html)
+        && !indexDeletionVisual,
     },
     {
       label: 'no masked generic findings',
@@ -5338,6 +5342,12 @@ const SELF_TEST_CASES = [
     name: 'index Scrub demo exposes implementation machinery',
     file: 'index.html',
     html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks only username text in a local export you choose.</p><p>Provider exports, selected-account binding and completeness receipts are not qualified.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    expect: 'h17 scrub demo contract',
+  },
+  {
+    name: 'index Scrub demo includes deletion-style cleared visual',
+    file: 'index.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Scanning usernames locally</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div><div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i></span></div></section>',
     expect: 'h17 scrub demo contract',
   },
   {
@@ -7659,6 +7669,14 @@ if (SELF_TEST) {
   if (!baselineClean) failures += 1;
   console.log(`  ${baselineClean ? 'passed ' : 'FAILED '} production PWS/Burn explainer baseline`);
 
+  const mutatedH4MissingMarker = h4Content.replace(' data-pws-burn-explainer', '');
+  const h4MarkerMutationCaught = mutatedH4MissingMarker !== h4Content
+    && analyseFile('features.html', mutatedH4MissingMarker, config)
+      .some((error) => error.kind === 'h4 explainer contract'
+        && error.text.includes('expected exactly one rendered PWS/Burn explainer section'));
+  if (!h4MarkerMutationCaught) failures += 1;
+  console.log(`  ${h4MarkerMutationCaught ? 'caught ' : 'MISSED '} exact removal of data-pws-burn-explainer`);
+
   const requiredLimitation = 'Burn does not revoke recipient keys or control copies outside OSL.';
   const limitationOccurrences = h4Content.split(requiredLimitation).length - 1;
   const mutatedH4 = h4Content.replace(requiredLimitation, '');
@@ -7750,6 +7768,17 @@ if (SELF_TEST) {
     && mutatedH17 !== h17Content
     && analyseFile('index.html', mutatedH17, config)
       .some((error) => error.kind === 'h17 scrub demo contract');
+  const h17VisualInsertionPoint = '          </div>\n        </article>\n      </div>\n\n    </section>\n\n    <section class="section home-buy';
+  const h17VisualInsertionOccurrences = h17Content.split(h17VisualInsertionPoint).length - 1;
+  const h17VisualMutation = h17Content.replace(
+    h17VisualInsertionPoint,
+    '          </div>\n          <div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i></span></div>\n        </article>\n      </div>\n\n    </section>\n\n    <section class="section home-buy',
+  );
+  const h17DeletionVisualCaught = h17VisualInsertionOccurrences === 1
+    && h17VisualMutation !== h17Content
+    && analyseFile('index.html', h17VisualMutation, config)
+      .some((error) => error.kind === 'h17 scrub demo contract'
+        && error.text.includes('no deletion-action UI'));
   const h23BaselineErrors = analyseFile('features.html', h4Content, config)
     .filter((error) => error.kind === 'h23 scrub demo contract');
   const h23BaselineClean = h23BaselineErrors.length === 0;
@@ -7763,9 +7792,10 @@ if (SELF_TEST) {
     && mutatedH23 !== h4Content
     && analyseFile('features.html', mutatedH23, config)
       .some((error) => error.kind === 'h23 scrub demo contract');
-  if (!h17BaselineClean || !h17MutationCaught || !h23BaselineClean || !h23MutationCaught) failures += 1;
+  if (!h17BaselineClean || !h17MutationCaught || !h17DeletionVisualCaught || !h23BaselineClean || !h23MutationCaught) failures += 1;
   console.log(`  ${h17BaselineClean ? 'passed ' : 'FAILED '} production index Scrub demo baseline`);
   console.log(`  ${h17MutationCaught ? 'caught ' : 'MISSED '} exact index Scrub username-boundary mutation`);
+  console.log(`  ${h17DeletionVisualCaught ? 'caught ' : 'MISSED '} exact index Scrub deletion-visual mutation`);
   console.log(`  ${h23BaselineClean ? 'passed ' : 'FAILED '} production features Scrub demo baseline`);
   console.log(`  ${h23MutationCaught ? 'caught ' : 'MISSED '} exact features Scrub visual mutation`);
 
