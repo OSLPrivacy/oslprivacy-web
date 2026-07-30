@@ -3109,35 +3109,52 @@ function scrubOverclaimErrors(fileRel, content) {
 }
 
 function scrubDemoContractErrors(fileRel, content) {
-  if (fileRel !== 'index.html') return [];
+  if (fileRel !== 'index.html' && fileRel !== 'features.html') return [];
 
   const errors = [];
+  const kind = fileRel === 'features.html'
+    ? 'h23 scrub demo contract'
+    : 'h17 scrub demo contract';
   const blocks = sectionBlocks(content).filter((block) => (
     /<section\b[^>]*\bclass=["'][^"']*\bscrub-demo\b/i.test(block.html)
       || /<section\b[^>]*\bdata-product-animation=["']scrub-flow["']/i.test(block.html)
   ));
   if (blocks.length !== 1) {
     return [{
-      kind: 'h17 scrub demo contract',
+      kind,
       file: fileRel,
       line: 0,
-      text: `expected exactly one index Scrub demo section, found ${blocks.length}`,
+      text: `expected exactly one Scrub demo section, found ${blocks.length}`,
     }];
   }
 
   const block = blocks[0];
   const rendered = shortText(renderedTextWithSourceMap(block.html).text);
+  const visualOnlyHtml = block.html.replace(
+    /<div\b[^>]*\bclass=["'][^"']*\bdemo-heading-row\b[\s\S]*?<\/div>\s*<\/div>/i,
+    '',
+  );
+  const visualText = shortText(renderedTextWithSourceMap(visualOnlyHtml).text);
   const requirements = [
     {
       label: 'username-only local-export evidence',
-      passed: /\busernames?\b/i.test(rendered)
-        && /\blocal export\b/i.test(rendered)
-        && /(?:\bonly\b.{0,45}\busernames?\b|\busernames?\b.{0,45}\bonly\b)/i.test(rendered),
+      passed: /\bIt checks only username text in a local export you choose\./.test(rendered),
     },
     {
-      label: 'no deletion promise',
-      passed: !/\b(?:delete|deletes|deleted|deleting|deletion|remove|removes|removed|removing|erase|erases|erased|erasing|clear|clears|cleared|clean|cleans|cleaned|cleaning)\b/i.test(rendered)
-        && !/\bscrub-eraser\b/i.test(block.html),
+      label: 'username-only rendered demo',
+      passed: /\bscanning usernames locally\b/i.test(visualText)
+        && /\b3 username matches\b/i.test(visualText)
+        && (visualText.match(/\busername\b/gi) || []).length >= 3,
+    },
+    {
+      label: 'no deletion-action UI',
+      passed: !/\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|erase|erases|erased|erasing|clear|clears|cleared|clean|cleans|cleaned|cleaning)\b/i.test(visualText)
+        && !/\bscrub-eraser\b/i.test(block.html)
+        && !/\bscrub-erase-line\b/i.test(block.html),
+    },
+    {
+      label: 'no masked generic findings',
+      passed: !/[•*]{3,}/.test(block.html),
     },
     {
       label: 'internal machinery hidden',
@@ -3148,10 +3165,10 @@ function scrubDemoContractErrors(fileRel, content) {
   for (const requirement of requirements) {
     if (requirement.passed) continue;
     errors.push({
-      kind: 'h17 scrub demo contract',
+      kind,
       file: fileRel,
       line: lineNumber(content, block.start),
-      text: `${requirement.label} is missing from the index Scrub demo`,
+      text: `${requirement.label} is missing from the Scrub demo`,
     });
   }
 
@@ -5457,7 +5474,7 @@ const NEGATION_CASES = [
   {
     name: 'honest index Scrub username-only demo',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p>Planned for v1: Free Scrub will review only usernames found in that local export, then prepare manual review steps you can follow yourself. It does not connect to services, change accounts, or run while you are away.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-findings"><strong>3 username matches</strong></div></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p>Planned for v1: Free Scrub will review only usernames found in that local export, then prepare manual review steps you can follow yourself. It does not connect to services, change accounts, or run while you are away.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Scanning usernames locally</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div></section>',
     kinds: ['h17 scrub demo contract', 'Scrub capability overclaim'],
   },
   {
@@ -7712,7 +7729,7 @@ if (SELF_TEST) {
   console.log(`  ${scrubBaselineClean ? 'passed ' : 'FAILED '} production Scrub baseline`);
   console.log(`  ${scrubMutationCaught ? 'caught ' : 'MISSED '} exact production Scrub completeness mutation`);
 
-  console.log('\ncheck-claims self-test (production H17 index Scrub demo contract):');
+  console.log('\ncheck-claims self-test (production H17/H23 Scrub demo contract):');
   const h17Content = await readFile(path.join(ROOT, 'index.html'), 'utf8');
   const h17BaselineErrors = analyseFile('index.html', h17Content, config)
     .filter((error) => error.kind === 'h17 scrub demo contract');
@@ -7727,9 +7744,24 @@ if (SELF_TEST) {
     && mutatedH17 !== h17Content
     && analyseFile('index.html', mutatedH17, config)
       .some((error) => error.kind === 'h17 scrub demo contract');
-  if (!h17BaselineClean || !h17MutationCaught) failures += 1;
+  const h23BaselineErrors = analyseFile('features.html', h4Content, config)
+    .filter((error) => error.kind === 'h23 scrub demo contract');
+  const h23BaselineClean = h23BaselineErrors.length === 0;
+  const h23RequiredVisual = '<strong>3 username matches</strong>';
+  const h23VisualOccurrences = h4Content.split(h23RequiredVisual).length - 1;
+  const mutatedH23 = h4Content.replace(
+    h23RequiredVisual,
+    '<strong>3 findings</strong>',
+  );
+  const h23MutationCaught = h23VisualOccurrences === 1
+    && mutatedH23 !== h4Content
+    && analyseFile('features.html', mutatedH23, config)
+      .some((error) => error.kind === 'h23 scrub demo contract');
+  if (!h17BaselineClean || !h17MutationCaught || !h23BaselineClean || !h23MutationCaught) failures += 1;
   console.log(`  ${h17BaselineClean ? 'passed ' : 'FAILED '} production index Scrub demo baseline`);
   console.log(`  ${h17MutationCaught ? 'caught ' : 'MISSED '} exact index Scrub username-boundary mutation`);
+  console.log(`  ${h23BaselineClean ? 'passed ' : 'FAILED '} production features Scrub demo baseline`);
+  console.log(`  ${h23MutationCaught ? 'caught ' : 'MISSED '} exact features Scrub visual mutation`);
 
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
@@ -8063,7 +8095,7 @@ for (const file of files) {
     ),
     badgeIssues: count('capability badge', 'label drift', 'matrix gap'),
     surfaceIssues: count('present-tense capability claim', 'missing matrix link', 'unsellable at checkout'),
-    missingText: count('missing required sentence', 'h4 explainer contract', 'h17 scrub demo contract', 'h28 exposure comparison contract'),
+    missingText: count('missing required sentence', 'h4 explainer contract', 'h17 scrub demo contract', 'h23 scrub demo contract', 'h28 exposure comparison contract'),
     verdict: fileErrors.length === 0 ? 'pass' : 'fail',
   });
 }

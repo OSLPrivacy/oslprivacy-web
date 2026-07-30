@@ -175,10 +175,10 @@
       <div class="demo-heading-row">
         <div>
           <p class="eyebrow">Scrub</p>
-          <h2 id="scrub-heading" class="section-heading">Find what you left behind.</h2>
-          <p class="scrub-promise">The scan stays on your device.</p>
-          <p class="section-subhead">Planned for v1: Free Scrub will inspect only the local export you explicitly select. Provider exports may be incomplete, and no shipping build yet proves complete account history, selected-account binding or a completeness receipt.</p>
-          <p class="osl-status-note">The planned guided flow will prepare manual directions to the service's own deletion page. Free Scrub is view-only and never deletes or works unattended. AutoScrub automatic deletion is Planned and unavailable; no provider is currently qualified end to end.</p>
+          <h2 id="scrub-heading" class="section-heading">Find usernames you left behind.</h2>
+          <p class="scrub-promise">It checks only username text in a local export you choose.</p>
+          <p class="section-subhead">Planned for v1: Free Scrub will review only usernames found in that local export, then prepare manual review steps you can follow yourself.</p>
+          <p class="osl-status-note">It does not connect to services, change accounts, delete anything, or run while you are away. AutoScrub automatic deletion is Planned and unavailable; no provider is currently qualified end to end.</p>
           <p class="section-matrix-link"><a href="/docs/status">See what works today</a></p>
         </div>
       </div>
@@ -186,8 +186,13 @@
       <div class="scrub-flat-scene" aria-hidden="true">
         <article class="scrub-flat-panel">
           <div class="scrub-drop-bar"><img class="app-logo" src="/assets/img/osl-app-icon-v2.png" alt=""><strong>Scrub</strong><span class="scrub-drop-action"><i>Scan</i><b>Review 3</b></span></div>
-          <div class="scrub-flat-scan"><span class="scrub-scan-icon"></span><strong>Scanning locally</strong><div class="scrub-scan-field"><i></i></div></div>
-          <div class="scrub-flat-findings"><strong>3 findings</strong><span class="scrub-erase-line"></span><div class="scrub-hit"><i>!</i><code>••••••••••</code></div><div class="scrub-hit"><i>!</i><code>**********</code></div><div class="scrub-hit"><i>!</i><code>••••••••••</code></div></div>
+          <div class="scrub-flat-scan"><span class="scrub-scan-icon"></span><strong>Scanning usernames locally</strong><div class="scrub-scan-field"><i></i></div></div>
+          <div class="scrub-flat-findings">
+            <strong>3 username matches</strong>
+            <div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div>
+            <div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div>
+            <div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div>
+          </div>
           <div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
         </article>
       </div>
