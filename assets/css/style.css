@@ -9130,3 +9130,13 @@ h2:hover .anchor-link,
   width: 100%;
   overflow-x: clip;
 }
+
+/* owner-screenshot-responsive-rules:start
+   h13 owner packet source: OSL_OWNER_SCREENSHOT_PACKET. The packet bytes are
+   private review evidence and are not committed; these owner-map lines bind the
+   requested screenshot corrections to the CSS rules that carry them.
+   owner-map id=owner-320-status-badge-wrap route=/features width=320 condition=js-on request=status-badge-stays-on-demo-heading-row rule=.eyebrow .osl-status
+   owner-map id=owner-390-price-rate-wrap route=/download width=390 condition=js-on request=price-rate-stays-on-one-line rule=.price-rate
+   owner-map id=owner-320-status-matrix-scroll route=/docs/status width=320 condition=js-off request=support-matrix-scrolls-without-page-clipping rule=.status-table-scroll
+   owner-map id=owner-768-donate-scene-overflow route=/donate width=768 condition=reduced request=decorative-donate-scene-does-not-force-sideways-page-scroll rule=.mission-scene
+   owner-screenshot-responsive-rules:end */
