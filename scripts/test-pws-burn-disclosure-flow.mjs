@@ -22,6 +22,29 @@ function blockAfter(marker, from = pwsCssStart) {
   throw new Error(`${marker} block must close`);
 }
 
+function declarationMap(block) {
+  return Object.fromEntries(
+    block
+      .split(';')
+      .map((declaration) => declaration.trim())
+      .filter(Boolean)
+      .map((declaration) => {
+        const colon = declaration.indexOf(':');
+        assert.notEqual(colon, -1, `declaration must contain a colon: ${declaration}`);
+        return [
+          declaration.slice(0, colon).trim(),
+          declaration.slice(colon + 1).trim(),
+        ];
+      }),
+  );
+}
+
+function selectorBlock(selector, from = pwsCssStart) {
+  const block = blockAfter(selector, from);
+  assert.notEqual(block.trim(), '', `${selector} block must not be empty`);
+  return block;
+}
+
 function check(name, fn) {
   try {
     fn();
@@ -49,6 +72,8 @@ check('pws-burn-disclosure-flow', () => {
 
 check('prefers-reduced-motion', () => {
   const reduced = blockAfter('@media (prefers-reduced-motion: reduce)');
+  const reducedStart = css.indexOf('@media (prefers-reduced-motion: reduce)', pwsCssStart);
+  const narrowReducedStart = css.indexOf('@media (max-width: 599px) and (prefers-reduced-motion: reduce)', pwsCssStart);
   assert.match(reduced, /\.pws-burn-explainer \*,/);
   assert.match(reduced, /animation:\s*none !important/);
   assert.match(reduced, /transition:\s*none !important/);
@@ -57,6 +82,12 @@ check('prefers-reduced-motion', () => {
     /\.pws-burn-flow-signal\s*\{[\s\S]*width:\s*min\(3\.25rem, 32vw\)[\s\S]*box-shadow:\s*none/s,
     'reduced motion must keep a static disclosure indicator visible',
   );
+  const staticSignal = declarationMap(selectorBlock('.pws-burn-flow-signal', reducedStart));
+  assert.equal(staticSignal.width, 'min(3.25rem, 32vw)');
+  assert.equal(staticSignal.height, '2px');
+  assert.equal(staticSignal.opacity, '.86');
+  assert.match(staticSignal.background, /linear-gradient\(90deg/);
+  assert.equal(staticSignal.transform, 'translate(-50%, -50%)');
   assert.match(
     reduced,
     /\.pws-burn-flow-signal::after\s*\{\s*opacity:\s*1;\s*\}/,
@@ -64,6 +95,10 @@ check('prefers-reduced-motion', () => {
   );
   const narrowReduced = blockAfter('@media (max-width: 599px) and (prefers-reduced-motion: reduce)');
   assert.match(narrowReduced, /\.pws-burn-flow-signal\s*\{[\s\S]*height:\s*1\.9rem/s);
+  const mobileStaticSignal = declarationMap(selectorBlock('.pws-burn-flow-signal', narrowReducedStart));
+  assert.equal(mobileStaticSignal.width, '2px');
+  assert.equal(mobileStaticSignal.height, '1.9rem');
+  assert.match(mobileStaticSignal.background, /linear-gradient\(180deg/);
   assert.match(
     narrowReduced,
     /\.pws-burn-flow-signal::after\s*\{[\s\S]*rotate\(135deg\)/s,
@@ -94,6 +129,10 @@ check('pws-burn-limits', () => {
 });
 
 check('pws-burn-responsive-layout', () => {
+  const explainer = declarationMap(selectorBlock('.pws-burn-explainer'));
+  assert.equal(explainer['box-sizing'], 'border-box');
+  assert.equal(explainer.width, 'min(84rem, 100%)');
+  assert.equal(explainer['overflow-x'], 'clip');
   assert.match(css, /\.pws-burn-stages\s*\{[\s\S]*grid-template-columns:\s*minmax\(0, 1fr\)/);
   assert.match(
     blockAfter('@media (min-width: 900px)'),
@@ -103,6 +142,8 @@ check('pws-burn-responsive-layout', () => {
   const narrow = blockAfter('@media (max-width: 599px)');
   assert.match(narrow, /\.pws-burn-explainer\s*\{[\s\S]*padding-inline:\s*var\(--s-3\)/);
   assert.match(narrow, /\.pws-burn-mini-scene\s*\{[\s\S]*grid-template-columns:\s*minmax\(0, 1fr\) 2\.35rem minmax\(0, 1fr\)/);
+  assert.match(css, /\.pws-burn-boundary strong\s*\{[\s\S]*overflow-wrap:\s*anywhere/s);
+  assert.match(css, /\.pws-burn-stage\s*\{[\s\S]*overflow-wrap:\s*anywhere/s);
   assert.doesNotMatch(css, /\.pws-burn-stage\s*\{[\s\S]*border-radius:\s*(?:9|1[0-9])px/s);
 });
 

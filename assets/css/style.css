@@ -8849,7 +8849,9 @@ h2:hover .anchor-link,
    warning before disclosure, cleanup/cooperation after it. Critical meaning
    lives in HTML; motion only reinforces the already-visible static sequence. */
 .pws-burn-explainer {
+  box-sizing: border-box;
   width: min(84rem, 100%);
+  overflow-x: clip;
   padding-block: clamp(3.5rem, 8vw, 7rem);
 }
 .pws-burn-heading {
@@ -8870,6 +8872,7 @@ h2:hover .anchor-link,
 }
 .pws-burn-stage {
   min-width: 0;
+  overflow-wrap: anywhere;
   padding: clamp(1.25rem, 4vw, 2.25rem);
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 42%),
@@ -8944,6 +8947,11 @@ h2:hover .anchor-link,
   font-size: .68rem;
   letter-spacing: .12em;
   text-transform: uppercase;
+}
+.pws-burn-boundary strong {
+  min-width: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 .pws-burn-boundary::before,
 .pws-burn-boundary::after {
