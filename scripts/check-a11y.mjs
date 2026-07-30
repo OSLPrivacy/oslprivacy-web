@@ -14,7 +14,7 @@
 // 640px. Reducing the layout width is the honest emulation; deviceScaleFactor
 // would only change DPI.
 import { spawn } from 'node:child_process';
-import { existsSync, globSync } from 'node:fs';
+import { existsSync, globSync, readFileSync } from 'node:fs';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import os from 'node:os';
@@ -25,15 +25,35 @@ import { fileURLToPath } from 'node:url';
 const SCRIPTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.dirname(SCRIPTS_DIR);
 const SERVE_LOCAL_PATH = path.join(SCRIPTS_DIR, 'serve-local.mjs');
+const PUBLIC_SURFACE_MANIFEST_PATH = path.join(REPO_ROOT, 'data', 'public-surface-manifest.json');
 const OUT_PATH = process.env.OSL_A11Y_OUT
   ? path.resolve(process.env.OSL_A11Y_OUT)
   : path.join(REPO_ROOT, 'docs', 'evidence', 'website-matrix', 'a11y.json');
 
-const PAGES = [
-  '/', '/download', '/features', '/audit', '/donate', '/success', '/cancel',
-  '/docs/', '/docs/faq', '/docs/status', '/docs/how-it-works', '/docs/getting-started',
-  '/docs/privacy', '/docs/terms', '/docs/threat-model',
-];
+function routeFromHtmlPath(htmlPath) {
+  if (htmlPath === 'index.html') return '/';
+  if (htmlPath.endsWith('/index.html')) return `/${htmlPath.slice(0, -'index.html'.length)}`;
+  return `/${htmlPath.slice(0, -'.html'.length)}`;
+}
+
+function publicPagesFromManifest() {
+  const manifest = JSON.parse(readFileSync(PUBLIC_SURFACE_MANIFEST_PATH, 'utf8'));
+  if (!Array.isArray(manifest.html) || manifest.html.length === 0) {
+    throw new Error('public surface manifest must declare public HTML pages');
+  }
+  const pages = manifest.html.map((htmlPath) => {
+    if (typeof htmlPath !== 'string' || !htmlPath.endsWith('.html')) {
+      throw new Error(`public surface manifest has invalid HTML entry: ${String(htmlPath)}`);
+    }
+    return routeFromHtmlPath(htmlPath);
+  });
+  if (new Set(pages).size !== pages.length) {
+    throw new Error('public surface manifest maps multiple HTML entries to the same route');
+  }
+  return pages;
+}
+
+const PAGES = publicPagesFromManifest();
 // Nominal window widths. Each is checked at 100% and at 200% zoom.
 const WIDTHS = [320, 390, 768, 1280];
 const MIN_TAP = 44;
