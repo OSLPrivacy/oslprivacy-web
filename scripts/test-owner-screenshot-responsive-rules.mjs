@@ -155,7 +155,7 @@ const blockMatch = css.match(/\/\* owner-screenshot-responsive-rules:start([\s\S
 if (!blockMatch) {
   fail('missing owner-screenshot-responsive-rules CSS block');
 }
-if (!blockMatch[1].includes('OSL_OWNER_SCREENSHOT_PACKET')) {
+if (!blockMatch[1].includes(ACCEPT_COMMAND)) {
   fail(`owner mapping block must name the h13 accept packet: ${ACCEPT_COMMAND}`);
 }
 
