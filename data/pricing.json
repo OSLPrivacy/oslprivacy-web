@@ -1280,6 +1280,7 @@
     "banner": "OSL is in early access before its v1 launch. Some of what you see below is still being finished — the status page says exactly what works today.",
     "matrix_url": "/docs/status",
     "matrix_link_text": "See what works today",
+    "public_ia_accept_command": "node -e \"const fs=require('fs'); const text=['index.html','features.html','download.html'].map(f=>fs.readFileSync(f,'utf8')).join('\\n'); if(/keyservers?|ratchets?|provider adapters?|ban risk [0-9]+%/i.test(text)) process.exit(1); if(!text.includes('/docs/status')) process.exit(1)\"",
     "public_ia_files": [
       "index.html",
       "features.html",
@@ -1290,6 +1291,7 @@
       "keyservers",
       "ratchet",
       "ratchets",
+      "provider adapter",
       "provider adapters"
     ],
     "public_ia_forbidden_patterns": [
