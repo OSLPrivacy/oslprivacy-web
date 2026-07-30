@@ -75,15 +75,19 @@ expectDeclaration('.status-table th,\n.status-table td', 'padding', 'var(--s-3)'
 expectDeclaration('.status-table th,\n.status-table td', 'border-top', '1px solid var(--border)', tableBlock);
 expectDeclaration('.status-table thead th', 'color', 'var(--text-muted)', tableBlock);
 expectDeclaration('.status-table tbody th[scope="row"]', 'color', 'var(--text)', tableBlock);
+expectDeclaration('.status-table td:not(:last-child)', 'white-space', 'nowrap', tableBlock);
 expectDeclaration('.status-table td:last-child', 'color', 'var(--text-muted)', tableBlock);
 expectDeclaration('.status-table tbody tr:nth-child(even)', 'background', 'color-mix(in srgb, var(--surface-raised) 72%, var(--surface))', tableBlock);
 expectDeclaration('.status-table tbody tr:hover,\n.status-table tbody tr:focus-within', 'background', 'color-mix(in srgb, var(--accent) 7%, var(--surface))', tableBlock);
+expectDeclaration('.status-table .osl-status', 'margin-top', 'var(--s-1)', tableBlock);
 expectDeclaration('.status-table td strong', 'color', 'var(--text)', tableBlock);
 expectDeclaration('.status-table td strong', 'font-weight', '700', tableBlock);
 expectDeclaration('.status-table a', 'color', 'var(--accent)', tableBlock);
 expectDeclaration('.matrix-link', 'font-weight', '600');
 expectDeclaration('.matrix-link', 'color', 'var(--accent)');
 expectDeclaration('.matrix-link', 'text-underline-offset', '0.18em');
+expectDeclaration('.matrix-link:hover,\n.matrix-link:focus-visible', 'color', 'var(--text)');
+expectDeclaration('.matrix-link:hover,\n.matrix-link:focus-visible', 'text-decoration-color', 'var(--accent)');
 expectDeclaration('.section-matrix-link', 'margin-top', 'var(--s-2)');
 
 console.log('test-support-matrix-token-styles: support matrix stays on product tokens');

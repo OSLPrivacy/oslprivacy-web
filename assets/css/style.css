@@ -9027,10 +9027,12 @@ h2:hover .anchor-link,
   white-space: nowrap;
 }
 .status-table tbody th[scope="row"] { color: var(--text); font-weight: 600; }
+.status-table td:not(:last-child) { white-space: nowrap; }
 .status-table td:last-child { color: var(--text-muted); min-width: 18rem; }
 .status-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface-raised) 72%, var(--surface)); }
 .status-table tbody tr:hover,
 .status-table tbody tr:focus-within { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.status-table .osl-status { margin-top: var(--s-1); }
 .status-table td strong { color: var(--text); font-weight: 700; }
 .status-table a { color: var(--accent); text-underline-offset: 0.18em; }
 
@@ -9063,6 +9065,11 @@ h2:hover .anchor-link,
   font-weight: 600;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
+}
+.matrix-link:hover,
+.matrix-link:focus-visible {
+  color: var(--text);
+  text-decoration-color: var(--accent);
 }
 .section-matrix-link {
   margin-top: var(--s-2);
