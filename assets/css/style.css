@@ -9131,6 +9131,19 @@ h2:hover .anchor-link,
   overflow-x: clip;
 }
 
+/* h22 owner screenshot fixes: keep /download screenshots truthful and legible
+   without changing pricing/status token comments or feature semantics. */
+.download-main > .product-demo.reveal {
+  opacity: 1;
+  transform: none;
+}
+.download-choice-note {
+  margin: calc(-1 * var(--s-1)) 0 var(--s-3);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
 /* owner-screenshot-responsive-rules:start
    h13 owner packet source: OSL_OWNER_SCREENSHOT_PACKET. The packet bytes are
    private review evidence and are not committed; these owner-map lines bind the

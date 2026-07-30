@@ -308,6 +308,37 @@ function measureFoldVisibility() {
     plannedBadges: 0,
   };
 
+  function lineCount(el) {
+    return el ? [...el.getClientRects()].filter((rect) => rect.width > 0 && rect.height > 0).length : 0;
+  }
+
+  const download = (() => {
+    const main = document.querySelector('.download-main');
+    const productDemos = [...document.querySelectorAll('.download-main > .product-demo')];
+    const proCard = document.querySelector('.download-choice-pro');
+    const proPrice = proCard?.querySelector('.price-rate') ?? null;
+    const proNote = proCard?.querySelector('.download-choice-note') ?? null;
+    const statusPairs = [...document.querySelectorAll('.download-main [data-osl-feature][data-osl-status]')]
+      .map((el) => `${el.getAttribute('data-osl-feature')}:${el.getAttribute('data-osl-status')}`);
+    const disabledCheckoutText = document.querySelector('.download-main .cta-subscribe[disabled]')
+      ?.textContent
+      ?.replace(/\s+/g, ' ')
+      .trim() ?? '';
+    const noteBelowPrice = proPrice && proNote
+      ? proNote.getBoundingClientRect().top >= proPrice.getBoundingClientRect().bottom - 1
+      : false;
+    return {
+      present: Boolean(main),
+      productDemoCount: productDemos.length,
+      visibleProductDemoCount: productDemos.filter((section) => isStyledVisible(section)).length,
+      proNoteBelowPrice: Boolean(noteBelowPrice),
+      proPriceLines: lineCount(proPrice),
+      documentScrollWidth: document.documentElement.scrollWidth,
+      statusPairs,
+      disabledCheckoutText,
+    };
+  })();
+
   return {
     visibleTextChars,
     scrollHeight: document.documentElement.scrollHeight,
@@ -316,6 +347,7 @@ function measureFoldVisibility() {
     reducedMotionMatches: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     buildMeta: document.querySelector('meta[name="osl-build"]')?.getAttribute('content') ?? null,
     h4Explainer,
+    download,
   };
 }
 
@@ -372,6 +404,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     reducedMotionMatches: null,
     buildMeta: null,
     h4Explainer: null,
+    download: null,
   };
   let verdict = 'unmeasurable';
   try {
@@ -397,7 +430,21 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
       || (condition === 'js-off' && measurement.authorScriptRan === false && measurement.reducedMotionMatches === false)
       || (condition === 'reduced' && measurement.authorScriptRan === true && measurement.reducedMotionMatches === true)
     );
-    verdict = measurement.visibleTextChars >= 40 && h4Pass && modePass ? 'pass' : 'fail';
+    const download = measurement.download;
+    const downloadPass = page !== '/download' || (
+      download?.present
+      && download.productDemoCount === 3
+      && download.visibleProductDemoCount === 3
+      && (width > 390 || download.proNoteBelowPrice)
+      && download.proPriceLines === 1
+      && download.documentScrollWidth <= width
+      && download.statusPairs.includes('protected-text:Beta')
+      && download.statusPairs.includes('image-send:Planned')
+      && download.statusPairs.includes('file-send:Planned')
+      && download.statusPairs.includes('autoscrub:Planned')
+      && download.disabledCheckoutText.includes('Pro checkout paused')
+    );
+    verdict = measurement.visibleTextChars >= 40 && h4Pass && modePass && downloadPass ? 'pass' : 'fail';
   } catch (error) {
     console.error(`screenshot-matrix: measurement failed for ${page} ${width} ${condition}: ${error.message}`);
   }
@@ -415,6 +462,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     reduced_motion_matches: measurement.reducedMotionMatches,
     build_meta: measurement.buildMeta,
     h4_explainer: measurement.h4Explainer,
+    download: measurement.download,
     verdict,
   };
 }
