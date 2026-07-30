@@ -7,13 +7,20 @@
 }
 
 :root {
-  --bg: #080a0b;
+  /* brand-token-contract: public visual tokens stay product-level. Do not
+     expose implementation machinery as navigation, labels or marketing copy. */
+  --brand-ink: #0a0a0a;
+  --brand-paper: #edf1f4;
+  --brand-cyan: #06b6d4;
+  --brand-cyan-pressed: #077f98;
+
+  --bg: var(--brand-ink);
   --surface: #111416;
   --surface-raised: #171b1e;
-  --text: #f1f4f5;
+  --text: var(--brand-paper);
   --text-muted: #98a2a7;
-  --accent: #06b6d4;
-  --accent-hover: #0891b2;
+  --accent: var(--brand-cyan);
+  --accent-hover: var(--brand-cyan-pressed);
   --border: #283034;
   --danger: #f87171;
   --success: #5ee0a0;
