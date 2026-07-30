@@ -8990,18 +8990,22 @@ h2:hover .anchor-link,
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text) 4%, transparent);
+  scrollbar-color: var(--border) var(--surface);
 }
 .status-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .status-table {
   width: 100%;
   min-width: 34rem;
   border-collapse: collapse;
+  color: var(--text);
   font-size: 0.95rem;
 }
 .status-table caption {
   caption-side: top;
   text-align: left;
   padding: var(--s-3) var(--s-3) var(--s-2);
+  background: var(--surface-raised);
   color: var(--text-muted);
   font-size: 0.9rem;
 }
@@ -9024,6 +9028,11 @@ h2:hover .anchor-link,
 }
 .status-table tbody th[scope="row"] { color: var(--text); font-weight: 600; }
 .status-table td:last-child { color: var(--text-muted); min-width: 18rem; }
+.status-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface-raised) 72%, var(--surface)); }
+.status-table tbody tr:hover,
+.status-table tbody tr:focus-within { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.status-table td strong { color: var(--text); font-weight: 700; }
+.status-table a { color: var(--accent); text-underline-offset: 0.18em; }
 
 /* Site-wide early-access frame. One honest global statement instead of a
    disclaimer on every feature card. */
@@ -9049,7 +9058,12 @@ h2:hover .anchor-link,
   display: inline-flex;
   align-items: center;
 }
-.matrix-link { font-weight: 600; }
+.matrix-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
 .section-matrix-link {
   margin-top: var(--s-2);
   font-size: 0.95rem;
