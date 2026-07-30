@@ -59,13 +59,113 @@ function buildBody(pricing, atRestCensus) {
   const registry = pricing.capability_registry ?? [];
   const frame = pricing.launch_frame ?? {};
   const matrix = pricing.connector_matrix ?? {};
-  const working = registry.filter((r) => PROVEN.has(r.status) && r.status !== 'Illustration');
-  const pending = registry.filter((r) => !PROVEN.has(r.status) && r.status !== 'Illustration');
-  const drawings = registry.filter((r) => r.status === 'Illustration');
+  const connectorMatrixVersion = typeof matrix.version === 'string' ? matrix.version.trim() : '';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(connectorMatrixVersion)) {
+    throw new Error('build-status: connector_matrix.version must be an exact ISO date');
+  }
+  if (!Array.isArray(matrix.connectors) || matrix.connectors.length === 0) {
+    throw new Error('build-status: connector_matrix.connectors must contain connector evidence');
+  }
+  if (!Array.isArray(registry) || registry.length === 0) {
+    throw new Error('build-status: capability_registry must contain capability evidence');
+  }
+
+  const capabilityStatuses = new Set(['Available', 'Beta', 'Planned', 'Externally blocked', 'Illustration']);
+  const supportLabels = new Set(['Available', 'Beta', 'Planned', 'Externally blocked', 'Not applicable']);
+  const connectorStatuses = new Set(['Available', 'Beta', 'Coming soon', 'Experimental', 'Externally blocked']);
+  const requiredCapabilityFields = ['id', 'name', 'status', 'verified_on', 'public_note'];
+  const requiredConnectorFields = [
+    'name',
+    'protected_send',
+    'protected_receive',
+    'attachments',
+    'scrub',
+    'verified_on',
+    'status',
+    'provider_policy_risk',
+  ];
+  const capabilityIds = new Set();
+  const connectorNames = new Set();
+
+  function capabilityText(row, field, index) {
+    const value = row?.[field];
+    if (typeof value !== 'string' || value.trim() === '') {
+      throw new Error(`build-status: capability_registry[${index}].${field} is required`);
+    }
+    return value.trim();
+  }
+
+  function connectorText(row, field, index) {
+    const value = row?.[field];
+    if (typeof value !== 'string' || value.trim() === '') {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].${field} is required`);
+    }
+    return value.trim();
+  }
+
+  const capabilities = registry.map((row, index) => {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+      throw new Error(`build-status: capability_registry[${index}] must be an object`);
+    }
+
+    const capability = Object.fromEntries(
+      requiredCapabilityFields.map((field) => [field, capabilityText(row, field, index)]),
+    );
+    if (capabilityIds.has(capability.id)) {
+      throw new Error(`build-status: capability_registry[${index}].id duplicates another capability`);
+    }
+    capabilityIds.add(capability.id);
+    if (!capabilityStatuses.has(capability.status)) {
+      throw new Error(`build-status: capability_registry[${index}].status has an unsupported public label`);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(capability.verified_on)) {
+      throw new Error(`build-status: capability_registry[${index}].verified_on must be an exact ISO date`);
+    }
+    return capability;
+  });
+
+  const connectors = matrix.connectors.map((row, index) => {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}] must be an object`);
+    }
+
+    const connector = Object.fromEntries(
+      requiredConnectorFields.map((field) => [field, connectorText(row, field, index)]),
+    );
+    if (connectorNames.has(connector.name)) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].name duplicates another connector`);
+    }
+    connectorNames.add(connector.name);
+    if (connector.verified_on !== connectorMatrixVersion) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].verified_on must match connector_matrix.version`);
+    }
+    for (const field of ['protected_send', 'protected_receive', 'attachments', 'scrub']) {
+      if (!supportLabels.has(connector[field])) {
+        throw new Error(`build-status: connector_matrix.connectors[${index}].${field} has an unsupported public label`);
+      }
+    }
+    if (!connectorStatuses.has(connector.status)) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].status has an unsupported public label`);
+    }
+    if (/\b\d+(\.\d+)?\s*%/.test(connector.provider_policy_risk)) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].provider_policy_risk must not contain a percentage`);
+    }
+    return connector;
+  });
+
+  const pageMatrixVersion = [
+    connectorMatrixVersion,
+    ...capabilities.map((capability) => capability.verified_on),
+    ...connectors.map((connector) => connector.verified_on),
+  ].sort().at(-1);
+
+  const working = capabilities.filter((r) => PROVEN.has(r.status) && r.status !== 'Illustration');
+  const pending = capabilities.filter((r) => !PROVEN.has(r.status) && r.status !== 'Illustration');
+  const drawings = capabilities.filter((r) => r.status === 'Illustration');
 
   const out = [];
   out.push('        <h1>What works today</h1>');
-  out.push(`        <p class="lede">OSL is in early access before its v1 launch. This page is the honest, dated record of what the shipping app actually does. Every feature page on this site links here. Matrix version ${esc(matrix.version ?? pricing.decided_on ?? '')}.</p>`);
+  out.push(`        <p class="lede">OSL is in early access before its v1 launch. This page is the honest, dated record of what the shipping app actually does. Every feature page on this site links here. Matrix version ${esc(pageMatrixVersion)}.</p>`);
 
   out.push('        <p>The rest of this site describes OSL v1 — the product we are building toward. This page is the exception: nothing here is forward-looking. If a capability is not listed as working below, do not rely on it, and do not buy Pro expecting it.</p>');
 
@@ -107,7 +207,7 @@ function buildBody(pricing, atRestCensus) {
   out.push('          <caption>Versioned connector support matrix</caption>');
   out.push('          <thead><tr><th scope="col">Connector</th><th scope="col">Protected send</th><th scope="col">Protected receive</th><th scope="col">Attachments</th><th scope="col">Scrub</th><th scope="col">Last verified</th><th scope="col">Status</th><th scope="col">Provider policy risk</th></tr></thead>');
   out.push('          <tbody>');
-  for (const c of matrix.connectors ?? []) {
+  for (const c of connectors) {
     out.push(`            <tr><th scope="row">${esc(c.name)}</th><td>${esc(c.protected_send)}</td><td>${esc(c.protected_receive)}</td><td>${esc(c.attachments)}</td><td>${esc(c.scrub)}</td><td>${esc(c.verified_on)}</td><td>${statusText(c.status)}</td><td>${esc(c.provider_policy_risk)}</td></tr>`);
   }
   out.push('          </tbody>');
