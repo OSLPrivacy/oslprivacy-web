@@ -291,9 +291,37 @@ function pageSlug(page) {
 }
 
 async function applyCondition(cdp, sessionId, condition) {
+  if (!REQUIRED_CONDITIONS.includes(condition)) {
+    throw new Error(`unsupported screenshot condition: ${condition}`);
+  }
   await cdp.send('Emulation.setScriptExecutionDisabled', { value: condition === 'js-off' }, sessionId);
   const features = condition === 'reduced' ? [{ name: 'prefers-reduced-motion', value: 'reduce' }] : [];
   await cdp.send('Emulation.setEmulatedMedia', { features }, sessionId);
+}
+
+function expectedModeEvidence(condition) {
+  if (condition === 'js-on') {
+    return {
+      scripts_disabled: false,
+      author_script_ran: true,
+      reduced_motion_matches: false,
+    };
+  }
+  if (condition === 'js-off') {
+    return {
+      scripts_disabled: true,
+      author_script_ran: false,
+      reduced_motion_matches: false,
+    };
+  }
+  if (condition === 'reduced') {
+    return {
+      scripts_disabled: false,
+      author_script_ran: true,
+      reduced_motion_matches: true,
+    };
+  }
+  throw new Error(`unsupported screenshot condition: ${condition}`);
 }
 
 // Written as a normal function and stringified below so the in-page
@@ -463,6 +491,8 @@ async function writeScreenshot(filePath, data) {
 }
 
 async function captureCombo({ cdp, sessionId, page, url, width, condition, outDir }) {
+  await applyCondition(cdp, sessionId, condition);
+
   await cdp.send('Emulation.setDeviceMetricsOverride', {
     width,
     height: VIEWPORT_HEIGHT,
@@ -524,11 +554,9 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
       && h4.visibleBoundaries === 4
       && h4.plannedBadges === 2
     );
-    const modePass = (
-      (condition === 'js-on' && measurement.authorScriptRan === true && measurement.reducedMotionMatches === false)
-      || (condition === 'js-off' && measurement.authorScriptRan === false && measurement.reducedMotionMatches === false)
-      || (condition === 'reduced' && measurement.authorScriptRan === true && measurement.reducedMotionMatches === true)
-    );
+    const expectedMode = expectedModeEvidence(condition);
+    const modePass = measurement.authorScriptRan === expectedMode.author_script_ran
+      && measurement.reducedMotionMatches === expectedMode.reduced_motion_matches;
     const download = measurement.download;
     const downloadPass = page !== '/download' || (
       download?.present
@@ -575,6 +603,13 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     unrevealed_reveal_count: measurement.unrevealedRevealCount,
     author_script_ran: measurement.authorScriptRan,
     reduced_motion_matches: measurement.reducedMotionMatches,
+    mode_evidence: {
+      expected: expectedModeEvidence(condition),
+      actual: {
+        author_script_ran: measurement.authorScriptRan,
+        reduced_motion_matches: measurement.reducedMotionMatches,
+      },
+    },
     build_meta: measurement.buildMeta,
     h4_explainer: measurement.h4Explainer,
     download: measurement.download,
@@ -639,7 +674,6 @@ async function run() {
         try {
           await cdp.send('Page.enable', {}, sessionId);
           await cdp.send('Runtime.enable', {}, sessionId);
-          await applyCondition(cdp, sessionId, condition);
           for (const width of args.widths) {
             const result = await captureCombo({ cdp, sessionId, page, url, width, condition, outDir: args.outDir });
             results.push(result);
