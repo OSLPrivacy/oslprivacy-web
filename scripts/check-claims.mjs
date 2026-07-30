@@ -5341,6 +5341,12 @@ const SELF_TEST_CASES = [
     expect: 'h17 scrub demo contract',
   },
   {
+    name: 'features Scrub demo falls back to generic findings',
+    file: 'features.html',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Scanning locally</strong></div><div class="scrub-flat-findings"><strong>3 findings</strong><div class="scrub-hit"><i>!</i><code>••••••••••</code></div></div></section>',
+    expect: 'h23 scrub demo contract',
+  },
+  {
     name: 'unrelated planned sentence cannot launder completeness',
     file: 'features.html',
     html: '<p>AutoScrub is Planned. Scrub imports your complete history.</p>',
