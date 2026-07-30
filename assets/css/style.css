@@ -8776,7 +8776,7 @@ h2:hover .anchor-link,
   overflow-x: auto;
   margin: var(--s-4) 0;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--surface);
 }
 .status-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
