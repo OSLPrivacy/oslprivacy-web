@@ -1,0 +1,1277 @@
+{
+  "features": [
+    {
+      "key": "e2ee",
+      "label": "End-to-end encrypted by default"
+    },
+    {
+      "key": "open_source",
+      "label": "Open-source client"
+    },
+    {
+      "key": "audit",
+      "label": "Independent security audit"
+    },
+    {
+      "key": "no_phone",
+      "label": "No phone number required"
+    },
+    {
+      "key": "min_metadata",
+      "label": "Minimal metadata collection"
+    },
+    {
+      "key": "self_host",
+      "label": "Self-hosting option"
+    },
+    {
+      "key": "disappearing",
+      "label": "Disappearing messages"
+    },
+    {
+      "key": "group_chat",
+      "label": "Group chat"
+    },
+    {
+      "key": "file_sharing",
+      "label": "File & media sharing"
+    },
+    {
+      "key": "video_calls",
+      "label": "Video calls"
+    },
+    {
+      "key": "cross_platform",
+      "label": "Cross-platform (no lock-in)"
+    },
+    {
+      "key": "no_data_sale",
+      "label": "No third-party data sale"
+    }
+  ],
+  "osl": {
+    "name": "OSL Privacy",
+    "logo": "/assets/img/osl-app-icon-v2.png",
+    "scores": {
+      "overall": 90,
+      "privacy": 88,
+      "features": 92
+    },
+    "values": {
+      "e2ee": true,
+      "open_source": true,
+      "audit": "partial",
+      "no_phone": true,
+      "min_metadata": true,
+      "self_host": "partial",
+      "disappearing": true,
+      "group_chat": true,
+      "file_sharing": true,
+      "video_calls": true,
+      "cross_platform": true,
+      "no_data_sale": true
+    }
+  },
+  "apps": [
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp",
+      "logo": "/assets/img/apps/whatsapp.svg",
+      "scores": {
+        "overall": 69,
+        "privacy": 55,
+        "features": 100
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": false,
+        "audit": true,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "facebook-messenger",
+      "name": "Facebook Messenger",
+      "logo": "/assets/img/apps/facebook-messenger.svg",
+      "scores": {
+        "overall": 60,
+        "privacy": 40,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "logo": "/assets/img/apps/telegram.svg",
+      "scores": {
+        "overall": 70,
+        "privacy": 45,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": "partial",
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "apple-messages-imessage",
+      "name": "Apple Messages (iMessage)",
+      "logo": "/assets/img/apps/apple-messages-imessage.svg",
+      "scores": {
+        "overall": 57,
+        "privacy": 30,
+        "features": 84
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": true,
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": false,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "google-messages-rcs",
+      "name": "Google Messages (RCS)",
+      "logo": "/assets/img/apps/google-messages-rcs.svg",
+      "scores": {
+        "overall": 47,
+        "privacy": 30,
+        "features": 68
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": "partial",
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "snapchat",
+      "name": "Snapchat",
+      "logo": "/assets/img/apps/snapchat.svg",
+      "scores": {
+        "overall": 54,
+        "privacy": 35,
+        "features": 92
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "instagram-direct",
+      "name": "Instagram Direct",
+      "logo": "/assets/img/apps/instagram-direct.svg",
+      "scores": {
+        "overall": 49,
+        "privacy": 20,
+        "features": 98
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "logo": "/assets/img/apps/discord.svg",
+      "scores": {
+        "overall": 66,
+        "privacy": 40,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "microsoft-teams-personal",
+      "name": "Microsoft Teams (Personal)",
+      "logo": "/assets/img/apps/microsoft-teams-personal.png",
+      "scores": {
+        "overall": 52,
+        "privacy": 10,
+        "features": 100
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "logo": "/assets/img/apps/slack.png",
+      "scores": {
+        "overall": 52,
+        "privacy": 10,
+        "features": 100
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "viber",
+      "name": "Viber",
+      "logo": "/assets/img/apps/viber.svg",
+      "scores": {
+        "overall": 64,
+        "privacy": 45,
+        "features": 95
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "threads-meta-dms",
+      "name": "Threads (Meta) DMs",
+      "logo": "/assets/img/apps/threads-meta-dms.svg",
+      "scores": {
+        "overall": 30,
+        "privacy": 10,
+        "features": 61
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "x-twitter-dms-xchat",
+      "name": "X (Twitter) DMs/XChat",
+      "logo": "/assets/img/apps/x-twitter-dms-xchat.svg",
+      "scores": {
+        "overall": 57,
+        "privacy": 45,
+        "features": 86
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": false,
+        "audit": false,
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "linkedin-messaging",
+      "name": "LinkedIn Messaging",
+      "logo": "/assets/img/apps/linkedin-messaging.png",
+      "scores": {
+        "overall": 45,
+        "privacy": 15,
+        "features": 94
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "tiktok-messages",
+      "name": "TikTok Messages",
+      "logo": "/assets/img/apps/tiktok-messages.svg",
+      "scores": {
+        "overall": 35,
+        "privacy": 15,
+        "features": 69
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "reddit-chat",
+      "name": "Reddit Chat",
+      "logo": "/assets/img/apps/reddit-chat.svg",
+      "scores": {
+        "overall": 24,
+        "privacy": 10,
+        "features": 49
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "google-chat-workspace",
+      "name": "Google Chat (Workspace)",
+      "logo": "/assets/img/apps/google-chat-workspace.svg",
+      "scores": {
+        "overall": 58,
+        "privacy": 35,
+        "features": 89
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": true,
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "kik-messenger",
+      "name": "Kik Messenger",
+      "logo": "/assets/img/apps/kik-messenger.svg",
+      "scores": {
+        "overall": 25,
+        "privacy": 15,
+        "features": 44
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "groupme",
+      "name": "GroupMe",
+      "logo": "/assets/img/apps/groupme.svg",
+      "scores": {
+        "overall": 38,
+        "privacy": 5,
+        "features": 81
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": "partial",
+        "cross_platform": "partial",
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "zoom-team-chat",
+      "name": "Zoom Team Chat",
+      "logo": "/assets/img/apps/zoom-team-chat.svg",
+      "scores": {
+        "overall": 64,
+        "privacy": 35,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "signal",
+      "name": "Signal",
+      "logo": "/assets/img/apps/signal.svg",
+      "scores": {
+        "overall": 88,
+        "privacy": 80,
+        "features": 95
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": false,
+        "min_metadata": true,
+        "self_host": "partial",
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "threema",
+      "name": "Threema",
+      "logo": "/assets/img/apps/threema.svg",
+      "scores": {
+        "overall": 90,
+        "privacy": 85,
+        "features": 98
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "wire",
+      "name": "Wire",
+      "logo": "/assets/img/apps/wire.svg",
+      "scores": {
+        "overall": 96,
+        "privacy": 100,
+        "features": 92
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "session",
+      "name": "Session",
+      "logo": "/assets/img/apps/session.svg",
+      "scores": {
+        "overall": 79,
+        "privacy": 90,
+        "features": 60
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "element-matrix",
+      "name": "Element (Matrix)",
+      "logo": "/assets/img/apps/element-matrix.svg",
+      "scores": {
+        "overall": 88,
+        "privacy": 75,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": true,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "wechat",
+      "name": "WeChat",
+      "logo": "/assets/img/apps/wechat.svg",
+      "scores": {
+        "overall": 34,
+        "privacy": 0,
+        "features": 80
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": false,
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "line",
+      "name": "Line",
+      "logo": "/assets/img/apps/line.svg",
+      "scores": {
+        "overall": 54,
+        "privacy": 30,
+        "features": 91
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "kakaotalk",
+      "name": "KakaoTalk",
+      "logo": "/assets/img/apps/kakaotalk.svg",
+      "scores": {
+        "overall": 52,
+        "privacy": 25,
+        "features": 94
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "zalo",
+      "name": "Zalo",
+      "logo": "/assets/img/apps/zalo.svg",
+      "scores": {
+        "overall": 48,
+        "privacy": 25,
+        "features": 88
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": false,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "imo",
+      "name": "imo",
+      "logo": "/assets/img/apps/imo.png",
+      "scores": {
+        "overall": 48,
+        "privacy": 30,
+        "features": 76
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "rocket-chat",
+      "name": "Rocket.Chat",
+      "logo": "/assets/img/apps/rocket-chat.svg",
+      "scores": {
+        "overall": 84,
+        "privacy": 70,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": true,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "mattermost",
+      "name": "Mattermost",
+      "logo": "/assets/img/apps/mattermost.svg",
+      "scores": {
+        "overall": 74,
+        "privacy": 60,
+        "features": 88
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": true,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": "partial",
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "zulip",
+      "name": "Zulip",
+      "logo": "/assets/img/apps/zulip.svg",
+      "scores": {
+        "overall": 73,
+        "privacy": 50,
+        "features": 95
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": true,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": true,
+        "disappearing": "partial",
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "simplex-chat",
+      "name": "SimpleX Chat",
+      "logo": "/assets/img/apps/simplex-chat.svg",
+      "scores": {
+        "overall": 91,
+        "privacy": 100,
+        "features": 78
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "olvid",
+      "name": "Olvid",
+      "logo": "/assets/img/apps/olvid.png",
+      "scores": {
+        "overall": 91,
+        "privacy": 90,
+        "features": 90
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": "partial",
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "briar",
+      "name": "Briar",
+      "logo": "/assets/img/apps/briar.png",
+      "scores": {
+        "overall": 62,
+        "privacy": 85,
+        "features": 25
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": "partial",
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": "partial",
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "jami",
+      "name": "Jami",
+      "logo": "/assets/img/apps/jami.png",
+      "scores": {
+        "overall": 84,
+        "privacy": 80,
+        "features": 85
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "tox-qtox",
+      "name": "Tox (qTox)",
+      "logo": "/assets/img/apps/tox-qtox.png",
+      "scores": {
+        "overall": 72,
+        "privacy": 80,
+        "features": 54
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "status",
+      "name": "Status",
+      "logo": "/assets/img/apps/status.png",
+      "scores": {
+        "overall": 80,
+        "privacy": 90,
+        "features": 62
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "silence",
+      "name": "Silence",
+      "logo": "/assets/img/apps/silence.png",
+      "scores": {
+        "overall": 40,
+        "privacy": 35,
+        "features": 31
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": false,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "ricochet-refresh",
+      "name": "Ricochet Refresh",
+      "logo": "/assets/img/apps/ricochet-refresh.png",
+      "scores": {
+        "overall": 58,
+        "privacy": 80,
+        "features": 19
+      },
+      "values": {
+        "e2ee": true,
+        "open_source": true,
+        "audit": "partial",
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": "partial",
+        "disappearing": false,
+        "group_chat": false,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "conversations-xmpp",
+      "name": "Conversations (XMPP)",
+      "logo": "/assets/img/apps/conversations-xmpp.svg",
+      "scores": {
+        "overall": 70,
+        "privacy": 65,
+        "features": 72
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": "partial",
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": true,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "nextcloud-talk",
+      "name": "Nextcloud Talk",
+      "logo": "/assets/img/apps/nextcloud-talk.svg",
+      "scores": {
+        "overall": 91,
+        "privacy": 85,
+        "features": 100
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": true,
+        "audit": true,
+        "no_phone": true,
+        "min_metadata": true,
+        "self_host": true,
+        "disappearing": true,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "symphony",
+      "name": "Symphony",
+      "logo": "/assets/img/apps/symphony.svg",
+      "scores": {
+        "overall": 58,
+        "privacy": 30,
+        "features": 91
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": "partial",
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": "partial",
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "chanty",
+      "name": "Chanty",
+      "logo": "/assets/img/apps/chanty.png",
+      "scores": {
+        "overall": 51,
+        "privacy": 15,
+        "features": 96
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "twist",
+      "name": "Twist",
+      "logo": "/assets/img/apps/twist.png",
+      "scores": {
+        "overall": 40,
+        "privacy": 15,
+        "features": 59
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": "partial",
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "flock",
+      "name": "Flock",
+      "logo": "/assets/img/apps/flock.png",
+      "scores": {
+        "overall": 50,
+        "privacy": 15,
+        "features": 92
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": true,
+        "min_metadata": "partial",
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": true,
+        "no_data_sale": true
+      }
+    },
+    {
+      "id": "facebook-messenger-kids",
+      "name": "Facebook Messenger Kids",
+      "logo": "/assets/img/apps/facebook-messenger-kids.svg",
+      "scores": {
+        "overall": 38,
+        "privacy": 5,
+        "features": 78
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": "partial",
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": false,
+        "no_data_sale": "partial"
+      }
+    },
+    {
+      "id": "google-voice",
+      "name": "Google Voice",
+      "logo": "/assets/img/apps/google-voice.png",
+      "scores": {
+        "overall": 22,
+        "privacy": 0,
+        "features": 48
+      },
+      "values": {
+        "e2ee": false,
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": false,
+        "cross_platform": false,
+        "no_data_sale": false
+      }
+    },
+    {
+      "id": "voxer",
+      "name": "Voxer",
+      "logo": "/assets/img/apps/voxer.png",
+      "scores": {
+        "overall": 45,
+        "privacy": 15,
+        "features": 81
+      },
+      "values": {
+        "e2ee": "partial",
+        "open_source": false,
+        "audit": false,
+        "no_phone": false,
+        "min_metadata": false,
+        "self_host": false,
+        "disappearing": false,
+        "group_chat": true,
+        "file_sharing": true,
+        "video_calls": true,
+        "cross_platform": "partial",
+        "no_data_sale": "partial"
+      }
+    }
+  ]
+}

@@ -1110,12 +1110,12 @@ main {
   padding: var(--s-4);
   background: rgba(17, 20, 22, 0.88);
   border: 1px solid var(--border);
-  box-shadow: 18px 28px 58px rgba(0, 0, 0, 0.38);
-  transform-style: preserve-3d;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
 }
 
-.seizure-server { transform: rotateY(8deg) translateZ(24px); }
-.seizure-review { transform: rotateY(-8deg) translateZ(24px); }
+/* Flat squares (was rotateY tilt + stacked-offset shadow). */
+.seizure-server { transform: none; }
+.seizure-review { transform: none; }
 
 .seizure-node > strong {
   display: block;
@@ -2553,8 +2553,8 @@ main {
   to { opacity: 1; transform: translateX(0); }
 }
 @keyframes seizure-server {
-  from { opacity: 0.55; transform: rotateY(8deg) translateY(8px) translateZ(10px); }
-  to { opacity: 1; transform: rotateY(8deg) translateY(0) translateZ(24px); }
+  from { opacity: 0.55; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes seizure-transfer {
   from { left: 0; transform: translateY(-50%) rotate(-3deg); }
@@ -8686,6 +8686,7 @@ h2:hover .anchor-link,
 .scrub-flat-scan .scrub-scan-icon {
   position:relative !important;width:5rem !important;height:3.3rem !important;background:#111416 !important;
   border:2px solid rgba(255,255,255,.68) !important;border-radius:7px !important;
+  overflow:hidden !important;
 }
 .scrub-flat-scan .scrub-scan-icon::before {
   position:absolute !important;inset:.55rem .55rem auto !important;height:.55rem !important;
@@ -9609,4 +9610,240 @@ svg.setup-osl-lock::after { content: none !important; }
   color: var(--accent);
   font-size: .72rem;
   font-weight: 800;
+}
+
+/* ==========================================================================
+   changes.md visual fixes (2026-07)
+   ========================================================================== */
+
+/* Remove the bordered square before the native "Message" composer on the
+   download setup demo. */
+.setup-native-composer .setup-attach-icon { display: none !important; }
+
+/* --------------------------------------------------------------------------
+   Unify every message send button to the download standard: a solid accent
+   circle with a dark chevron. The download composers already do this above;
+   this brings the home hero and the features demos in line.
+   -------------------------------------------------------------------------- */
+#how-it-works .service-bar-3d .native-send-symbol,
+#how-it-works .osl-bar-3d button,
+.warning-draft .warning-send-symbol,
+.expiry-native-composer i {
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  clip-path: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  box-shadow: none !important;
+}
+
+/* Per-context sizing (positioning is left to each element's existing rules so
+   the cinema-send / fly animations keep owning `transform`). */
+#how-it-works .service-bar-3d .native-send-symbol { position: relative; width: 1.4rem; height: 1.4rem; transform: none; }
+.warning-draft .warning-send-symbol { width: 1.9rem !important; height: 1.9rem !important; }
+.expiry-native-composer i { width: 1.9rem; height: 1.9rem; }
+
+/* The dark chevron, drawn via ::after so the glyph matches on every page. */
+#how-it-works .service-bar-3d .native-send-symbol::after,
+.warning-draft .warning-send-symbol::after,
+.expiry-native-composer i::after {
+  content: "" !important;
+  position: absolute;
+  inset: 0;
+  width: .42rem;
+  height: .42rem;
+  margin: auto;
+  border-top: 2px solid #04161a !important;
+  border-right: 2px solid #04161a !important;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+  background: none !important;
+  transform: translateX(-1px) rotate(45deg);
+}
+
+/* Home hero OSL composer: the .send-arrow child (a masked arrow) becomes the
+   same dark chevron on the now-accent circle. */
+#how-it-works .osl-bar-3d button .send-arrow {
+  width: .5rem !important;
+  height: .5rem !important;
+  background: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  border-top: 2px solid #04161a !important;
+  border-right: 2px solid #04161a !important;
+  transform: translateX(-1px) rotate(45deg) !important;
+}
+#how-it-works .osl-bar-3d button .send-arrow::before,
+#how-it-works .osl-bar-3d button .send-arrow::after { display: none !important; }
+
+/* --------------------------------------------------------------------------
+   Animate the "Pay monthly. Paste the code." activation steps so the flow
+   reads at a glance: each step builds in, the arrows draw, the code reveals
+   left-to-right, and the badge pops as Pro unlocks. Loops via the shared
+   product-animation observer; static + fully visible under reduced motion.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  [data-product-animation="activation-flow"].is-running .activation-step {
+    animation: act-card-in .6s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  [data-product-animation="activation-flow"].is-running .activation-step:nth-of-type(1) { animation-delay: .1s; }
+  [data-product-animation="activation-flow"].is-running .activation-step:nth-of-type(2) { animation-delay: 1s; }
+  [data-product-animation="activation-flow"].is-running .activation-step:nth-of-type(3) { animation-delay: 1.85s; }
+
+  [data-product-animation="activation-flow"].is-running .activation-step-arrow {
+    animation: act-arrow-in .45s ease both;
+  }
+  [data-product-animation="activation-flow"].is-running .activation-step-arrow:nth-of-type(1) { animation-delay: .8s; }
+  [data-product-animation="activation-flow"].is-running .activation-step-arrow:nth-of-type(2) { animation-delay: 1.65s; }
+
+  [data-product-animation="activation-flow"].is-running .activation-pay-chip {
+    animation: act-pop .4s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  [data-product-animation="activation-flow"].is-running .activation-pay-chip:nth-of-type(1) { animation-delay: .38s; }
+  [data-product-animation="activation-flow"].is-running .activation-pay-chip:nth-of-type(2) { animation-delay: .52s; }
+  [data-product-animation="activation-flow"].is-running .activation-pay-chip:nth-of-type(3) { animation-delay: .66s; }
+
+  [data-product-animation="activation-flow"].is-running .activation-code-chip {
+    animation: act-code .8s ease 1.3s both;
+  }
+  [data-product-animation="activation-flow"].is-running .activation-unlock-badge {
+    animation: act-unlock .65s cubic-bezier(.2, .8, .2, 1) 2.15s both;
+  }
+}
+@keyframes act-card-in {
+  from { opacity: 0; transform: translateY(14px) scale(.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes act-arrow-in {
+  from { opacity: 0; transform: translateX(-7px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes act-pop {
+  0% { opacity: 0; transform: scale(.55); }
+  60% { transform: scale(1.1); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes act-code {
+  0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+  35% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes act-unlock {
+  0% { opacity: 0; transform: scale(.5); box-shadow: 0 0 0 rgba(6, 182, 212, 0); }
+  55% { opacity: 1; transform: scale(1.14); box-shadow: 0 10px 30px rgba(6, 182, 212, .75); }
+  100% { opacity: 1; transform: scale(1); box-shadow: 0 6px 18px rgba(6, 182, 212, .5); }
+}
+
+/* --------------------------------------------------------------------------
+   Home hero cinema scene: the stage is a fixed 1320px "world" centred inside
+   an overflow-hidden viewport. Between the mobile stack (<=899px) and full
+   width (>=1320px) the single scale(.94) step left it wider than the viewport,
+   so the outer chat cards were clipped on both edges. Scale the world to fit
+   across that range (each step fits its lower bound with a little margin) so
+   no element is ever cut off. Matches the breakpoint-scaling used elsewhere in
+   this file; the mobile stack (<=899px) is left untouched.
+   -------------------------------------------------------------------------- */
+@media (min-width:1200px) and (max-width:1319px) {
+  #how-it-works .cinema-viewport { height:32rem; }
+  #how-it-works .cinema-world { transform:translateX(-50%) scale(.89); transform-origin:top center; }
+}
+@media (min-width:1100px) and (max-width:1199px) {
+  #how-it-works .cinema-viewport { height:30rem; }
+  #how-it-works .cinema-world { transform:translateX(-50%) scale(.81); transform-origin:top center; }
+}
+@media (min-width:1000px) and (max-width:1099px) {
+  #how-it-works .cinema-viewport { height:27rem; }
+  #how-it-works .cinema-world { transform:translateX(-50%) scale(.74); transform-origin:top center; }
+}
+@media (min-width:900px) and (max-width:999px) {
+  #how-it-works .cinema-viewport { height:24rem; }
+  #how-it-works .cinema-world { transform:translateX(-50%) scale(.66); transform-origin:top center; }
+}
+
+/* ==========================================================================
+   Features — Burn scopes. Four rounded-square icons (password / account /
+   scope / chat) that disintegrate into accent particles in sequence, looping
+   via the shared product-animation observer. Static + intact under reduced
+   motion.
+   ========================================================================== */
+.burn-scopes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.2rem, 4vw, 3rem);
+}
+.burn-scope {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  text-align: center;
+}
+.burn-square {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(5rem, 14vw, 6.5rem);
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+}
+.burn-icon { width: 44%; height: 44%; color: var(--text); }
+.burn-icon svg { display: block; width: 100%; height: 100%; }
+.burn-scope-name { font-size: 0.95rem; }
+.burn-scope-desc { color: var(--text-muted); font-size: 0.78rem; }
+
+.burn-ash { position: absolute; inset: 0; pointer-events: none; }
+/* Ash flecks: small, matte (no glow), drifting up like smoke — not a firework. */
+.burn-ash i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+}
+/* Every fleck drifts upward (smoke bias) with a spread of sideways offsets and
+   varied rise heights, so the icon reads as crumbling to ash, not exploding. */
+.burn-ash i:nth-child(1)  { --x: -1.8rem; --y: -2.6rem; --d: 0.00s; }
+.burn-ash i:nth-child(2)  { --x:  1.6rem; --y: -2.9rem; --d: 0.06s; }
+.burn-ash i:nth-child(3)  { --x: -2.4rem; --y: -1.6rem; --d: 0.03s; }
+.burn-ash i:nth-child(4)  { --x:  2.3rem; --y: -1.9rem; --d: 0.09s; }
+.burn-ash i:nth-child(5)  { --x: -0.5rem; --y: -3.4rem; --d: 0.12s; }
+.burn-ash i:nth-child(6)  { --x:  0.7rem; --y: -3.1rem; --d: 0.02s; }
+.burn-ash i:nth-child(7)  { --x: -2.7rem; --y: -0.9rem; --d: 0.14s; }
+.burn-ash i:nth-child(8)  { --x:  2.6rem; --y: -1.1rem; --d: 0.05s; }
+.burn-ash i:nth-child(9)  { --x: -1.2rem; --y: -2.1rem; --d: 0.10s; }
+.burn-ash i:nth-child(10) { --x:  1.3rem; --y: -2.4rem; --d: 0.16s; }
+.burn-ash i:nth-child(11) { --x: -0.4rem; --y: -1.5rem; --d: 0.07s; }
+.burn-ash i:nth-child(12) { --x:  0.5rem; --y: -1.8rem; --d: 0.13s; }
+
+/* The icon dims, softens, and lifts slightly as it turns to ash. */
+@keyframes burn-icon-fade {
+  0%, 8%    { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+  30%       { opacity: 0; filter: blur(3px); transform: translateY(-5px) scale(0.96); }
+  66%       { opacity: 0; filter: blur(3px); transform: translateY(-5px) scale(0.96); }
+  90%, 100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+}
+/* Flecks fade in at the icon, drift up and out, shrink, and dissolve. */
+@keyframes burn-ash-p {
+  0%, 6% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+  18%    { opacity: 0.75; }
+  52%    { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.35); }
+  100%   { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.35); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(1) .burn-icon { animation: burn-icon-fade 2s ease-in-out 0.1s both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(1) .burn-ash i { animation: burn-ash-p 2s ease-out calc(0.1s + var(--d)) both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(2) .burn-icon { animation: burn-icon-fade 2s ease-in-out 0.55s both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(2) .burn-ash i { animation: burn-ash-p 2s ease-out calc(0.55s + var(--d)) both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(3) .burn-icon { animation: burn-icon-fade 2s ease-in-out 1s both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(3) .burn-ash i { animation: burn-ash-p 2s ease-out calc(1s + var(--d)) both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(4) .burn-icon { animation: burn-icon-fade 2s ease-in-out 1.45s both; }
+  [data-product-animation="burn-flow"].is-running .burn-scope:nth-child(4) .burn-ash i { animation: burn-ash-p 2s ease-out calc(1.45s + var(--d)) both; }
 }

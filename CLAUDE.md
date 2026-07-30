@@ -73,4 +73,13 @@ Tests enforce the live methods and their payment-flow bindings.
 - **`.assetsignore`** controls what Cloudflare Pages does *not* publish (e.g. `scripts/`, working files,
   the local-only motion lab). Adding a file to the repo does not mean it ships.
 - **`_redirects`** holds Cloudflare Pages redirects (e.g. `/pricing` → `/download`).
-- Docs pages live in `docs/`; top-level pages are marketing/checkout.
+- Docs pages live in `docs/`; top-level pages are marketing/checkout: `index`, `features`, `pricing`,
+  `download`, `donate`, `audit`, plus the Stripe return pages `success.html` (post-payment activation
+  decryption surfaces here) and `cancel.html`.
+
+## Gotchas
+
+- **`update/` is a stray nested checkout — do not edit or commit it.** `update/oslprivacy-web/` is a
+  full, older copy of this same repo (its own `.git`, older/smaller HTML). It is untracked and *not* in
+  `.gitignore`, so `git add .` would swallow it. Ignore it for all work; if anything, it should be
+  removed or gitignored, never edited.
