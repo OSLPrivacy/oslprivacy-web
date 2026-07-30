@@ -14,7 +14,7 @@
 // 640px. Reducing the layout width is the honest emulation; deviceScaleFactor
 // would only change DPI.
 import { spawn } from 'node:child_process';
-import { existsSync, globSync, readFileSync } from 'node:fs';
+import { existsSync, globSync, readFileSync, readdirSync } from 'node:fs';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import os from 'node:os';
@@ -36,10 +36,56 @@ function routeFromHtmlPath(htmlPath) {
   return `/${htmlPath.slice(0, -'.html'.length)}`;
 }
 
+function rel(file) {
+  return path.relative(REPO_ROOT, file).replaceAll(path.sep, '/');
+}
+
+function walkedFiles(directory) {
+  let entries;
+  try {
+    entries = readdirSync(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+
+  const files = [];
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...walkedFiles(full));
+    else if (entry.isFile()) files.push(full);
+  }
+  return files.sort();
+}
+
+function discoverPublicHtmlFiles() {
+  const rootEntries = readdirSync(REPO_ROOT, { withFileTypes: true });
+  const html = rootEntries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
+    .map((entry) => entry.name);
+  html.push(...walkedFiles(path.join(REPO_ROOT, 'docs'))
+    .filter((file) => file.toLowerCase().endsWith('.html'))
+    .map((file) => rel(file)));
+  return html.sort();
+}
+
 function publicPagesFromManifest() {
   const manifest = JSON.parse(readFileSync(PUBLIC_SURFACE_MANIFEST_PATH, 'utf8'));
   if (!Array.isArray(manifest.html) || manifest.html.length === 0) {
     throw new Error('public surface manifest must declare public HTML pages');
+  }
+  const declared = [...manifest.html].sort();
+  const discovered = discoverPublicHtmlFiles();
+  if (JSON.stringify(declared) !== JSON.stringify(discovered)) {
+    const declaredSet = new Set(declared);
+    const discoveredSet = new Set(discovered);
+    const missing = discovered.filter((htmlPath) => !declaredSet.has(htmlPath));
+    const extra = declared.filter((htmlPath) => !discoveredSet.has(htmlPath));
+    throw new Error(
+      'public surface manifest HTML must exactly match discovered root/docs HTML so every public page is audited'
+      + `; missing from manifest: ${missing.join(', ') || 'none'}`
+      + `; not found on disk: ${extra.join(', ') || 'none'}`,
+    );
   }
   const pages = manifest.html.map((htmlPath) => {
     if (typeof htmlPath !== 'string' || !htmlPath.endsWith('.html')) {
