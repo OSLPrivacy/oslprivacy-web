@@ -7298,6 +7298,29 @@ if (SELF_TEST) {
       },
     });
   }
+  publicSurfaceMutations.push({
+    name: 'PUBLIC_MANIFEST_CLAIM_CHANNELS_HAVE_POSITIVE_CONTROLS',
+    caught() {
+      const representativeControls = new Map([
+        ['rendered-text', ['index.html', `<main><p>${publicClaim}</p></main>`, '<main><p></p></main>', 'html']],
+        ['document-title', ['index.html', `<title>${publicClaim}</title>`, '<title></title>', 'html']],
+        ['metadata-content', ['index.html', `<meta name="description" content="${publicClaim}">`, '<meta name="description" content="">', 'html']],
+        ['accessible-name', ['index.html', `<main aria-label="${publicClaim}"></main>`, '<main aria-label=""></main>', 'html']],
+        ['alt-title-placeholder-value', ['index.html', `<input title="${publicClaim}" placeholder="${publicClaim}" value="${publicClaim}">`, '<input title="" placeholder="" value="">', 'html']],
+        ['public-data-attribute', ['index.html', `<div data-copy="${publicClaim}"></div>`, '<div data-copy=""></div>', 'html']],
+        ['json-ld', ['index.html', `<script type="application/ld+json">{"description":"${publicClaim}"}</script>`, '<script type="application/ld+json">{}</script>', 'html']],
+        ['inline-script-copy', ['index.html', '<script>document.body.insertAdjacentText("beforeend", "All local data is " + "password-protected.");</script>', '<script>document.body.insertAdjacentText("beforeend", "Account settings.");</script>', 'html']],
+        ['textual-asset', ['assets/claims.json', `{"claim":"${publicClaim}"}`, '{"claim":""}', 'textual-asset']],
+      ]);
+      return REQUIRED_PUBLIC_CLAIM_CHANNELS.every((channel) => {
+        const control = representativeControls.get(channel);
+        if (!control) return false;
+        const [file, fixture, removed, kind] = control;
+        return publicAtRestChannelErrors(file, fixture, kind).length > 0
+          && publicAtRestChannelErrors(file, removed, kind).length === 0;
+      });
+    },
+  });
   publicSurfaceMutations.push(
     {
       name: 'PUBLIC_CHANNEL_GENERATED_SCRIPT_TEXT_REPLACEMENT_DISTINCTION',
