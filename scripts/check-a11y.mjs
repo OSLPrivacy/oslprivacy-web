@@ -381,6 +381,12 @@ function auditPage(minTap) {
     }
   }
 
+  const landmarkFindings = [];
+  const mainCount = document.querySelectorAll('main').length;
+  const h1Count = document.querySelectorAll('h1').length;
+  if (mainCount !== 1) landmarkFindings.push(`expected exactly one main landmark, found ${mainCount}`);
+  if (h1Count !== 1) landmarkFindings.push(`expected exactly one h1, found ${h1Count}`);
+
   return {
     imagesMissingAlt,
     controlsMissingName,
@@ -392,10 +398,8 @@ function auditPage(minTap) {
     h4ExplainerFound,
     faqBurnSemantics,
     faqBurnBoundaryFound,
-    landmarks: {
-      main: document.querySelectorAll('main').length,
-      h1: document.querySelectorAll('h1').length,
-    },
+    landmarkFindings,
+    landmarks: { main: mainCount, h1: h1Count },
   };
 }
 
@@ -494,6 +498,7 @@ async function run() {
   console.log(`  horizontal overflow   : ${overflowRows.length} combinations`);
   console.log(`  H4 semantic findings  : ${sum('h4Semantics')} (${uniq('h4Semantics').length} distinct)`);
   console.log(`  FAQ burn findings     : ${sum('faqBurnSemantics')} (${uniq('faqBurnSemantics').length} distinct)`);
+  console.log(`  landmark findings     : ${sum('landmarkFindings')} (${uniq('landmarkFindings').length} distinct)`);
 
   for (const name of uniq('controlsMissingName')) console.log(`    [name] ${name}`);
   for (const name of uniq('imagesMissingAlt')) console.log(`    [alt]  ${name}`);
@@ -503,8 +508,15 @@ async function run() {
   }
   for (const finding of uniq('h4Semantics')) console.log(`    [H4]   ${finding}`);
   for (const finding of uniq('faqBurnSemantics')) console.log(`    [FAQ]  ${finding}`);
+  for (const finding of uniq('landmarkFindings')) console.log(`    [landmark] ${finding}`);
 
-  const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length + sum('h4Semantics') + sum('faqBurnSemantics');
+  const failed = sum('imagesMissingAlt')
+    + sum('controlsMissingName')
+    + sum('smallTapTargets')
+    + overflowRows.length
+    + sum('h4Semantics')
+    + sum('faqBurnSemantics')
+    + sum('landmarkFindings');
   console.log(`\ncheck-a11y: ${results.length} combinations, ${failed} blocking findings, ${sum('smallTapTargets')} tap-target findings.`);
 
   let floorFailed = false;
