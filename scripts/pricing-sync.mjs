@@ -34,9 +34,55 @@ function rel(file) {
 }
 
 function resolveDottedPath(source, dottedPath) {
+  if (!resolveDottedPath.contractChecked) {
+    resolveDottedPath.contractChecked = true;
+    const fixture = {
+      tiers: {
+        pro: {
+          display: '$5',
+          amount_cents: 500,
+          enabled: false,
+          nested: { note: 'not a marker value' },
+          empty: '',
+          nothing: null,
+          $internal_note: 'private manifest metadata',
+        },
+      },
+    };
+    const assertions = [
+      ['tiers.pro.display', true, '$5'],
+      ['tiers.pro.amount_cents', true, '500'],
+      ['tiers.pro.enabled', true, 'false'],
+      ['tiers.pro.empty', true, ''],
+      ['tiers.pro.missing', false, undefined],
+      ['tiers.pro.nested', false, undefined],
+      ['tiers.pro.nothing', false, undefined],
+      ['tiers.pro.$internal_note', false, undefined],
+      ['tiers..pro.display', false, undefined],
+      ['tiers.pro.__proto__.polluted', false, undefined],
+      ['constructor.prototype.polluted', false, undefined],
+    ];
+
+    const failures = [];
+    for (const [pathUnderTest, expectedOk, expectedValue] of assertions) {
+      const actual = resolveDottedPath(fixture, pathUnderTest);
+      if (actual.ok !== expectedOk || actual.value !== expectedValue) {
+        failures.push(pathUnderTest);
+      }
+    }
+    if (failures.length > 0) {
+      throw new Error(`pricing-sync resolver contract failed: ${failures.join(', ')}`);
+    }
+  }
+
   let cursor = source;
   for (const part of dottedPath.split('.')) {
     if (
+      part.length === 0 ||
+      part.startsWith('$') ||
+      part === '__proto__' ||
+      part === 'prototype' ||
+      part === 'constructor' ||
       cursor === null ||
       typeof cursor !== 'object' ||
       !Object.prototype.hasOwnProperty.call(cursor, part)
