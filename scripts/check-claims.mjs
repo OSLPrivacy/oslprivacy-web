@@ -3566,6 +3566,26 @@ function validateH7Comparison(pricing, asOf) {
     if (source?.publisher !== 'DeleteMe / Abine') {
       add('SOURCE_PUBLISHER', `${label} must name DeleteMe / Abine as publisher`);
     }
+    const refreshEvidence = source?.refresh_evidence;
+    if (!refreshEvidence || typeof refreshEvidence !== 'object' || Array.isArray(refreshEvidence)) {
+      add('SOURCE_REFRESH', `${label}.refresh_evidence must document maintained source-refresh evidence`);
+    } else {
+      for (const field of ['checked_on', 'method', 'result']) {
+        if (!isNonempty(refreshEvidence?.[field])) {
+          add('SOURCE_REFRESH', `${label}.refresh_evidence.${field} must be nonempty`);
+        }
+      }
+      if (refreshEvidence?.checked_on !== source?.accessed_on) {
+        add('SOURCE_REFRESH', `${label}.refresh_evidence.checked_on must match accessed_on`);
+      }
+      if (refreshEvidence?.method !== 'manual_official_source_review') {
+        add('SOURCE_REFRESH', `${label}.refresh_evidence.method must be manual_official_source_review`);
+      }
+      if (!/\bofficial DeleteMe\/Abine source\b/i.test(refreshEvidence?.result ?? '')
+        || !/\bH7 comparison\b/i.test(refreshEvidence?.result ?? '')) {
+        add('SOURCE_REFRESH', `${label}.refresh_evidence.result must say the official DeleteMe/Abine source was refreshed for the H7 comparison`);
+      }
+    }
     if (!H7_SOURCE_TYPES.has(source?.source_type)) {
       add('SOURCE_TYPE', `${label} has unsupported source_type ${JSON.stringify(source?.source_type)}`);
     } else {
@@ -5944,6 +5964,13 @@ const H7_SELF_TEST_MUTATIONS = [
     },
   },
   {
+    name: 'missing maintained source-refresh evidence',
+    expect: 'H7_SOURCE_REFRESH',
+    mutate(pricing) {
+      delete pricing.research_comparisons.h7_deleteme.sources[0].refresh_evidence;
+    },
+  },
+  {
     name: 'future access date',
     expect: 'H7_SOURCE_FUTURE',
     mutate(pricing) {
@@ -7677,8 +7704,8 @@ if (SELF_TEST) {
         && dimension.conflict_explanation?.trim()),
     },
     {
-      name: 'exactly 21 named H7 mutations',
-      pass: H7_SELF_TEST_MUTATIONS.length === 21,
+      name: 'exactly 22 named H7 mutations',
+      pass: H7_SELF_TEST_MUTATIONS.length === 22,
     },
   ];
   for (const assertion of h7Assertions) {

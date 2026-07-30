@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for every price, billing term and capability label on oslprivacy.com. Edit this file, then run `node scripts/pricing-sync.mjs` and `node scripts/check-claims.mjs`. Never hand-edit a price literal or a capability status in an HTML file.",
-  "claim_gate_source_sha256": "4f6a8b34caebf0d86cda4cd4a0aec6028f8f06879e0139f35ab8e5cddb3d96c3",
+  "claim_gate_source_sha256": "d3726c849f6374165697a0284f9c47629335ed6d3374f942efa6781e1bac1d99",
   "manifest_version": 7,
   "decided_by": "Zhao",
   "decided_on": "2026-07-26",
@@ -768,7 +768,12 @@
           "title": "Pricing – DeleteMe",
           "section": "Standard Protection; All DeleteMe Plans Include",
           "published_or_effective_on": "2026-04-10",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "pricing-premium",
@@ -778,7 +783,12 @@
           "title": "Pricing – DeleteMe, premium view",
           "section": "Premium Protection; Compare all plans",
           "published_or_effective_on": "2026-04-10",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "standard-us-sites",
@@ -788,7 +798,12 @@
           "title": "Sites we remove from on the Standard US plan",
           "section": "Main named-site list",
           "published_or_effective_on": "2025-07-03",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "broader-broker-catalog",
@@ -798,7 +813,12 @@
           "title": "Sites We Remove From",
           "section": "List of Data Brokers We Have Found and Removed Data From",
           "published_or_effective_on": "2026-02-04",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "monitoring-cadence",
@@ -808,7 +828,12 @@
           "title": "Do you constantly monitor my info around the clock?",
           "section": "Main answer",
           "published_or_effective_on": "2025-08-13",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "removal-timing",
@@ -818,7 +843,12 @@
           "title": "How long before my information is removed?",
           "section": "What affects timing; What you'll see; Why things can reappear",
           "published_or_effective_on": "2025-09-30",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "member-opt-outs",
@@ -828,7 +858,12 @@
           "title": "Member Opt-Outs",
           "section": "Overview; Data Broker Secondary Opt-Out",
           "published_or_effective_on": "2026-02-25",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "privacy-report",
@@ -838,7 +873,12 @@
           "title": "Your DeleteMe Privacy Report",
           "section": "Overview; Definitions; Site Specific; Removing Personal Information",
           "published_or_effective_on": "2026-07-28",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "privacy-collect-use",
@@ -848,7 +888,12 @@
           "title": "DeleteMe Privacy Center – Privacy Policy",
           "section": "Personal Information We Collect; How We Use Your Personal Information",
           "published_or_effective_on": "2025-05-21",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "privacy-sharing",
@@ -858,7 +903,12 @@
           "title": "DeleteMe Privacy Center – Privacy Policy",
           "section": "Datasheet Data Disclosures; General Data Disclosures",
           "published_or_effective_on": "2025-05-21",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "privacy-retention-security",
@@ -868,7 +918,12 @@
           "title": "DeleteMe Privacy Center – Privacy Policy",
           "section": "Retention; Security Practices; International Data Transfers",
           "published_or_effective_on": "2025-05-21",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "terms-service",
@@ -878,7 +933,12 @@
           "title": "DeleteMe Privacy Center – Terms of Service",
           "section": "Using DeleteMe – All DeleteMe Users",
           "published_or_effective_on": "2023-10-26",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "unsupported-sites",
@@ -888,7 +948,12 @@
           "title": "What sites can't DeleteMe remove me from?",
           "section": "Main answer",
           "published_or_effective_on": "2025-10-01",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "google-results",
@@ -898,7 +963,12 @@
           "title": "Can you delete Google search results for me?",
           "section": "Main answer",
           "published_or_effective_on": "2025-08-13",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         },
         {
           "id": "social-media",
@@ -908,7 +978,12 @@
           "title": "How do I get my information removed from Social Media?",
           "section": "Main answer",
           "published_or_effective_on": "2025-07-08",
-          "accessed_on": "2026-07-30"
+          "accessed_on": "2026-07-30",
+          "refresh_evidence": {
+            "checked_on": "2026-07-30",
+            "method": "manual_official_source_review",
+            "result": "The official DeleteMe/Abine source remained reachable and was re-read for the H7 comparison refresh."
+          }
         }
       ],
       "dimensions": [
