@@ -66,14 +66,25 @@ check('pws-burn-disclosure-flow', () => {
   assert.match(
     css,
     /translate\(-50%, -50%\) translateY\(-2\.5rem\)[\s\S]*translate\(-50%, -50%\)[\s\S]*translate\(-50%, -50%\) translateY\(2\.5rem\)/,
-    'the animation must visibly travel before-to-after rather than pulse in place',
+    'stacked layouts must animate disclosure downward rather than pulse in place',
+  );
+  const wideNoPreference = blockAfter('@media (min-width: 900px) and (prefers-reduced-motion: no-preference)');
+  assert.match(
+    wideNoPreference,
+    /\.pws-burn-flow-signal\s*\{\s*animation-name:\s*pws-burn-disclosure-flow-wide;\s*\}/,
+    'wide layouts must switch to a side-by-side disclosure animation',
+  );
+  assert.match(
+    css,
+    /@keyframes\s+pws-burn-disclosure-flow-wide\s*\{[\s\S]*translate\(-50%, -50%\) translateX\(-2\.5rem\)[\s\S]*translate\(-50%, -50%\)[\s\S]*translate\(-50%, -50%\) translateX\(2\.5rem\)/,
+    'wide layouts must animate disclosure from PWS toward Burn',
   );
 });
 
 check('prefers-reduced-motion', () => {
   const reduced = blockAfter('@media (prefers-reduced-motion: reduce)');
   const reducedStart = css.indexOf('@media (prefers-reduced-motion: reduce)', pwsCssStart);
-  const narrowReducedStart = css.indexOf('@media (max-width: 599px) and (prefers-reduced-motion: reduce)', pwsCssStart);
+  const narrowReducedStart = css.indexOf('@media (max-width: 899px) and (prefers-reduced-motion: reduce)', pwsCssStart);
   assert.match(reduced, /\.pws-burn-explainer \*,/);
   assert.match(reduced, /animation:\s*none !important/);
   assert.match(reduced, /transition:\s*none !important/);
@@ -93,7 +104,7 @@ check('prefers-reduced-motion', () => {
     /\.pws-burn-flow-signal::after\s*\{\s*opacity:\s*1;\s*\}/,
     'the static indicator must expose direction without relying on animation',
   );
-  const narrowReduced = blockAfter('@media (max-width: 599px) and (prefers-reduced-motion: reduce)');
+  const narrowReduced = blockAfter('@media (max-width: 899px) and (prefers-reduced-motion: reduce)');
   assert.match(narrowReduced, /\.pws-burn-flow-signal\s*\{[\s\S]*height:\s*1\.9rem/s);
   const mobileStaticSignal = declarationMap(selectorBlock('.pws-burn-flow-signal', narrowReducedStart));
   assert.equal(mobileStaticSignal.width, '2px');

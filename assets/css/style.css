@@ -9305,6 +9305,9 @@ h2:hover .anchor-link,
   .pws-burn-flow-signal { animation: pws-burn-disclosure-flow 3.8s ease-in-out infinite; }
   .pws-pause-mark { animation: pws-pause-breathe 3.8s ease-in-out infinite; }
 }
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .pws-burn-flow-signal { animation-name: pws-burn-disclosure-flow-wide; }
+}
 @media (prefers-reduced-motion: reduce) {
   .pws-burn-explainer *,
   .pws-burn-explainer *::before,
@@ -9324,7 +9327,7 @@ h2:hover .anchor-link,
   }
   .pws-burn-flow-signal::after { opacity: 1; }
 }
-@media (max-width: 599px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
   .pws-burn-flow-signal {
     width: 2px;
     height: 1.9rem;
@@ -9339,6 +9342,11 @@ h2:hover .anchor-link,
   0%, 22% { opacity: 0; transform: translate(-50%, -50%) translateY(-2.5rem); }
   35%, 62% { opacity: 1; transform: translate(-50%, -50%); }
   78%, 100% { opacity: 0; transform: translate(-50%, -50%) translateY(2.5rem); }
+}
+@keyframes pws-burn-disclosure-flow-wide {
+  0%, 22% { opacity: 0; transform: translate(-50%, -50%) translateX(-2.5rem); }
+  35%, 62% { opacity: 1; transform: translate(-50%, -50%); }
+  78%, 100% { opacity: 0; transform: translate(-50%, -50%) translateX(2.5rem); }
 }
 @keyframes pws-pause-breathe {
   0%, 100% { transform: scale(1); }
