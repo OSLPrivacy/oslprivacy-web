@@ -1,2 +1,3 @@
 # Cloudflare Pages redirects. Format: <source> <destination> <status>
 /pricing /download 301
+/download/windows https://keyserver.oslprivacy.com/v1/download/windows 302
