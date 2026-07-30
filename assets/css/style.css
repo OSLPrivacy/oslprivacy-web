@@ -8952,12 +8952,15 @@ h2:hover .anchor-link,
 }
 .pws-burn-flow-signal {
   position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   width: .45rem;
   height: .45rem;
-  opacity: 0;
+  opacity: .86;
   background: var(--accent);
   border-radius: 50%;
   box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent);
+  transform: translate(-50%, -50%);
 }
 .pws-burn-erasure-limit {
   margin: var(--s-4) 0;
@@ -9028,11 +9031,15 @@ h2:hover .anchor-link,
     animation: none !important;
     transition: none !important;
   }
+  .pws-burn-flow-signal {
+    opacity: .86;
+    transform: translate(-50%, -50%);
+  }
 }
 @keyframes pws-burn-disclosure-flow {
-  0%, 22% { opacity: 0; transform: translateY(-2.5rem); }
-  35%, 62% { opacity: 1; }
-  78%, 100% { opacity: 0; transform: translateY(2.5rem); }
+  0%, 22% { opacity: 0; transform: translate(-50%, -50%) translateY(-2.5rem); }
+  35%, 62% { opacity: 1; transform: translate(-50%, -50%); }
+  78%, 100% { opacity: 0; transform: translate(-50%, -50%) translateY(2.5rem); }
 }
 @keyframes pws-pause-breathe {
   0%, 100% { transform: scale(1); }
