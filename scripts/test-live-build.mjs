@@ -18,6 +18,13 @@ const index = Buffer.from([
   `<meta name="osl-build" content="${commit}">`,
   '</head><body>fixture</body></html>',
 ].join(''));
+const success = Buffer.from([
+  '<!doctype html><html><head>',
+  `<meta name="osl-build" content="${commit}">`,
+  '</head><body>',
+  '<p data-osl-claim="pro-expiry-limitation">If this page follows an earlier completed payment, keep the receipt and activation code. Nothing renews and OSL stores no payment method. Automatic one-month expiry is not implemented, so this page does not claim when the issued licence ends. The payment record contains no message text, no conversation names, no carrier text and no recipient identity.</p>',
+  '</body></html>',
+].join(''));
 const asset = Buffer.from('void 0;\n');
 const headers = Buffer.from('/*\n  X-Content-Type-Options: nosniff\n');
 const redirects = Buffer.from('/old / 301\n');
@@ -45,16 +52,35 @@ const baseBuild = {
     '_redirects': digest(redirects),
     'assets/main.js': digest(asset),
     'index.html': digest(index),
+    'success.html': digest(success),
   },
   files: {
     'assets/main.js': digest(asset),
     'index.html': digest(index),
+    'success.html': digest(success),
   },
 };
 
 let mode = 'positive';
 let port;
 let passed = 0;
+
+function successBytes() {
+  if (mode === 'missing-pro-expiry-limitation') {
+    return Buffer.from(success.toString().replace(
+      /<p data-osl-claim="pro-expiry-limitation">[\s\S]*?<\/p>/,
+      '<p>Automatic one-month expiry is implemented.</p>',
+    ));
+  }
+  if (mode === 'misstated-pro-expiry-limitation') {
+    return Buffer.from(success.toString().replace(
+      'Automatic one-month expiry is not implemented',
+      'Automatic one-month expiry is implemented',
+    ));
+  }
+  return success;
+}
+
 const server = createServer((request, response) => {
   const url = new URL(request.url, `http://127.0.0.1:${port}`);
   if (url.pathname === '/build.json') {
@@ -73,14 +99,25 @@ const server = createServer((request, response) => {
       return;
     }
     const build = structuredClone(baseBuild);
+    const currentSuccess = successBytes();
+    build.artifact_files['success.html'] = digest(currentSuccess);
+    build.files['success.html'] = digest(currentSuccess);
     if (mode === 'dirty') build.dirty = true;
     if (mode === 'wrong-sha') build.commit = 'b'.repeat(40);
     if (mode === 'wrong-environment') build.environment = 'preview';
     if (mode === 'wrong-branch') build.branch = 'preview-branch';
+    if (mode === 'preview') {
+      build.environment = 'preview';
+      build.branch = 'preview-branch';
+    }
     if (mode === 'wrong-schema') build.schema_version = 3;
     if (mode === 'missing-control-input') delete build.inputs['data/public-surface-manifest.json'];
     if (mode === 'invalid-manifest-entry') build.files['assets//main.js'] = digest(asset);
     if (mode === 'non-string-manifest-digest') build.files['assets/main.js'] = null;
+    if (mode === 'missing-success') {
+      delete build.artifact_files['success.html'];
+      delete build.files['success.html'];
+    }
     response.end(JSON.stringify(build));
     return;
   }
@@ -117,6 +154,10 @@ const server = createServer((request, response) => {
     response.end(html);
     return;
   }
+  if (url.pathname === '/success.html') {
+    response.end(successBytes());
+    return;
+  }
   if (url.pathname === '/assets/main.js') {
     response.end(mode === 'changed-artifact' ? 'void 1;\n' : asset);
     return;
@@ -124,15 +165,18 @@ const server = createServer((request, response) => {
   response.writeHead(404).end('missing');
 });
 
-function runVerifier() {
+function runVerifier({ evidence = 'fixture-redemption-evidence', verifierBranch = branch, verifierEnvironment = environment } = {}) {
   return new Promise((resolve, reject) => {
+    const env = { ...process.env };
+    if (evidence === undefined) delete env.OSL_KEYSERVER_REDEMPTION_EVIDENCE;
+    else env.OSL_KEYSERVER_REDEMPTION_EVIDENCE = evidence;
     const child = spawn(process.execPath, [
       VERIFIER,
       `--url=http://127.0.0.1:${port}`,
       `--sha=${commit}`,
-      `--branch=${branch}`,
-      `--environment=${environment}`,
-    ], { encoding: 'utf8' });
+      `--branch=${verifierBranch}`,
+      `--environment=${verifierEnvironment}`,
+    ], { encoding: 'utf8', env });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (chunk) => { stdout += chunk; });
@@ -142,9 +186,9 @@ function runVerifier() {
   });
 }
 
-async function check(name, selectedMode, expectedCode, phrase) {
+async function check(name, selectedMode, expectedCode, phrase, options) {
   mode = selectedMode;
-  const result = await runVerifier();
+  const result = await runVerifier(options);
   if (result.code !== expectedCode || (phrase && !result.output.includes(phrase))) {
     throw new Error(`${name} failed\nexit=${result.code}\n${result.output}`);
   }
@@ -161,7 +205,11 @@ async function checkReadmePromotionContract() {
     'node scripts/test-live-build.mjs',
     'promotion path for the clean H1 pricing candidate',
     'Do not rebuild pricing copy by hand during deployment',
-    'node scripts/verify-live-build.mjs',
+    'test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs',
+    '--url="$OSL_LIVE_URL"',
+    '--sha="$OSL_LIVE_SHA"',
+    '--branch=main',
+    '--environment=production',
   ];
   const missing = required.filter((text) => !normalized.includes(text));
   if (missing.length > 0) {
@@ -182,7 +230,13 @@ try {
     });
   });
 
-  await check('exact live artifact', 'positive', 0, '2 served files and 4 artifact leaves are bound');
+  await check('production live verification requires keyserver redemption evidence', 'positive', 1, 'OSL_KEYSERVER_REDEMPTION_EVIDENCE', { evidence: '' });
+  await check('preview live verification does not require keyserver redemption evidence', 'preview', 0, '3 served files and 5 artifact leaves are bound', {
+    evidence: '',
+    verifierBranch: 'preview-branch',
+    verifierEnvironment: 'preview',
+  });
+  await check('exact live artifact', 'positive', 0, '3 served files and 5 artifact leaves are bound');
   await check('missing build.json refusal', 'build-404', 1, 'HTTP 404');
   await check('invalid build.json refusal', 'invalid-json', 1, 'SyntaxError');
   await check('cacheable build.json refusal', 'cacheable', 1, 'Cache-Control: no-store');
@@ -202,6 +256,9 @@ try {
   await check('fake post-body head root meta refusal', 'fake-head-root-meta', 1, 'canonical html/head/body document');
   await check('changed artifact refusal', 'changed-artifact', 1, 'digest mismatch');
   await check('cross-origin redirect refusal', 'cross-origin', 1, 'redirected outside');
+  await check('missing success.html pro-expiry-limitation refusal', 'missing-success', 1, 'success.html pro-expiry-limitation evidence');
+  await check('mutated success.html pro-expiry-limitation refusal', 'missing-pro-expiry-limitation', 1, 'pro-expiry-limitation paragraph');
+  await check('misstated success.html pro-expiry-limitation refusal', 'misstated-pro-expiry-limitation', 1, 'missing required limitation copy');
   console.log(`test-live-build: ${passed} cases, 0 failed.`);
 } finally {
   await new Promise((resolve) => server.close(resolve));

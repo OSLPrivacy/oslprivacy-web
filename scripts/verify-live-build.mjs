@@ -30,6 +30,7 @@ const expectedCommit = (
 );
 const expectedEnvironment = argValue('--environment') || process.env.OSL_DEPLOY_ENVIRONMENT || '';
 const expectedBranch = argValue('--branch') || process.env.CF_PAGES_BRANCH || '';
+const keyserverRedemptionEvidence = process.env.OSL_KEYSERVER_REDEMPTION_EVIDENCE?.trim() || '';
 
 if (!baseUrl) fail('missing --url=https://deployment.example');
 if (!SHA_RE.test(expectedCommit)) fail('missing or invalid full 40-character --sha');
@@ -37,6 +38,9 @@ if (!['production', 'preview'].includes(expectedEnvironment)) {
   fail('missing or invalid --environment=production|preview');
 }
 if (!expectedBranch) fail('missing --branch');
+if (expectedEnvironment === 'production' && !keyserverRedemptionEvidence) {
+  fail('missing OSL_KEYSERVER_REDEMPTION_EVIDENCE for production live verification');
+}
 
 const requestedOrigin = new URL(baseUrl).origin;
 async function fetchBound(url, label) {
@@ -99,6 +103,34 @@ function validateManifest(manifest, label) {
   return entries;
 }
 
+function textContent(html) {
+  return html
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function requireProExpiryLimitation(html) {
+  const matches = [...html.matchAll(/<p\b(?=[^>]*\bdata-osl-claim=["']pro-expiry-limitation["'])[^>]*>([\s\S]*?)<\/p>/gi)];
+  if (matches.length !== 1) {
+    fail('live success.html must carry exactly one pro-expiry-limitation paragraph');
+  }
+  const text = textContent(matches[0][1]);
+  for (const pattern of [
+    /\bNothing renews\b/i,
+    /\bno payment method\b/i,
+    /\bAutomatic one-month expiry is not implemented\b/i,
+    /\bdoes not claim when the issued licence ends\b/i,
+  ]) {
+    if (!pattern.test(text)) {
+      fail('live success.html pro-expiry-limitation is missing required limitation copy');
+    }
+  }
+}
+
 const artifactFiles = validateManifest(build.artifact_files, 'artifact-leaf');
 const inputEntries = validateManifest(build.inputs, 'deploy-input');
 if (JSON.stringify(inputEntries.map(([name]) => name).sort()) !== JSON.stringify(EXPECTED_INPUTS)) {
@@ -112,6 +144,7 @@ for (const control of ['_headers', '_redirects']) {
 
 const files = Object.entries(build.files);
 validateManifest(build.files, 'served-file');
+let checkedSuccessLimitation = false;
 for (const [name, digest] of files) {
   if (build.artifact_files[name] !== digest) {
     fail(`live served file is not identically bound in the complete artifact manifest: ${name}`);
@@ -123,6 +156,15 @@ for (const [name, digest] of files) {
   const bytes = Buffer.from(await response.arrayBuffer());
   const actual = createHash('sha256').update(bytes).digest('hex');
   if (actual !== digest) fail(`live artifact digest mismatch: ${name}`);
+  if (expectedEnvironment === 'production' && name === 'success.html') {
+    const html = bytes.toString('utf8');
+    requireExactBuildMeta(html, expectedCommit, 'live success.html');
+    requireProExpiryLimitation(html);
+    checkedSuccessLimitation = true;
+  }
+}
+if (expectedEnvironment === 'production' && !checkedSuccessLimitation) {
+  fail('live production build does not include success.html pro-expiry-limitation evidence');
 }
 
 const rootUrl = new URL('/', baseUrl);

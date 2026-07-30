@@ -50,12 +50,14 @@ pricing copy by hand during deployment; fix `data/pricing.json` or the claim
 gate only when one of those commands refuses the candidate.
 
 ```sh
-node scripts/verify-live-build.mjs \
-  --url=https://deployment.example \
-  --sha="$CF_PAGES_COMMIT_SHA" \
-  --branch="$CF_PAGES_BRANCH" \
+test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs \
+  --url="$OSL_LIVE_URL" \
+  --sha="$OSL_LIVE_SHA" \
+  --branch=main \
   --environment=production
 ```
+
+Acceptance command: `test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs --url="$OSL_LIVE_URL" --sha="$OSL_LIVE_SHA" --branch=main --environment=production`
 
 The builder reads deployable bytes from the named commit's Git objects. Nested
 HTML is discovered and stamped recursively. Every HTML document must contain
@@ -68,9 +70,12 @@ covers every fetchable served file. `inputs` byte-binds `_headers`,
 their committed bytes. Local verification refuses an extra output entry or any
 digest/control mismatch.
 
-The live verifier checks the full SHA in `/build.json` and the root HTML,
-validates the complete artifact/input manifests, then downloads and hashes
-every fetchable served artifact named by `files`.
+The live verifier checks the full SHA in `/build.json`, the root HTML and the
+production `success.html` expiry limitation, validates the complete
+artifact/input manifests, then downloads and hashes every fetchable served
+artifact named by `files`. Production verification refuses to run without an
+`OSL_KEYSERVER_REDEMPTION_EVIDENCE` value; do not put the evidence value in
+logs or public artifacts.
 Rollback means rebuilding and publishing a named previous clean commit under
 the same contract, then running the live verifier against that previous full
 SHA. Do not copy an old `dist` directory or infer a rollback from page content.
