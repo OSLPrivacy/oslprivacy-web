@@ -63,6 +63,8 @@ const MIN_A11Y_COMBINATIONS = 100;
 const MIN_INTERACTIVE_CONTROLS = 20;
 // /features is measured at four widths and two zoom levels.
 const MIN_H4_A11Y_PROBES = 8;
+// /docs/faq is measured at four widths and two zoom levels.
+const MIN_FAQ_BURN_A11Y_PROBES = 8;
 
 function getFreePort() {
   return new Promise((resolve, reject) => {
@@ -301,6 +303,38 @@ function auditPage(minTap) {
     }
   }
 
+  const faqBurnSemantics = [];
+  let faqBurnBoundaryFound = false;
+  if (location.pathname === '/docs/faq') {
+    const burnCopy = document.querySelector('[data-burn-boundary-copy]');
+    faqBurnBoundaryFound = Boolean(burnCopy);
+    if (!burnCopy) {
+      faqBurnSemantics.push('missing [data-burn-boundary-copy] FAQ paragraph');
+    } else {
+      if (!visible(burnCopy)) faqBurnSemantics.push('FAQ burn boundary copy is not visibly rendered');
+      const plannedBadge = burnCopy.querySelector('[data-osl-feature="burn"][data-osl-status="Planned"]');
+      if (!plannedBadge || !visible(plannedBadge) || plannedBadge.textContent.trim() !== 'Planned') {
+        faqBurnSemantics.push('FAQ burn boundary copy has no visible Planned Burn badge');
+      }
+      const text = burnCopy.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+      const requiredPhrases = [
+        'pws acts before disclosure',
+        'burn acts after disclosure',
+        'burn does not revoke recipient keys or control copies outside osl',
+        'local deletion',
+        'authenticated cooperative peer request',
+        'host deletion attempt',
+        'unavoidable copies and screenshots',
+      ];
+      for (const phrase of requiredPhrases) {
+        if (!text.includes(phrase)) faqBurnSemantics.push(`FAQ burn boundary copy is missing ${phrase}`);
+      }
+      for (const phrase of ['not cryptographic erasure', 'cannot make']) {
+        if (text.includes(phrase)) faqBurnSemantics.push(`FAQ burn boundary copy includes banned phrase ${phrase}`);
+      }
+    }
+  }
+
   return {
     imagesMissingAlt,
     controlsMissingName,
@@ -310,6 +344,8 @@ function auditPage(minTap) {
     interactiveControlCount,
     h4Semantics,
     h4ExplainerFound,
+    faqBurnSemantics,
+    faqBurnBoundaryFound,
     landmarks: {
       main: document.querySelectorAll('main').length,
       h1: document.querySelectorAll('h1').length,
@@ -411,6 +447,7 @@ async function run() {
   console.log(`  tap targets < ${MIN_TAP}px    : ${sum('smallTapTargets')} (${uniq('smallTapTargets').length} distinct)`);
   console.log(`  horizontal overflow   : ${overflowRows.length} combinations`);
   console.log(`  H4 semantic findings  : ${sum('h4Semantics')} (${uniq('h4Semantics').length} distinct)`);
+  console.log(`  FAQ burn findings     : ${sum('faqBurnSemantics')} (${uniq('faqBurnSemantics').length} distinct)`);
 
   for (const name of uniq('controlsMissingName')) console.log(`    [name] ${name}`);
   for (const name of uniq('imagesMissingAlt')) console.log(`    [alt]  ${name}`);
@@ -419,8 +456,9 @@ async function run() {
     console.log(`    [overflow] ${r.page} ${r.width}px @${r.zoom}% by ${r.horizontalOverflow}px :: ${r.overflowingElements.join(' | ')}`);
   }
   for (const finding of uniq('h4Semantics')) console.log(`    [H4]   ${finding}`);
+  for (const finding of uniq('faqBurnSemantics')) console.log(`    [FAQ]  ${finding}`);
 
-  const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length + sum('h4Semantics');
+  const failed = sum('imagesMissingAlt') + sum('controlsMissingName') + overflowRows.length + sum('h4Semantics') + sum('faqBurnSemantics');
   console.log(`\ncheck-a11y: ${results.length} combinations, ${failed} blocking findings, ${sum('smallTapTargets')} tap-target findings.`);
 
   let floorFailed = false;
@@ -435,6 +473,11 @@ async function run() {
   const h4Probes = results.filter((result) => result.page === '/features' && result.h4ExplainerFound).length;
   if (h4Probes < MIN_H4_A11Y_PROBES) {
     console.error(`check-a11y floor: expected at least ${MIN_H4_A11Y_PROBES} H4 explainer probes, actually found ${h4Probes}.`);
+    floorFailed = true;
+  }
+  const faqBurnProbes = results.filter((result) => result.page === '/docs/faq' && result.faqBurnBoundaryFound).length;
+  if (faqBurnProbes < MIN_FAQ_BURN_A11Y_PROBES) {
+    console.error(`check-a11y floor: expected at least ${MIN_FAQ_BURN_A11Y_PROBES} FAQ burn boundary probes, actually found ${faqBurnProbes}.`);
     floorFailed = true;
   }
 

@@ -1022,6 +1022,23 @@ function atRestClaimElements(content) {
   return elements;
 }
 
+function burnBoundaryCopyElements(content) {
+  const visible = visibleHtml(content);
+  const elementRe = /<([a-z][a-z0-9:-]*)\b([^>]*\bdata-burn-boundary-copy(?:\s|=|>)[^>]*)>([\s\S]*?)<\/\1\s*>/gi;
+  const elements = [];
+  for (const match of visible.matchAll(elementRe)) {
+    const attrs = match[2];
+    elements.push({
+      text: shortText(renderedTextWithSourceMap(match[3]).text),
+      index: match.index ?? 0,
+      html: match[0],
+      hidden: /\bhidden(?:\s|=|>|$)|\baria-hidden\s*=\s*["']true["']/i.test(attrs),
+      badges: labelledElements(match[0]),
+    });
+  }
+  return elements;
+}
+
 function falseIdentityPasswordMechanism(text) {
   const normalized = shortText(text);
   const clauses = normalized
@@ -2870,6 +2887,82 @@ function h4ExplainerErrors(fileRel, content) {
   return errors;
 }
 
+function burnBoundaryCopyErrors(fileRel, content) {
+  if (fileRel !== 'docs/faq.html') return [];
+
+  const errors = [];
+  const elements = burnBoundaryCopyElements(content);
+  if (elements.length !== 1) {
+    return [{
+      kind: 'burn boundary copy contract',
+      file: fileRel,
+      line: 0,
+      text: `expected exactly one rendered FAQ burn boundary copy block, found ${elements.length}`,
+    }];
+  }
+
+  const element = elements[0];
+  const rendered = element.text.toLowerCase();
+  const bannedErasurePhrases = [
+    'not cryptographic erasure',
+    'cannot make',
+  ];
+  const requirements = [
+    {
+      label: 'Planned Burn badge',
+      passed: element.badges.some((badge) => badge.feature === 'burn' && badge.status === 'Planned'),
+    },
+    {
+      label: 'PWS before-disclosure definition',
+      passed: /\bpws\b.{0,90}\bacts before disclosure\b/i.test(rendered),
+    },
+    {
+      label: 'Burn after-disclosure definition',
+      passed: /\bburn\b.{0,90}\bacts after disclosure\b/i.test(rendered),
+    },
+    {
+      label: 'recipient-key and outside-copy limitation',
+      passed: /\bburn does not revoke recipient keys or control copies outside osl\b/i.test(rendered),
+    },
+    {
+      label: 'local deletion boundary',
+      passed: /\blocal deletion\b/i.test(rendered),
+    },
+    {
+      label: 'authenticated cooperative peer request boundary',
+      passed: /\bauthenticated cooperative peer request\b/i.test(rendered),
+    },
+    {
+      label: 'host deletion attempt boundary',
+      passed: /\bhost deletion attempt\b/i.test(rendered),
+    },
+    {
+      label: 'unavoidable copies/screenshots boundary',
+      passed: /\bunavoidable copies and screenshots\b/i.test(rendered),
+    },
+    {
+      label: 'banned erasure phrasing excluded',
+      passed: bannedErasurePhrases.every((phrase) => !rendered.includes(phrase)),
+    },
+    {
+      label: 'visible bound copy',
+      passed: !element.hidden,
+    },
+  ];
+
+  for (const requirement of requirements) {
+    if (requirement.passed) continue;
+    errors.push({
+      kind: 'burn boundary copy contract',
+      file: fileRel,
+      line: lineNumber(content, element.index),
+      text: `${requirement.label} is missing from the FAQ burn boundary copy`,
+    });
+  }
+
+  return errors;
+}
+
 function atRestOverclaimErrors(fileRel, content) {
   const rendered = publicClaimTextWithSourceMap(content);
   const universalScope = /(?<!\bat\s)\ball\b|\b(?:each|every|everything|entire|entirety|whole|complete|totality|no|none|nothing|never|zero)\b|100\s*%/i;
@@ -3144,6 +3237,7 @@ function analyseFile(fileRel, content, config) {
 
   // ---- Global rules: these hold on every surface, whatever the framing.
   errors.push(...h4ExplainerErrors(fileRel, content));
+  errors.push(...burnBoundaryCopyErrors(fileRel, content));
   // Census-bound visible copy is validated byte-for-byte by
   // atRestClaimBindingErrors. The legacy broad-claim detector only inspects
   // unbound copy; otherwise words such as "not every local record" can turn a
@@ -7542,6 +7636,43 @@ if (SELF_TEST) {
   if (!bannedH4MutationCaught) failures += 1;
   console.log(`  ${bannedH4MutationCaught ? 'caught ' : 'MISSED '} banned H4 erasure phrasing insertion`);
 
+  console.log('\ncheck-claims self-test (production FAQ burn boundary copy contract):');
+  const faqContent = await readFile(path.join(ROOT, 'docs/faq.html'), 'utf8');
+  const baselineFaqBurnErrors = analyseFile('docs/faq.html', faqContent, config)
+    .filter((error) => error.kind === 'burn boundary copy contract');
+  const baselineFaqBurnClean = baselineFaqBurnErrors.length === 0;
+  if (!baselineFaqBurnClean) failures += 1;
+  console.log(`  ${baselineFaqBurnClean ? 'passed ' : 'FAILED '} production FAQ burn boundary baseline`);
+
+  const mutatedFaqBurnMissingMarker = faqContent.replace(' data-burn-boundary-copy', '');
+  const faqBurnMarkerMutationCaught = mutatedFaqBurnMissingMarker !== faqContent
+    && analyseFile('docs/faq.html', mutatedFaqBurnMissingMarker, config)
+      .some((error) => error.kind === 'burn boundary copy contract'
+        && error.text.includes('expected exactly one rendered FAQ burn boundary copy block'));
+  if (!faqBurnMarkerMutationCaught) failures += 1;
+  console.log(`  ${faqBurnMarkerMutationCaught ? 'caught ' : 'MISSED '} exact removal of data-burn-boundary-copy`);
+
+  const faqRequiredLimitation = 'Burn does not revoke recipient keys or control copies outside OSL.';
+  const faqLimitationOccurrences = faqContent.split(faqRequiredLimitation).length - 1;
+  const mutatedFaqBurnLimitation = faqContent.replace(faqRequiredLimitation, '');
+  const faqBurnLimitationMutationCaught = faqLimitationOccurrences === 1
+    && analyseFile('docs/faq.html', mutatedFaqBurnLimitation, config)
+      .some((error) => error.kind === 'burn boundary copy contract'
+        && error.text.includes('recipient-key and outside-copy limitation'));
+  if (!faqBurnLimitationMutationCaught) failures += 1;
+  console.log(`  ${faqBurnLimitationMutationCaught ? 'caught ' : 'MISSED '} exact FAQ removal of "${faqRequiredLimitation}"`);
+
+  const mutatedFaqBurnBanned = faqContent.replace(
+    faqRequiredLimitation,
+    `${faqRequiredLimitation} It is not cryptographic erasure and cannot make remote copies vanish.`,
+  );
+  const faqBurnBannedMutationCaught = mutatedFaqBurnBanned !== faqContent
+    && analyseFile('docs/faq.html', mutatedFaqBurnBanned, config)
+      .some((error) => error.kind === 'burn boundary copy contract'
+        && error.text.includes('banned erasure phrasing excluded'));
+  if (!faqBurnBannedMutationCaught) failures += 1;
+  console.log(`  ${faqBurnBannedMutationCaught ? 'caught ' : 'MISSED '} banned FAQ burn erasure phrasing insertion`);
+
   console.log('\ncheck-claims self-test (production Scrub baseline and exact mutation):');
   const scrubMarker = '<p class="eyebrow">Scrub</p>';
   const scrubMarkerOccurrences = h4Content.split(scrubMarker).length - 1;
@@ -7853,6 +7984,7 @@ if (SELF_TEST) {
     + SELF_TEST_CASES.length
     + NEGATION_CASES.length
     + 2
+    + 4
     + 2
     + 2
     + (productionAtRestCases.length * 2)

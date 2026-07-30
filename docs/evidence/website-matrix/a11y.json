@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T02:09:23.036Z",
+  "generated_at": "2026-07-30T02:23:03.346Z",
   "browser_version": "HeadlessChrome/151.0.7922.34",
   "min_tap_px": 44,
   "results": [
@@ -15,6 +15,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -32,6 +34,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -49,6 +53,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -66,6 +72,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -83,6 +91,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -100,6 +110,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -117,6 +129,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -134,6 +148,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -151,6 +167,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -168,6 +186,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -185,6 +205,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -202,6 +224,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -219,6 +243,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -236,6 +262,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -253,6 +281,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -270,6 +300,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -287,6 +319,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -304,6 +338,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -321,6 +357,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -338,6 +376,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -355,6 +395,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -372,6 +414,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -389,6 +433,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -406,6 +452,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": true,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -423,6 +471,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -440,6 +490,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -457,6 +509,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -474,6 +528,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -491,6 +547,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -508,6 +566,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -525,6 +585,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -542,6 +604,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -559,6 +623,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -576,6 +642,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -593,6 +661,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -610,6 +680,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -627,6 +699,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -644,6 +718,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -661,6 +737,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -678,6 +756,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -695,6 +775,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -712,6 +794,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -729,6 +813,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -746,6 +832,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -763,6 +851,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -780,6 +870,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -797,6 +889,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -814,6 +908,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -831,6 +927,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -848,6 +946,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -865,6 +965,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -882,6 +984,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -899,6 +1003,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -916,6 +1022,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -933,6 +1041,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -950,6 +1060,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -967,6 +1079,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -984,6 +1098,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1001,6 +1117,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1018,6 +1136,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1035,6 +1155,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1052,6 +1174,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1069,6 +1193,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1086,6 +1212,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1103,6 +1231,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1120,6 +1250,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1137,6 +1269,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1154,6 +1288,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1171,6 +1307,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1188,6 +1326,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1205,6 +1345,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1222,6 +1364,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1239,6 +1383,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1256,6 +1402,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1273,6 +1421,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1290,6 +1440,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1307,6 +1459,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1324,6 +1478,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1341,6 +1497,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1358,6 +1516,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1375,6 +1535,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1392,6 +1554,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1409,6 +1573,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1426,6 +1592,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1443,6 +1611,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1460,6 +1630,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1477,6 +1649,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1494,6 +1668,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1511,6 +1687,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1528,6 +1706,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1545,6 +1725,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1562,6 +1744,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1579,6 +1763,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1596,6 +1782,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1613,6 +1801,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1630,6 +1820,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1647,6 +1839,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1664,6 +1858,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1681,6 +1877,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1698,6 +1896,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1715,6 +1915,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1732,6 +1934,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1749,6 +1953,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1766,6 +1972,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": true,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1783,6 +1991,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1800,6 +2010,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1817,6 +2029,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1834,6 +2048,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1851,6 +2067,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1868,6 +2086,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1885,6 +2105,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1902,6 +2124,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1919,6 +2143,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1936,6 +2162,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1953,6 +2181,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1970,6 +2200,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1987,6 +2219,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2004,6 +2238,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2021,6 +2257,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2038,6 +2276,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2055,6 +2295,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2072,6 +2314,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2089,6 +2333,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2106,6 +2352,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2123,6 +2371,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2140,6 +2390,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2157,6 +2409,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2174,6 +2428,8 @@
       "overflowingElements": [],
       "h4Semantics": [],
       "h4ExplainerFound": false,
+      "faqBurnSemantics": [],
+      "faqBurnBoundaryFound": false,
       "landmarks": {
         "main": 1,
         "h1": 1
