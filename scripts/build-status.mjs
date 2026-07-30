@@ -85,6 +85,7 @@ function buildBody(pricing, atRestCensus) {
     'provider_policy_risk',
   ];
   const capabilityIds = new Set();
+  const connectorSourceIds = new Set();
   const connectorNames = new Set();
 
   function capabilityText(row, field, index) {
@@ -124,6 +125,24 @@ function buildBody(pricing, atRestCensus) {
     return capability;
   });
 
+  if (!Array.isArray(matrix.sources) || matrix.sources.length === 0) {
+    throw new Error('build-status: connector_matrix.sources must contain connector source evidence');
+  }
+  for (const [index, source] of matrix.sources.entries()) {
+    if (!source || typeof source !== 'object' || Array.isArray(source)) {
+      throw new Error(`build-status: connector_matrix.sources[${index}] must be an object`);
+    }
+    const id = connectorText(source, 'id', index).trim();
+    if (connectorSourceIds.has(id)) {
+      throw new Error(`build-status: connector_matrix.sources[${index}].id duplicates another source`);
+    }
+    connectorSourceIds.add(id);
+    const accessedOn = connectorText(source, 'accessed_on', index);
+    if (accessedOn !== connectorMatrixVersion) {
+      throw new Error(`build-status: connector_matrix.sources[${index}].accessed_on must match connector_matrix.version`);
+    }
+  }
+
   const connectors = matrix.connectors.map((row, index) => {
     if (!row || typeof row !== 'object' || Array.isArray(row)) {
       throw new Error(`build-status: connector_matrix.connectors[${index}] must be an object`);
@@ -138,6 +157,22 @@ function buildBody(pricing, atRestCensus) {
     connectorNames.add(connector.name);
     if (connector.verified_on !== connectorMatrixVersion) {
       throw new Error(`build-status: connector_matrix.connectors[${index}].verified_on must match connector_matrix.version`);
+    }
+    if (!Array.isArray(row.source_ids) || row.source_ids.length === 0) {
+      throw new Error(`build-status: connector_matrix.connectors[${index}].source_ids must cite source evidence`);
+    }
+    const seenRowSourceIds = new Set();
+    for (const [sourceIndex, sourceId] of row.source_ids.entries()) {
+      if (typeof sourceId !== 'string' || sourceId.trim() === '') {
+        throw new Error(`build-status: connector_matrix.connectors[${index}].source_ids[${sourceIndex}] must be nonempty`);
+      }
+      if (seenRowSourceIds.has(sourceId)) {
+        throw new Error(`build-status: connector_matrix.connectors[${index}].source_ids[${sourceIndex}] duplicates another source on the connector`);
+      }
+      seenRowSourceIds.add(sourceId);
+      if (!connectorSourceIds.has(sourceId)) {
+        throw new Error(`build-status: connector_matrix.connectors[${index}].source_ids[${sourceIndex}] does not resolve to connector_matrix.sources`);
+      }
     }
     for (const field of ['protected_send', 'protected_receive', 'attachments', 'scrub']) {
       if (!supportLabels.has(connector[field])) {
