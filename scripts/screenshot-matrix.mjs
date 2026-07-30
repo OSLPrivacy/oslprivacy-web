@@ -339,6 +339,33 @@ function measureFoldVisibility() {
     };
   })();
 
+  const scrubDemo = (() => {
+    const section = document.querySelector('.features-main .scrub-demo');
+    const phone = section?.querySelector('.scrub-phone-demo') ?? null;
+    const sectionHtml = section?.innerHTML || '';
+    const phoneText = (phone?.textContent || '').replace(/\s+/g, ' ').trim();
+    const sectionText = (section?.textContent || '').replace(/\s+/g, ' ').trim();
+    const phoneRect = phone?.getBoundingClientRect() ?? null;
+    const deletionWords = /\b(?:delete|deletes|deleted|deleting|remove|removes|removed|removing|erase|erases|erased|erasing|clear|clears|cleared|clean|cleans|cleaned|cleaning)\b/i;
+    return {
+      present: Boolean(section),
+      phoneDemo: Boolean(phone),
+      phoneWidth: phoneRect?.width ?? null,
+      phoneLeft: phoneRect?.left ?? null,
+      phoneRight: phoneRect?.right ?? null,
+      hasUsernameOnlyPromise: /\bIt checks only username text in a local export you choose\./.test(sectionText),
+      hasPhoneExportText: /\bLocal phone export\b/i.test(sectionHtml),
+      hasTextOnlyText: /\bText only\b/i.test(sectionHtml),
+      hasManualReviewText: /\bManual review\b/i.test(sectionText),
+      hasLocalDeviceText: /\bLocal file stays on this device\b/i.test(sectionHtml),
+      hasUsernameFindings: /\bScanning usernames locally\b/i.test(phoneText)
+        && /\b3 username matches\b/i.test(phoneText)
+        && (phoneText.match(/\busername\b/gi) || []).length >= 3,
+      reviewOnlyVisual: !deletionWords.test(phoneText)
+        && !phone?.querySelector('.scrub-eraser,.scrub-erase-line,.scrub-flat-cleared,.scrub-vapor'),
+    };
+  })();
+
   return {
     visibleTextChars,
     scrollHeight: document.documentElement.scrollHeight,
@@ -348,6 +375,7 @@ function measureFoldVisibility() {
     buildMeta: document.querySelector('meta[name="osl-build"]')?.getAttribute('content') ?? null,
     h4Explainer,
     download,
+    scrubDemo,
   };
 }
 
@@ -409,6 +437,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     buildMeta: null,
     h4Explainer: null,
     download: null,
+    scrubDemo: null,
   };
   let verdict = 'unmeasurable';
   try {
@@ -448,7 +477,23 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
       && download.statusPairs.includes('autoscrub:Planned')
       && download.disabledCheckoutText.includes('Pro checkout paused')
     );
-    verdict = measurement.visibleTextChars >= 40 && h4Pass && modePass && downloadPass ? 'pass' : 'fail';
+    const scrub = measurement.scrubDemo;
+    const scrubPass = page !== '/features' || (
+      scrub?.present
+      && scrub.phoneDemo
+      && scrub.hasUsernameOnlyPromise
+      && scrub.hasPhoneExportText
+      && scrub.hasTextOnlyText
+      && scrub.hasManualReviewText
+      && scrub.hasLocalDeviceText
+      && scrub.hasUsernameFindings
+      && scrub.reviewOnlyVisual
+      && scrub.phoneWidth > 0
+      && scrub.phoneWidth <= width
+      && scrub.phoneLeft >= 0
+      && scrub.phoneRight <= width
+    );
+    verdict = measurement.visibleTextChars >= 40 && h4Pass && modePass && downloadPass && scrubPass ? 'pass' : 'fail';
   } catch (error) {
     console.error(`screenshot-matrix: measurement failed for ${page} ${width} ${condition}: ${error.message}`);
   }
@@ -467,6 +512,7 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     build_meta: measurement.buildMeta,
     h4_explainer: measurement.h4Explainer,
     download: measurement.download,
+    scrub_demo: measurement.scrubDemo,
     verdict,
   };
 }

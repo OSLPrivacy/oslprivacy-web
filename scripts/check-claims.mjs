@@ -3161,6 +3161,14 @@ function scrubDemoContractErrors(fileRel, content) {
       passed: !/[•*]{3,}/.test(block.html),
     },
     {
+      label: 'phone username-only deliverable',
+      passed: fileRel !== 'features.html'
+        || (/\bscrub-phone-demo\b/i.test(block.html)
+          && /\bLocal phone export\b/i.test(block.html)
+          && /\bText only\b/i.test(block.html)
+          && /\bManual review\b/i.test(block.html)),
+    },
+    {
       label: 'internal machinery hidden',
       passed: !/\b(?:keyservers?|ratchets?|receipts?|browser profiles?|provider adapters?|provider exports?|selected-account binding|completeness receipts?)\b/i.test(rendered),
     },
@@ -7933,12 +7941,21 @@ if (SELF_TEST) {
     && mutatedH23 !== h4Content
     && analyseFile('features.html', mutatedH23, config)
       .some((error) => error.kind === 'h23 scrub demo contract');
-  if (!h17BaselineClean || !h17MutationCaught || !h17DeletionVisualCaught || !h23BaselineClean || !h23MutationCaught) failures += 1;
+  const h23PhoneBoundary = 'Local phone export';
+  const h23PhoneBoundaryOccurrences = h4Content.split(h23PhoneBoundary).length - 1;
+  const mutatedH23Phone = h4Content.replace(h23PhoneBoundary, 'Local export');
+  const h23PhoneMutationCaught = h23PhoneBoundaryOccurrences === 1
+    && mutatedH23Phone !== h4Content
+    && analyseFile('features.html', mutatedH23Phone, config)
+      .some((error) => error.kind === 'h23 scrub demo contract'
+        && error.text.includes('phone username-only deliverable'));
+  if (!h17BaselineClean || !h17MutationCaught || !h17DeletionVisualCaught || !h23BaselineClean || !h23MutationCaught || !h23PhoneMutationCaught) failures += 1;
   console.log(`  ${h17BaselineClean ? 'passed ' : 'FAILED '} production index Scrub demo baseline`);
   console.log(`  ${h17MutationCaught ? 'caught ' : 'MISSED '} exact index Scrub username-boundary mutation`);
   console.log(`  ${h17DeletionVisualCaught ? 'caught ' : 'MISSED '} exact index Scrub deletion-visual mutation`);
   console.log(`  ${h23BaselineClean ? 'passed ' : 'FAILED '} production features Scrub demo baseline`);
   console.log(`  ${h23MutationCaught ? 'caught ' : 'MISSED '} exact features Scrub visual mutation`);
+  console.log(`  ${h23PhoneMutationCaught ? 'caught ' : 'MISSED '} exact features Scrub phone-boundary mutation`);
 
   console.log('\ncheck-claims self-test (production H28 exposure comparison contract):');
   const h28StatusContent = await readFile(path.join(ROOT, 'docs/status.html'), 'utf8');
