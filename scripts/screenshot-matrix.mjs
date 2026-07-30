@@ -36,14 +36,22 @@ const CHROME_ARGS = [
 ];
 
 function parseArgs(argv) {
-  const args = { pages: DEFAULT_PAGES, widths: DEFAULT_WIDTHS, outDir: DEFAULT_OUT_DIR };
+  const args = {
+    pages: DEFAULT_PAGES,
+    widths: DEFAULT_WIDTHS,
+    outDir: DEFAULT_OUT_DIR,
+    onlySpecified: false,
+    widthsSpecified: false,
+  };
   for (const arg of argv) {
     if (arg.startsWith('--only=')) {
       args.pages = arg.slice('--only='.length).split(',').map((v) => v.trim()).filter(Boolean);
+      args.onlySpecified = true;
     } else if (arg.startsWith('--widths=')) {
       args.widths = arg.slice('--widths='.length).split(',')
         .map((v) => Number.parseInt(v.trim(), 10))
         .filter((n) => Number.isFinite(n));
+      args.widthsSpecified = true;
     } else if (arg.startsWith('--out=')) {
       args.outDir = path.resolve(arg.slice('--out='.length));
     }
@@ -469,15 +477,23 @@ async function run() {
   console.log(`\nscreenshot-matrix: ${results.length} captures, ${failed} failed, ${unmeasurable} unmeasurable.`);
 
   let floorFailed = false;
-  if (results.length < MIN_SCREENSHOT_CAPTURES) {
+  const expectedCaptures = args.pages.length * CONDITIONS.length * args.widths.length;
+  if (results.length !== expectedCaptures) {
+    console.error(`screenshot-matrix floor: expected ${expectedCaptures} captures for requested pages, modes, and widths, actually produced ${results.length}.`);
+    floorFailed = true;
+  }
+  const defaultFullMatrix = !args.onlySpecified && !args.widthsSpecified;
+  if (defaultFullMatrix && results.length < MIN_SCREENSHOT_CAPTURES) {
     console.error(`screenshot-matrix floor: expected at least ${MIN_SCREENSHOT_CAPTURES} captures, actually produced ${results.length}.`);
     floorFailed = true;
   }
-  const expectedH4Captures = args.widths.length * CONDITIONS.length;
-  const h4Captures = results.filter((result) => result.page === '/features' && result.h4_explainer?.present).length;
-  if (h4Captures !== expectedH4Captures) {
-    console.error(`screenshot-matrix floor: expected ${expectedH4Captures} H4 explainer captures, actually produced ${h4Captures}.`);
-    floorFailed = true;
+  if (args.pages.includes('/features')) {
+    const expectedH4Captures = args.widths.length * CONDITIONS.length;
+    const h4Captures = results.filter((result) => result.page === '/features' && result.h4_explainer?.present).length;
+    if (h4Captures !== expectedH4Captures) {
+      console.error(`screenshot-matrix floor: expected ${expectedH4Captures} H4 explainer captures, actually produced ${h4Captures}.`);
+      floorFailed = true;
+    }
   }
 
   process.exit(failed > 0 || unmeasurable > 0 || floorFailed ? 1 : 0);

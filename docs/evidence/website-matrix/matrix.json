@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-30T02:21:01.862Z",
+  "generated_at": "2026-07-30T02:25:12.355Z",
   "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-linux64/chrome-headless-shell",
   "browser_version": "HeadlessChrome/151.0.7922.34",
-  "server_port": 36395,
+  "server_port": 33417,
   "captures": [
     {
       "page": "/",
@@ -731,13 +731,13 @@
       "fold_png": "features/320-js-on-fold.png",
       "full_png": "features/320-js-on-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 9816,
+      "scroll_height": 9946,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -751,13 +751,13 @@
       "fold_png": "features/360-js-on-fold.png",
       "full_png": "features/360-js-on-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9360,
+      "scroll_height": 9465,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -771,13 +771,13 @@
       "fold_png": "features/390-js-on-fold.png",
       "full_png": "features/390-js-on-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9247,
+      "scroll_height": 9326,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -791,13 +791,13 @@
       "fold_png": "features/768-js-on-fold.png",
       "full_png": "features/768-js-on-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 7328,
+      "scroll_height": 7354,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -811,13 +811,13 @@
       "fold_png": "features/1024-js-on-fold.png",
       "full_png": "features/1024-js-on-full.png",
       "visible_text_chars": 1027,
-      "scroll_height": 6512,
+      "scroll_height": 6591,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -831,13 +831,13 @@
       "fold_png": "features/1440-js-on-fold.png",
       "full_png": "features/1440-js-on-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 6603,
+      "scroll_height": 6681,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -851,13 +851,13 @@
       "fold_png": "features/320-js-off-fold.png",
       "full_png": "features/320-js-off-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 9816,
+      "scroll_height": 9946,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -871,13 +871,13 @@
       "fold_png": "features/360-js-off-fold.png",
       "full_png": "features/360-js-off-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9360,
+      "scroll_height": 9465,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -891,13 +891,13 @@
       "fold_png": "features/390-js-off-fold.png",
       "full_png": "features/390-js-off-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9247,
+      "scroll_height": 9326,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -911,13 +911,13 @@
       "fold_png": "features/768-js-off-fold.png",
       "full_png": "features/768-js-off-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 7328,
+      "scroll_height": 7354,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -931,13 +931,13 @@
       "fold_png": "features/1024-js-off-fold.png",
       "full_png": "features/1024-js-off-full.png",
       "visible_text_chars": 1042,
-      "scroll_height": 6512,
+      "scroll_height": 6591,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -951,13 +951,13 @@
       "fold_png": "features/1440-js-off-fold.png",
       "full_png": "features/1440-js-off-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 6603,
+      "scroll_height": 6681,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -971,13 +971,13 @@
       "fold_png": "features/320-reduced-fold.png",
       "full_png": "features/320-reduced-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 9816,
+      "scroll_height": 9946,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -991,13 +991,13 @@
       "fold_png": "features/360-reduced-fold.png",
       "full_png": "features/360-reduced-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9360,
+      "scroll_height": 9465,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -1011,13 +1011,13 @@
       "fold_png": "features/390-reduced-fold.png",
       "full_png": "features/390-reduced-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 9247,
+      "scroll_height": 9326,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -1031,13 +1031,13 @@
       "fold_png": "features/768-reduced-fold.png",
       "full_png": "features/768-reduced-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 7328,
+      "scroll_height": 7354,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -1051,13 +1051,13 @@
       "fold_png": "features/1024-reduced-fold.png",
       "full_png": "features/1024-reduced-full.png",
       "visible_text_chars": 1042,
-      "scroll_height": 6512,
+      "scroll_height": 6591,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -1071,13 +1071,13 @@
       "fold_png": "features/1440-reduced-fold.png",
       "full_png": "features/1440-reduced-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 6603,
+      "scroll_height": 6681,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
         "present": true,
         "visible": true,
-        "textChars": 1192,
+        "textChars": 1321,
         "semanticStages": 2,
         "visibleBoundaries": 4,
         "plannedBadges": 2
@@ -2891,7 +2891,7 @@
       "fold_png": "docs-faq/320-js-on-fold.png",
       "full_png": "docs-faq/320-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 9742,
+      "scroll_height": 9797,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -2911,7 +2911,7 @@
       "fold_png": "docs-faq/360-js-on-fold.png",
       "full_png": "docs-faq/360-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8840,
+      "scroll_height": 8894,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -2931,7 +2931,7 @@
       "fold_png": "docs-faq/390-js-on-fold.png",
       "full_png": "docs-faq/390-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8296,
+      "scroll_height": 8350,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -2951,7 +2951,7 @@
       "fold_png": "docs-faq/768-js-on-fold.png",
       "full_png": "docs-faq/768-js-on-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6765,
+      "scroll_height": 6792,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -2971,7 +2971,7 @@
       "fold_png": "docs-faq/1024-js-on-fold.png",
       "full_png": "docs-faq/1024-js-on-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -2991,7 +2991,7 @@
       "fold_png": "docs-faq/1440-js-on-fold.png",
       "full_png": "docs-faq/1440-js-on-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3011,7 +3011,7 @@
       "fold_png": "docs-faq/320-js-off-fold.png",
       "full_png": "docs-faq/320-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 9742,
+      "scroll_height": 9797,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3031,7 +3031,7 @@
       "fold_png": "docs-faq/360-js-off-fold.png",
       "full_png": "docs-faq/360-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8840,
+      "scroll_height": 8894,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3051,7 +3051,7 @@
       "fold_png": "docs-faq/390-js-off-fold.png",
       "full_png": "docs-faq/390-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8296,
+      "scroll_height": 8350,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3071,7 +3071,7 @@
       "fold_png": "docs-faq/768-js-off-fold.png",
       "full_png": "docs-faq/768-js-off-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6765,
+      "scroll_height": 6792,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3091,7 +3091,7 @@
       "fold_png": "docs-faq/1024-js-off-fold.png",
       "full_png": "docs-faq/1024-js-off-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3111,7 +3111,7 @@
       "fold_png": "docs-faq/1440-js-off-fold.png",
       "full_png": "docs-faq/1440-js-off-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3131,7 +3131,7 @@
       "fold_png": "docs-faq/320-reduced-fold.png",
       "full_png": "docs-faq/320-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 9742,
+      "scroll_height": 9797,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3151,7 +3151,7 @@
       "fold_png": "docs-faq/360-reduced-fold.png",
       "full_png": "docs-faq/360-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8840,
+      "scroll_height": 8894,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3171,7 +3171,7 @@
       "fold_png": "docs-faq/390-reduced-fold.png",
       "full_png": "docs-faq/390-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8296,
+      "scroll_height": 8350,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3191,7 +3191,7 @@
       "fold_png": "docs-faq/768-reduced-fold.png",
       "full_png": "docs-faq/768-reduced-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6765,
+      "scroll_height": 6792,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3211,7 +3211,7 @@
       "fold_png": "docs-faq/1024-reduced-fold.png",
       "full_png": "docs-faq/1024-reduced-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
@@ -3231,7 +3231,7 @@
       "fold_png": "docs-faq/1440-reduced-fold.png",
       "full_png": "docs-faq/1440-reduced-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4980,
+      "scroll_height": 5007,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
       "h4_explainer": {
