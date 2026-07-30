@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T08:27:32.938Z",
+  "generated_at": "2026-07-30T10:22:24.221Z",
   "browser_version": "HeadlessChrome/151.0.7922.34",
   "min_tap_px": 44,
   "results": [
@@ -17,6 +17,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -36,6 +37,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -55,6 +57,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -74,6 +77,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -93,6 +97,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -112,6 +117,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -131,6 +137,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -150,6 +157,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -169,6 +177,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -188,6 +197,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -207,6 +217,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -226,6 +237,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -245,6 +257,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -264,6 +277,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -283,6 +297,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -302,6 +317,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -321,6 +337,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -340,6 +357,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -359,6 +377,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -378,6 +397,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -397,6 +417,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -416,6 +437,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -435,6 +457,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -454,6 +477,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": true,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -473,6 +497,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -492,6 +517,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -511,6 +537,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -530,6 +557,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -549,6 +577,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -568,6 +597,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -587,6 +617,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -606,6 +637,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -625,6 +657,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -644,6 +677,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -663,6 +697,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -682,6 +717,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -701,6 +737,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -720,6 +757,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -739,6 +777,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -758,6 +797,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -777,6 +817,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -796,6 +837,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -815,6 +857,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -834,6 +877,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -853,6 +897,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -872,6 +917,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -891,6 +937,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -910,6 +957,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -929,6 +977,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -948,6 +997,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -967,6 +1017,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -986,6 +1037,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1005,6 +1057,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1024,6 +1077,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1043,6 +1097,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1062,6 +1117,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1081,6 +1137,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1100,6 +1157,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1119,6 +1177,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1138,6 +1197,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1157,6 +1217,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1176,6 +1237,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1195,6 +1257,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1214,6 +1277,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1233,6 +1297,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1252,6 +1317,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1271,6 +1337,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1290,6 +1357,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1309,6 +1377,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1328,6 +1397,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1347,6 +1417,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1366,6 +1437,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1385,6 +1457,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1404,6 +1477,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1423,6 +1497,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1442,6 +1517,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1461,6 +1537,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1480,6 +1557,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1499,6 +1577,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1518,6 +1597,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1537,6 +1617,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1556,6 +1637,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1575,6 +1657,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1594,6 +1677,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1613,6 +1697,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1632,6 +1717,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1651,6 +1737,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1670,6 +1757,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1689,6 +1777,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1708,6 +1797,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1727,6 +1817,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1746,6 +1837,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1765,6 +1857,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1784,6 +1877,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1803,6 +1897,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1822,6 +1917,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1841,6 +1937,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1860,6 +1957,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1879,6 +1977,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1898,6 +1997,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1917,6 +2017,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1936,6 +2037,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1955,6 +2057,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1974,6 +2077,7 @@
       "h4ExplainerFound": true,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -1993,6 +2097,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2012,6 +2117,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2031,6 +2137,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2050,6 +2157,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2069,6 +2177,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2088,6 +2197,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2107,6 +2217,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2126,6 +2237,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2145,6 +2257,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2164,6 +2277,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2183,6 +2297,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2202,6 +2317,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2221,6 +2337,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2240,6 +2357,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2259,6 +2377,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2278,6 +2397,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2297,6 +2417,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2316,6 +2437,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2335,6 +2457,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2354,6 +2477,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2373,6 +2497,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2392,6 +2517,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2411,6 +2537,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
@@ -2430,6 +2557,7 @@
       "h4ExplainerFound": false,
       "faqBurnSemantics": [],
       "faqBurnBoundaryFound": false,
+      "landmarkFindings": [],
       "landmarks": {
         "main": 1,
         "h1": 1
