@@ -7872,6 +7872,37 @@ if (SELF_TEST) {
   console.log(`  ${h23BaselineClean ? 'passed ' : 'FAILED '} production features Scrub demo baseline`);
   console.log(`  ${h23MutationCaught ? 'caught ' : 'MISSED '} exact features Scrub visual mutation`);
 
+  console.log('\ncheck-claims self-test (production H28 exposure comparison contract):');
+  const h28StatusContent = await readFile(path.join(ROOT, 'docs/status.html'), 'utf8');
+  const h28BaselineErrors = [
+    ...analyseFile('index.html', h17Content, config),
+    ...analyseFile('docs/status.html', h28StatusContent, config),
+  ].filter((error) => error.kind === 'h28 exposure comparison contract');
+  const h28BaselineClean = h28BaselineErrors.length === 0;
+  const h28IllustrationMarker = 'data-osl-feature="exposure-comparison" data-osl-status="Illustration"';
+  const h28IllustrationOccurrences = h17Content.split(h28IllustrationMarker).length - 1;
+  const h28BadgeMutation = h17Content.replace(
+    h28IllustrationMarker,
+    'data-osl-feature="exposure-comparison" data-osl-status="Beta"',
+  );
+  const h28BadgeMutationCaught = h28IllustrationOccurrences === 1
+    && h28BadgeMutation !== h17Content
+    && analyseFile('index.html', h28BadgeMutation, config)
+      .some((error) => error.kind === 'h28 exposure comparison contract'
+        && error.text.includes('Illustration label'));
+  const h28NotScanCopy = 'It is not a scan of your device';
+  const h28NotScanOccurrences = h17Content.split(h28NotScanCopy).length - 1;
+  const h28ScanMutation = h17Content.replace(h28NotScanCopy, 'It scans your device');
+  const h28ScanMutationCaught = h28NotScanOccurrences === 1
+    && h28ScanMutation !== h17Content
+    && analyseFile('index.html', h28ScanMutation, config)
+      .some((error) => error.kind === 'h28 exposure comparison contract'
+        && error.text.includes('not-a-device-scan limitation'));
+  if (!h28BaselineClean || !h28BadgeMutationCaught || !h28ScanMutationCaught) failures += 1;
+  console.log(`  ${h28BaselineClean ? 'passed ' : 'FAILED '} production exposure comparison baseline`);
+  console.log(`  ${h28BadgeMutationCaught ? 'caught ' : 'MISSED '} exact exposure badge promotion mutation`);
+  console.log(`  ${h28ScanMutationCaught ? 'caught ' : 'MISSED '} exact removal of not-a-device-scan limitation`);
+
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
     {
@@ -8149,6 +8180,7 @@ if (SELF_TEST) {
     + 4
     + 2
     + 2
+    + 3
     + (productionAtRestCases.length * 2)
     + 1
     + atRestPageMutations.length
