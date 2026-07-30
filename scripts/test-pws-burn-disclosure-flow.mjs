@@ -150,6 +150,10 @@ check('pws-burn-responsive-layout', () => {
     /\.pws-burn-stages\s*\{[\s\S]*grid-template-columns:\s*minmax\(0, \.92fr\) 5\.5rem minmax\(0, 1\.25fr\)/,
     'wide screens must render before/disclosure/after in one row',
   );
+  const stageTitle = declarationMap(selectorBlock('.pws-burn-title-row h3'));
+  assert.equal(stageTitle.flex, '1 1 16rem');
+  assert.equal(stageTitle['min-width'], '0');
+  assert.equal(stageTitle['overflow-wrap'], 'anywhere');
   const narrow = blockAfter('@media (max-width: 599px)');
   assert.match(narrow, /\.pws-burn-explainer\s*\{[\s\S]*padding-inline:\s*var\(--s-3\)/);
   assert.match(narrow, /\.pws-burn-mini-scene\s*\{[\s\S]*grid-template-columns:\s*minmax\(0, 1fr\) 2\.35rem minmax\(0, 1fr\)/);
