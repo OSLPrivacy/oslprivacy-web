@@ -60,6 +60,7 @@ function expectDeclaration(selector, property, expected, source = css) {
 }
 
 expectDeclaration('.status-table-scroll', 'margin', 'var(--s-4) 0', tableBlock);
+expectDeclaration('.status-table-scroll', 'max-width', '100%', tableBlock);
 expectDeclaration('.status-table-scroll', 'border', '1px solid var(--border)', tableBlock);
 expectDeclaration('.status-table-scroll', 'border-radius', 'var(--radius)', tableBlock);
 expectDeclaration('.status-table-scroll', 'background', 'var(--surface)', tableBlock);

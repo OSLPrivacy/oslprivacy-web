@@ -8774,6 +8774,7 @@ h2:hover .anchor-link,
    wrapper, which is focusable so keyboard users can reach the overflow. */
 .status-table-scroll {
   overflow-x: auto;
+  max-width: 100%;
   margin: var(--s-4) 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
