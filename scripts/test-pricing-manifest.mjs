@@ -51,12 +51,53 @@ assert.equal(checkoutPaused, true, 'all purchase methods stay paused and store n
 
 const connectors = pricing.connector_matrix.connectors ?? [];
 assert.ok(connectors.length > 0, 'connector matrix must name at least one connector');
+assert.match(
+  pricing.connector_matrix.version,
+  /^\d{4}-\d{2}-\d{2}$/,
+  'connector matrix version must be an exact review date',
+);
+const connectorSources = pricing.connector_matrix.sources ?? [];
+assert.ok(connectorSources.length > 0, 'connector matrix must carry source metadata');
+const connectorSourceIds = new Set(connectorSources.map((source) => source.id));
 for (const connector of connectors) {
+  assert.equal(
+    connector.verified_on,
+    pricing.connector_matrix.version,
+    `${connector.name} review date must match the matrix version`,
+  );
+  assert.ok(
+    Array.isArray(connector.source_ids) && connector.source_ids.length > 0,
+    `${connector.name} must cite at least one current connector source`,
+  );
+  for (const sourceId of connector.source_ids) {
+    assert.ok(
+      connectorSourceIds.has(sourceId),
+      `${connector.name} cites unknown source ${sourceId}`,
+    );
+  }
   assert.equal(
     /\b\d+(\.\d+)?\s*%/.test(connector.provider_policy_risk ?? ''),
     false,
     `${connector.name} must not fabricate a provider-policy risk percentage`,
   );
+  assert.notEqual(
+    connector.provider_policy_risk?.trim(),
+    '',
+    `${connector.name} must fail closed with an explicit provider-policy risk note`,
+  );
+}
+
+for (const source of connectorSources) {
+  assert.match(source.id, /^[a-z0-9-]+$/, 'connector source ids must be stable tokens');
+  assert.match(source.url, /^https:\/\//, `${source.id} must use an HTTPS source URL`);
+  assert.match(
+    source.accessed_on,
+    /^\d{4}-\d{2}-\d{2}$/,
+    `${source.id} must carry an exact access date`,
+  );
+  assert.ok(source.publisher, `${source.id} must name the source publisher`);
+  assert.ok(source.source_type, `${source.id} must name the source type`);
+  assert.ok(source.title, `${source.id} must name the source title`);
 }
 
 console.log('test-pricing-manifest: pricing model and capability truth are frozen.');

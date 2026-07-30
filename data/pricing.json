@@ -282,7 +282,7 @@
     },
     {
       "id": "ratchet",
-      "name": "Ratcheting (protecting old messages)",
+      "name": "Old-message protection",
       "status": "Planned",
       "evidence": "The live path is stateless per-message sealing. crates/ipc/src/commands.rs:2842 hard-disables the ratchet, and crates/osl-ratchet-next is built but deliberately unwired. Master 7.11 forbids any forward-secrecy claim that outruns the audited live path.",
       "surfaces": [
@@ -1318,8 +1318,110 @@
     "$rule": "A marketing page may describe a v1 capability in forward-looking language. The support matrix and the checkout purchase summary may only state what current evidence supports. A present-tense capability claim outside those two surfaces still fails the gate: any marketing section naming a capability that is not Available or Beta must carry at least one forward-looking marker, and every marketing capability page must link to the matrix."
   },
   "connector_matrix": {
-    "version": "2026-07-26",
-    "$note": "Master 8.4. A logo never implies support; only this table does (master 7.8).",
+    "version": "2026-07-30",
+    "$note": "Master 8.4. A logo never implies support; only this table does (master 7.8). Source-backed rows fail closed: no current source, OSL proof, and provider-risk note means no public support claim.",
+    "sources": [
+      {
+        "id": "discord-self-bots",
+        "publisher": "Discord",
+        "source_type": "provider_policy",
+        "url": "https://support.discord.com/hc/en-us/articles/115002192352-Automated-User-Accounts-Self-Bots",
+        "title": "Automated User Accounts (Self-Bots)",
+        "section": "Automating normal user accounts",
+        "published_or_effective_on": "not stated",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "discord-terms",
+        "publisher": "Discord",
+        "source_type": "terms",
+        "url": "https://discord.com/terms",
+        "title": "Terms of Service",
+        "section": "Your Discord account; Content in Discord's services",
+        "published_or_effective_on": "2025-08-15",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "signal-permissions",
+        "publisher": "Signal",
+        "source_type": "support",
+        "url": "https://support.signal.org/hc/en-us/articles/360007062172-Signal-Permissions-OS-Notification-Settings",
+        "title": "Signal Permissions & OS Notification Settings",
+        "section": "Permissions and Desktop",
+        "published_or_effective_on": "not stated",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "signal-screen-security",
+        "publisher": "Signal",
+        "source_type": "desktop_behavior",
+        "url": "https://signal.org/blog/signal-doesnt-recall/",
+        "title": "By Default, Signal Doesn't Recall",
+        "section": "Signal Desktop screen security on Windows",
+        "published_or_effective_on": "2025-05-21",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "whatsapp-terms",
+        "publisher": "WhatsApp",
+        "source_type": "terms",
+        "url": "https://www.whatsapp.com/legal/terms-of-service",
+        "title": "WhatsApp Terms of Service",
+        "section": "Our Terms And Policies; Legal And Acceptable Use; Termination",
+        "published_or_effective_on": "2021-01-04",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "whatsapp-temporary-bans",
+        "publisher": "WhatsApp",
+        "source_type": "provider_policy",
+        "url": "https://faq.whatsapp.com/1848531392146538",
+        "title": "About temporarily banned accounts",
+        "section": "Unofficial apps and scraping",
+        "published_or_effective_on": "not stated",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "telegram-accessibility",
+        "publisher": "Telegram",
+        "source_type": "provider_issue_tracker",
+        "url": "https://bugs.telegram.org/?tag_ids=29",
+        "title": "Accessibility - Bugs and Suggestions",
+        "section": "Telegram Desktop and mobile accessibility issues",
+        "published_or_effective_on": "2026-07-30",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "microsoft-services-agreement",
+        "publisher": "Microsoft",
+        "source_type": "terms",
+        "url": "https://www.microsoft.com/en-us/servicesagreement",
+        "title": "Microsoft Services Agreement",
+        "section": "Agreement for Microsoft consumer online products and services",
+        "published_or_effective_on": "2025-07-30",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "microsoft-new-outlook",
+        "publisher": "Microsoft",
+        "source_type": "support",
+        "url": "https://support.microsoft.com/en-us/outlook/getstarted/getting-started-with-the-new-outlook-for-windows",
+        "title": "Getting started with the new Outlook for Windows",
+        "section": "Supported accounts",
+        "published_or_effective_on": "not stated",
+        "accessed_on": "2026-07-30"
+      },
+      {
+        "id": "google-gmail-third-party-access",
+        "publisher": "Google",
+        "source_type": "support",
+        "url": "https://support.google.com/mail/answer/17101213",
+        "title": "Learn about changes to third-party email account support in Gmail",
+        "section": "Access Gmail from third-party clients using IMAP, POP, & API",
+        "published_or_effective_on": "not stated",
+        "accessed_on": "2026-07-30"
+      }
+    ],
     "connectors": [
       {
         "name": "Discord",
@@ -1328,9 +1430,13 @@
         "protected_receive": "Beta",
         "attachments": "Planned",
         "scrub": "Planned",
-        "verified_on": "2026-07-26",
+        "verified_on": "2026-07-30",
         "status": "Beta",
-        "provider_policy_risk": "Using OSL may violate Discord Terms of Service and Discord may ban your account. No provider has tested, reviewed or approved OSL."
+        "provider_policy_risk": "Discord forbids automating normal user accounts outside its OAuth2/bot API. OSL has no Discord approval; use may put the account at risk.",
+        "source_ids": [
+          "discord-self-bots",
+          "discord-terms"
+        ]
       },
       {
         "name": "Signal",
@@ -1339,9 +1445,13 @@
         "protected_receive": "Planned",
         "attachments": "Planned",
         "scrub": "Not applicable",
-        "verified_on": "2026-07-26",
+        "verified_on": "2026-07-30",
         "status": "Coming soon",
-        "provider_policy_risk": "Not qualified. No two-peer proof on any build."
+        "provider_policy_risk": "Not qualified by OSL: no two-peer proof on any build. Signal Desktop's own screen-security behavior can make companion viewing unavailable.",
+        "source_ids": [
+          "signal-permissions",
+          "signal-screen-security"
+        ]
       },
       {
         "name": "WhatsApp",
@@ -1350,9 +1460,13 @@
         "protected_receive": "Planned",
         "attachments": "Planned",
         "scrub": "Not applicable",
-        "verified_on": "2026-07-26",
+        "verified_on": "2026-07-30",
         "status": "Coming soon",
-        "provider_policy_risk": "Not qualified. No two-peer proof on any build."
+        "provider_policy_risk": "Not qualified by OSL: no two-peer proof on any build. WhatsApp restricts auto-messaging, non-personal use, unofficial apps, and scraping.",
+        "source_ids": [
+          "whatsapp-terms",
+          "whatsapp-temporary-bans"
+        ]
       },
       {
         "name": "Telegram",
@@ -1361,9 +1475,12 @@
         "protected_receive": "Externally blocked",
         "attachments": "Externally blocked",
         "scrub": "Not applicable",
-        "verified_on": "2026-07-26",
+        "verified_on": "2026-07-30",
         "status": "Externally blocked",
-        "provider_policy_risk": "Stable Telegram does not expose reliable accessible message rows. OSL will not fake support (master 7.8)."
+        "provider_policy_risk": "Telegram remains externally blocked for OSL: current provider issue records still show unreliable message and control accessibility. OSL will not fake support.",
+        "source_ids": [
+          "telegram-accessibility"
+        ]
       },
       {
         "name": "Outlook / OSL Mail",
@@ -1372,9 +1489,14 @@
         "protected_receive": "Planned",
         "attachments": "Planned",
         "scrub": "Planned",
-        "verified_on": "2026-07-26",
+        "verified_on": "2026-07-30",
         "status": "Coming soon",
-        "provider_policy_risk": "Scoped as OSL Mail, not an ordinary chat overlay."
+        "provider_policy_risk": "Scoped as OSL Mail, not ordinary chat support. Microsoft and Google mail terms/support are live inputs, but OSL has no mail-specific proof.",
+        "source_ids": [
+          "microsoft-services-agreement",
+          "microsoft-new-outlook",
+          "google-gmail-third-party-access"
+        ]
       }
     ]
   }
