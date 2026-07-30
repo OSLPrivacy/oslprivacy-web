@@ -6,9 +6,12 @@ const EXPECTED_INPUTS = [
   '.assetsignore',
   '_headers',
   '_redirects',
+  'data/at-rest-census.json',
   'data/pricing.json',
+  'data/public-surface-manifest.json',
   'wrangler.jsonc',
 ];
+const FORBIDDEN_MANIFEST_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
 
 function argValue(name) {
   const prefix = `${name}=`;
@@ -70,14 +73,24 @@ if (!build.inputs || typeof build.inputs !== 'object' || Array.isArray(build.inp
 }
 
 function validateManifest(manifest, label) {
+  if (
+    !manifest ||
+    typeof manifest !== 'object' ||
+    Array.isArray(manifest) ||
+    Object.getPrototypeOf(manifest) !== Object.prototype
+  ) {
+    fail(`live build ${label} manifest is not a plain object`);
+  }
   const entries = Object.entries(manifest);
   if (entries.length < 1) fail(`live build ${label} manifest is empty`);
   for (const [name, digest] of entries) {
+    const parts = typeof name === 'string' ? name.split('/') : [];
     if (
       typeof name !== 'string' ||
+      typeof digest !== 'string' ||
       name.startsWith('/') ||
       name.includes('\\') ||
-      name.split('/').some((part) => part === '' || part === '.' || part === '..') ||
+      parts.some((part) => part === '' || part === '.' || part === '..' || FORBIDDEN_MANIFEST_SEGMENTS.has(part)) ||
       !/^[0-9a-f]{64}$/.test(digest)
     ) {
       fail(`live build contains an invalid ${label} manifest entry: ${name}`);

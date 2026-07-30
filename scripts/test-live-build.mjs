@@ -31,7 +31,9 @@ const baseBuild = {
     '.assetsignore': digest(Buffer.from('scripts/\n')),
     '_headers': digest(headers),
     '_redirects': digest(redirects),
+    'data/at-rest-census.json': digest(Buffer.from('{"schema_version":1}\n')),
     'data/pricing.json': digest(Buffer.from('{"manifest_version":5}\n')),
+    'data/public-surface-manifest.json': digest(Buffer.from('{"schema_version":1}\n')),
     'wrangler.jsonc': digest(Buffer.from('{}\n')),
   },
   artifact_files: {
@@ -72,6 +74,9 @@ const server = createServer((request, response) => {
     if (mode === 'wrong-environment') build.environment = 'preview';
     if (mode === 'wrong-branch') build.branch = 'preview-branch';
     if (mode === 'wrong-schema') build.schema_version = 3;
+    if (mode === 'missing-control-input') delete build.inputs['data/public-surface-manifest.json'];
+    if (mode === 'invalid-manifest-entry') build.files['assets//main.js'] = digest(asset);
+    if (mode === 'non-string-manifest-digest') build.files['assets/main.js'] = null;
     response.end(JSON.stringify(build));
     return;
   }
@@ -161,6 +166,9 @@ try {
   await check('live environment mismatch refusal', 'wrong-environment', 1, 'live environment mismatch');
   await check('live branch mismatch refusal', 'wrong-branch', 1, 'live branch mismatch');
   await check('live schema mismatch refusal', 'wrong-schema', 1, 'live build schema mismatch');
+  await check('deploy input coverage refusal', 'missing-control-input', 1, 'deploy-input manifest has unexpected coverage');
+  await check('invalid manifest entry refusal', 'invalid-manifest-entry', 1, 'invalid served-file manifest entry');
+  await check('non-string manifest digest refusal', 'non-string-manifest-digest', 1, 'invalid served-file manifest entry');
   await check('root meta mismatch refusal', 'wrong-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
   await check('commented root meta refusal', 'commented-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
   await check('data-name root meta refusal', 'data-name-root-meta', 1, 'semantic full-SHA osl-build meta inside head');
