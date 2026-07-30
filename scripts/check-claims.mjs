@@ -5328,7 +5328,9 @@ const H7_SELF_TEST_MUTATIONS = [
     name: 'future access date',
     expect: 'H7_SOURCE_FUTURE',
     mutate(pricing) {
-      pricing.research_comparisons.h7_deleteme.sources[0].accessed_on = '2026-07-28';
+      const future = new Date(`${AS_OF}T00:00:00Z`);
+      future.setUTCDate(future.getUTCDate() + 1);
+      pricing.research_comparisons.h7_deleteme.sources[0].accessed_on = future.toISOString().slice(0, 10);
     },
   },
   {
