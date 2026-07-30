@@ -78,6 +78,12 @@ function successBytes() {
       'Automatic one-month expiry is implemented',
     ));
   }
+  if (mode === 'preview-missing-pro-expiry-limitation') {
+    return Buffer.from(success.toString().replace(
+      /<p data-osl-claim="pro-expiry-limitation">[\s\S]*?<\/p>/,
+      '<p>Preview builds do not publish the production checkout promotion proof.</p>',
+    ));
+  }
   return success;
 }
 
@@ -106,7 +112,7 @@ const server = createServer((request, response) => {
     if (mode === 'wrong-sha') build.commit = 'b'.repeat(40);
     if (mode === 'wrong-environment') build.environment = 'preview';
     if (mode === 'wrong-branch') build.branch = 'preview-branch';
-    if (mode === 'preview') {
+    if (mode === 'preview' || mode === 'preview-missing-pro-expiry-limitation') {
       build.environment = 'preview';
       build.branch = 'preview-branch';
     }
@@ -236,6 +242,12 @@ try {
     verifierBranch: 'preview-branch',
     verifierEnvironment: 'preview',
   });
+  await check('preview live verification does not require production success.html pro-expiry-limitation evidence', 'preview-missing-pro-expiry-limitation', 0, '3 served files and 5 artifact leaves are bound', {
+    evidence: '',
+    verifierBranch: 'preview-branch',
+    verifierEnvironment: 'preview',
+  });
+  await check('test -n "$OSL_KEYSERVER_REDEMPTION_EVIDENCE" && node scripts/verify-live-build.mjs --url="$OSL_LIVE_URL" --sha="$OSL_LIVE_SHA" --branch=main --environment=production', 'positive', 0, '3 served files and 5 artifact leaves are bound');
   await check('exact live artifact', 'positive', 0, '3 served files and 5 artifact leaves are bound');
   await check('missing build.json refusal', 'build-404', 1, 'HTTP 404');
   await check('invalid build.json refusal', 'invalid-json', 1, 'SyntaxError');
