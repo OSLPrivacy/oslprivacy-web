@@ -111,6 +111,26 @@ function blockHasDeclaration(block, property, valuePattern) {
     });
 }
 
+function isScreenshotImage(file) {
+  const bytes = readFileSync(file);
+  const isPng =
+    bytes.length >= 8
+    && bytes[0] === 0x89
+    && bytes[1] === 0x50
+    && bytes[2] === 0x4e
+    && bytes[3] === 0x47
+    && bytes[4] === 0x0d
+    && bytes[5] === 0x0a
+    && bytes[6] === 0x1a
+    && bytes[7] === 0x0a;
+  const isJpeg = bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  const isWebp =
+    bytes.length >= 12
+    && bytes.subarray(0, 4).toString('ascii') === 'RIFF'
+    && bytes.subarray(8, 12).toString('ascii') === 'WEBP';
+  return isPng || isJpeg || isWebp;
+}
+
 if (!PACKET) {
   fail('OSL_OWNER_SCREENSHOT_PACKET is required');
 }
@@ -124,6 +144,10 @@ const packetScreenshots = walkFiles(packetPath)
   .filter((file) => /\.(?:png|jpe?g|webp)$/i.test(file));
 if (packetScreenshots.length < REQUIRED_MAPPINGS.length) {
   fail(`owner packet must contain at least ${REQUIRED_MAPPINGS.length} screenshot image files`);
+}
+const invalidScreenshots = packetScreenshots.filter((file) => !isScreenshotImage(file));
+if (invalidScreenshots.length > 0) {
+  fail(`owner packet contains files without PNG, JPEG, or WebP image bytes: ${invalidScreenshots.map((file) => path.basename(file)).join(', ')}`);
 }
 
 const css = readFileSync(CSS_PATH, 'utf8');
