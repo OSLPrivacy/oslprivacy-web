@@ -22,6 +22,7 @@ const DEFAULT_PAGES = [
 ];
 const DEFAULT_WIDTHS = [320, 360, 390, 768, 1024, 1440];
 const CONDITIONS = ['js-on', 'js-off', 'reduced'];
+const REQUIRED_CONDITIONS = ['js-on', 'js-off', 'reduced'];
 const VIEWPORT_HEIGHT = 900;
 // Floor proves the matrix covered the intended pages, widths, and modes.
 const MIN_SCREENSHOT_CAPTURES = 200;
@@ -259,6 +260,22 @@ function measureFoldVisibility() {
     return false;
   }
 
+  function authorScriptRan() {
+    const toggle = document.querySelector('.topnav-toggle');
+    const menu = document.getElementById('topnav-menu');
+    if (!toggle || !menu) return null;
+
+    const beforeExpanded = toggle.getAttribute('aria-expanded');
+    const beforeOpen = menu.classList.contains('open');
+    toggle.click();
+    const afterExpanded = toggle.getAttribute('aria-expanded');
+    const afterOpen = menu.classList.contains('open');
+    if (beforeExpanded !== afterExpanded || beforeOpen !== afterOpen) {
+      toggle.click();
+    }
+    return beforeExpanded !== afterExpanded && beforeOpen !== afterOpen;
+  }
+
   let visibleTextChars = 0;
   if (document.body) {
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -295,6 +312,8 @@ function measureFoldVisibility() {
     visibleTextChars,
     scrollHeight: document.documentElement.scrollHeight,
     unrevealedRevealCount: document.querySelectorAll('.reveal:not(.is-revealed)').length,
+    authorScriptRan: authorScriptRan(),
+    reducedMotionMatches: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     buildMeta: document.querySelector('meta[name="osl-build"]')?.getAttribute('content') ?? null,
     h4Explainer,
   };
@@ -349,6 +368,8 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     visibleTextChars: null,
     scrollHeight: null,
     unrevealedRevealCount: null,
+    authorScriptRan: null,
+    reducedMotionMatches: null,
     buildMeta: null,
     h4Explainer: null,
   };
@@ -371,7 +392,12 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
       && h4.visibleBoundaries === 4
       && h4.plannedBadges === 2
     );
-    verdict = measurement.visibleTextChars >= 40 && h4Pass ? 'pass' : 'fail';
+    const modePass = (
+      (condition === 'js-on' && measurement.authorScriptRan === true && measurement.reducedMotionMatches === false)
+      || (condition === 'js-off' && measurement.authorScriptRan === false && measurement.reducedMotionMatches === false)
+      || (condition === 'reduced' && measurement.authorScriptRan === true && measurement.reducedMotionMatches === true)
+    );
+    verdict = measurement.visibleTextChars >= 40 && h4Pass && modePass ? 'pass' : 'fail';
   } catch (error) {
     console.error(`screenshot-matrix: measurement failed for ${page} ${width} ${condition}: ${error.message}`);
   }
@@ -385,6 +411,8 @@ async function captureCombo({ cdp, sessionId, page, url, width, condition, outDi
     visible_text_chars: measurement.visibleTextChars,
     scroll_height: measurement.scrollHeight,
     unrevealed_reveal_count: measurement.unrevealedRevealCount,
+    author_script_ran: measurement.authorScriptRan,
+    reduced_motion_matches: measurement.reducedMotionMatches,
     build_meta: measurement.buildMeta,
     h4_explainer: measurement.h4Explainer,
     verdict,
@@ -408,6 +436,11 @@ function printSummary(pages, widths, results) {
 
 async function run() {
   const args = parseArgs(process.argv.slice(2));
+  const missingConditions = REQUIRED_CONDITIONS.filter((condition) => !CONDITIONS.includes(condition));
+  const extraConditions = CONDITIONS.filter((condition) => !REQUIRED_CONDITIONS.includes(condition));
+  if (missingConditions.length > 0 || extraConditions.length > 0) {
+    throw new Error(`condition matrix must be exactly ${REQUIRED_CONDITIONS.join(', ')}; missing=${missingConditions.join(', ') || 'none'} extra=${extraConditions.join(', ') || 'none'}`);
+  }
   const chromeBinary = locateChrome();
 
   await mkdir(args.outDir, { recursive: true });
