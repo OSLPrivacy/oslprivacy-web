@@ -1,10 +1,14 @@
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERIFIER = path.join(path.dirname(fileURLToPath(import.meta.url)), 'verify-live-build.mjs');
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.dirname(SCRIPT_DIR);
+const VERIFIER = path.join(SCRIPT_DIR, 'verify-live-build.mjs');
+const README = path.join(ROOT, 'README.md');
 const commit = 'a'.repeat(40);
 const shortCommit = commit.slice(0, 8);
 const branch = 'main';
@@ -148,7 +152,28 @@ async function check(name, selectedMode, expectedCode, phrase) {
   console.log(`  passed ${name}`);
 }
 
+async function checkReadmePromotionContract() {
+  const readme = await readFile(README, 'utf8');
+  const normalized = readme.replace(/\s+/g, ' ');
+  const required = [
+    'node scripts/pricing-sync.mjs --check',
+    'node scripts/check-claims.mjs',
+    'node scripts/test-live-build.mjs',
+    'promotion path for the clean H1 pricing candidate',
+    'Do not rebuild pricing copy by hand during deployment',
+    'node scripts/verify-live-build.mjs',
+  ];
+  const missing = required.filter((text) => !normalized.includes(text));
+  if (missing.length > 0) {
+    throw new Error(`README promotion contract is missing: ${missing.join(', ')}`);
+  }
+  passed += 1;
+  console.log('  passed README promotion contract');
+}
+
 try {
+  await checkReadmePromotionContract();
+
   await new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', () => {
