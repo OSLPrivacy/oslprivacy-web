@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-27T07:37:31.705Z",
-  "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell",
-  "browser_version": "HeadlessChrome/149.0.7827.55",
-  "server_port": 35171,
+  "generated_at": "2026-07-30T02:21:01.862Z",
+  "browser_binary": "/home/liamw/.cache/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-linux64/chrome-headless-shell",
+  "browser_version": "HeadlessChrome/151.0.7922.34",
+  "server_port": 36395,
   "captures": [
     {
       "page": "/",
@@ -10,10 +10,18 @@
       "condition": "js-on",
       "fold_png": "home/320-js-on-fold.png",
       "full_png": "home/320-js-on-full.png",
-      "visible_text_chars": 727,
-      "scroll_height": 3744,
+      "visible_text_chars": 748,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 3,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -22,10 +30,18 @@
       "condition": "js-on",
       "fold_png": "home/360-js-on-fold.png",
       "full_png": "home/360-js-on-full.png",
-      "visible_text_chars": 727,
-      "scroll_height": 3506,
+      "visible_text_chars": 748,
+      "scroll_height": 3611,
       "unrevealed_reveal_count": 3,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -34,10 +50,18 @@
       "condition": "js-on",
       "fold_png": "home/390-js-on-fold.png",
       "full_png": "home/390-js-on-full.png",
-      "visible_text_chars": 727,
-      "scroll_height": 3425,
+      "visible_text_chars": 748,
+      "scroll_height": 3509,
       "unrevealed_reveal_count": 3,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -46,10 +70,18 @@
       "condition": "js-on",
       "fold_png": "home/768-js-on-fold.png",
       "full_png": "home/768-js-on-full.png",
-      "visible_text_chars": 875,
-      "scroll_height": 2616,
+      "visible_text_chars": 896,
+      "scroll_height": 2658,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -58,10 +90,18 @@
       "condition": "js-on",
       "fold_png": "home/1024-js-on-fold.png",
       "full_png": "home/1024-js-on-full.png",
-      "visible_text_chars": 998,
-      "scroll_height": 2650,
+      "visible_text_chars": 1019,
+      "scroll_height": 2692,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -70,10 +110,18 @@
       "condition": "js-on",
       "fold_png": "home/1440-js-on-fold.png",
       "full_png": "home/1440-js-on-full.png",
-      "visible_text_chars": 980,
-      "scroll_height": 2594,
+      "visible_text_chars": 1000,
+      "scroll_height": 2615,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -82,10 +130,18 @@
       "condition": "js-off",
       "fold_png": "home/320-js-off-fold.png",
       "full_png": "home/320-js-off-full.png",
-      "visible_text_chars": 371,
-      "scroll_height": 3744,
+      "visible_text_chars": 398,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -94,10 +150,18 @@
       "condition": "js-off",
       "fold_png": "home/360-js-off-fold.png",
       "full_png": "home/360-js-off-full.png",
-      "visible_text_chars": 371,
-      "scroll_height": 3506,
+      "visible_text_chars": 398,
+      "scroll_height": 3611,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -106,10 +170,18 @@
       "condition": "js-off",
       "fold_png": "home/390-js-off-fold.png",
       "full_png": "home/390-js-off-full.png",
-      "visible_text_chars": 462,
-      "scroll_height": 3425,
+      "visible_text_chars": 489,
+      "scroll_height": 3509,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -118,10 +190,18 @@
       "condition": "js-off",
       "fold_png": "home/768-js-off-fold.png",
       "full_png": "home/768-js-off-full.png",
-      "visible_text_chars": 801,
-      "scroll_height": 2616,
+      "visible_text_chars": 828,
+      "scroll_height": 2658,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -130,10 +210,18 @@
       "condition": "js-off",
       "fold_png": "home/1024-js-off-fold.png",
       "full_png": "home/1024-js-off-full.png",
-      "visible_text_chars": 801,
-      "scroll_height": 2650,
+      "visible_text_chars": 828,
+      "scroll_height": 2692,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -142,10 +230,18 @@
       "condition": "js-off",
       "fold_png": "home/1440-js-off-fold.png",
       "full_png": "home/1440-js-off-full.png",
-      "visible_text_chars": 721,
-      "scroll_height": 2594,
+      "visible_text_chars": 748,
+      "scroll_height": 2615,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -154,10 +250,18 @@
       "condition": "reduced",
       "fold_png": "home/320-reduced-fold.png",
       "full_png": "home/320-reduced-full.png",
-      "visible_text_chars": 745,
-      "scroll_height": 3744,
+      "visible_text_chars": 766,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -166,10 +270,18 @@
       "condition": "reduced",
       "fold_png": "home/360-reduced-fold.png",
       "full_png": "home/360-reduced-full.png",
-      "visible_text_chars": 745,
-      "scroll_height": 3506,
+      "visible_text_chars": 766,
+      "scroll_height": 3611,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -178,10 +290,18 @@
       "condition": "reduced",
       "fold_png": "home/390-reduced-fold.png",
       "full_png": "home/390-reduced-full.png",
-      "visible_text_chars": 836,
-      "scroll_height": 3425,
+      "visible_text_chars": 857,
+      "scroll_height": 3509,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -190,10 +310,18 @@
       "condition": "reduced",
       "fold_png": "home/768-reduced-fold.png",
       "full_png": "home/768-reduced-full.png",
-      "visible_text_chars": 1165,
-      "scroll_height": 2616,
+      "visible_text_chars": 1186,
+      "scroll_height": 2658,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -202,10 +330,18 @@
       "condition": "reduced",
       "fold_png": "home/1024-reduced-fold.png",
       "full_png": "home/1024-reduced-full.png",
-      "visible_text_chars": 1143,
-      "scroll_height": 2650,
+      "visible_text_chars": 1164,
+      "scroll_height": 2692,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -214,10 +350,18 @@
       "condition": "reduced",
       "fold_png": "home/1440-reduced-fold.png",
       "full_png": "home/1440-reduced-full.png",
-      "visible_text_chars": 1085,
-      "scroll_height": 2594,
+      "visible_text_chars": 1106,
+      "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -226,10 +370,18 @@
       "condition": "js-on",
       "fold_png": "download/320-js-on-fold.png",
       "full_png": "download/320-js-on-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6946,
+      "visible_text_chars": 508,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -238,10 +390,18 @@
       "condition": "js-on",
       "fold_png": "download/360-js-on-fold.png",
       "full_png": "download/360-js-on-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6635,
+      "visible_text_chars": 508,
+      "scroll_height": 6689,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -250,10 +410,18 @@
       "condition": "js-on",
       "fold_png": "download/390-js-on-fold.png",
       "full_png": "download/390-js-on-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6459,
+      "visible_text_chars": 508,
+      "scroll_height": 6514,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -262,10 +430,18 @@
       "condition": "js-on",
       "fold_png": "download/768-js-on-fold.png",
       "full_png": "download/768-js-on-full.png",
-      "visible_text_chars": 743,
-      "scroll_height": 5541,
+      "visible_text_chars": 773,
+      "scroll_height": 5583,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -274,10 +450,18 @@
       "condition": "js-on",
       "fold_png": "download/1024-js-on-fold.png",
       "full_png": "download/1024-js-on-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4684,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -286,10 +470,18 @@
       "condition": "js-on",
       "fold_png": "download/1440-js-on-fold.png",
       "full_png": "download/1440-js-on-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4683,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -298,10 +490,18 @@
       "condition": "js-off",
       "fold_png": "download/320-js-off-fold.png",
       "full_png": "download/320-js-off-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6946,
+      "visible_text_chars": 508,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -310,10 +510,18 @@
       "condition": "js-off",
       "fold_png": "download/360-js-off-fold.png",
       "full_png": "download/360-js-off-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6635,
+      "visible_text_chars": 508,
+      "scroll_height": 6689,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -322,10 +530,18 @@
       "condition": "js-off",
       "fold_png": "download/390-js-off-fold.png",
       "full_png": "download/390-js-off-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6459,
+      "visible_text_chars": 508,
+      "scroll_height": 6514,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -334,10 +550,18 @@
       "condition": "js-off",
       "fold_png": "download/768-js-off-fold.png",
       "full_png": "download/768-js-off-full.png",
-      "visible_text_chars": 743,
-      "scroll_height": 5541,
+      "visible_text_chars": 773,
+      "scroll_height": 5583,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -346,10 +570,18 @@
       "condition": "js-off",
       "fold_png": "download/1024-js-off-fold.png",
       "full_png": "download/1024-js-off-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4684,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -358,10 +590,18 @@
       "condition": "js-off",
       "fold_png": "download/1440-js-off-fold.png",
       "full_png": "download/1440-js-off-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4683,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -370,10 +610,18 @@
       "condition": "reduced",
       "fold_png": "download/320-reduced-fold.png",
       "full_png": "download/320-reduced-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6946,
+      "visible_text_chars": 508,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -382,10 +630,18 @@
       "condition": "reduced",
       "fold_png": "download/360-reduced-fold.png",
       "full_png": "download/360-reduced-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6635,
+      "visible_text_chars": 508,
+      "scroll_height": 6689,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -394,10 +650,18 @@
       "condition": "reduced",
       "fold_png": "download/390-reduced-fold.png",
       "full_png": "download/390-reduced-full.png",
-      "visible_text_chars": 478,
-      "scroll_height": 6459,
+      "visible_text_chars": 508,
+      "scroll_height": 6514,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -406,10 +670,18 @@
       "condition": "reduced",
       "fold_png": "download/768-reduced-fold.png",
       "full_png": "download/768-reduced-full.png",
-      "visible_text_chars": 743,
-      "scroll_height": 5541,
+      "visible_text_chars": 773,
+      "scroll_height": 5583,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -418,10 +690,18 @@
       "condition": "reduced",
       "fold_png": "download/1024-reduced-fold.png",
       "full_png": "download/1024-reduced-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4684,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -430,10 +710,18 @@
       "condition": "reduced",
       "fold_png": "download/1440-reduced-fold.png",
       "full_png": "download/1440-reduced-full.png",
-      "visible_text_chars": 767,
-      "scroll_height": 4662,
+      "visible_text_chars": 797,
+      "scroll_height": 4683,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -443,9 +731,17 @@
       "fold_png": "features/320-js-on-fold.png",
       "full_png": "features/320-js-on-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 7696,
+      "scroll_height": 9816,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -455,9 +751,17 @@
       "fold_png": "features/360-js-on-fold.png",
       "full_png": "features/360-js-on-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7457,
+      "scroll_height": 9360,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -467,9 +771,17 @@
       "fold_png": "features/390-js-on-fold.png",
       "full_png": "features/390-js-on-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7349,
+      "scroll_height": 9247,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -479,9 +791,17 @@
       "fold_png": "features/768-js-on-fold.png",
       "full_png": "features/768-js-on-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 5798,
+      "scroll_height": 7328,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -491,9 +811,17 @@
       "fold_png": "features/1024-js-on-fold.png",
       "full_png": "features/1024-js-on-full.png",
       "visible_text_chars": 1027,
-      "scroll_height": 5322,
+      "scroll_height": 6512,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -503,9 +831,17 @@
       "fold_png": "features/1440-js-on-fold.png",
       "full_png": "features/1440-js-on-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 5348,
+      "scroll_height": 6603,
       "unrevealed_reveal_count": 5,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -515,9 +851,17 @@
       "fold_png": "features/320-js-off-fold.png",
       "full_png": "features/320-js-off-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 7696,
+      "scroll_height": 9816,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -527,9 +871,17 @@
       "fold_png": "features/360-js-off-fold.png",
       "full_png": "features/360-js-off-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7457,
+      "scroll_height": 9360,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -539,9 +891,17 @@
       "fold_png": "features/390-js-off-fold.png",
       "full_png": "features/390-js-off-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7349,
+      "scroll_height": 9247,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -551,9 +911,17 @@
       "fold_png": "features/768-js-off-fold.png",
       "full_png": "features/768-js-off-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 5798,
+      "scroll_height": 7328,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -563,9 +931,17 @@
       "fold_png": "features/1024-js-off-fold.png",
       "full_png": "features/1024-js-off-full.png",
       "visible_text_chars": 1042,
-      "scroll_height": 5322,
+      "scroll_height": 6512,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -575,9 +951,17 @@
       "fold_png": "features/1440-js-off-fold.png",
       "full_png": "features/1440-js-off-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 5348,
+      "scroll_height": 6603,
       "unrevealed_reveal_count": 7,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -587,9 +971,17 @@
       "fold_png": "features/320-reduced-fold.png",
       "full_png": "features/320-reduced-full.png",
       "visible_text_chars": 940,
-      "scroll_height": 7696,
+      "scroll_height": 9816,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -599,9 +991,17 @@
       "fold_png": "features/360-reduced-fold.png",
       "full_png": "features/360-reduced-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7457,
+      "scroll_height": 9360,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -611,9 +1011,17 @@
       "fold_png": "features/390-reduced-fold.png",
       "full_png": "features/390-reduced-full.png",
       "visible_text_chars": 954,
-      "scroll_height": 7349,
+      "scroll_height": 9247,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -623,9 +1031,17 @@
       "fold_png": "features/768-reduced-fold.png",
       "full_png": "features/768-reduced-full.png",
       "visible_text_chars": 1000,
-      "scroll_height": 5798,
+      "scroll_height": 7328,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -635,9 +1051,17 @@
       "fold_png": "features/1024-reduced-fold.png",
       "full_png": "features/1024-reduced-full.png",
       "visible_text_chars": 1042,
-      "scroll_height": 5322,
+      "scroll_height": 6512,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -647,9 +1071,17 @@
       "fold_png": "features/1440-reduced-fold.png",
       "full_png": "features/1440-reduced-full.png",
       "visible_text_chars": 1014,
-      "scroll_height": 5348,
+      "scroll_height": 6603,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": true,
+        "visible": true,
+        "textChars": 1192,
+        "semanticStages": 2,
+        "visibleBoundaries": 4,
+        "plannedBadges": 2
+      },
       "verdict": "pass"
     },
     {
@@ -659,9 +1091,17 @@
       "fold_png": "audit/320-js-on-fold.png",
       "full_png": "audit/320-js-on-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 6185,
+      "scroll_height": 6529,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -671,9 +1111,17 @@
       "fold_png": "audit/360-js-on-fold.png",
       "full_png": "audit/360-js-on-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5618,
+      "scroll_height": 5914,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -683,9 +1131,17 @@
       "fold_png": "audit/390-js-on-fold.png",
       "full_png": "audit/390-js-on-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5353,
+      "scroll_height": 5649,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -695,9 +1151,17 @@
       "fold_png": "audit/768-js-on-fold.png",
       "full_png": "audit/768-js-on-full.png",
       "visible_text_chars": 861,
-      "scroll_height": 3565,
+      "scroll_height": 3726,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -707,9 +1171,17 @@
       "fold_png": "audit/1024-js-on-fold.png",
       "full_png": "audit/1024-js-on-full.png",
       "visible_text_chars": 767,
-      "scroll_height": 3385,
+      "scroll_height": 3522,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -719,9 +1191,17 @@
       "fold_png": "audit/1440-js-on-fold.png",
       "full_png": "audit/1440-js-on-full.png",
       "visible_text_chars": 729,
-      "scroll_height": 3527,
+      "scroll_height": 3664,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -731,9 +1211,17 @@
       "fold_png": "audit/320-js-off-fold.png",
       "full_png": "audit/320-js-off-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 6185,
+      "scroll_height": 6529,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -743,9 +1231,17 @@
       "fold_png": "audit/360-js-off-fold.png",
       "full_png": "audit/360-js-off-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5618,
+      "scroll_height": 5914,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -755,9 +1251,17 @@
       "fold_png": "audit/390-js-off-fold.png",
       "full_png": "audit/390-js-off-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5353,
+      "scroll_height": 5649,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -767,9 +1271,17 @@
       "fold_png": "audit/768-js-off-fold.png",
       "full_png": "audit/768-js-off-full.png",
       "visible_text_chars": 861,
-      "scroll_height": 3565,
+      "scroll_height": 3726,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -779,9 +1291,17 @@
       "fold_png": "audit/1024-js-off-fold.png",
       "full_png": "audit/1024-js-off-full.png",
       "visible_text_chars": 767,
-      "scroll_height": 3385,
+      "scroll_height": 3522,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -791,9 +1311,17 @@
       "fold_png": "audit/1440-js-off-fold.png",
       "full_png": "audit/1440-js-off-full.png",
       "visible_text_chars": 729,
-      "scroll_height": 3527,
+      "scroll_height": 3664,
       "unrevealed_reveal_count": 6,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -803,9 +1331,17 @@
       "fold_png": "audit/320-reduced-fold.png",
       "full_png": "audit/320-reduced-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 6185,
+      "scroll_height": 6529,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -815,9 +1351,17 @@
       "fold_png": "audit/360-reduced-fold.png",
       "full_png": "audit/360-reduced-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5618,
+      "scroll_height": 5914,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -827,9 +1371,17 @@
       "fold_png": "audit/390-reduced-fold.png",
       "full_png": "audit/390-reduced-full.png",
       "visible_text_chars": 451,
-      "scroll_height": 5353,
+      "scroll_height": 5649,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -839,9 +1391,17 @@
       "fold_png": "audit/768-reduced-fold.png",
       "full_png": "audit/768-reduced-full.png",
       "visible_text_chars": 861,
-      "scroll_height": 3565,
+      "scroll_height": 3726,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -851,9 +1411,17 @@
       "fold_png": "audit/1024-reduced-fold.png",
       "full_png": "audit/1024-reduced-full.png",
       "visible_text_chars": 767,
-      "scroll_height": 3385,
+      "scroll_height": 3522,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -863,9 +1431,17 @@
       "fold_png": "audit/1440-reduced-fold.png",
       "full_png": "audit/1440-reduced-full.png",
       "visible_text_chars": 729,
-      "scroll_height": 3527,
+      "scroll_height": 3664,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -878,6 +1454,14 @@
       "scroll_height": 2961,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -890,6 +1474,14 @@
       "scroll_height": 2841,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -902,6 +1494,14 @@
       "scroll_height": 2815,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -914,6 +1514,14 @@
       "scroll_height": 2110,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -926,6 +1534,14 @@
       "scroll_height": 2366,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -938,6 +1554,14 @@
       "scroll_height": 2664,
       "unrevealed_reveal_count": 2,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -950,6 +1574,14 @@
       "scroll_height": 2961,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -962,6 +1594,14 @@
       "scroll_height": 2841,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -974,6 +1614,14 @@
       "scroll_height": 2815,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -986,6 +1634,14 @@
       "scroll_height": 2110,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -998,6 +1654,14 @@
       "scroll_height": 2366,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1010,6 +1674,14 @@
       "scroll_height": 2664,
       "unrevealed_reveal_count": 4,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1022,6 +1694,14 @@
       "scroll_height": 2961,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1034,6 +1714,14 @@
       "scroll_height": 2841,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1046,6 +1734,14 @@
       "scroll_height": 2815,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1058,6 +1754,14 @@
       "scroll_height": 2110,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1070,6 +1774,14 @@
       "scroll_height": 2366,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1082,6 +1794,14 @@
       "scroll_height": 2664,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1094,6 +1814,14 @@
       "scroll_height": 1799,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1106,6 +1834,14 @@
       "scroll_height": 1662,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1118,6 +1854,14 @@
       "scroll_height": 1549,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1130,6 +1874,14 @@
       "scroll_height": 1179,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1142,6 +1894,14 @@
       "scroll_height": 1126,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1154,6 +1914,14 @@
       "scroll_height": 1126,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1166,6 +1934,14 @@
       "scroll_height": 1727,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1178,6 +1954,14 @@
       "scroll_height": 1590,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1190,6 +1974,14 @@
       "scroll_height": 1501,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1202,6 +1994,14 @@
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1214,6 +2014,14 @@
       "scroll_height": 1102,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1226,6 +2034,14 @@
       "scroll_height": 1102,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1238,6 +2054,14 @@
       "scroll_height": 1799,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1250,6 +2074,14 @@
       "scroll_height": 1662,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1262,6 +2094,14 @@
       "scroll_height": 1549,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1274,6 +2114,14 @@
       "scroll_height": 1179,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1286,6 +2134,14 @@
       "scroll_height": 1126,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1298,6 +2154,14 @@
       "scroll_height": 1126,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1310,6 +2174,14 @@
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1322,6 +2194,14 @@
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1334,6 +2214,14 @@
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1346,6 +2234,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1358,6 +2254,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1370,6 +2274,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1382,6 +2294,14 @@
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1394,6 +2314,14 @@
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1406,6 +2334,14 @@
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1418,6 +2354,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1430,6 +2374,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1442,6 +2394,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1454,6 +2414,14 @@
       "scroll_height": 1155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1466,6 +2434,14 @@
       "scroll_height": 1130,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1478,6 +2454,14 @@
       "scroll_height": 1082,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1490,6 +2474,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1502,6 +2494,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1514,6 +2514,14 @@
       "scroll_height": 900,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1526,6 +2534,14 @@
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1538,6 +2554,14 @@
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1550,6 +2574,14 @@
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1562,6 +2594,14 @@
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1574,6 +2614,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1586,6 +2634,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1598,6 +2654,14 @@
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1610,6 +2674,14 @@
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1622,6 +2694,14 @@
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1634,6 +2714,14 @@
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1646,6 +2734,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1658,6 +2754,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1670,6 +2774,14 @@
       "scroll_height": 2756,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1682,6 +2794,14 @@
       "scroll_height": 2615,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1694,6 +2814,14 @@
       "scroll_height": 2560,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1706,6 +2834,14 @@
       "scroll_height": 1765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1718,6 +2854,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1730,6 +2874,14 @@
       "scroll_height": 1467,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1739,9 +2891,17 @@
       "fold_png": "docs-faq/320-js-on-fold.png",
       "full_png": "docs-faq/320-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8818,
+      "scroll_height": 9742,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1751,9 +2911,17 @@
       "fold_png": "docs-faq/360-js-on-fold.png",
       "full_png": "docs-faq/360-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8024,
+      "scroll_height": 8840,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1763,9 +2931,17 @@
       "fold_png": "docs-faq/390-js-on-fold.png",
       "full_png": "docs-faq/390-js-on-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7535,
+      "scroll_height": 8296,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1775,9 +2951,17 @@
       "fold_png": "docs-faq/768-js-on-fold.png",
       "full_png": "docs-faq/768-js-on-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6140,
+      "scroll_height": 6765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1787,9 +2971,17 @@
       "fold_png": "docs-faq/1024-js-on-fold.png",
       "full_png": "docs-faq/1024-js-on-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1799,9 +2991,17 @@
       "fold_png": "docs-faq/1440-js-on-fold.png",
       "full_png": "docs-faq/1440-js-on-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1811,9 +3011,17 @@
       "fold_png": "docs-faq/320-js-off-fold.png",
       "full_png": "docs-faq/320-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8818,
+      "scroll_height": 9742,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1823,9 +3031,17 @@
       "fold_png": "docs-faq/360-js-off-fold.png",
       "full_png": "docs-faq/360-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8024,
+      "scroll_height": 8840,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1835,9 +3051,17 @@
       "fold_png": "docs-faq/390-js-off-fold.png",
       "full_png": "docs-faq/390-js-off-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7535,
+      "scroll_height": 8296,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1847,9 +3071,17 @@
       "fold_png": "docs-faq/768-js-off-fold.png",
       "full_png": "docs-faq/768-js-off-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6140,
+      "scroll_height": 6765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1859,9 +3091,17 @@
       "fold_png": "docs-faq/1024-js-off-fold.png",
       "full_png": "docs-faq/1024-js-off-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1871,9 +3111,17 @@
       "fold_png": "docs-faq/1440-js-off-fold.png",
       "full_png": "docs-faq/1440-js-off-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1883,9 +3131,17 @@
       "fold_png": "docs-faq/320-reduced-fold.png",
       "full_png": "docs-faq/320-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8818,
+      "scroll_height": 9742,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1895,9 +3151,17 @@
       "fold_png": "docs-faq/360-reduced-fold.png",
       "full_png": "docs-faq/360-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 8024,
+      "scroll_height": 8840,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1907,9 +3171,17 @@
       "fold_png": "docs-faq/390-reduced-fold.png",
       "full_png": "docs-faq/390-reduced-full.png",
       "visible_text_chars": 325,
-      "scroll_height": 7535,
+      "scroll_height": 8296,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1919,9 +3191,17 @@
       "fold_png": "docs-faq/768-reduced-fold.png",
       "full_png": "docs-faq/768-reduced-full.png",
       "visible_text_chars": 1050,
-      "scroll_height": 6140,
+      "scroll_height": 6765,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1931,9 +3211,17 @@
       "fold_png": "docs-faq/1024-reduced-fold.png",
       "full_png": "docs-faq/1024-reduced-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1943,9 +3231,17 @@
       "fold_png": "docs-faq/1440-reduced-fold.png",
       "full_png": "docs-faq/1440-reduced-full.png",
       "visible_text_chars": 1357,
-      "scroll_height": 4599,
+      "scroll_height": 4980,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1955,9 +3251,17 @@
       "fold_png": "docs-status/320-js-on-fold.png",
       "full_png": "docs-status/320-js-on-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7691,
+      "scroll_height": 8721,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1967,9 +3271,17 @@
       "fold_png": "docs-status/360-js-on-fold.png",
       "full_png": "docs-status/360-js-on-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7386,
+      "scroll_height": 8334,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1979,9 +3291,17 @@
       "fold_png": "docs-status/390-js-on-fold.png",
       "full_png": "docs-status/390-js-on-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7134,
+      "scroll_height": 8028,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -1990,10 +3310,18 @@
       "condition": "js-on",
       "fold_png": "docs-status/768-js-on-fold.png",
       "full_png": "docs-status/768-js-on-full.png",
-      "visible_text_chars": 1101,
-      "scroll_height": 6255,
+      "visible_text_chars": 1489,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2002,10 +3330,18 @@
       "condition": "js-on",
       "fold_png": "docs-status/1024-js-on-fold.png",
       "full_png": "docs-status/1024-js-on-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2014,10 +3350,18 @@
       "condition": "js-on",
       "fold_png": "docs-status/1440-js-on-fold.png",
       "full_png": "docs-status/1440-js-on-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2027,9 +3371,17 @@
       "fold_png": "docs-status/320-js-off-fold.png",
       "full_png": "docs-status/320-js-off-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7691,
+      "scroll_height": 8721,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2039,9 +3391,17 @@
       "fold_png": "docs-status/360-js-off-fold.png",
       "full_png": "docs-status/360-js-off-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7386,
+      "scroll_height": 8334,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2051,9 +3411,17 @@
       "fold_png": "docs-status/390-js-off-fold.png",
       "full_png": "docs-status/390-js-off-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7134,
+      "scroll_height": 8028,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2062,10 +3430,18 @@
       "condition": "js-off",
       "fold_png": "docs-status/768-js-off-fold.png",
       "full_png": "docs-status/768-js-off-full.png",
-      "visible_text_chars": 1101,
-      "scroll_height": 6255,
+      "visible_text_chars": 1489,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2074,10 +3450,18 @@
       "condition": "js-off",
       "fold_png": "docs-status/1024-js-off-fold.png",
       "full_png": "docs-status/1024-js-off-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2086,10 +3470,18 @@
       "condition": "js-off",
       "fold_png": "docs-status/1440-js-off-fold.png",
       "full_png": "docs-status/1440-js-off-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2099,9 +3491,17 @@
       "fold_png": "docs-status/320-reduced-fold.png",
       "full_png": "docs-status/320-reduced-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7691,
+      "scroll_height": 8721,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2111,9 +3511,17 @@
       "fold_png": "docs-status/360-reduced-fold.png",
       "full_png": "docs-status/360-reduced-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7386,
+      "scroll_height": 8334,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2123,9 +3531,17 @@
       "fold_png": "docs-status/390-reduced-fold.png",
       "full_png": "docs-status/390-reduced-full.png",
       "visible_text_chars": 576,
-      "scroll_height": 7134,
+      "scroll_height": 8028,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2134,10 +3550,18 @@
       "condition": "reduced",
       "fold_png": "docs-status/768-reduced-fold.png",
       "full_png": "docs-status/768-reduced-full.png",
-      "visible_text_chars": 1101,
-      "scroll_height": 6255,
+      "visible_text_chars": 1489,
+      "scroll_height": 7040,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2146,10 +3570,18 @@
       "condition": "reduced",
       "fold_png": "docs-status/1024-reduced-fold.png",
       "full_png": "docs-status/1024-reduced-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2158,10 +3590,18 @@
       "condition": "reduced",
       "fold_png": "docs-status/1440-reduced-fold.png",
       "full_png": "docs-status/1440-reduced-full.png",
-      "visible_text_chars": 1271,
-      "scroll_height": 5734,
+      "visible_text_chars": 1645,
+      "scroll_height": 6352,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2171,9 +3611,17 @@
       "fold_png": "docs-how-it-works/320-js-on-fold.png",
       "full_png": "docs-how-it-works/320-js-on-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5674,
+      "scroll_height": 5863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2183,9 +3631,17 @@
       "fold_png": "docs-how-it-works/360-js-on-fold.png",
       "full_png": "docs-how-it-works/360-js-on-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5051,
+      "scroll_height": 5159,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2195,9 +3651,17 @@
       "fold_png": "docs-how-it-works/390-js-on-fold.png",
       "full_png": "docs-how-it-works/390-js-on-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 4728,
+      "scroll_height": 4863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2207,9 +3671,17 @@
       "fold_png": "docs-how-it-works/768-js-on-fold.png",
       "full_png": "docs-how-it-works/768-js-on-full.png",
       "visible_text_chars": 1016,
-      "scroll_height": 3707,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2219,9 +3691,17 @@
       "fold_png": "docs-how-it-works/1024-js-on-fold.png",
       "full_png": "docs-how-it-works/1024-js-on-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2231,9 +3711,17 @@
       "fold_png": "docs-how-it-works/1440-js-on-fold.png",
       "full_png": "docs-how-it-works/1440-js-on-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2243,9 +3731,17 @@
       "fold_png": "docs-how-it-works/320-js-off-fold.png",
       "full_png": "docs-how-it-works/320-js-off-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5674,
+      "scroll_height": 5863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2255,9 +3751,17 @@
       "fold_png": "docs-how-it-works/360-js-off-fold.png",
       "full_png": "docs-how-it-works/360-js-off-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5051,
+      "scroll_height": 5159,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2267,9 +3771,17 @@
       "fold_png": "docs-how-it-works/390-js-off-fold.png",
       "full_png": "docs-how-it-works/390-js-off-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 4728,
+      "scroll_height": 4863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2279,9 +3791,17 @@
       "fold_png": "docs-how-it-works/768-js-off-fold.png",
       "full_png": "docs-how-it-works/768-js-off-full.png",
       "visible_text_chars": 1016,
-      "scroll_height": 3707,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2291,9 +3811,17 @@
       "fold_png": "docs-how-it-works/1024-js-off-fold.png",
       "full_png": "docs-how-it-works/1024-js-off-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2303,9 +3831,17 @@
       "fold_png": "docs-how-it-works/1440-js-off-fold.png",
       "full_png": "docs-how-it-works/1440-js-off-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2315,9 +3851,17 @@
       "fold_png": "docs-how-it-works/320-reduced-fold.png",
       "full_png": "docs-how-it-works/320-reduced-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5674,
+      "scroll_height": 5863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2327,9 +3871,17 @@
       "fold_png": "docs-how-it-works/360-reduced-fold.png",
       "full_png": "docs-how-it-works/360-reduced-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 5051,
+      "scroll_height": 5159,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2339,9 +3891,17 @@
       "fold_png": "docs-how-it-works/390-reduced-fold.png",
       "full_png": "docs-how-it-works/390-reduced-full.png",
       "visible_text_chars": 343,
-      "scroll_height": 4728,
+      "scroll_height": 4863,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2351,9 +3911,17 @@
       "fold_png": "docs-how-it-works/768-reduced-fold.png",
       "full_png": "docs-how-it-works/768-reduced-full.png",
       "visible_text_chars": 1016,
-      "scroll_height": 3707,
+      "scroll_height": 3815,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2363,9 +3931,17 @@
       "fold_png": "docs-how-it-works/1024-reduced-fold.png",
       "full_png": "docs-how-it-works/1024-reduced-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2375,9 +3951,17 @@
       "fold_png": "docs-how-it-works/1440-reduced-fold.png",
       "full_png": "docs-how-it-works/1440-reduced-full.png",
       "visible_text_chars": 1672,
-      "scroll_height": 2739,
+      "scroll_height": 2766,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2387,9 +3971,17 @@
       "fold_png": "docs-getting-started/320-js-on-fold.png",
       "full_png": "docs-getting-started/320-js-on-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3981,
+      "scroll_height": 4183,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2399,9 +3991,17 @@
       "fold_png": "docs-getting-started/360-js-on-fold.png",
       "full_png": "docs-getting-started/360-js-on-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3646,
+      "scroll_height": 3820,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2411,9 +4011,17 @@
       "fold_png": "docs-getting-started/390-js-on-fold.png",
       "full_png": "docs-getting-started/390-js-on-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3564,
+      "scroll_height": 3684,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2423,9 +4031,17 @@
       "fold_png": "docs-getting-started/768-js-on-fold.png",
       "full_png": "docs-getting-started/768-js-on-full.png",
       "visible_text_chars": 866,
-      "scroll_height": 2740,
+      "scroll_height": 2860,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2434,10 +4050,18 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/1024-js-on-fold.png",
       "full_png": "docs-getting-started/1024-js-on-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2446,10 +4070,18 @@
       "condition": "js-on",
       "fold_png": "docs-getting-started/1440-js-on-fold.png",
       "full_png": "docs-getting-started/1440-js-on-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2459,9 +4091,17 @@
       "fold_png": "docs-getting-started/320-js-off-fold.png",
       "full_png": "docs-getting-started/320-js-off-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3981,
+      "scroll_height": 4183,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2471,9 +4111,17 @@
       "fold_png": "docs-getting-started/360-js-off-fold.png",
       "full_png": "docs-getting-started/360-js-off-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3646,
+      "scroll_height": 3820,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2483,9 +4131,17 @@
       "fold_png": "docs-getting-started/390-js-off-fold.png",
       "full_png": "docs-getting-started/390-js-off-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3564,
+      "scroll_height": 3684,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2495,9 +4151,17 @@
       "fold_png": "docs-getting-started/768-js-off-fold.png",
       "full_png": "docs-getting-started/768-js-off-full.png",
       "visible_text_chars": 866,
-      "scroll_height": 2740,
+      "scroll_height": 2860,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2506,10 +4170,18 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/1024-js-off-fold.png",
       "full_png": "docs-getting-started/1024-js-off-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2518,10 +4190,18 @@
       "condition": "js-off",
       "fold_png": "docs-getting-started/1440-js-off-fold.png",
       "full_png": "docs-getting-started/1440-js-off-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2531,9 +4211,17 @@
       "fold_png": "docs-getting-started/320-reduced-fold.png",
       "full_png": "docs-getting-started/320-reduced-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3981,
+      "scroll_height": 4183,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2543,9 +4231,17 @@
       "fold_png": "docs-getting-started/360-reduced-fold.png",
       "full_png": "docs-getting-started/360-reduced-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3646,
+      "scroll_height": 3820,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2555,9 +4251,17 @@
       "fold_png": "docs-getting-started/390-reduced-fold.png",
       "full_png": "docs-getting-started/390-reduced-full.png",
       "visible_text_chars": 335,
-      "scroll_height": 3564,
+      "scroll_height": 3684,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2567,9 +4271,17 @@
       "fold_png": "docs-getting-started/768-reduced-fold.png",
       "full_png": "docs-getting-started/768-reduced-full.png",
       "visible_text_chars": 866,
-      "scroll_height": 2740,
+      "scroll_height": 2860,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2578,10 +4290,18 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/1024-reduced-fold.png",
       "full_png": "docs-getting-started/1024-reduced-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2590,10 +4310,18 @@
       "condition": "reduced",
       "fold_png": "docs-getting-started/1440-reduced-fold.png",
       "full_png": "docs-getting-started/1440-reduced-full.png",
-      "visible_text_chars": 1356,
-      "scroll_height": 2116,
+      "visible_text_chars": 1629,
+      "scroll_height": 2155,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2603,9 +4331,17 @@
       "fold_png": "docs-privacy/320-js-on-fold.png",
       "full_png": "docs-privacy/320-js-on-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5773,
+      "scroll_height": 6038,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2615,9 +4351,17 @@
       "fold_png": "docs-privacy/360-js-on-fold.png",
       "full_png": "docs-privacy/360-js-on-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5212,
+      "scroll_height": 5451,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2627,9 +4371,17 @@
       "fold_png": "docs-privacy/390-js-on-fold.png",
       "full_png": "docs-privacy/390-js-on-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5026,
+      "scroll_height": 5239,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2639,9 +4391,17 @@
       "fold_png": "docs-privacy/768-js-on-fold.png",
       "full_png": "docs-privacy/768-js-on-full.png",
       "visible_text_chars": 1020,
-      "scroll_height": 3935,
+      "scroll_height": 4094,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2651,9 +4411,17 @@
       "fold_png": "docs-privacy/1024-js-on-fold.png",
       "full_png": "docs-privacy/1024-js-on-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2663,9 +4431,17 @@
       "fold_png": "docs-privacy/1440-js-on-fold.png",
       "full_png": "docs-privacy/1440-js-on-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2675,9 +4451,17 @@
       "fold_png": "docs-privacy/320-js-off-fold.png",
       "full_png": "docs-privacy/320-js-off-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5773,
+      "scroll_height": 6038,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2687,9 +4471,17 @@
       "fold_png": "docs-privacy/360-js-off-fold.png",
       "full_png": "docs-privacy/360-js-off-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5212,
+      "scroll_height": 5451,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2699,9 +4491,17 @@
       "fold_png": "docs-privacy/390-js-off-fold.png",
       "full_png": "docs-privacy/390-js-off-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5026,
+      "scroll_height": 5239,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2711,9 +4511,17 @@
       "fold_png": "docs-privacy/768-js-off-fold.png",
       "full_png": "docs-privacy/768-js-off-full.png",
       "visible_text_chars": 1020,
-      "scroll_height": 3935,
+      "scroll_height": 4094,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2723,9 +4531,17 @@
       "fold_png": "docs-privacy/1024-js-off-fold.png",
       "full_png": "docs-privacy/1024-js-off-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2735,9 +4551,17 @@
       "fold_png": "docs-privacy/1440-js-off-fold.png",
       "full_png": "docs-privacy/1440-js-off-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2747,9 +4571,17 @@
       "fold_png": "docs-privacy/320-reduced-fold.png",
       "full_png": "docs-privacy/320-reduced-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5773,
+      "scroll_height": 6038,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2759,9 +4591,17 @@
       "fold_png": "docs-privacy/360-reduced-fold.png",
       "full_png": "docs-privacy/360-reduced-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5212,
+      "scroll_height": 5451,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2771,9 +4611,17 @@
       "fold_png": "docs-privacy/390-reduced-fold.png",
       "full_png": "docs-privacy/390-reduced-full.png",
       "visible_text_chars": 423,
-      "scroll_height": 5026,
+      "scroll_height": 5239,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2783,9 +4631,17 @@
       "fold_png": "docs-privacy/768-reduced-fold.png",
       "full_png": "docs-privacy/768-reduced-full.png",
       "visible_text_chars": 1020,
-      "scroll_height": 3935,
+      "scroll_height": 4094,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2795,9 +4651,17 @@
       "fold_png": "docs-privacy/1024-reduced-fold.png",
       "full_png": "docs-privacy/1024-reduced-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2807,9 +4671,17 @@
       "fold_png": "docs-privacy/1440-reduced-fold.png",
       "full_png": "docs-privacy/1440-reduced-full.png",
       "visible_text_chars": 1703,
-      "scroll_height": 2987,
+      "scroll_height": 3120,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2819,9 +4691,17 @@
       "fold_png": "docs-terms/320-js-on-fold.png",
       "full_png": "docs-terms/320-js-on-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6469,
+      "scroll_height": 6443,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2831,9 +4711,17 @@
       "fold_png": "docs-terms/360-js-on-fold.png",
       "full_png": "docs-terms/360-js-on-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5922,
+      "scroll_height": 5896,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2846,6 +4734,14 @@
       "scroll_height": 5573,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2855,9 +4751,17 @@
       "fold_png": "docs-terms/768-js-on-fold.png",
       "full_png": "docs-terms/768-js-on-full.png",
       "visible_text_chars": 1011,
-      "scroll_height": 4554,
+      "scroll_height": 4528,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2870,6 +4774,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2882,6 +4794,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2891,9 +4811,17 @@
       "fold_png": "docs-terms/320-js-off-fold.png",
       "full_png": "docs-terms/320-js-off-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6469,
+      "scroll_height": 6443,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2903,9 +4831,17 @@
       "fold_png": "docs-terms/360-js-off-fold.png",
       "full_png": "docs-terms/360-js-off-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5922,
+      "scroll_height": 5896,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2918,6 +4854,14 @@
       "scroll_height": 5573,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2927,9 +4871,17 @@
       "fold_png": "docs-terms/768-js-off-fold.png",
       "full_png": "docs-terms/768-js-off-full.png",
       "visible_text_chars": 1011,
-      "scroll_height": 4554,
+      "scroll_height": 4528,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2942,6 +4894,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2954,6 +4914,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2963,9 +4931,17 @@
       "fold_png": "docs-terms/320-reduced-fold.png",
       "full_png": "docs-terms/320-reduced-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 6469,
+      "scroll_height": 6443,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2975,9 +4951,17 @@
       "fold_png": "docs-terms/360-reduced-fold.png",
       "full_png": "docs-terms/360-reduced-full.png",
       "visible_text_chars": 418,
-      "scroll_height": 5922,
+      "scroll_height": 5896,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2990,6 +4974,14 @@
       "scroll_height": 5573,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -2999,9 +4991,17 @@
       "fold_png": "docs-terms/768-reduced-fold.png",
       "full_png": "docs-terms/768-reduced-full.png",
       "visible_text_chars": 1011,
-      "scroll_height": 4554,
+      "scroll_height": 4528,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3014,6 +5014,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3026,6 +5034,14 @@
       "scroll_height": 3595,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3035,9 +5051,17 @@
       "fold_png": "docs-threat-model/320-js-on-fold.png",
       "full_png": "docs-threat-model/320-js-on-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4763,
+      "scroll_height": 5241,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3047,9 +5071,17 @@
       "fold_png": "docs-threat-model/360-js-on-fold.png",
       "full_png": "docs-threat-model/360-js-on-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4358,
+      "scroll_height": 4783,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3059,9 +5091,17 @@
       "fold_png": "docs-threat-model/390-js-on-fold.png",
       "full_png": "docs-threat-model/390-js-on-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4140,
+      "scroll_height": 4539,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3070,10 +5110,18 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/768-js-on-fold.png",
       "full_png": "docs-threat-model/768-js-on-full.png",
-      "visible_text_chars": 965,
-      "scroll_height": 3233,
+      "visible_text_chars": 1126,
+      "scroll_height": 3552,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3082,10 +5130,18 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/1024-js-on-fold.png",
       "full_png": "docs-threat-model/1024-js-on-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3094,10 +5150,18 @@
       "condition": "js-on",
       "fold_png": "docs-threat-model/1440-js-on-fold.png",
       "full_png": "docs-threat-model/1440-js-on-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3107,9 +5171,17 @@
       "fold_png": "docs-threat-model/320-js-off-fold.png",
       "full_png": "docs-threat-model/320-js-off-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4763,
+      "scroll_height": 5241,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3119,9 +5191,17 @@
       "fold_png": "docs-threat-model/360-js-off-fold.png",
       "full_png": "docs-threat-model/360-js-off-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4358,
+      "scroll_height": 4783,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3131,9 +5211,17 @@
       "fold_png": "docs-threat-model/390-js-off-fold.png",
       "full_png": "docs-threat-model/390-js-off-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4140,
+      "scroll_height": 4539,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3142,10 +5230,18 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/768-js-off-fold.png",
       "full_png": "docs-threat-model/768-js-off-full.png",
-      "visible_text_chars": 965,
-      "scroll_height": 3233,
+      "visible_text_chars": 1126,
+      "scroll_height": 3552,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3154,10 +5250,18 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/1024-js-off-fold.png",
       "full_png": "docs-threat-model/1024-js-off-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3166,10 +5270,18 @@
       "condition": "js-off",
       "fold_png": "docs-threat-model/1440-js-off-fold.png",
       "full_png": "docs-threat-model/1440-js-off-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3179,9 +5291,17 @@
       "fold_png": "docs-threat-model/320-reduced-fold.png",
       "full_png": "docs-threat-model/320-reduced-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4763,
+      "scroll_height": 5241,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3191,9 +5311,17 @@
       "fold_png": "docs-threat-model/360-reduced-fold.png",
       "full_png": "docs-threat-model/360-reduced-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4358,
+      "scroll_height": 4783,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3203,9 +5331,17 @@
       "fold_png": "docs-threat-model/390-reduced-fold.png",
       "full_png": "docs-threat-model/390-reduced-full.png",
       "visible_text_chars": 323,
-      "scroll_height": 4140,
+      "scroll_height": 4539,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3214,10 +5350,18 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/768-reduced-fold.png",
       "full_png": "docs-threat-model/768-reduced-full.png",
-      "visible_text_chars": 965,
-      "scroll_height": 3233,
+      "visible_text_chars": 1126,
+      "scroll_height": 3552,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3226,10 +5370,18 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/1024-reduced-fold.png",
       "full_png": "docs-threat-model/1024-reduced-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     },
     {
@@ -3238,10 +5390,18 @@
       "condition": "reduced",
       "fold_png": "docs-threat-model/1440-reduced-fold.png",
       "full_png": "docs-threat-model/1440-reduced-full.png",
-      "visible_text_chars": 1442,
-      "scroll_height": 2507,
+      "visible_text_chars": 1413,
+      "scroll_height": 2667,
       "unrevealed_reveal_count": 0,
       "build_meta": null,
+      "h4_explainer": {
+        "present": false,
+        "visible": false,
+        "textChars": 0,
+        "semanticStages": 0,
+        "visibleBoundaries": 0,
+        "plannedBadges": 0
+      },
       "verdict": "pass"
     }
   ]
