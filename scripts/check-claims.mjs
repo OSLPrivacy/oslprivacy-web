@@ -3482,6 +3482,7 @@ function validateH7Comparison(pricing, asOf) {
   const seenSourceTypes = new Set();
   let datedSources = 0;
   let newestAccessTime = Number.NEGATIVE_INFINITY;
+  const sourceAccessDates = [];
 
   for (const [index, source] of sources.entries()) {
     const label = isNonempty(source?.id) ? source.id : `source[${index}]`;
@@ -3527,6 +3528,7 @@ function validateH7Comparison(pricing, asOf) {
       continue;
     }
     datedSources += 1;
+    sourceAccessDates.push(source.accessed_on);
     newestAccessTime = Math.max(newestAccessTime, accessed.getTime());
     const ageDays = Math.floor((asOfDate - accessed) / 86_400_000);
     if (ageDays < 0) {
@@ -3538,6 +3540,7 @@ function validateH7Comparison(pricing, asOf) {
   if (datedSources === 0 && sources.length > 0) {
     add('SOURCE_DATE', 'no source has a valid access date');
   }
+  let reviewDateValid = false;
   if (!/^\d{4}-\d{2}-\d{2}$/.test(comparison?.reviewed_on ?? '')) {
     add('REVIEW_DATE', 'reviewed_on must be an ISO date');
   } else {
@@ -3546,12 +3549,21 @@ function validateH7Comparison(pricing, asOf) {
       || reviewed.toISOString().slice(0, 10) !== comparison.reviewed_on) {
       add('REVIEW_DATE', 'reviewed_on must be a real calendar date');
     } else {
+      reviewDateValid = true;
       if (reviewed > asOfDate) {
         add('REVIEW_DATE', `reviewed_on cannot be after --as-of=${asOf}`);
       }
       if (Number.isFinite(newestAccessTime) && reviewed.getTime() < newestAccessTime) {
         add('REVIEW_DATE', 'reviewed_on cannot precede the newest source access date');
       }
+    }
+  }
+  if (reviewDateValid && sourceAccessDates.length === sources.length) {
+    const staleRefreshSources = sources
+      .filter((source) => source.accessed_on !== comparison.reviewed_on)
+      .map((source) => source.id);
+    if (staleRefreshSources.length > 0) {
+      add('SOURCE_REFRESH', `source access dates must match reviewed_on; stale refresh evidence: ${staleRefreshSources.join(', ')}`);
     }
   }
   for (const sourceType of H7_REQUIRED_SOURCE_TYPES) {
@@ -5835,6 +5847,15 @@ const H7_SELF_TEST_MUTATIONS = [
     },
   },
   {
+    name: 'source access date detached from review evidence',
+    expect: 'H7_SOURCE_REFRESH',
+    mutate(pricing) {
+      const reviewed = new Date(`${pricing.research_comparisons.h7_deleteme.reviewed_on}T00:00:00Z`);
+      reviewed.setUTCDate(reviewed.getUTCDate() - 1);
+      pricing.research_comparisons.h7_deleteme.sources[0].accessed_on = reviewed.toISOString().slice(0, 10);
+    },
+  },
+  {
     name: 'all access dates stale',
     expect: 'H7_SOURCE_STALE',
     mutate(pricing) {
@@ -7550,8 +7571,8 @@ if (SELF_TEST) {
         && dimension.conflict_explanation?.trim()),
     },
     {
-      name: 'exactly 20 named H7 mutations',
-      pass: H7_SELF_TEST_MUTATIONS.length === 20,
+      name: 'exactly 21 named H7 mutations',
+      pass: H7_SELF_TEST_MUTATIONS.length === 21,
     },
   ];
   for (const assertion of h7Assertions) {
