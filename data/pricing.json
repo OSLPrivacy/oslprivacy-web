@@ -1361,6 +1361,14 @@
       "features.html",
       "download.html"
     ],
+    "public_ia_allowed_concepts": [
+      "protection state",
+      "trusted people",
+      "connected accounts",
+      "private conversations",
+      "cleanup actions",
+      "activity history"
+    ],
     "public_ia_forbidden_terms": [
       "keyserver",
       "keyservers",
