@@ -111,6 +111,28 @@ function blockHasDeclaration(block, property, valuePattern) {
     });
 }
 
+function ownerMapFields(line) {
+  const fields = new Map();
+  if (!line.startsWith('owner-map ')) {
+    fail(`invalid owner-map line: ${line}`);
+  }
+  const body = line.slice('owner-map '.length);
+  const fieldPattern = /(?:^|\s)([a-z-]+)=([\s\S]*?)(?=\s[a-z-]+=|$)/g;
+  let covered = '';
+  for (const match of body.matchAll(fieldPattern)) {
+    covered += match[0];
+    const key = match[1];
+    if (fields.has(key)) {
+      fail(`owner-map line repeats ${key}: ${line}`);
+    }
+    fields.set(key, match[2].trim());
+  }
+  if (covered.trim() !== body.trim()) {
+    fail(`owner-map token must be key=value: ${line}`);
+  }
+  return fields;
+}
+
 function isScreenshotImage(file) {
   const bytes = readFileSync(file);
   const isPng =
@@ -168,13 +190,16 @@ if (mappingLines.length !== REQUIRED_MAPPINGS.length) {
   fail(`expected ${REQUIRED_MAPPINGS.length} owner-map lines, found ${mappingLines.length}`);
 }
 
+const parsedMappings = mappingLines.map((line) => ({ line, fields: ownerMapFields(line) }));
+
 for (const mapping of REQUIRED_MAPPINGS) {
-  const line = mappingLines.find((candidate) => candidate.includes(`id=${mapping.id}`));
-  if (!line) {
+  const parsed = parsedMappings.find((candidate) => candidate.fields.get('id') === mapping.id);
+  if (!parsed) {
     fail(`missing owner-map id=${mapping.id}`);
   }
   for (const token of mapping.tokens) {
-    if (!line.includes(token)) {
+    const [key, expectedValue] = token.split('=');
+    if (parsed.fields.get(key) !== expectedValue) {
       fail(`owner-map id=${mapping.id} is missing ${token}`);
     }
   }
