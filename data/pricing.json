@@ -1380,6 +1380,11 @@
     "public_ia_forbidden_patterns": [
       "ban risk [0-9]+%"
     ],
+    "public_ia_negative_fixtures": [
+      "public launch IA exposes keyserver machinery",
+      "public safety copy fabricates a ban risk percentage",
+      "public launch page omits the status link"
+    ],
     "$why": "Owner decision 2026-07-26. The site is pre-launch marketing for v1, not a live health screen. Putting a status label on every feature card made the product harder to understand without making it more honest. Honesty is concentrated in two unmissable places instead: the dated status page and the point of sale."
   },
   "surface_policy": {
