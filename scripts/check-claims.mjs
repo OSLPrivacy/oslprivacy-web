@@ -7888,23 +7888,32 @@ if (SELF_TEST) {
   if (!burnBoundaryMutationCaught) failures += 1;
   console.log(`  ${burnBoundaryMutationCaught ? 'caught ' : 'MISSED '} h18 Burn-after boundary removal`);
 
-  const bannedH4Mutation = h4Content.replace(
-    requiredLimitation,
-    `${requiredLimitation} It is not cryptographic erasure and cannot make remote copies vanish.`,
-  );
-  const bannedH4MutationCaught = bannedH4Mutation !== h4Content
-    && analyseFile('features.html', bannedH4Mutation, config)
-      .some((error) => error.kind === 'h4 explainer contract'
-        && error.text.includes('banned erasure phrasing excluded'));
-  if (!bannedH4MutationCaught) failures += 1;
-  console.log(`  ${bannedH4MutationCaught ? 'caught ' : 'MISSED '} banned H4 erasure phrasing insertion`);
+  const bannedH4MutationCases = [
+    [
+      'not cryptographic erasure',
+      h4Content.replace(requiredLimitation, `${requiredLimitation} It is not cryptographic erasure.`),
+    ],
+    [
+      'cannot make',
+      h4Content.replace(requiredLimitation, `${requiredLimitation} It cannot make remote copies vanish.`),
+    ],
+  ];
+  const bannedH4MutationResults = bannedH4MutationCases.map(([phrase, html]) => {
+    const caught = html !== h4Content
+      && analyseFile('features.html', html, config)
+        .some((error) => error.kind === 'h4 explainer contract'
+          && error.text.includes('banned erasure phrasing excluded'));
+    if (!caught) failures += 1;
+    console.log(`  ${caught ? 'caught ' : 'MISSED '} banned H4 "${phrase}" insertion`);
+    return caught;
+  });
 
   const h18NamedTestPassed = baselineClean
     && h4MarkerMutationCaught
     && limitationMutationCaught
     && pwsBoundaryMutationCaught
     && burnBoundaryMutationCaught
-    && bannedH4MutationCaught;
+    && bannedH4MutationResults.every(Boolean);
   if (!h18NamedTestPassed) failures += 1;
   console.log(`  ${h18NamedTestPassed ? 'passed ' : 'FAILED '} State PWS-before and Burn-after boundaries with all banned erasure phrasing excluded`);
 
