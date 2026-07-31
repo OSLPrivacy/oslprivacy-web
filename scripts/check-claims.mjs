@@ -8086,10 +8086,28 @@ if (SELF_TEST) {
     && analyseFile('index.html', h28ScanMutation, config)
       .some((error) => error.kind === 'h28 exposure comparison contract'
         && error.text.includes('not-a-device-scan limitation'));
-  if (!h28BaselineClean || !h28BadgeMutationCaught || !h28ScanMutationCaught) failures += 1;
+  const h28StatusNotScanCopy = 'It is not a scan of your device';
+  const h28StatusNotScanOccurrences = h28StatusContent.split(h28StatusNotScanCopy).length - 1;
+  const h28StatusScanMutation = h28StatusContent.replace(h28StatusNotScanCopy, 'It scans your device');
+  const h28StatusScanMutationCaught = h28StatusNotScanOccurrences === 1
+    && h28StatusScanMutation !== h28StatusContent
+    && analyseFile('docs/status.html', h28StatusScanMutation, config)
+      .some((error) => error.kind === 'h28 exposure comparison contract'
+        && error.text.includes('not-a-device-scan limitation'));
+  const h28LiveScoreCopy = 'this site never shows a live protection score';
+  const h28LiveScoreOccurrences = h28StatusContent.split(h28LiveScoreCopy).length - 1;
+  const h28LiveScoreMutation = h28StatusContent.replace(h28LiveScoreCopy, 'this site shows a live protection score');
+  const h28LiveScoreMutationCaught = h28LiveScoreOccurrences === 1
+    && h28LiveScoreMutation !== h28StatusContent
+    && analyseFile('docs/status.html', h28LiveScoreMutation, config)
+      .some((error) => error.kind === 'h28 exposure comparison contract'
+        && error.text.includes('not-a-live-score limitation'));
+  if (!h28BaselineClean || !h28BadgeMutationCaught || !h28ScanMutationCaught || !h28StatusScanMutationCaught || !h28LiveScoreMutationCaught) failures += 1;
   console.log(`  ${h28BaselineClean ? 'passed ' : 'FAILED '} production exposure comparison baseline`);
   console.log(`  ${h28BadgeMutationCaught ? 'caught ' : 'MISSED '} exact exposure badge promotion mutation`);
-  console.log(`  ${h28ScanMutationCaught ? 'caught ' : 'MISSED '} exact removal of not-a-device-scan limitation`);
+  console.log(`  ${h28ScanMutationCaught ? 'caught ' : 'MISSED '} exact index removal of not-a-device-scan limitation`);
+  console.log(`  ${h28StatusScanMutationCaught ? 'caught ' : 'MISSED '} exact status removal of not-a-device-scan limitation`);
+  console.log(`  ${h28LiveScoreMutationCaught ? 'caught ' : 'MISSED '} exact status live-score mutation`);
 
   console.log('\ncheck-claims self-test (production at-rest boundaries and exact mutations):');
   const productionAtRestCases = [
@@ -8368,7 +8386,7 @@ if (SELF_TEST) {
     + 4
     + 2
     + 2
-    + 3
+    + 5
     + (productionAtRestCases.length * 2)
     + 1
     + atRestPageMutations.length
