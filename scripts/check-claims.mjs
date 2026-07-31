@@ -3138,16 +3138,32 @@ function scrubDemoContractErrors(fileRel, content) {
   const indexDeletionVisual =
     fileRel === 'index.html'
       && /\b(?:scrub-flat-cleared|scrub-vapor|scrub-eraser|scrub-erase-line)\b/i.test(block.html);
+  const indexDeletionOrRemovalPromise =
+    fileRel === 'index.html'
+      && /\b(?:delete|deletes|deleted|deleting|deletion|remove|removes|removed|removing|removal|erase|erases|erased|erasing|clear|clears|cleared|clearing|clean|cleans|cleaned|cleaning)\b/i.test(rendered);
+  const expectedScanText = fileRel === 'index.html'
+    ? /\bchecking username-only evidence\b/i
+    : /\bscanning usernames locally\b/i;
   const requirements = [
     {
-      label: 'username-only local-export evidence',
-      passed: /\bIt checks only username text in a local export you choose\./.test(rendered),
+      label: 'h17 username-only phone evidence',
+      passed: fileRel !== 'index.html'
+        || /\bAt v1, it will check only the username you enter\. No browser, app, cookie, credential, or local account data is sent\./.test(rendered),
+    },
+    {
+      label: 'h23 username-only local-export evidence',
+      passed: fileRel !== 'features.html'
+        || /\bIt checks only username text in a local export you choose\./.test(rendered),
     },
     {
       label: 'username-only rendered demo',
-      passed: /\bscanning usernames locally\b/i.test(visualText)
+      passed: expectedScanText.test(visualText)
         && /\b3 username matches\b/i.test(visualText)
         && (visualText.match(/\busername\b/gi) || []).length >= 3,
+    },
+    {
+      label: 'no deletion or removal promise',
+      passed: !indexDeletionOrRemovalPromise,
     },
     {
       label: 'no deletion-action UI',
@@ -5434,25 +5450,25 @@ const SELF_TEST_CASES = [
   {
     name: 'index Scrub demo omits username-only evidence',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks a local export you choose.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks username text plus app account inventory.</p><p><a href="/docs/status">See what works today</a></p></section>',
     expect: 'h17 scrub demo contract',
   },
   {
     name: 'index Scrub demo promises deletion',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks only username text in a local export you choose.</p><p>It prepares directions to the deletion page.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>At v1, it will check only the username you enter. No browser, app, cookie, credential, or local account data is sent.</p><p>It prepares removal directions for matched sources.</p><p><a href="/docs/status">See what works today</a></p></section>',
     expect: 'h17 scrub demo contract',
   },
   {
     name: 'index Scrub demo exposes implementation machinery',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>It checks only username text in a local export you choose.</p><p>Provider exports, selected-account binding and completeness receipts are not qualified.</p><p><a href="/docs/status">See what works today</a></p></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><p>At v1, it will check only the username you enter. No browser, app, cookie, credential, or local account data is sent.</p><p>Provider exports, selected-account binding and completeness receipts are not qualified.</p><p><a href="/docs/status">See what works today</a></p></section>',
     expect: 'h17 scrub demo contract',
   },
   {
     name: 'index Scrub demo includes deletion-style cleared visual',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Scanning usernames locally</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div><div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i></span></div></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Check one username from your phone.</h2><p>At v1, it will check only the username you enter. No browser, app, cookie, credential, or local account data is sent.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Checking username-only evidence</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div><div class="scrub-flat-cleared" aria-hidden="true"><span class="scrub-vapor"><i></i></span></div></section>',
     expect: 'h17 scrub demo contract',
   },
   {
@@ -5595,7 +5611,7 @@ const NEGATION_CASES = [
   {
     name: 'honest index Scrub username-only demo',
     file: 'index.html',
-    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Find usernames you left behind.</h2><p>It checks only username text in a local export you choose.</p><p>Planned for v1: Free Scrub will review only usernames found in that local export, then prepare manual review steps you can follow yourself. It does not connect to services, change accounts, or run while you are away.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Scanning usernames locally</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div></section>',
+    html: '<section class="scrub-demo"><p class="eyebrow">Scrub</p><h2>Check one username from your phone.</h2><p>At v1, it will check only the username you enter. No browser, app, cookie, credential, or local account data is sent.</p><p>Planned for v1: website Scrub checks public username evidence, then shows which sources were checked, found, blocked, or unchecked. Manual review guidance only; deep local discovery happens in the installed OSL app.</p><p><a href="/docs/status">See what works today</a></p><div class="scrub-flat-scan"><strong>Checking username-only evidence</strong></div><div class="scrub-flat-findings"><strong>3 username matches</strong><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div><div class="scrub-hit"><i></i><span class="scrub-code"><code>username</code></span></div></div></section>',
     kinds: ['h17 scrub demo contract', 'Scrub capability overclaim'],
   },
   {
@@ -7982,16 +7998,27 @@ if (SELF_TEST) {
   const h17BaselineErrors = analyseFile('index.html', h17Content, config)
     .filter((error) => error.kind === 'h17 scrub demo contract');
   const h17BaselineClean = h17BaselineErrors.length === 0;
-  const requiredUsernameBoundary = 'It checks only username text in a local export you choose.';
+  const requiredUsernameBoundary = 'At v1, it will check only the username you enter. No browser, app, cookie, credential, or local account data is sent.';
   const h17BoundaryOccurrences = h17Content.split(requiredUsernameBoundary).length - 1;
   const mutatedH17 = h17Content.replace(
     requiredUsernameBoundary,
-    'It checks a local export you choose, then prepares directions to the deletion page.',
+    'It checks the username you enter plus browser, app, cookie, and local account data.',
   );
   const h17MutationCaught = h17BoundaryOccurrences === 1
     && mutatedH17 !== h17Content
     && analyseFile('index.html', mutatedH17, config)
       .some((error) => error.kind === 'h17 scrub demo contract');
+  const h17NoDeletionLine = 'Manual review guidance only; deep local discovery happens in the installed OSL app.';
+  const h17NoDeletionLineOccurrences = h17Content.split(h17NoDeletionLine).length - 1;
+  const h17DeletionCopyMutation = h17Content.replace(
+    h17NoDeletionLine,
+    'It prepares removal directions for matched sources.',
+  );
+  const h17DeletionCopyCaught = h17NoDeletionLineOccurrences === 1
+    && h17DeletionCopyMutation !== h17Content
+    && analyseFile('index.html', h17DeletionCopyMutation, config)
+      .some((error) => error.kind === 'h17 scrub demo contract'
+        && error.text.includes('no deletion or removal promise'));
   const h17VisualInsertionPoint = '          </div>\n        </article>\n      </div>\n\n    </section>\n\n    <section class="section home-buy';
   const h17VisualInsertionOccurrences = h17Content.split(h17VisualInsertionPoint).length - 1;
   const h17VisualMutation = h17Content.replace(
@@ -8024,9 +8051,10 @@ if (SELF_TEST) {
     && analyseFile('features.html', mutatedH23Phone, config)
       .some((error) => error.kind === 'h23 scrub demo contract'
         && error.text.includes('phone username-only deliverable'));
-  if (!h17BaselineClean || !h17MutationCaught || !h17DeletionVisualCaught || !h23BaselineClean || !h23MutationCaught || !h23PhoneMutationCaught) failures += 1;
+  if (!h17BaselineClean || !h17MutationCaught || !h17DeletionCopyCaught || !h17DeletionVisualCaught || !h23BaselineClean || !h23MutationCaught || !h23PhoneMutationCaught) failures += 1;
   console.log(`  ${h17BaselineClean ? 'passed ' : 'FAILED '} production index Scrub demo baseline`);
   console.log(`  ${h17MutationCaught ? 'caught ' : 'MISSED '} exact index Scrub username-boundary mutation`);
+  console.log(`  ${h17DeletionCopyCaught ? 'caught ' : 'MISSED '} exact index Scrub deletion-copy mutation`);
   console.log(`  ${h17DeletionVisualCaught ? 'caught ' : 'MISSED '} exact index Scrub deletion-visual mutation`);
   console.log(`  ${h23BaselineClean ? 'passed ' : 'FAILED '} production features Scrub demo baseline`);
   console.log(`  ${h23MutationCaught ? 'caught ' : 'MISSED '} exact features Scrub visual mutation`);
